@@ -1,8 +1,8 @@
 ---
-name: "✅ Feature"
-about: Feature 작업 내용을 입력해주세요.
-title: "[Feature]"
-labels: enhancement
+name: "\U0001F41E Bug"
+about: Bug 작업 내용을 입력해주세요.
+title: "[BUG]"
+labels: bug
 assignees: ''
 
 ---
