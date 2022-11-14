@@ -11,9 +11,12 @@
         "@types/node": "^16.18.3",
         "@types/react": "^18.0.25",
         "@types/react-dom": "^18.0.8",
+        "customize-cra": "^1.0.0",
+        "eslint-import-resolver-alias": "^1.1.2",
         "jest": "^29.3.1",
         "msw": "^0.48.1",
         "react": "^18.2.0",
+        "react-app-rewired": "^2.2.1",
         "react-dom": "^18.2.0",
         "react-redux": "^8.0.5",
         "react-scripts": "5.0.1",
@@ -22,9 +25,9 @@
         "web-vitals": "^2.1.4"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
+        "start": "react-app-rewired start",
+        "build": "react-app-rewired build",
+        "test": "react-app-rewired test",
         "eject": "react-scripts eject"
     },
     "eslintConfig": {
