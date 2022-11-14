@@ -5,6 +5,9 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "./server"
 
     strategy:
       matrix:
@@ -21,7 +24,7 @@ jobs:
 
       - name: gateway
         run: |
-          cd server/gateway
+          cd gateway
           npm run format
 
       - name: services
