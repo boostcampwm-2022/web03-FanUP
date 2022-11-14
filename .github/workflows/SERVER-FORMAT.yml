@@ -25,6 +25,7 @@ jobs:
       - name: gateway
         run: |
           cd gateway
+          npm install
           npm run format
 
       - name: services
