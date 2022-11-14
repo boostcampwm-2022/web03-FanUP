@@ -1,4 +1,4 @@
-name: SERVER-FORMAT
+name: SERVER-TICKET-COVERAGE
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: "./server"
+        working-directory: "./server/services"
 
     strategy:
       matrix:
@@ -30,22 +30,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: gateway
-        run: |
-          cd gateway
-          npm install
-          npm run format
-
       - name: services
         run: |
-          cd ./services/api
+          cd ./ticket
           npm install
-          npm run format
+          npm run coveralls
 
-          cd ../auth
-          npm install
-          npm run format
-
-          cd ../ticket
-          npm install
-          npm run format
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./server/services/ticket/coverage/lcov.info

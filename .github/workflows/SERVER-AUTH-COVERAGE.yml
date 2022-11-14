@@ -1,9 +1,13 @@
-name: SERVER-COVERAGE
+name: SERVER-AUTH-COVERAGE
 
 on:
   push:
+    paths:
+      - "./server/**"
     branches: [main, dev]
   pull_request:
+    paths:
+      - "./server/**"
     branches: [main, dev]
 
 jobs:
@@ -11,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: "./server"
+        working-directory: "./server/services"
 
     strategy:
       matrix:
@@ -26,23 +30,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: gateway
-        run: |
-          cd gateway
-          npm install
-          npm run coveralls
-
       - name: services
         run: |
-          cd ./services/api
-          npm install
-          npm run coveralls
-
-          cd ../auth
-          npm install
-          npm run coveralls
-
-          cd ../ticket
+          cd ./auth
           npm install
           npm run coveralls
 
@@ -50,3 +40,4 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./server/services/auth/coverage/lcov.info
