@@ -1,0 +1,49 @@
+name: SERVER-COVERAGE
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Set up Nest.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: gateway
+        run: |
+          cd gateway
+          npm install
+          npm run coveralls
+
+      - name: services
+        run: |
+          cd ./services/api
+          npm install
+          npm run coveralls
+
+          cd ../auth
+          npm install
+          npm run coveralls
+
+          cd ../ticket
+          npm install
+          npm run coveralls
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,47 @@
+name: SERVER FORMAT
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "./server"
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Set up Nest.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: gateway
+        run: |
+          cd gateway
+          npm install
+          npm run format
+
+      - name: services
+        run: |
+          cd ./services/api
+          npm install
+          npm run format
+
+          cd ../auth
+          npm install
+          npm run format
+
+          cd ../ticket
+          npm install
+          npm run format
