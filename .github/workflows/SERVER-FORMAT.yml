@@ -30,11 +30,14 @@ jobs:
 
       - name: services
         run: |
-          cd ../services/api
+          cd ./services/api
+          npm install
           npm run format
 
           cd ../auth
+          npm install
           npm run format
 
           cd ../ticket
+          npm install
           npm run format
