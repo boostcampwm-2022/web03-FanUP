@@ -13,11 +13,7 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
   @Inject(MICRO_SERVICES.AUTH.NAME)
   private readonly client: ClientTCP;
 
-  onModuleInit() {
-    throw new Error('Method not implemented.');
-  }
+  onModuleInit() {}
 
-  onModuleDestroy() {
-    throw new Error('Method not implemented.');
-  }
+  onModuleDestroy() {}
 }
