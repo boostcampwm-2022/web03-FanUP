@@ -1,4 +1,4 @@
-name: SERVER FORMAT
+name: SERVER-COVERAGE
 
 on:
   push:
@@ -9,9 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: "./server"
 
     strategy:
       matrix:
@@ -30,18 +27,23 @@ jobs:
         run: |
           cd gateway
           npm install
-          npm run format
+          npm run coveralls
 
       - name: services
         run: |
           cd ./services/api
           npm install
-          npm run format
+          npm run coveralls
 
           cd ../auth
           npm install
-          npm run format
+          npm run coveralls
 
           cd ../ticket
           npm install
-          npm run format
+          npm run coveralls
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
