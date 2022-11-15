@@ -12,6 +12,7 @@ on:
 
 jobs:
   build-image:
+    if: github.event.pull_request.merged == true
     name: Deploy MSA
     runs-on: ubuntu-latest
     defaults:
@@ -62,6 +63,7 @@ jobs:
 
   CD:
     needs: build-image
+    if: github.event.pull_request.merged == true
     name: Continuous-Deploy
     runs-on: ubuntu-latest
     steps:
