@@ -51,7 +51,7 @@ jobs:
           context: .
           file: ${{ matrix.dockerfile }}
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.args.DOCKER_META_IMAGES }}
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: executing remote ssh commands using password
