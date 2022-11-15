@@ -22,7 +22,8 @@
             "@organisms/*": ["src/components/UI/organisms/*"],
             "@images/*": ["src/images/*"],
             "@pages/*": ["src/pages/*"],
-            "@style/*": ["src/style/*"]
+            "@style/*": ["src/style/*"],
+            "@utils/*": ["src/utils/*"]
         }
     },
     "include": ["src"]
