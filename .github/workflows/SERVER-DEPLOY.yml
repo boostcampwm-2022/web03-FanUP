@@ -67,6 +67,5 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          timeout: 40s # 30초 기본
           script: |
             echo "테스트 출력"
