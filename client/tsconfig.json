@@ -18,9 +18,10 @@
         "baseUrl": ".",
         "paths": {
             "@/*": ["src/*"],
+            "@atoms/*": ["src/components/UI/atoms/*"],
+            "@images/*": ["src/images/*"],
             "@pages/*": ["src/pages/*"],
-            "@style/*": ["src/style/*"],
-            "@atoms/*": ["src/components/UI/atoms/*"]
+            "@style/*": ["src/style/*"]
         }
     },
     "include": ["src"]
