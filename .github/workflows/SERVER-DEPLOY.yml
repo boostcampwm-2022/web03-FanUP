@@ -18,13 +18,13 @@ jobs:
       matrix:
         include:
           - dockerfile: ./gateway/Dockerfile
-            image: jinsungguri/FanUP-gateway:latest
+            image: jinsungguri/FanUP-gateway
           - dockerfile: ./services/auth/Dockerfile
-            image: jinsungguri/FanUP-auth:latest
+            image: jinsungguri/FanUP-auth
           - dockerfile: ./services/api/Dockerfile
-            image: jinsungguri/FanUP-api:latest
+            image: jinsungguri/FanUP-api
           - dockerfile: ./services/ticket/Dockerfile
-            image: jinsungguri/FanUP-ticket:latest
+            image: jinsungguri/FanUP-ticket
 
     steps:
       - name: Checkout source code.
@@ -38,6 +38,10 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ matrix.image }}
+          labels: |
+            org.opencontainers.image.title=web03-FanUP
+            org.opencontainers.image.description=비대면 팬미팅 서비스 FanUP 입니다.
+            org.opencontainers.image.version=latest
           tags: |
             type=schedule,pattern=nightly,enable=true,priority=1000
             type=ref,event=branch,enable=true,priority=600
