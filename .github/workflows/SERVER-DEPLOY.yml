@@ -18,9 +18,9 @@ jobs:
       matrix:
         include:
           - dockerfile: ./gateway/Dockerfile
-            image: ${{ secrets.DOCKER_USERNAME }}/FanUP-gateway:latest
+            image: "${{ secrets.DOCKER_USERNAME }}/FanUP-gateway:latest"
           - dockerfile: ./services/auth/Dockerfile
-            image: ${{ secrets.DOCKER_USERNAME }}/FanUP-auth:latest
+            image: "${{ secrets.DOCKER_USERNAME }}/FanUP-auth:latest"
           - dockerfile: ./services/api/Dockerfile
             image: ${{ secrets.DOCKER_USERNAME }}/FanUP-api:latest
           - dockerfile: ./services/ticket/Dockerfile
