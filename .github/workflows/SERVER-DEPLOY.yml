@@ -38,8 +38,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ matrix.image }}
-          tags: type=schedule,pattern=nightly,enable=true,priority=1000
-            type=ref,event=branch,enable=false,priority=600
+          tags: |
+            type=schedule,pattern=nightly,enable=true,priority=1000
             type=ref,event=tag,enable=true,priority=600
             type=ref,event=pr,prefix=pr-,enable=true,priority=600
 
