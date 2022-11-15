@@ -67,4 +67,4 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          script: "docker-compose pull && docker-compose up -d"
+          script: ls
