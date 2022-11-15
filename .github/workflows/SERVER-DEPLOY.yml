@@ -64,6 +64,7 @@ jobs:
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
-          host: 223.130.130.77
-          username: fanup
-          password: fanup-password
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT }}
