@@ -2,12 +2,8 @@ name: SERVER-DEPLOY
 
 on:
   push:
-    paths:
-      - "./server/**"
     branches: [Feat/#13-deploy]
   pull_request:
-    paths:
-      - "./server/**"
     branches: [Feat/#13-deploy]
 
 jobs:
