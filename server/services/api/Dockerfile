@@ -1,7 +1,6 @@
 FROM node:18-alpine
 WORKDIR /usr/src/server/services/api
-COPY package*.json ./
+COPY ./server/services/api .
 RUN npm install
-COPY . .
 RUN npm run build
 CMD ["node", "dist/main"]
