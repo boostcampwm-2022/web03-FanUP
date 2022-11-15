@@ -70,3 +70,4 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             echo "테스트 출력"
+            echo "제발"
