@@ -5,8 +5,8 @@ import { socialLogin } from '@/utils/OAuth';
 import Button from '@atoms/Button';
 
 const StyledOAuthContainer = styled.div`
-    width: 490px;
-    height: 360px;
+    width: 520px;
+    height: 390px;
     background-color: ${({ theme }) => theme.LIGHT_GRAY};
     border-radius: 15px;
     display: flex;
@@ -22,30 +22,30 @@ const OAuthContainer: FC = () => {
             <Button
                 onClick={() => socialLogin('naver')}
                 text="네이버 로그인"
-                width="425px"
-                height="60px"
+                width="440px"
+                height="64px"
                 backgroundColor="#0eb817"
                 color="white"
             ></Button>
             <Button
                 onClick={() => socialLogin('google')}
                 text="Google 로그인"
-                width="425px"
-                height="60px"
+                width="440px"
+                height="64px"
                 backgroundColor="#FFFFFF"
             ></Button>
             <Button
                 onClick={() => socialLogin('kakao')}
                 text="Kakao 로그인"
-                width="425px"
-                height="60px"
+                width="440px"
+                height="64px"
                 backgroundColor="#F7E600"
             ></Button>
             <Button
                 onClick={() => socialLogin('facebook')}
                 text="Facebook 로그인"
-                width="425px"
-                height="60px"
+                width="440px"
+                height="64px"
                 backgroundColor="#445DD0"
                 color="white"
             ></Button>
