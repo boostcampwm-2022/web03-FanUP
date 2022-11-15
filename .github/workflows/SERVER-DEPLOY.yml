@@ -61,6 +61,7 @@ jobs:
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
+          key: ${{ secrets.SERVER_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          run: |
+          script: |
+            docker-compose pull && docker-compose up -d
