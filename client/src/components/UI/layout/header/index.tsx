@@ -73,7 +73,7 @@ const Header = () => {
                 <div>
                     <button onClick={gotoPage('/')}>홈</button>
                     {isArtist ? (
-                        <button onClick={gotoPage('/schedule')}>스케줄</button>
+                        <button onClick={gotoPage('/schedule')}>스케쥴</button>
                     ) : (
                         <button onClick={gotoPage('/ticketing')}>티켓팅</button>
                     )}
@@ -81,7 +81,7 @@ const Header = () => {
             </HeaderLeft>
             <HeaderRight>
                 {icons.map(({ key, icon, onClick }) => (
-                    <button key={key} onClick={onClick}>
+                    <button data-testid={key} key={key} onClick={onClick}>
                         {icon}
                     </button>
                 ))}

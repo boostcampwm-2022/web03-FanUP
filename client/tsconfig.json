@@ -22,5 +22,5 @@
             "@atoms/*": ["src/components/UI/atoms/*"]
         }
     },
-    "include": ["src"]
+    "include": ["src", "src/jest.config.js"]
 }
