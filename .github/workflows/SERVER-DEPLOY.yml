@@ -56,6 +56,13 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Test
+        run: |
+          echo ${{ secrets.SERVER_HOST }}
+          echo ${{ secrets.SERVER_USERNAME }}
+          echo ${{ secrets.SERVER_PASSWORD }}
+          echo ${{ secrets.SERVER_PORT }}
+
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
