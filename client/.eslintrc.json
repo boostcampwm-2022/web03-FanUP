@@ -22,7 +22,8 @@
             "alias": {
                 "map": [
                     ["@", "./src"],
-                    ["@style", "./style"],
+                    ["@pages", "./src/pages"],
+                    ["@style", "./src/style"],
                     ["@atoms", "./src/components/UI/atoms"]
                 ]
             }

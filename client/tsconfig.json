@@ -18,7 +18,8 @@
         "baseUrl": ".",
         "paths": {
             "@/*": ["src/*"],
-            "@style/*": ["src/style*"],
+            "@pages/*": ["src/pages/*"],
+            "@style/*": ["src/style/*"],
             "@atoms/*": ["src/components/UI/atoms/*"]
         }
     },
