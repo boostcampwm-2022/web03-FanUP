@@ -60,11 +60,13 @@ jobs:
     name: Continuous-Deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
       - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
+          timeout: 40s # 30초 기본
+          script: |
+            echo "테스트 출력"
