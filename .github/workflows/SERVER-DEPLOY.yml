@@ -18,13 +18,13 @@ jobs:
       matrix:
         include:
           - dockerfile: ./gateway/Dockerfile
-            image: "${{ secrets.DOCKER_USERNAME }}/FanUP-gateway:latest"
+            image: jinsungguri/FanUP-gateway:latest
           - dockerfile: ./services/auth/Dockerfile
-            image: "${{ secrets.DOCKER_USERNAME }}/FanUP-auth:latest"
+            image: jinsungguri/FanUP-auth:latest
           - dockerfile: ./services/api/Dockerfile
-            image: ${{ secrets.DOCKER_USERNAME }}/FanUP-api:latest
+            image: jinsungguri/FanUP-api:latest
           - dockerfile: ./services/ticket/Dockerfile
-            image: ${{ secrets.DOCKER_USERNAME }}/FanUP-ticket:latest
+            image: jinsungguri/FanUP-ticket:latest
 
     steps:
       - name: Checkout source code.
