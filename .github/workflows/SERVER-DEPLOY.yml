@@ -64,4 +64,5 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
+            cd server
             docker-compose pull && docker-compose up -d
