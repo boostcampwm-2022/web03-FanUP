@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  gateway:
+    restart: always
+    build:
+      context: ./gateway
+      dockerfile: ./Dockerfile
+    ports:
+      - '3000:3000'
+    networks:
+      - backend
+
+  auth:
+    restart: always
+    build:
+      context: ./services/auth
+      dockerfile: ./Dockerfile
+    ports:
+      - '3001:3001'
+    networks:
+      - backend
+
+  api:
+    restart: always
+    build:
+      context: ./services/api
+      dockerfile: ./Dockerfile
+    ports:
+      - '3002:3002'
+
+  ticket:
+    restart: always
+    build:
+      context: ./services/ticket
+      dockerfile: ./Dockerfile
+    ports:
+      - '3003:3003'
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
