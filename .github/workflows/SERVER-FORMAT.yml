@@ -38,18 +38,18 @@ jobs:
         run: |
           cd gateway
           npm install
-          npm run format
+          npm run format --if-present
 
       - name: services
         run: |
           cd ./services/api
           npm install
-          npm run format
+          npm run format --if-present
 
           cd ../auth
           npm install
-          npm run format
+          npm run format --if-present
 
           cd ../ticket
           npm install
-          npm run format
+          npm run format --if-present
