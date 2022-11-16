@@ -17,38 +17,26 @@ const StyledOAuthContainer = styled.div`
 `;
 
 const OAuthContainer: FC = () => {
+    const OAuthCategory = {
+        NAVER: { backgroundColor: '#0eb817', color: '#FFFFFF' },
+        Google: { backgroundColor: '#FFFFFF', color: '#000000' },
+        Kakao: { backgroundColor: '#F7E600', color: '#FFFFFF' },
+        Facebook: { backgroundColor: '#445DD0', color: '#FFFFFF' },
+    };
+
     return (
         <StyledOAuthContainer>
-            <Button
-                onClick={() => socialLogin('naver')}
-                text="네이버 로그인"
-                width="440px"
-                height="64px"
-                backgroundColor="#0eb817"
-                color="white"
-            ></Button>
-            <Button
-                onClick={() => socialLogin('google')}
-                text="Google 로그인"
-                width="440px"
-                height="64px"
-                backgroundColor="#FFFFFF"
-            ></Button>
-            <Button
-                onClick={() => socialLogin('kakao')}
-                text="Kakao 로그인"
-                width="440px"
-                height="64px"
-                backgroundColor="#F7E600"
-            ></Button>
-            <Button
-                onClick={() => socialLogin('facebook')}
-                text="Facebook 로그인"
-                width="440px"
-                height="64px"
-                backgroundColor="#445DD0"
-                color="white"
-            ></Button>
+            {Object.entries(OAuthCategory).map(([key, value]) => (
+                <Button
+                    key={key}
+                    onClick={() => socialLogin(key)}
+                    text={key + '로그인'}
+                    width="440px"
+                    height="64px"
+                    backgroundColor={value.backgroundColor}
+                    color={value.color}
+                ></Button>
+            ))}
         </StyledOAuthContainer>
     );
 };

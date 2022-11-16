@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 
 import theme from '@style/theme';
 import GlobalStyle from '@style/GlobalStyle';
-// import Login from '@pages/Login';
+import Login from '@pages/Login';
 import { FanUP, Home } from './Routes';
 
 function App() {
@@ -12,6 +12,7 @@ function App() {
         <ThemeProvider theme={theme}>
             <GlobalStyle />
             <Routes>
+                <Route path="/login" element={<Login />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/FanUP/:fanUpId" element={<FanUP />} />
             </Routes>
