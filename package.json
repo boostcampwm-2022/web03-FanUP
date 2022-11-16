@@ -22,6 +22,9 @@
       "json",
       "ts"
     ],
+    "moduleDirectories": [
+      "node_modules"
+    ],
     "rootDir": ".",
     "testRegex": [
       ".spec.ts$",
