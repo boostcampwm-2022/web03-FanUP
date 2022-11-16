@@ -1,0 +1,79 @@
+name: SERVER-DEPLOY
+
+on:
+  push:
+    paths:
+      - "./server/**"
+    branches: [main, dev]
+  pull_request:
+    paths:
+      - "./server/**"
+    branches: [main, dev]
+
+defaults:
+  run:
+    working-directory: "./server"
+
+jobs:
+  build-image:
+    if: github.event.pull_request.merged == true
+    name: Deploy MSA
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dockerfile: ./server/gateway/Dockerfile
+            image: jinsungguri/FanUP-gateway
+          - dockerfile: ./server/services/auth/Dockerfile
+            image: jinsungguri/FanUP-auth
+          - dockerfile: ./server/services/api/Dockerfile
+            image: jinsungguri/FanUP-api
+          - dockerfile: ./server/services/ticket/Dockerfile
+            image: jinsungguri/FanUP-ticket
+
+    steps:
+      - name: Checkout source code.
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ matrix.image }}
+          tags: |
+            type=raw,value=latest
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  CD:
+    needs: build-image
+    name: Continuous-Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            "docker-compose pull && docker-compose up -d"
