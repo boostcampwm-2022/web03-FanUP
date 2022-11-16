@@ -38,7 +38,6 @@ export class AppService {
   }
 
   async googleLogin(accessCode: string): Promise<any> {
-    console.log(accessCode);
     const { data } = await firstValueFrom(
       this.httpService
         .get('https://www.googleapis.com/oauth2/v3/tokeninfo', {
