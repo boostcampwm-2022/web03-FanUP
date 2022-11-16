@@ -19,6 +19,7 @@
         "react-app-rewired": "^2.2.1",
         "react-dom": "^18.2.0",
         "react-redux": "^8.0.5",
+        "react-router-dom": "^6.4.3",
         "react-scripts": "5.0.1",
         "styled-components": "^5.3.6",
         "styled-reset": "^4.4.2",
@@ -58,6 +59,12 @@
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
         "eslint-plugin-react": "^7.31.10",
-        "prettier": "^2.7.1"
+        "prettier": "^2.7.1",
+        "ts-jest": "^29.0.3"
+    },
+    "jest": {
+        "moduleNameMapper": {
+            "^@/(.*)$": "<rootDir>/src/$1"
+        }
     }
 }
