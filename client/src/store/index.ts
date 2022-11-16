@@ -6,7 +6,9 @@ import reducer from './rootReducer';
 const store = configureStore({
     reducer,
     middleware: (getDefaultMiddleWare) =>
-        getDefaultMiddleWare().concat(artistApi.middleware).concat(userApi.middleware),
+        getDefaultMiddleWare({ serializableCheck: false })
+            .concat(artistApi.middleware)
+            .concat(userApi.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;

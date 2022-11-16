@@ -3,8 +3,17 @@ import MuteOffIcon from '@/components/icons/muteOff';
 import MuteOnIcon from '@/components/icons/muteOn';
 import theme from '@/style/theme';
 import { useToggle } from '@/hooks/useToggle';
+import { useSelector } from 'react-redux';
+import { ReducerType } from '@/store/rootReducer';
+import { FanUpStore } from '@/types/fanUp';
 const MuteBtn = () => {
-    const [mute, _, onClickMute] = useToggle(false);
+    const { myStream } = useSelector<ReducerType, FanUpStore>((state) => state.fanUpSlice);
+    const [mute, _, toggleMute] = useToggle(false);
+
+    const onClickMute = useCallback(() => {
+        toggleMute();
+        myStream?.getAudioTracks().forEach((track) => (track.enabled = !track.enabled));
+    }, [myStream]);
 
     return (
         <button
