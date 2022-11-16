@@ -10,14 +10,15 @@ on:
       - "./server/**"
     branches: [main, dev]
 
+defaults:
+  run:
+    working-directory: "./server"
+
 jobs:
   build-image:
     if: github.event.pull_request.merged == true
     name: Deploy MSA
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: "./server"
     strategy:
       fail-fast: false
       matrix:
@@ -63,7 +64,6 @@ jobs:
 
   CD:
     needs: build-image
-    if: github.event.pull_request.merged == true
     name: Continuous-Deploy
     runs-on: ubuntu-latest
     steps:
