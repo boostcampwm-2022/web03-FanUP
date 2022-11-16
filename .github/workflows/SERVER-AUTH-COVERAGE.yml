@@ -1,12 +1,6 @@
 name: SERVER-AUTH-COVERAGE
 
 on:
-  push:
-    paths:
-      - "server/services/auth/**/*"
-    branches:
-      - main
-      - dev
   pull_request:
     paths:
       - "server/services/auth/**/*"
@@ -44,4 +38,5 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          base-path: ./server/services/auth
           path-to-lcov: ./server/services/auth/coverage/lcov.info
