@@ -1,9 +1,9 @@
-name: SERVER-AUTH-COVERAGE
+name: TEST-COVERAGE
 
 on:
   pull_request:
     paths:
-      - "server/services/auth/**/*"
+      - "server/**"
     branches:
       - main
       - dev
@@ -11,9 +11,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: "./server/services"
 
     strategy:
       matrix:
@@ -30,13 +27,10 @@ jobs:
 
       - name: services
         run: |
-          cd ./auth
-          npm install
           npm run coveralls
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          base-path: ./server/services/auth
-          path-to-lcov: ./server/services/auth/coverage/lcov.info
+          path-to-lcov: ./coverage/lcov.info
