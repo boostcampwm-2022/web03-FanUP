@@ -18,8 +18,8 @@ export interface LoginResponse {
 @Injectable()
 export class AppService {
   constructor(
-    private readonly jwtService: JwtService,
     private readonly httpService: HttpService,
+    private readonly jwtService: JwtService,
   ) {}
 
   getHello(): string {
