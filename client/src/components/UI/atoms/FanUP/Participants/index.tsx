@@ -32,10 +32,10 @@ const ParticipantsWrapper = styled.div`
     }
 `;
 
-const OpenMore = styled.button`
+const NotOpenMore = styled.button`
     background: none;
 `;
-const NotOpenMore = styled.button`
+const OpenMore = styled.button`
     background: black;
     border: 2px solid black !important;
 `;
@@ -60,13 +60,13 @@ const Participants = ({ nickname, isMute, isCameraOn }: Props) => {
                 {isMute ? <MuteOnIcon fill="#FF6666" /> : <MuteOffIcon fill={'black'} />}
                 {isCameraOn ? <CameraOnIcon fill="black" /> : <CameraOffIcon fill="#FF6666" />}
                 {openMore ? (
-                    <NotOpenMore onClick={clickMore}>
+                    <OpenMore data-testid="openMore" onClick={clickMore}>
                         <MoreIcon fill="white" />
-                    </NotOpenMore>
-                ) : (
-                    <OpenMore onClick={clickMore}>
-                        <MoreIcon fill="black" />
                     </OpenMore>
+                ) : (
+                    <NotOpenMore data-testid="notOpenMore" onClick={clickMore}>
+                        <MoreIcon fill="black" />
+                    </NotOpenMore>
                 )}
             </div>
         </ParticipantsWrapper>

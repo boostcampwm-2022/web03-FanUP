@@ -8,7 +8,7 @@ const ExitBtnWrapper = styled.button`
 
 const ExitBtn = () => {
     return (
-        <ExitBtnWrapper>
+        <ExitBtnWrapper data-testid="exitBtn">
             <ExitIcon />
         </ExitBtnWrapper>
     );

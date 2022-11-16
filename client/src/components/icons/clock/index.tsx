@@ -3,6 +3,7 @@ import React from 'react';
 const ClockIcon = () => {
     return (
         <svg
+            data-testid="clockIcon"
             width="26"
             height="29"
             viewBox="0 0 26 29"

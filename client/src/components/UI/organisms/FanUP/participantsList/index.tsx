@@ -8,7 +8,7 @@ const ParticipantsListWrapper = styled.div`
     gap: 10px;
 `;
 
-const dummyParticipantsList = [
+export const dummyParticipantsList = [
     { nickname: '안병준', isMute: false, isCameraOn: true },
     { nickname: '김성은', isMute: true, isCameraOn: false },
     { nickname: '김진성', isMute: true, isCameraOn: true },
@@ -17,7 +17,7 @@ const dummyParticipantsList = [
 
 const ParticipantsList = () => {
     return (
-        <ParticipantsListWrapper>
+        <ParticipantsListWrapper data-testid="participantsList">
             {dummyParticipantsList.map(({ nickname, isMute, isCameraOn }) => (
                 <Participants
                     key={nickname}

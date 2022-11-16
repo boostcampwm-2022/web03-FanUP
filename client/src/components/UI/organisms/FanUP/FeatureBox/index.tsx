@@ -4,9 +4,9 @@ import { FanUpStore } from '@/types/fanUp';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import ChatBox from './chatBox';
-import ParticipantsList from './participantsList';
-import RoomList from './RoomList';
+import ChatBox from '../chatBox';
+import ParticipantsList from '../participantsList';
+import RoomList from '../RoomList';
 
 const FeatureBoxWrapper = styled.div`
     background: #ffffff;

@@ -3,6 +3,7 @@ import React from 'react';
 const MuteOffIcon = ({ fill }: { fill: string }) => {
     return (
         <svg
+            data-testid="muteOffIcon"
             width="22"
             height="22"
             viewBox="0 0 24 28"

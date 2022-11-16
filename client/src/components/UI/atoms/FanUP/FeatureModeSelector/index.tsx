@@ -65,6 +65,7 @@ const FeatureModeSelector = () => {
         <FeatureModeSelectorWrapper>
             {modes.map(({ icon, alt, mode, isCurrentMode }) => (
                 <button
+                    data-testid={alt}
                     style={{ borderBottom: isCurrentMode ? '1px solid #ababab' : '' }}
                     onClick={clickMode(mode)}
                     key={alt}

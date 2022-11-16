@@ -3,6 +3,7 @@ import React from 'react';
 const ChatIcon = () => {
     return (
         <svg
+            data-testid="chatIcon"
             width="22"
             height="22"
             viewBox="0 0 22 22"

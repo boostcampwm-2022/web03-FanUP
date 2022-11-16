@@ -10,11 +10,11 @@ const RoomListWrapper = styled.div`
     gap: 8px;
 `;
 
-const dummyRooms = ['13:00', '13:10', '13:20', '13:30', '13:40', '13:50'];
+export const dummyRooms = ['13:00', '13:10', '13:20', '13:30', '13:40', '13:50'];
 
 const RoomList = () => {
     return (
-        <RoomListWrapper>
+        <RoomListWrapper data-testid="roomList">
             {dummyRooms.map((room) => (
                 <RoomBtn key={room} roomName={room} />
             ))}

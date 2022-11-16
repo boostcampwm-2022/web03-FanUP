@@ -3,6 +3,7 @@ import React from 'react';
 const CameraOffIcon = ({ fill }: { fill: string }) => {
     return (
         <svg
+            data-testid="cameraOffIcon"
             width="25"
             height="19"
             viewBox="0 0 29 24"

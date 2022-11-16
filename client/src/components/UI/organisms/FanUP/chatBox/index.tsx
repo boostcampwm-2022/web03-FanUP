@@ -43,7 +43,7 @@ const ChatsWrapper = styled.div`
 const ChatBox = () => {
     const [chats, setChats] = useState(dummyChats);
     return (
-        <ChatBoxWrapper>
+        <ChatBoxWrapper data-testid="chatBox">
             <ChatsWrapper>
                 {chats.map(({ nickname, isArtist, content }, idx) => (
                     <Chat
