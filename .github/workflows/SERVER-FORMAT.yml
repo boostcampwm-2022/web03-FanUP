@@ -3,12 +3,16 @@ name: SERVER-FORMAT
 on:
   push:
     paths:
-      - server
-    branches: [main, dev]
+      - "server/**"
+    branches:
+      - main
+      - dev
   pull_request:
     paths:
-      - server
-    branches: [main, dev]
+      - "server/**"
+    branches:
+      - main
+      - dev
 
 jobs:
   build:
