@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  gateway:
+    image: jinsungguri/fanup-gateway:latest
+    ports:
+      - '3000:3000'
+    networks:
+      - backend
+
+  auth:
+    image: jinsungguri/fanup-auth:latest
+    ports:
+      - '3001:3001'
+    networks:
+      - backend
+
+  api:
+    image: jinsungguri/fanup-api:latest
+    ports:
+      - '3002:3002'
+
+  ticket:
+    image: jinsungguri/fanup-ticket:latest
+    ports:
+      - '3003:3003'
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

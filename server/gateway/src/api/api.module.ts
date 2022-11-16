@@ -11,7 +11,6 @@ import { ApiController } from './api.controller';
         name: MICRO_SERVICES.API.NAME,
         transport: Transport.TCP,
         options: {
-          host: MICRO_SERVICES.API.HOST,
           port: MICRO_SERVICES.API.PORT,
         },
       },
