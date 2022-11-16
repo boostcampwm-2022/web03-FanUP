@@ -3,12 +3,16 @@ name: SERVER-TICKET-COVERAGE
 on:
   push:
     paths:
-      - "./server/services/ticket/**"
-    branches: [main, dev]
+      - "server/services/ticket/**/*"
+    branches:
+      - main
+      - dev
   pull_request:
     paths:
-      - "./server/services/ticket/**"
-    branches: [main, dev]
+      - "server/services/ticket/**/*"
+    branches:
+      - main
+      - dev
 
 jobs:
   build:

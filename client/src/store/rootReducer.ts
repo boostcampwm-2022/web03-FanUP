@@ -3,10 +3,12 @@ import { userApi } from '@/services/user';
 import { combineReducers } from '@reduxjs/toolkit';
 import artistSlice from './artist';
 import userSlice from './user';
+import fanUpSlice from './fanUp';
 
 const reducer = combineReducers({
     artistSlice,
     userSlice,
+    fanUpSlice,
     [artistApi.reducerPath]: artistApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
 });

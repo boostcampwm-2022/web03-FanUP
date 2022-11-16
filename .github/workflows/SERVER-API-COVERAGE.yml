@@ -3,12 +3,16 @@ name: SERVER-API-COVERAGE
 on:
   push:
     paths:
-      - "./server/services/api/**"
-    branches: [main, dev]
+      - "server/services/api/**/*"
+    branches:
+      - main
+      - dev
   pull_request:
     paths:
-      - "./server/services/api/**"
-    branches: [main, dev]
+      - "server/services/api/**/*"
+    branches:
+      - main
+      - dev
 
 jobs:
   build:

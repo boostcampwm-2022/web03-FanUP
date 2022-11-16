@@ -6,6 +6,7 @@ const theme: DefaultTheme = {
     SECONDARY: '#FCEDBD',
     DARK_GRAY: '#929292',
     LIGHT_GRAY: '#F5F5F5',
+    PINK: '#FF6666',
 };
 
 export default theme;
