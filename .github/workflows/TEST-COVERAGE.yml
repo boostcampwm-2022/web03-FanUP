@@ -27,6 +27,7 @@ jobs:
 
       - name: services
         run: |
+          npm install
           npm run coveralls
 
       - name: Coveralls
