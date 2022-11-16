@@ -1,4 +1,3 @@
-import { ArtistStore } from '@/types/artist';
 import { UserStore } from '@/types/user';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
