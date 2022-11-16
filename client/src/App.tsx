@@ -4,8 +4,7 @@ import { ThemeProvider } from 'styled-components';
 
 import theme from '@style/theme';
 import GlobalStyle from '@style/GlobalStyle';
-import Login from '@pages/Login';
-import { FanUP, Home } from './Routes';
+import { FanUP, Home, Login } from './Routes';
 
 function App() {
     return (

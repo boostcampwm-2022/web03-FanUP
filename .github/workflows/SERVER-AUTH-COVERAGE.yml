@@ -3,12 +3,16 @@ name: SERVER-AUTH-COVERAGE
 on:
   push:
     paths:
-      - "./server/services/auth/**"
-    branches: [main, dev]
+      - "server/services/auth/**/*"
+    branches:
+      - main
+      - dev
   pull_request:
     paths:
-      - "./server/services/auth/**"
-    branches: [main, dev]
+      - "server/services/auth/**/*"
+    branches:
+      - main
+      - dev
 
 jobs:
   build:

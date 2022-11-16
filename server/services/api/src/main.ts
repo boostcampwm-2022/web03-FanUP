@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { SocketIoAdapter } from './adapter/socket-io.adapter';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -12,6 +13,10 @@ async function bootstrap() {
       },
     },
   );
+
+  // Socket.io 설정
+  app.useWebSocketAdapter(new SocketIoAdapter(app));
+
   await app.listen();
 }
 bootstrap();
