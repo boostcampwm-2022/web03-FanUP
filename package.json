@@ -11,16 +11,24 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.20.2",
+    "@babel/preset-env": "^7.20.2",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.2.3",
+    "babel-jest": "^28.0.0",
     "coveralls": "^3.1.1",
     "jest": "28.1.3",
-    "ts-jest": "28.0.8"
+    "jest-environment-jsdom": "^29.3.1",
+    "ts-jest": "^28.0.8"
   },
   "jest": {
     "moduleFileExtensions": [
       "js",
       "json",
-      "ts"
+      "ts",
+      "tsx"
     ],
     "moduleDirectories": [
       "node_modules"
@@ -28,23 +36,55 @@
     "rootDir": ".",
     "testRegex": [
       ".spec.ts$",
-      ".e2e-spec.ts$"
+      ".e2e-spec.ts$",
+      ".test.tsx",
+      ".test.ts"
     ],
     "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
+      "^.+\\.(ts|tsx)$": "ts-jest",
+      "^.+\\.(js|jsx)$": "babel-jest"
     },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
+    "transformIgnorePatterns": [
+      "client/node_modules/"
     ],
+    "collectCoverageFrom": [
+      "**/*.(ts|tsx)",
+      "**/*.(js|jsx)"
+    ],
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-dom"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/client/src/$1"
+    },
     "coverageDirectory": "./coverage",
-    "testEnvironment": "node",
+    "testEnvironment": "jsdom",
     "coveragePathIgnorePatterns": [
-      "client",
+      "babel.config.js",
+      "client/config-overrides.js",
+      "client/public",
+      "client/src/components/icons",
+      "client/src/hooks",
+      "client/src/store",
+      "client/src/images",
+      "client/src/mocks",
+      "client/src/services",
+      "client/src/style",
+      "client/src/types",
+      "client/src/utils",
+      "client/src/react-app-env.d.ts",
+      "client/src/reportWebVitals.ts",
+      "client/src/Routes.ts",
+      "client/src/setupTests.ts",
+      "client/src/components/UI/organisms/OAuthContainer/OAuthContainer.tsx",
       "coverage",
       "server/gateway/dist",
       "server/services/api/dist",
       "server/services/auth/dist",
       "server/services/ticket/dist"
     ]
+  },
+  "dependencies": {
+    "whatwg-fetch": "^3.6.2"
   }
 }

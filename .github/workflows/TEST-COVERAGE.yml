@@ -27,6 +27,9 @@ jobs:
 
       - name: Set up Node_modules
         run: |
+          cd ./client
+          npm install
+          cd ..
           cd ./server/gateway
           npm install
           cd ../services/api
@@ -37,6 +40,7 @@ jobs:
           npm install
 
       - name: Run Test Coverage
+        continue-on-error: true
         run: |
           npm install
           npm run coveralls
