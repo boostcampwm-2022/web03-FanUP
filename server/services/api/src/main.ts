@@ -15,10 +15,9 @@ async function bootstrap() {
   );
 
   // Socket.io 설정
-  app.useWebSocketAdapter(new SocketIoAdapter(app));
+  // app.useWebSocketAdapter(new SocketIoAdapter(app));
 
   await app.listen();
-
-  console.log('test');
+  console.log('API service is running');
 }
 bootstrap();
