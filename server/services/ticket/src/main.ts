@@ -13,5 +13,6 @@ async function bootstrap() {
     },
   );
   await app.listen();
+  console.log('Ticket service is running');
 }
 bootstrap();

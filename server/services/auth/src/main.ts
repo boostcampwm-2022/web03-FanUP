@@ -14,6 +14,6 @@ async function bootstrap() {
     },
   );
   await app.listen();
-  console.log('Authservice is running');
+  console.log('Auth service is running');
 }
 bootstrap();
