@@ -63,6 +63,7 @@
       "babel.config.js",
       "client/config-overrides.js",
       "client/public",
+      "client/src/App.tsx",
       "client/src/components/icons",
       "client/src/hooks",
       "client/src/store",
@@ -77,12 +78,14 @@
       "client/src/Routes.ts",
       "client/src/setupTests.ts",
       "client/src/components/UI/organisms/OAuthContainer/OAuthContainer.tsx",
+      "client/src/pages/Login/index.tsx",
       "coverage",
       "server/gateway/dist",
       "server/services/api/dist",
       "server/services/auth/dist",
       "server/services/ticket/dist"
-    ]
+    ],
+    "bail": 3
   },
   "dependencies": {
     "whatwg-fetch": "^3.6.2"
