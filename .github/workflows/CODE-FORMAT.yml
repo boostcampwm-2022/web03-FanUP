@@ -1,4 +1,4 @@
-name: SERVER-FORMAT
+name: CODE-FORMAT
 
 on:
   push:
