@@ -1,15 +1,11 @@
-name: SERVER-TICKET-COVERAGE
+name: CODE-FORMAT
 
 on:
   push:
-    paths:
-      - "server/services/ticket/**/*"
     branches:
       - main
       - dev
   pull_request:
-    paths:
-      - "server/services/ticket/**/*"
     branches:
       - main
       - dev
@@ -17,9 +13,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: "./server/services"
 
     strategy:
       matrix:
@@ -34,14 +27,27 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: client
+        run: |
+          cd client
+          npm run format
+
+      - name: gateway
+        run: |
+          cd server/gateway
+          npm install
+          npm run format --if-present
+
       - name: services
         run: |
-          cd ./ticket
+          cd server/services/api
           npm install
-          npm run coveralls
+          npm run format --if-present
 
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: ./server/services/ticket/coverage/lcov.info
+          cd ../auth
+          npm install
+          npm run format --if-present
+
+          cd ../ticket
+          npm install
+          npm run format --if-present
