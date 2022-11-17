@@ -13,7 +13,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get()
-  getHello() {
+  getAuthHello() {
     return this.authService.getAuthHello();
   }
 }
