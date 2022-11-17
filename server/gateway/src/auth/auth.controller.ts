@@ -1,19 +1,19 @@
 import {
+  Body,
   Controller,
+  Get,
   Inject,
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
-import { ClientTCP } from '@nestjs/microservices';
-
-import { MICRO_SERVICES } from '../constants/microservices';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
-export class AuthController implements OnModuleInit, OnModuleDestroy {
-  @Inject(MICRO_SERVICES.AUTH.NAME)
-  private readonly client: ClientTCP;
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
 
-  onModuleInit() {}
-
-  onModuleDestroy() {}
+  @Get()
+  getHello() {
+    return this.authService.getAuthHello();
+  }
 }
