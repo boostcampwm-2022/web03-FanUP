@@ -1,20 +1,31 @@
-import { ArtistStore } from '@/types/artist';
 import { UserStore } from '@/types/user';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: UserStore = {
-    name: '',
+    id: null,
+    nickName: null,
+    accessToken: null,
+    expiredDate: null,
 };
 
 export const userSlice = createSlice({
-    name: 'artist',
+    name: 'user',
     initialState,
     reducers: {
-        testAction(state, action: PayloadAction<{ name: string }>) {
-            state.name = action.payload.name;
+        testAction(state, action: PayloadAction<{ id: string }>) {
+            const { id } = action.payload;
+            state.id = id;
+        },
+        login(state, action: PayloadAction<{ id: string }>) {
+            const { id } = action.payload;
+            state.id = id;
+        },
+        logout(state, action: PayloadAction<{ id: string }>) {
+            const { id } = action.payload;
+            state.id = id;
         },
     },
 });
 
-export const { testAction } = userSlice.actions;
+export const { testAction, login, logout } = userSlice.actions;
 export default userSlice.reducer;
