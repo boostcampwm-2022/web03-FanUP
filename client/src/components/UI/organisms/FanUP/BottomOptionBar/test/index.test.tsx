@@ -1,5 +1,6 @@
 import { renderWithContext } from '@/utils/test/renderWithContext';
 import { screen } from '@testing-library/react';
+import { useRef } from 'react';
 import * as ReactRouter from 'react-router';
 import BottomOptionBar from '..';
 

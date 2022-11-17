@@ -30,12 +30,17 @@ const BottomOptionBarWrapper = styled.div`
         cursor: pointer;
     }
 `;
+interface Props {
+    peerConnections?: React.MutableRefObject<{
+        [key: string]: RTCPeerConnection;
+    }>;
+}
 
-const BottomOptionBar = () => {
+const BottomOptionBar = ({ peerConnections }: Props) => {
     return (
         <BottomOptionBarWrapper>
             <div>
-                <MuteBtn />
+                <MuteBtn peerConnections={peerConnections} />
                 <CameraBtn />
             </div>
             <ExitBtn />

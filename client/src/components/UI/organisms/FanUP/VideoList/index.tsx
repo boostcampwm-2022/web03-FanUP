@@ -1,4 +1,5 @@
 import MyVideo from '@/components/UI/atoms/FanUP/MyVideo';
+import UserVideo from '@/components/UI/atoms/FanUP/UserVideo';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -6,8 +7,6 @@ const VideoListWrapper = styled.div`
     height: 100%;
     max-height: 75vh;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
     grid-gap: 15px;
     div {
         background: grey;
@@ -21,15 +20,28 @@ const VideoListWrapper = styled.div`
     }
 `;
 
-const VideoList = () => {
+interface Props {
+    userStream: any[];
+}
+
+const VideoList = ({ userStream }: Props) => {
     return (
-        <VideoListWrapper>
-            {[1, 2, 3, 4, 5].map((key) => (
-                <div key={key}></div>
+        <VideoListWrapper style={gridTemplate[String(userStream.length)]}>
+            {userStream.map((data, idx) => (
+                <UserVideo stream={data.stream} key={idx} />
             ))}
             <MyVideo />
         </VideoListWrapper>
     );
+};
+
+const gridTemplate: { [key: string]: { gridTemplateColumns: string; gridTemplateRows: string } } = {
+    '0': { gridTemplateColumns: 'repeat(1,1fr)', gridTemplateRows: 'repeat(1,100%)' },
+    '1': { gridTemplateColumns: 'repeat(2,1fr)', gridTemplateRows: 'repeat(1,100%)' },
+    '2': { gridTemplateColumns: 'repeat(3,1fr)', gridTemplateRows: 'repeat(1,100%)' },
+    '3': { gridTemplateColumns: 'repeat(2,1fr)', gridTemplateRows: 'repeat(2,50%)' },
+    '4': { gridTemplateColumns: 'repeat(3,1fr)', gridTemplateRows: 'repeat(2,50%)' },
+    '5': { gridTemplateColumns: 'repeat(3,1fr)', gridTemplateRows: 'repeat(2,50%)' },
 };
 
 export default VideoList;

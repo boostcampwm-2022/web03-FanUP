@@ -2,18 +2,18 @@ import { UserStore } from '@/types/user';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: UserStore = {
-    name: '',
+    myStream: null,
 };
 
 export const userSlice = createSlice({
     name: 'artist',
     initialState,
     reducers: {
-        testAction(state, action: PayloadAction<{ name: string }>) {
-            state.name = action.payload.name;
+        setMyStream(state, action: PayloadAction<MediaStream>) {
+            state.myStream = action.payload;
         },
     },
 });
 
-export const { testAction } = userSlice.actions;
+export const { setMyStream } = userSlice.actions;
 export default userSlice.reducer;

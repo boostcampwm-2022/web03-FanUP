@@ -5,14 +5,34 @@ import theme from '@/style/theme';
 import { useToggle } from '@/hooks/useToggle';
 import { useSelector } from 'react-redux';
 import { ReducerType } from '@/store/rootReducer';
-import { FanUpStore } from '@/types/fanUp';
-const MuteBtn = () => {
-    const { myStream } = useSelector<ReducerType, FanUpStore>((state) => state.fanUpSlice);
+import { UserStore } from '@/types/user';
+
+interface Props {
+    peerConnections?: React.MutableRefObject<{
+        [key: string]: RTCPeerConnection;
+    }>;
+}
+
+const MuteBtn = ({ peerConnections }: Props) => {
+    const { myStream } = useSelector<ReducerType, UserStore>((state) => state.userSlice);
     const [mute, _, toggleMute] = useToggle(false);
+
+    const replaceAudioTrack = () => {
+        if (!peerConnections) return;
+        const myAudioTrack = myStream?.getAudioTracks()[0];
+        Object.keys(peerConnections.current).forEach((key) => {
+            const peerConnection = peerConnections.current[key];
+            const audioSender = peerConnection.getSenders().find((sender) => {
+                return sender.track?.kind === 'audio';
+            });
+            audioSender?.replaceTrack(myAudioTrack as MediaStreamTrack);
+        });
+    };
 
     const onClickMute = useCallback(() => {
         toggleMute();
         myStream?.getAudioTracks().forEach((track) => (track.enabled = !track.enabled));
+        replaceAudioTrack();
     }, [myStream]);
 
     return (

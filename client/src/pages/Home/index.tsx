@@ -1,5 +1,5 @@
 import Header from '@/components/UI/layout/header';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 const BannerWrapper = styled.div`

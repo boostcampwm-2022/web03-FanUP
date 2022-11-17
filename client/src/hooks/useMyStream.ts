@@ -1,4 +1,4 @@
-import { setMyStream } from '@/store/fanUp';
+import { setMyStream } from '@/store/user';
 import { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
