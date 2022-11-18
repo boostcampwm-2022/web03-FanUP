@@ -2,7 +2,7 @@ import { io, Socket } from 'socket.io-client';
 
 const sockets: { [key: string]: Socket } = {};
 
-const backUrl = 'https://wet-boxes-listen-175-214-6-140.loca.lt';
+const backUrl = 'https://chubby-poets-hope-175-214-6-140.loca.lt';
 
 export function useSocket(chatRoom: string): [Socket, () => void] {
     const disconnect = () => {
