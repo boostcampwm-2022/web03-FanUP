@@ -80,9 +80,9 @@ export const useWebRTC = (): [
         setUsers((prev) => prev.filter((data) => data.socketID !== socketID));
     };
 
-    const unMount = () => {
-        console.log('unMount');
+    const unMount = (e: BeforeUnloadEvent) => {
         setUsers([]);
+        console.log(socket);
         socket.emit('leave_room', fanUpId);
         socket.off('welcome', welcomeCallback);
         socket.off('offer', offerCallback);
@@ -93,6 +93,11 @@ export const useWebRTC = (): [
             peerConnections.current[key].close();
         });
         peerConnections.current = {};
+        console.log('unMountInBeforeUnLoad');
+        console.log(fanUpId);
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        e.returnValue = '';
     };
 
     useEffect(() => {
@@ -106,16 +111,29 @@ export const useWebRTC = (): [
         socket.on('ice', iceCallback);
         socket.on('leave', leaveCallback);
         return () => {
-            unMount();
+            console.log(socket);
+            console.log('unMountInUseEffect');
+            console.log(fanUpId);
+            setUsers([]);
+            socket.emit('leave_room', fanUpId);
+            socket.off('welcome', welcomeCallback);
+            socket.off('offer', offerCallback);
+            socket.off('answer', answerCallback);
+            socket.off('ice', iceCallback);
+            socket.off('leave', leaveCallback);
+            Object.keys(peerConnections.current).forEach((key) => {
+                peerConnections.current[key].close();
+            });
+            peerConnections.current = {};
         };
     }, [myStream]);
 
     useEffect(() => {
         window.addEventListener('beforeunload', unMount);
         return () => {
-            window.removeEventListener('beforeunload', unMount);
+            window.removeEventListener('unload', unMount);
         };
-    }, []);
+    }, [socket]);
 
     return [users, peerConnections];
 };

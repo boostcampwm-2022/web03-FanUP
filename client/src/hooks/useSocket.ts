@@ -2,7 +2,7 @@ import { io, Socket } from 'socket.io-client';
 
 const sockets: { [key: string]: Socket } = {};
 
-const backUrl = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3003';
+const backUrl = 'https://wet-boxes-listen-175-214-6-140.loca.lt';
 
 export function useSocket(chatRoom: string): [Socket, () => void] {
     const disconnect = () => {
