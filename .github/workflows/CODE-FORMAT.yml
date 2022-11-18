@@ -1,21 +1,18 @@
-name: SERVER-FORMAT
+name: CODE-FORMAT
 
 on:
   push:
-    paths:
-      - "./server/**"
-    branches: [main, dev]
+    branches:
+      - main
+      - dev
   pull_request:
-    paths:
-      - "./server/**"
-    branches: [main, dev]
+    branches:
+      - main
+      - dev
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: "./server"
 
     strategy:
       matrix:
@@ -30,22 +27,27 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: client
+        run: |
+          cd client
+          npm run format
+
       - name: gateway
         run: |
-          cd gateway
+          cd server/gateway
           npm install
-          npm run format
+          npm run format --if-present
 
       - name: services
         run: |
-          cd ./services/api
+          cd server/services/api
           npm install
-          npm run format
+          npm run format --if-present
 
           cd ../auth
           npm install
-          npm run format
+          npm run format --if-present
 
           cd ../ticket
           npm install
-          npm run format
+          npm run format --if-present
