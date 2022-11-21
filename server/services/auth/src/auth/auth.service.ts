@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { JwtService } from '@nestjs/jwt';
 import { AxiosError } from 'axios';
@@ -20,6 +21,7 @@ export class AuthService {
   constructor(
     private readonly httpService: HttpService,
     private readonly jwtService: JwtService,
+    private readonly config: ConfigService,
   ) {}
 
   getAuthHello(): string {

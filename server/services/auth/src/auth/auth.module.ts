@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { HttpModule } from '@nestjs/axios';
 
@@ -10,6 +11,7 @@ import { AuthService } from './auth.service';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: 'secret', // TODO: env 처리
