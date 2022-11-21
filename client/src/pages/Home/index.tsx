@@ -18,8 +18,8 @@ const BannerWrapper = styled.div`
 
 const MainContentWrapper = styled.div`
     display: flex;
+    gap: 20px;
     padding: 20px 30px;
-    background: ${({ theme }) => theme.LIGHT_GRAY};
 `;
 
 const TicketForm = styled.form`

@@ -1,6 +1,7 @@
+import ScheduleIcon from '@/components/icons/schedule';
 import React from 'react';
 import styled from 'styled-components';
-import ScheduleCard from '../../molecules/scheduleCard';
+import ScheduleTicket from '../../molecules/scheduleTicket';
 
 const SchedulesWrapper = styled.div`
     background: white;
@@ -8,6 +9,9 @@ const SchedulesWrapper = styled.div`
 `;
 
 const Title = styled.div`
+    display: flex;
+    gap: 5px;
+    align-items: center;
     padding: 20px 20px 8px 20px;
     border-bottom: 1px solid #d3d3d3;
     h3 {
@@ -20,18 +24,19 @@ const ScheduleContentsWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 20px;
+    padding: 10px 0;
 `;
 
 const Schedules = () => {
     return (
         <SchedulesWrapper>
             <Title>
-                <h3>스케쥴</h3>
+                <ScheduleIcon />
+                <h3>Schedule</h3>
             </Title>
             <ScheduleContentsWrapper>
                 {dummySchedules.map(({ title, date, thumbNail }) => (
-                    <ScheduleCard key={title} title={title} date={date} thumbNail={thumbNail} />
+                    <ScheduleTicket key={title} title={title} date={date} thumbNail={thumbNail} />
                 ))}
             </ScheduleContentsWrapper>
         </SchedulesWrapper>

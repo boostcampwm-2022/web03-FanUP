@@ -7,12 +7,12 @@ const ImageChipWrapper = styled.div<{ width: string; height: string }>`
     img {
         width: 100%;
         height: 100%;
-        border-radius: 100%;
+        border-radius: 6px;
     }
     div {
         width: 100%;
         height: 100%;
-        border-radius: 100%;
+        border-radius: 6px;
         background: ${({ theme }) => theme.PRIMARY};
         color: white;
         display: flex;
