@@ -1,4 +1,6 @@
 import Header from '@/components/UI/layout/header';
+import Artists from '@organisms/artists';
+import Schedules from '@organisms/schedules';
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -12,6 +14,12 @@ const BannerWrapper = styled.div`
     img {
         margin: 0 auto;
     }
+`;
+
+const MainContentWrapper = styled.div`
+    display: flex;
+    padding: 20px 30px;
+    background: ${({ theme }) => theme.LIGHT_GRAY};
 `;
 
 const TicketForm = styled.form`
@@ -33,13 +41,17 @@ const Home = () => {
             <BannerWrapper>
                 <img src="/banner.png" alt="banner" />
             </BannerWrapper>
-            <TicketForm onSubmit={onSubmit}>
+            <MainContentWrapper>
+                <Schedules />
+                <Artists />
+            </MainContentWrapper>
+            {/* <TicketForm onSubmit={onSubmit}>
                 <div>
                     <label>티켓번호 입력</label>
                     <input ref={inputRef} />
                 </div>
                 <button>입력</button>
-            </TicketForm>
+            </TicketForm> */}
         </>
     );
 };
