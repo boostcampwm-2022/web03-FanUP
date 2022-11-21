@@ -40,7 +40,7 @@ jobs:
 
       - name: services
         run: |
-          cd server/services/api
+          cd server/services/core
           npm install
           npm run format --if-present
 
