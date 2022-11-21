@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { dateForm } from '@utils/dateForm';
 import ImageChip from '@atoms/ImageChip';
-import DDay from '@/components/UI/atoms/D_Day';
-import TicketBarCode from '../../atoms/TicketBarCode';
+import DDay from '@atoms/D_Day';
+import TicketBarCode from '@atoms/TicketBarCode';
 
 const ScheduleTicketWrapper = styled.div`
     border-radius: 10px;

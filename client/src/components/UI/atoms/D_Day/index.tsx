@@ -1,4 +1,4 @@
-import { get_D_Day, isDDay } from '@/utils/get_D_Day';
+import { get_D_Day, isDDay } from '@utils/get_D_Day';
 import React from 'react';
 import styled from 'styled-components';
 

@@ -6,6 +6,7 @@ module.exports = override(
     addWebpackAlias({
         '@': path.resolve(__dirname, 'src'),
         '@atoms': path.resolve(__dirname, 'src/components/UI/atoms'),
+        '@molecules': path.resolve(__dirname, 'src/components/UI/molecules'),
         '@organisms': path.resolve(__dirname, 'src/components/UI/organisms'),
         '@images': path.resolve(__dirname, 'src/images'),
         '@pages': path.resolve(__dirname, 'src/pages'),

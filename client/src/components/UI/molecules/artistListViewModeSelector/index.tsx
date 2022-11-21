@@ -1,5 +1,5 @@
-import { ReducerType } from '@/store/rootReducer';
-import { setArtistListViewMode } from '@/store/user';
+import { ReducerType } from '@store/rootReducer';
+import { setArtistListViewMode } from '@store/user';
 import { UserStore } from '@/types/user';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +21,7 @@ const ModeButton = styled.button<{ isCurrentMode: boolean }>`
     color: ${({ isCurrentMode, theme }) => (isCurrentMode ? 'black' : theme.MEDIUM_GRAY)};
 `;
 
-const mode = [
+export const mode = [
     { text: '전체', value: 0 },
     { text: '나의 아티스트', value: 1 },
     { text: '아티스트 만나보기', value: 2 },

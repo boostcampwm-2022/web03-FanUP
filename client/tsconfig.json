@@ -19,6 +19,7 @@
         "paths": {
             "@/*": ["src/*"],
             "@atoms/*": ["src/components/UI/atoms/*"],
+            "@molecules/*": ["src/components/UI/molecules/*"],
             "@organisms/*": ["src/components/UI/organisms/*"],
             "@images/*": ["src/images/*"],
             "@pages/*": ["src/pages/*"],

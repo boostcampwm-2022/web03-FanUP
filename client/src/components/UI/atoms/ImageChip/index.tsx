@@ -30,7 +30,7 @@ interface Props {
 
 const ImageChip = ({ src, width, height }: Props) => {
     return (
-        <ImageChipWrapper width={width} height={height}>
+        <ImageChipWrapper data-testid="imageChip" width={width} height={height}>
             {src ? <img src={src} alt="thumbnail" /> : <div>FanUP</div>}
         </ImageChipWrapper>
     );

@@ -9,7 +9,7 @@ const TicketBarCodeWrapper = styled.div<{ width: string }>`
 `;
 
 const TicketBarCode = ({ width }: { width: string }) => {
-    return <TicketBarCodeWrapper width={width} />;
+    return <TicketBarCodeWrapper data-testid="ticketBarCode" width={width} />;
 };
 
 export default TicketBarCode;
