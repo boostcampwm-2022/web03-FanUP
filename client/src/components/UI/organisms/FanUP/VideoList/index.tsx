@@ -1,6 +1,8 @@
-import MyVideo from '@/components/UI/atoms/FanUP/MyVideo';
-import UserVideo from '@/components/UI/atoms/FanUP/UserVideo';
 import React from 'react';
+import Video from '@/components/UI/atoms/FanUP/Video';
+import { ReducerType } from '@/store/rootReducer';
+import { UserStore } from '@/types/user';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const VideoListWrapper = styled.div`
@@ -25,12 +27,13 @@ interface Props {
 }
 
 const VideoList = ({ userStream }: Props) => {
+    const { myStream } = useSelector<ReducerType, UserStore>((state) => state.userSlice);
     return (
         <VideoListWrapper style={gridTemplate[String(userStream.length)]}>
             {userStream.map((data, idx) => (
-                <UserVideo stream={data.stream} key={idx} />
+                <Video stream={data.stream} key={idx} />
             ))}
-            <MyVideo />
+            <Video stream={myStream} />
         </VideoListWrapper>
     );
 };

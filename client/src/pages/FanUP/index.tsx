@@ -28,18 +28,10 @@ const FanUpRightSection = styled.div`
 `;
 
 const FanUP = () => {
-    const { fanUpId } = useParams();
     useMyStream();
     const { isLoading } = useCheckFanUp();
-    const [_, disconnect] = useSocket(fanUpId as string);
     const [userStream, peerConnections] = useWebRTC();
-    //usePreventLeave();
-
-    useEffect(() => {
-        return () => {
-            disconnect();
-        };
-    }, []);
+    usePreventLeave();
 
     if (isLoading) return <div>...loading</div>;
 

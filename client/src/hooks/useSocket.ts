@@ -1,10 +1,11 @@
+import { useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
 
 const sockets: { [key: string]: Socket } = {};
 
-const backUrl = 'https://chubby-poets-hope-175-214-6-140.loca.lt';
+const backUrl = 'http://localhost:3003';
 
-export function useSocket(chatRoom: string): [Socket, () => void] {
+export function useSocket(chatRoom: string): Socket {
     const disconnect = () => {
         if (chatRoom && sockets[chatRoom]) {
             sockets[chatRoom].disconnect();
@@ -18,5 +19,11 @@ export function useSocket(chatRoom: string): [Socket, () => void] {
         });
     }
 
-    return [sockets[chatRoom], disconnect];
+    useEffect(() => {
+        return () => {
+            disconnect();
+        };
+    }, []);
+
+    return sockets[chatRoom];
 }

@@ -1,14 +1,11 @@
+import { MOCK_FN } from '@/utils/test/mockFn';
 import { renderWithContext } from '@/utils/test/renderWithContext';
 import { screen } from '@testing-library/react';
-import { useRef } from 'react';
-import * as ReactRouter from 'react-router';
 import BottomOptionBar from '..';
 
 describe('<BottomOptionBar />', () => {
     beforeEach(() => {
-        jest.spyOn(ReactRouter, 'useParams').mockReturnValue({
-            fanUpId: '10',
-        });
+        MOCK_FN.useParams({ fanUpId: '10' });
     });
     it('rendering test', async () => {
         renderWithContext(<BottomOptionBar />);

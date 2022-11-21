@@ -13,7 +13,6 @@ describe('<Header />', () => {
     });
     it('rendering test', () => {
         renderWithContext(<Header />);
-        //expect(screen.getByRole('button', { name: '스케쥴' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: '티켓팅' })).toBeInTheDocument();
         ['search', 'alarm', 'user'].forEach((text) => {
             expect(screen.getByTestId(text)).toBeInTheDocument();
