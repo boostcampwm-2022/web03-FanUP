@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import SendIcon from '@icons/send';
-
 type StyleProps = {
     width: string;
     height: string;
