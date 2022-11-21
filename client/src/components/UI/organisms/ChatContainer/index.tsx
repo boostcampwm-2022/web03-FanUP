@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 
 import InputForm from '@molecules/InputForm';
 import ChatList from '@molecules/ChatList';
 
-const dummyChatData = [
+export interface ChatLog {
+    isArtist: boolean;
+    nickname: string;
+    content: string;
+}
+
+const dummyChatData: ChatLog[] = [
     { nickname: '장원영', isArtist: true, content: '안녕하세요 ㅎㅎ' },
     { nickname: '성은', isArtist: false, content: '예쁘다~' },
     {
@@ -23,20 +29,20 @@ const dummyChatData = [
     { nickname: '성은', isArtist: false, content: '예쁘다~' },
 ];
 
-const ChatBoxWrapper = styled.div`
+const StyledChatContainer = styled.div`
     position: relative;
     height: 100%;
 `;
 
-const ChatBox = () => {
+const ChatContainer: FC = () => {
     const [chatData, setChatData] = useState(dummyChatData);
 
     return (
-        <ChatBoxWrapper data-testid="chatBox">
+        <StyledChatContainer data-testid="chatContainer">
             <ChatList chatData={chatData} />
             <InputForm />
-        </ChatBoxWrapper>
+        </StyledChatContainer>
     );
 };
 
-export default ChatBox;
+export default ChatContainer;

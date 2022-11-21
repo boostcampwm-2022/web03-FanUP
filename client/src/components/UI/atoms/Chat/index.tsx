@@ -1,50 +1,47 @@
-import theme from '@/style/theme';
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 
-const ChatWrapper = styled.div`
+import { ChatLog } from '@organisms/ChatContainer';
+
+interface StyledProps {
+    isArtist: boolean;
+}
+
+type Props = ChatLog;
+
+const StyledChat = styled('div')<StyledProps>`
     display: flex;
     flex-direction: column;
     gap: 5px;
+    ${({ isArtist }) => !isArtist && 'align-items: flex-end'}
 `;
 
-const NickName = styled.span`
+const Nickname = styled.span`
     font-size: 12px;
     color: ${({ theme }) => theme.DARK_GRAY};
 `;
 
-const ChatContent = styled.div`
+const Content = styled('div')<StyledProps>`
+    ${({ isArtist, theme }) =>
+        isArtist
+            ? `background-color: ${theme.PRIMARY}; color: white`
+            : `background-color: ${theme.LIGHT_GRAY}; color: black`};
+
     padding: 10px;
     border-radius: 8px;
     width: fit-content;
     max-width: 75%;
 `;
 
-interface Props {
-    nickname: string;
-    isArtist: boolean;
-    content: string;
-}
-
-const Chat = ({ nickname, isArtist, content }: Props) => {
+const Chat: FC<Props> = ({ nickname, isArtist, content }) => {
     return (
-        <ChatWrapper style={getChatPosition(isArtist)}>
-            <NickName>{nickname}</NickName>
-            <ChatContent style={getContentsStyle(isArtist)}>
+        <StyledChat isArtist={isArtist}>
+            <Nickname>{nickname}</Nickname>
+            <Content isArtist={isArtist}>
                 <span> {content}</span>
-            </ChatContent>
-        </ChatWrapper>
+            </Content>
+        </StyledChat>
     );
-};
-
-const getChatPosition = (isArtist: boolean) => {
-    if (isArtist) return {};
-    else return { alignItems: 'flex-end' };
-};
-
-const getContentsStyle = (isArtist: boolean) => {
-    if (isArtist) return { background: theme.PRIMARY, color: 'white' };
-    else return { background: theme.LIGHT_GRAY, color: 'black' };
 };
 
 export default Chat;
