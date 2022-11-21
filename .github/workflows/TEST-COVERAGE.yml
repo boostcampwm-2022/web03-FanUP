@@ -3,12 +3,11 @@ name: TEST-COVERAGE
 on:
   push:
     branches:
-      - main
-      - dev
-  pull_request:
-    branches:
-      - main
-      - dev
+      - "Feat/#20-fanup-socket"
+  # pull_request:
+  #   branches:
+  #     - main
+  #     - dev
 
 jobs:
   build:
