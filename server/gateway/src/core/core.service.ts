@@ -14,27 +14,27 @@ export class CoreService {
     return this.apiClient.send({ cmd: 'getCoreHello' }, {});
   }
 
-  async createFanUPRoom() {
-    return await lastValueFrom(
-      this.apiClient.send({ cme: 'createFanUPRoom' }, {}),
-    );
-  }
+  // async createFanUPRoom() {
+  //   return await lastValueFrom(
+  //     this.apiClient.send({ cme: 'createFanUPRoom' }, {}),
+  //   );
+  // }
 
-  async enterFanUPRoom() {
-    return await lastValueFrom(
-      this.apiClient.send({ cme: 'enterFanUPRoom' }, {}),
-    );
-  }
+  // async enterFanUPRoom() {
+  //   return await lastValueFrom(
+  //     this.apiClient.send({ cme: 'enterFanUPRoom' }, {}),
+  //   );
+  // }
 
-  async exitFanUPRoom() {
-    return await lastValueFrom(
-      this.apiClient.send({ cme: 'exitFanUPRoom' }, {}),
-    );
-  }
+  // async exitFanUPRoom() {
+  //   return await lastValueFrom(
+  //     this.apiClient.send({ cme: 'exitFanUPRoom' }, {}),
+  //   );
+  // }
 
-  async deleteFanUPRoom() {
-    return await lastValueFrom(
-      this.apiClient.send({ cme: 'deleteFanUPRoom' }, {}),
-    );
-  }
+  // async deleteFanUPRoom() {
+  //   return await lastValueFrom(
+  //     this.apiClient.send({ cme: 'deleteFanUPRoom' }, {}),
+  //   );
+  // }
 }

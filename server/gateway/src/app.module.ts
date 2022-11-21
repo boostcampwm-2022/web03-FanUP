@@ -7,7 +7,7 @@ import { CoreModule } from './core/core.module';
 import { SocketModule } from './socket/socket.module';
 
 @Module({
-  imports: [AuthModule, TicketModule, SocketModule],
+  imports: [AuthModule, TicketModule, CoreModule, SocketModule],
   controllers: [AppController],
   providers: [AppService],
 })
