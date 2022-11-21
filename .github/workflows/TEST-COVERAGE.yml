@@ -29,24 +29,20 @@ jobs:
       - name: Set up Node_modules
         run: |
           cd ./client
-          npm install
+          npm ci
           cd ..
           cd ./server/gateway
-          npm install
+          npm ci
           cd ../services/core
-          npm install
+          npm ci
           cd ../auth
-          npm install
+          npm ci
           cd ../ticket
-          npm install
+          npm ci
 
       - name: Run Test Coverage
         run: |
-          rm -rf node_modules && rm -rf ./package-lock.json
-          rm -rf coverage
-          npm cache clean --force
-          npm update
-          npm install
+          npm ci
           npm run coveralls
 
       - name: Coveralls
