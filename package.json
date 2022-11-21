@@ -60,6 +60,7 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "jsdom",
     "coveragePathIgnorePatterns": [
+      "client",
       "babel.config.js",
       "client/config-overrides.js",
       "client/public",
