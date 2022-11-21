@@ -1,8 +1,9 @@
-import SendIcon from '@/components/icons/send';
 import React from 'react';
 import styled from 'styled-components';
 
-const ChatFormWrapper = styled.form`
+import SendIcon from '@icons/send';
+
+const InputFormWrapper = styled.form`
     width: 100%;
     position: absolute;
     bottom: 5px;
@@ -32,15 +33,15 @@ const ChatFormWrapper = styled.form`
     }
 `;
 
-const ChatForm = () => {
+const InputForm = () => {
     return (
-        <ChatFormWrapper>
+        <InputFormWrapper>
             <input placeholder="메시지를 입력하세요" />
             <button>
                 <SendIcon />
             </button>
-        </ChatFormWrapper>
+        </InputFormWrapper>
     );
 };
 
-export default ChatForm;
+export default InputForm;
