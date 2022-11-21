@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import Button from '@atoms/Button';
 import SendIcon from '@icons/send';
+import theme from '@style/theme';
 
 const InputFormWrapper = styled.form`
     width: 100%;
@@ -13,17 +15,7 @@ const InputFormWrapper = styled.form`
     padding: 7px 10px;
     display: flex;
     justify-content: space-between;
-    button {
-        width: 25px;
-        height: 25px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 100%;
-        cursor: pointer;
-        border: none;
-        background: ${({ theme }) => theme.DARK_GRAY};
-    }
+
     input {
         width: 80%;
         border: none;
@@ -34,12 +26,21 @@ const InputFormWrapper = styled.form`
 `;
 
 const InputForm = () => {
+    const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        console.log('submit');
+    };
+
     return (
         <InputFormWrapper>
             <input placeholder="메시지를 입력하세요" />
-            <button>
-                <SendIcon />
-            </button>
+            <Button
+                content={<SendIcon />}
+                onClick={(e) => handleSubmit(e)}
+                width="25px"
+                height="25px"
+                backgroundColor={theme.DARK_GRAY}
+            />
         </InputFormWrapper>
     );
 };

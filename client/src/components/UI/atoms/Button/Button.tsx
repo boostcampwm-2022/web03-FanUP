@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
+import SendIcon from '@icons/send';
+
 type StyleProps = {
     width: string;
     height: string;
@@ -9,8 +11,8 @@ type StyleProps = {
 };
 
 interface Props extends StyleProps {
-    text: string;
-    onClick: () => void;
+    content: string | JSX.Element;
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const StyledButton = styled('button')<StyleProps>`
@@ -28,10 +30,10 @@ const StyledButton = styled('button')<StyleProps>`
     font-size: 20px;
 `;
 
-const Button: FC<Props> = ({ text, onClick, ...props }) => {
+const Button: FC<Props> = ({ content, onClick, ...props }) => {
     return (
         <StyledButton onClick={onClick} {...props}>
-            {text}
+            {content}
         </StyledButton>
     );
 };
