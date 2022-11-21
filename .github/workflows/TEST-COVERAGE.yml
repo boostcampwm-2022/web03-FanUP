@@ -44,6 +44,9 @@ jobs:
       - name: Run Test Coverage
         continue-on-error: true
         run: |
+          rm -rf node_modules && rm ./package-lock.json
+          rm -rf coverage
+          npm cache clean --force
           npm install
           npm run coverage
 
