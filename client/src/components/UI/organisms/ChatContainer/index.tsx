@@ -4,13 +4,13 @@ import styled from 'styled-components';
 import InputForm from '@molecules/InputForm';
 import ChatList from '@molecules/ChatList';
 
-export interface ChatLog {
+export interface ChatMessage {
     isArtist: boolean;
     nickname: string;
     content: string;
 }
 
-const dummyChatData: ChatLog[] = [
+const dummyChatData: ChatMessage[] = [
     { nickname: '장원영', isArtist: true, content: '안녕하세요 ㅎㅎ' },
     { nickname: '성은', isArtist: false, content: '예쁘다~' },
     {
@@ -35,7 +35,7 @@ const StyledChatContainer = styled.div`
 `;
 
 const ChatContainer: FC = () => {
-    const [chatData, setChatData] = useState(dummyChatData);
+    const [chatData, setChatData] = useState<ChatMessage[]>(dummyChatData);
 
     return (
         <StyledChatContainer data-testid="chatContainer">

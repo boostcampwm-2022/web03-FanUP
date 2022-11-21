@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import Chat from '@/components/UI/atoms/Chat';
+import { ChatMessage } from '@organisms/ChatContainer';
+import Chat from '@atoms/Chat';
+
+interface Props {
+    chatData: ChatMessage[];
+}
 
 const StyledChatList = styled.div`
     display: flex;
@@ -16,10 +21,10 @@ const StyledChatList = styled.div`
     }
 `;
 
-const ChatList = ({ chatData }: any) => {
+const ChatList: FC<Props> = ({ chatData }) => {
     return (
         <StyledChatList>
-            {chatData.map(({ nickname, isArtist, content }: any, idx: number) => (
+            {chatData.map(({ nickname, isArtist, content }, idx) => (
                 <Chat
                     key={content + idx}
                     isArtist={isArtist}

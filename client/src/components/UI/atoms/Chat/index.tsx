@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import { ChatLog } from '@organisms/ChatContainer';
+import { ChatMessage } from '@organisms/ChatContainer';
 
 interface StyledProps {
     isArtist: boolean;
 }
 
-type Props = ChatLog;
+type Props = ChatMessage;
 
 const StyledChat = styled('div')<StyledProps>`
     display: flex;
