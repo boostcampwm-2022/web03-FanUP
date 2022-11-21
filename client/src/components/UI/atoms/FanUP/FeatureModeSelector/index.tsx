@@ -13,13 +13,15 @@ const FeatureModeSelectorWrapper = styled.div`
     width: 400px;
     border-bottom: 1px solid #ababab;
     display: flex;
-    button {
-        cursor: pointer;
-        border: none;
-        background: none;
-        flex-grow: 1;
-        text-align: center;
-    }
+`;
+
+const FeatureSelectBtn = styled.button<{ isCurrentMode: boolean }>`
+    cursor: pointer;
+    border: none;
+    background: none;
+    flex-grow: 1;
+    text-align: center;
+    border-bottom: ${({ isCurrentMode }) => (isCurrentMode ? '1px solid #ababab' : '')};
 `;
 
 const ROOMLIST_MODE = -1;
@@ -64,14 +66,14 @@ const FeatureModeSelector = () => {
     return (
         <FeatureModeSelectorWrapper>
             {modes.map(({ icon, alt, mode, isCurrentMode }) => (
-                <button
+                <FeatureSelectBtn
                     data-testid={alt}
-                    style={{ borderBottom: isCurrentMode ? '1px solid #ababab' : '' }}
+                    isCurrentMode={isCurrentMode}
                     onClick={clickMode(mode)}
                     key={alt}
                 >
                     {icon}
-                </button>
+                </FeatureSelectBtn>
             ))}
             {/* <div></div> */}
         </FeatureModeSelectorWrapper>

@@ -4,8 +4,8 @@ const MICRO_SERVICES = {
     HOST: 'localhost',
     PORT: 3001,
   },
-  API: {
-    NAME: 'API_SERVICE',
+  CORE: {
+    NAME: 'CORE_SERVICE',
     HOST: 'localhost',
     PORT: 3002,
   },

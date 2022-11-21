@@ -3,8 +3,37 @@ import MuteOffIcon from '@/components/icons/muteOff';
 import MuteOnIcon from '@/components/icons/muteOn';
 import theme from '@/style/theme';
 import { useToggle } from '@/hooks/useToggle';
-const MuteBtn = () => {
-    const [mute, _, onClickMute] = useToggle(false);
+import { useSelector } from 'react-redux';
+import { ReducerType } from '@/store/rootReducer';
+import { UserStore } from '@/types/user';
+
+interface Props {
+    peerConnections?: React.MutableRefObject<{
+        [key: string]: RTCPeerConnection;
+    }>;
+}
+
+const MuteBtn = ({ peerConnections }: Props) => {
+    const { myStream } = useSelector<ReducerType, UserStore>((state) => state.userSlice);
+    const [mute, _, toggleMute] = useToggle(false);
+
+    const replaceAudioTrack = () => {
+        if (!peerConnections) return;
+        const myAudioTrack = myStream?.getAudioTracks()[0];
+        Object.keys(peerConnections.current).forEach((key) => {
+            const peerConnection = peerConnections.current[key];
+            const audioSender = peerConnection.getSenders().find((sender) => {
+                return sender.track?.kind === 'audio';
+            });
+            audioSender?.replaceTrack(myAudioTrack as MediaStreamTrack);
+        });
+    };
+
+    const onClickMute = useCallback(() => {
+        toggleMute();
+        myStream?.getAudioTracks().forEach((track) => (track.enabled = !track.enabled));
+        replaceAudioTrack();
+    }, [myStream]);
 
     return (
         <button

@@ -15,8 +15,8 @@ services:
     networks:
       - backend
 
-  api:
-    image: jinsungguri/fanup-api:latest
+  core:
+    image: jinsungguri/fanup-core:latest
     ports:
       - '3002:3002'
 
