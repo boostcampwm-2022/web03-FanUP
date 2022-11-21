@@ -42,11 +42,11 @@ jobs:
           npm install
 
       - name: Run Test Coverage
-        continue-on-error: true
         run: |
           rm -rf node_modules && rm -rf ./package-lock.json
           rm -rf coverage
           npm cache clean --force
+          npm update
           npm install
           npm run coverage
 
