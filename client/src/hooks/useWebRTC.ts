@@ -1,4 +1,4 @@
-import { initalizeMyStream } from '@/store/user';
+import { initializeMyStream } from '@/store/user';
 import { UserStore } from '@/types/user';
 import { ReducerType } from '@store/rootReducer';
 
@@ -94,7 +94,7 @@ export const useWebRTC = (): [
             peerConnections.current[key].close();
         });
         peerConnections.current = {};
-        dispatch(initalizeMyStream());
+        dispatch(initializeMyStream());
     };
 
     useEffect(() => {

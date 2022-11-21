@@ -12,6 +12,7 @@ const ScheduleTicketWrapper = styled.div`
     align-items: center;
     cursor: pointer;
     border: 1px solid #f0f0f0;
+    white-space: nowrap;
 `;
 
 const ScheduleContent = styled.div`
