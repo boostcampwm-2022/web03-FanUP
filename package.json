@@ -23,6 +23,7 @@
     "jest-environment-jsdom": "^29.3.1",
     "ts-jest": "^28.0.8"
   },
+  "collectCoverage": true,
   "jest": {
     "moduleFileExtensions": [
       "js",
@@ -36,11 +37,12 @@
     "rootDir": ".",
     "testRegex": [
       ".spec.ts$",
-      ".e2e-spec.ts$"
+      ".e2e-spec.ts$",
+      ".test.tsx",
+      ".test.ts"
     ],
     "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest",
-      "^.+\\.(js|jsx)$": "babel-jest"
+      "^.+\\.(ts|tsx)$": "ts-jest"
     },
     "transformIgnorePatterns": [
       "client/node_modules/"
@@ -59,7 +61,6 @@
     "testEnvironment": "jsdom",
     "coveragePathIgnorePatterns": [
       "babel.config.js",
-      "client",
       "client/config-overrides.js",
       "client/public",
       "client/src/App.tsx",
