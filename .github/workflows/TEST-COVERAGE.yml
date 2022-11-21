@@ -42,6 +42,7 @@ jobs:
           npm install
 
       - name: Run Test Coverage
+        continue-on-error: true
         run: |
           npm install
           npm run coverage
