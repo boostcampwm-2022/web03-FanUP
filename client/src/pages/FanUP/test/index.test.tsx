@@ -1,13 +1,12 @@
 import { renderWithContext } from '@/utils/test/renderWithContext';
 import { screen } from '@testing-library/react';
 import FanUP from '..';
-import * as ReactRouter from 'react-router';
+import { MOCK_FN } from '@/utils/test/mockFn';
 
 describe('<FanUp />', () => {
     beforeEach(() => {
-        jest.spyOn(ReactRouter, 'useParams').mockReturnValue({
-            fanUpId: '10',
-        });
+        MOCK_FN.getUserMedia();
+        MOCK_FN.useParams({ fanUpId: '10' });
     });
     it('rendering test', async () => {
         renderWithContext(<FanUP />);

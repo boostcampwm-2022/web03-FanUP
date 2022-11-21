@@ -1,11 +1,20 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import CameraOffIcon from '@/components/icons/cameraOff';
 import CameraOnIcon from '@/components/icons/cameraOn';
 import theme from '@/style/theme';
 import { useToggle } from '@/hooks/useToggle';
+import { useSelector } from 'react-redux';
+import { ReducerType } from '@/store/rootReducer';
+import { UserStore } from '@/types/user';
 
 const CameraBtn = () => {
-    const [cameraOn, _, onClickCamera] = useToggle(true);
+    const { myStream } = useSelector<ReducerType, UserStore>((state) => state.userSlice);
+    const [cameraOn, _, toggleCamera] = useToggle(true);
+
+    const onClickCamera = useCallback(() => {
+        toggleCamera();
+        myStream?.getVideoTracks().forEach((track) => (track.enabled = !track.enabled));
+    }, [myStream]);
 
     return (
         <button

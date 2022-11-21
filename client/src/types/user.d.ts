@@ -1,4 +1,4 @@
 export interface UserStore {
     [key: string]: any;
-    name: string;
+    myStream: MediaStream | null;
 }

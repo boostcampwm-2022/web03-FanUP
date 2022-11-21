@@ -2,7 +2,7 @@ import AlarmIcon from '@/components/icons/alarm';
 import Logo from '@/components/icons/logo';
 import SearchIcon from '@/components/icons/search';
 import UserIcon from '@/components/icons/user';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -62,11 +62,14 @@ const Header = () => {
         [navigate]
     );
 
-    const icons = [
-        { key: 'search', icon: <SearchIcon />, onClick: clickSearch },
-        { key: 'alarm', icon: <AlarmIcon />, onClick: clickAlarm },
-        { key: 'user', icon: <UserIcon />, onClick: clickUser },
-    ];
+    const icons = useMemo(
+        () => [
+            { key: 'search', icon: <SearchIcon />, onClick: clickSearch },
+            { key: 'alarm', icon: <AlarmIcon />, onClick: clickAlarm },
+            { key: 'user', icon: <UserIcon />, onClick: clickUser },
+        ],
+        []
+    );
 
     return (
         <HeaderRoot>
