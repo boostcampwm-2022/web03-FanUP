@@ -5,7 +5,7 @@
   "main": ".eslintrc.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "jest": "jest --coverage",
+    "coverage": "jest --coverage",
     "coveralls": "jest --coverage && coveralls < ./coverage/lcov.info"
   },
   "author": "",
@@ -83,7 +83,8 @@
       "server/gateway/dist",
       "server/services/core/dist",
       "server/services/auth/dist",
-      "server/services/ticket/dist"
+      "server/services/ticket/dist",
+      "except.ts"
     ],
     "bail": 3
   },
