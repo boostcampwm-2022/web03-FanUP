@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Chat from '@atoms/FanUP/chat';
+import Chat from '@/components/UI/atoms/Chat';
 
 const StyledChatList = styled.div`
     display: flex;
