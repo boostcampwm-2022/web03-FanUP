@@ -6,7 +6,7 @@ export class AppService {
     return 'Hello World!';
   }
 
-  getApiHello(): string {
-    return 'API server is running!';
+  getCoreHello(): string {
+    return 'Core server is running!';
   }
 }
