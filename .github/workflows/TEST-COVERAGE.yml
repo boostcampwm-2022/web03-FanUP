@@ -48,7 +48,7 @@ jobs:
           npm cache clean --force
           npm update
           npm install
-          npm run coverage
+          npm run coveralls
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
