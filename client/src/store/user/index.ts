@@ -12,8 +12,11 @@ export const userSlice = createSlice({
         setMyStream(state, action: PayloadAction<MediaStream>) {
             state.myStream = action.payload;
         },
+        initalizeMyStream(state) {
+            state.myStream = null;
+        },
     },
 });
 
-export const { setMyStream } = userSlice.actions;
+export const { setMyStream, initalizeMyStream } = userSlice.actions;
 export default userSlice.reducer;
