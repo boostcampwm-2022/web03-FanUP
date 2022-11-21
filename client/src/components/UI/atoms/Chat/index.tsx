@@ -22,11 +22,8 @@ const Nickname = styled.span`
 `;
 
 const Content = styled('div')<StyledProps>`
-    ${({ isArtist, theme }) =>
-        isArtist
-            ? `background-color: ${theme.PRIMARY}; color: white`
-            : `background-color: ${theme.LIGHT_GRAY}; color: black`};
-
+    background-color: ${({ isArtist, theme }) => (isArtist ? theme.PRIMARY : theme.LIGHT_GRAY)};
+    color: ${({ isArtist }) => (isArtist ? 'white' : 'black')};
     padding: 10px;
     border-radius: 8px;
     width: fit-content;
