@@ -6,11 +6,12 @@ type StyleProps = {
     height: string;
     backgroundColor: string;
     color?: string;
+    borderRadius?: string;
 };
 
 interface Props extends StyleProps {
-    text: string;
-    onClick: () => void;
+    content: string | JSX.Element;
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const StyledButton = styled('button')<StyleProps>`
@@ -22,16 +23,16 @@ const StyledButton = styled('button')<StyleProps>`
     background-color: ${({ backgroundColor }) => backgroundColor};
     width: ${({ width }) => width};
     height: ${({ height }) => height};
-    border-radius: 8px;
-    color: ${(props) => props.color ?? 'black'};
+    border-radius: ${({ borderRadius }) => borderRadius ?? null};
+    color: ${({ color }) => color ?? 'black'};
     font-weight: bold;
     font-size: 20px;
 `;
 
-const Button: FC<Props> = ({ text, onClick, ...props }) => {
+const Button: FC<Props> = ({ content, onClick, ...props }) => {
     return (
         <StyledButton onClick={onClick} {...props}>
-            {text}
+            {content}
         </StyledButton>
     );
 };
