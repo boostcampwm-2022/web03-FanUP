@@ -40,6 +40,7 @@ const InputForm = () => {
                 width="25px"
                 height="25px"
                 backgroundColor={theme.DARK_GRAY}
+                borderRadius="100%"
             />
         </InputFormWrapper>
     );

@@ -35,6 +35,7 @@ const OAuthContainer: FC = () => {
                     height="64px"
                     backgroundColor={value.backgroundColor}
                     color={value.color}
+                    borderRadius="8px"
                 ></Button>
             ))}
         </StyledOAuthContainer>

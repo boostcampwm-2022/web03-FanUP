@@ -8,6 +8,7 @@ type StyleProps = {
     height: string;
     backgroundColor: string;
     color?: string;
+    borderRadius?: string;
 };
 
 interface Props extends StyleProps {
@@ -24,8 +25,8 @@ const StyledButton = styled('button')<StyleProps>`
     background-color: ${({ backgroundColor }) => backgroundColor};
     width: ${({ width }) => width};
     height: ${({ height }) => height};
-    border-radius: 8px;
-    color: ${(props) => props.color ?? 'black'};
+    border-radius: ${({ borderRadius }) => borderRadius ?? null};
+    color: ${({ color }) => color ?? 'black'};
     font-weight: bold;
     font-size: 20px;
 `;
