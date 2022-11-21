@@ -36,9 +36,7 @@
     "rootDir": ".",
     "testRegex": [
       ".spec.ts$",
-      ".e2e-spec.ts$",
-      ".test.tsx",
-      ".test.ts"
+      ".e2e-spec.ts$"
     ],
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest",
@@ -60,8 +58,8 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "jsdom",
     "coveragePathIgnorePatterns": [
-      "client",
       "babel.config.js",
+      "client",
       "client/config-overrides.js",
       "client/public",
       "client/src/App.tsx",
@@ -86,10 +84,6 @@
       "server/services/auth/dist",
       "server/services/ticket/dist",
       "except.ts"
-    ],
-    "bail": 3
-  },
-  "dependencies": {
-    "whatwg-fetch": "^3.6.2"
+    ]
   }
 }
