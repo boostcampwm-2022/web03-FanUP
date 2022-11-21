@@ -11,8 +11,8 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @MessagePattern({ cmd: 'getApiHello' })
+  @MessagePattern({ cmd: 'getCoreHello' })
   getApiHello(): string {
-    return this.appService.getApiHello();
+    return this.appService.getCoreHello();
   }
 }
