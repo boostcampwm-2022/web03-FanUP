@@ -4,7 +4,7 @@
   "description": "<p align=\"center\">   <a href=\"http://nestjs.com/\" target=\"blank\"><img src=\"https://nestjs.com/img/logo-small.svg\" width=\"200\" alt=\"Nest Logo\" /></a> </p>",
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit --silent",
-    "coverage": "jest --detectOpenHandles --coverage --forceExit --silent",
+    "coverage": "jest --coverage --detectOpenHandles --forceExit",
     "coveralls": "jest --coverage --detectOpenHandles --forceExit  && coveralls < ./coverage/lcov.info"
   },
   "author": "",
@@ -12,6 +12,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.18.6",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
@@ -30,7 +31,7 @@
       "tsx"
     ],
     "moduleDirectories": [
-      "node_modules",
+      "node_modules/",
       "client/node_modules/",
       "server/gateway/node_modules/",
       "server/services/auth/node_modules/",
@@ -49,12 +50,12 @@
       "^.+\\.(js|jsx)$": "babel-jest"
     },
     "transformIgnorePatterns": [
-      "node_modules",
-      "client/node_modules/",
-      "server/gateway/node_modules/",
-      "server/services/auth/node_modules/",
-      "server/services/core/node_modules/",
-      "server/services/ticket/node_modules/"
+      "<rootDir>/node_modules",
+      "<rootDir>/client/node_modules/",
+      "<rootDir>/server/gateway/node_modules/",
+      "<rootDir>/server/services/auth/node_modules/",
+      "<rootDir>/server/services/core/node_modules/",
+      "<rootDir>/server/services/ticket/node_modules/"
     ],
     "collectCoverageFrom": [
       "**/*.(ts|tsx)",
@@ -92,9 +93,13 @@
       "server/services/core/dist",
       "server/services/auth/dist",
       "server/services/ticket/dist",
+      "client/node_modules",
+      "server/gateway/node_modules",
+      "server/services/core/node_modules",
+      "server/services/auth/node_modules",
+      "server/services/ticket/node_modules",
       "except.ts"
     ],
-    "coverageDirectory": "./coverage",
-    "collectCoverage": true
+    "coverageDirectory": "./coverage"
   }
 }
