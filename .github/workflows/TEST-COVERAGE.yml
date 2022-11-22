@@ -30,24 +30,23 @@ jobs:
       - name: Set up Node_modules
         run: |
           cd ./client
-          npm install
+          yarn install --immutable --immutable-cache --check-cache
           cd ..
           cd ./server/gateway
-          npm install
+          npm ci
           cd ../services/core
-          npm install
+          npm ci
           cd ../auth
-          npm install
+          npm ci
           cd ../ticket
-          npm install
+          npm ci
 
       - name: Run Test Coverage
         run: |
-          npm install
+          npm ci
           npm run coveralls
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: ./coverage/lcov.info
