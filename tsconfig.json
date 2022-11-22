@@ -21,7 +21,18 @@
     "allowJs": true,
     "jsx": "react-jsx",
     "paths": {
-      "@/*": ["client/src/*"]
+      "@/*": ["client/src/*"],
+      "@icons/*": ["src/components/icons/*"],
+      "@hoc/*": ["src/components/hoc/*"],
+      "@atoms/*": ["src/components/UI/atoms/*"],
+      "@molecules/*": ["src/components/UI/molecules/*"],
+      "@organisms/*": ["src/components/UI/organisms/*"],
+      "@images/*": ["src/images/*"],
+      "@pages/*": ["src/pages/*"],
+      "@style/*": ["src/style/*"],
+      "@utils/*": ["src/utils/*"],
+      "@store/*": ["src/store/*"],
+      "@types/*": ["src/types/*"]
     }
   }
 }
