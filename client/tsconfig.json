@@ -18,12 +18,15 @@
         "baseUrl": ".",
         "paths": {
             "@/*": ["src/*"],
+            "@icons/*": ["src/components/icons/*"],
             "@atoms/*": ["src/components/UI/atoms/*"],
             "@organisms/*": ["src/components/UI/organisms/*"],
             "@images/*": ["src/images/*"],
             "@pages/*": ["src/pages/*"],
             "@style/*": ["src/style/*"],
-            "@utils/*": ["src/utils/*"]
+            "@utils/*": ["src/utils/*"],
+            "@store/*": ["src/store/*"],
+            "@types/*": ["src/types/*"]
         }
     },
     "include": ["src", "src/jest.config.js"]
