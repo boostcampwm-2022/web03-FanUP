@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "<p align=\"center\">   <a href=\"http://nestjs.com/\" target=\"blank\"><img src=\"https://nestjs.com/img/logo-small.svg\" width=\"200\" alt=\"Nest Logo\" /></a> </p>",
   "scripts": {
-    "coverage": "jest --coverage",
-    "coveralls": "jest --runInBand --coverage  && coveralls < ./coverage/lcov.info"
+    "coverage": "jest --detectOpenHandles --coverage",
+    "coveralls": "jest --runInBand --coverage --detectOpenHandles  && coveralls < ./coverage/lcov.info"
   },
   "author": "",
   "license": "ISC",
@@ -29,7 +29,12 @@
       "tsx"
     ],
     "moduleDirectories": [
-      "node_modules"
+      "node_modules",
+      "client/node_modules/",
+      "server/gateway/node_modules/",
+      "server/services/auth/node_modules/",
+      "server/services/core/node_modules/",
+      "server/services/ticket/node_modules/"
     ],
     "rootDir": ".",
     "testRegex": [
@@ -43,7 +48,12 @@
       "^.+\\.(js|jsx)$": "babel-jest"
     },
     "transformIgnorePatterns": [
-      "client/node_modules/"
+      "node_modules",
+      "client/node_modules/",
+      "server/gateway/node_modules/",
+      "server/services/auth/node_modules/",
+      "server/services/core/node_modules/",
+      "server/services/ticket/node_modules/"
     ],
     "collectCoverageFrom": [
       "**/*.(ts|tsx)",
