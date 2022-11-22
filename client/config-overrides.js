@@ -5,6 +5,7 @@ const path = require('path');
 module.exports = override(
     addWebpackAlias({
         '@': path.resolve(__dirname, 'src'),
+        '@icons': path.resolve(__dirname, 'src/components/icons'),
         '@atoms': path.resolve(__dirname, 'src/components/UI/atoms'),
         '@organisms': path.resolve(__dirname, 'src/components/UI/organisms'),
         '@images': path.resolve(__dirname, 'src/images'),

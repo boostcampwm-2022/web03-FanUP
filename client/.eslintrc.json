@@ -22,6 +22,7 @@
             "alias": {
                 "map": [
                     ["@", "./src"],
+                    ["@icons", "./src/components/icons"],
                     ["@atoms", "./src/components/UI/atoms"],
                     ["@organisms", "./src/components/UI/organisms"],
                     ["@images", "./src/images"],
