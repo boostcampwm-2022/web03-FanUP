@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import InputForm from '@molecules/InputForm';
 import ChatList from '@molecules/ChatList';
+import useSocket2 from '@hooks/useSocket2';
 
 export interface ChatMessage {
     isArtist: boolean;
@@ -35,6 +36,7 @@ const StyledChatContainer = styled.div`
 `;
 
 const ChatContainer: FC = () => {
+    const socket = useSocket2();
     const [chatData, setChatData] = useState<ChatMessage[]>(dummyChatData);
 
     return (
