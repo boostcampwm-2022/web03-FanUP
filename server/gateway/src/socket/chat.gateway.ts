@@ -28,7 +28,7 @@ class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     } else {
       this.room[roomName] = [socket.id];
     }
-    this.server.to(roomName).emit('welcome', { email });
+    this.server.to(roomName).emit('welcome', { email, socketID: socket.id });
   }
 
   @SubscribeMessage('send-message')
