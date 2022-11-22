@@ -41,6 +41,10 @@ jobs:
           cd ../ticket
           npm ci
 
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Run Test Coverage
         run: |
           npm ci
