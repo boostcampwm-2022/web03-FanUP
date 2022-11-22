@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [16.x]
 
     steps:
       - name: Checkout source code
@@ -50,7 +50,7 @@ jobs:
         run: |
           rm -rf node_modules
           npm ci
-          npm run test
+          npm run coverage
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
