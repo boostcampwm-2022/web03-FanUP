@@ -13,6 +13,8 @@ on:
     branches:
       - main
       - dev
+    types:
+      - closed
 
 defaults:
   run:
@@ -20,7 +22,7 @@ defaults:
 
 jobs:
   build-image:
-    if: github.event.pull_request.merged == true
+    if: ${{ github.event.pull_request.merged }}
     name: Deploy MSA
     runs-on: ubuntu-latest
     strategy:

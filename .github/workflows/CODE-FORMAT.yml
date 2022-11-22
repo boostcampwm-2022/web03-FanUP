@@ -30,6 +30,7 @@ jobs:
       - name: client
         run: |
           cd client
+          npm run format-write
           npm run format
 
       - name: gateway

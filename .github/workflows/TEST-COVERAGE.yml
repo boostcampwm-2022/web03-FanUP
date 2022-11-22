@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: true
       matrix:
         node-version: [18.x]
 
@@ -30,19 +31,26 @@ jobs:
       - name: Set up Node_modules
         run: |
           cd ./client
+          rm -rf node_modules
           yarn install --immutable --immutable-cache --check-cache
           cd ..
           cd ./server/gateway
+          rm -rf node_modules
           npm ci
           cd ../services/core
+          rm -rf node_modules
           npm ci
           cd ../auth
+          rm -rf node_modules
           npm ci
           cd ../ticket
+          rm -rf node_modules
           npm ci
 
       - name: Run Test Coverage
+        continue-on-error: true
         run: |
+          rm -rf node_modules
           npm ci
           npm run coveralls
 
