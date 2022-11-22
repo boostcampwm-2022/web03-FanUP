@@ -83,14 +83,14 @@ describe('FanUP 소켓 테스트', () => {
         resolve(data.socketID);
       });
     });
-  });
+  }, 10000);
 
   afterAll(async () => {
     client.disconnect();
     client1.disconnect();
     client2.disconnect();
     await app.close();
-  });
+  }, 10000);
 
   it('join_room 테스트', async () => {
     client.emit('join_room', {
@@ -104,7 +104,7 @@ describe('FanUP 소켓 테스트', () => {
         resolve();
       });
     });
-  });
+  }, 10000);
 
   it('offer 테스트', async () => {
     client1.emit('offer', {
@@ -121,7 +121,7 @@ describe('FanUP 소켓 테스트', () => {
         resolve();
       });
     });
-  });
+  }, 10000);
 
   it('answer 테스트', async () => {
     client1.emit('answer', {
@@ -138,7 +138,7 @@ describe('FanUP 소켓 테스트', () => {
         resolve();
       });
     });
-  });
+  }, 10000);
 
   it('ice 테스트', async () => {
     client1.emit('ice', {
@@ -155,7 +155,7 @@ describe('FanUP 소켓 테스트', () => {
         resolve();
       });
     });
-  });
+  }, 10000);
 
   it('disconnect 테스트', async () => {
     client3.disconnect();
@@ -165,5 +165,5 @@ describe('FanUP 소켓 테스트', () => {
         resolve();
       });
     });
-  });
+  }, 10000);
 });
