@@ -1,7 +1,7 @@
 import { UserStore } from '@/types/user';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: UserStore = {
+export const initialState: UserStore = {
     id: null,
     nickName: null,
     accessToken: null,
