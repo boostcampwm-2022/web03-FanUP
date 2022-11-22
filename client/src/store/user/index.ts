@@ -34,7 +34,6 @@ export const userSlice = createSlice({
     },
 });
 
-
 export const { testAction, login, logout, setMyStream, initalizeMyStream } = userSlice.actions;
 
 export default userSlice.reducer;
