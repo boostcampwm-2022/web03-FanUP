@@ -25,7 +25,7 @@ const Calendar = () => {
     );
     return (
         <CalendarWrapper>
-            <h1>LILHUDDY님의 일정</h1>
+            <h1 data-testid="title">LILHUDDY님의 일정</h1>
             <CalendarHeader />
             <CalendarBody />
             {openSchduleModal ? <ScheduleFanUpModal /> : null}

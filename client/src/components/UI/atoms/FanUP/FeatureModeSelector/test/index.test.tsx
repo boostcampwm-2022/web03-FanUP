@@ -1,8 +1,7 @@
-import { renderWithContext } from '@/utils/test/renderWithContext';
+import { renderWithContext } from '@utils/test/renderWithContext';
 import { fireEvent, screen } from '@testing-library/react';
-import FeatureModeSelector from '..';
-import * as redux from 'react-redux';
-import store from '@/store';
+import FeatureModeSelector from '@atoms/FanUP/FeatureModeSelector';
+import store from '@store/index';
 
 describe('<FeatureModeSelector />', () => {
     const testStore = store;

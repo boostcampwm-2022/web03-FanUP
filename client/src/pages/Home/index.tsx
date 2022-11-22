@@ -31,7 +31,7 @@ const UserContentsWrapper = styled.div`
 `;
 
 const Home = () => {
-    const [isArtist, setIsArtist] = useState(true);
+    const [isArtist, setIsArtist] = useState(false);
 
     return (
         <>

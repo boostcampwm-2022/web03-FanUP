@@ -57,7 +57,7 @@ const Guide = styled.div<{ background: string }>`
     }
 `;
 
-const guide = [
+export const guide = [
     { background: '#9E57FF', text: '예정' },
     { background: '#FF6666', text: '완료' },
 ];
@@ -88,6 +88,6 @@ const CalendarHeader = () => {
     );
 };
 
-const addZero = (month: number) => (month < 10 ? `0${month}` : `${month}`);
+export const addZero = (month: number) => (month < 10 ? `0${month}` : `${month}`);
 
 export default CalendarHeader;

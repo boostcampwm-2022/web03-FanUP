@@ -65,7 +65,7 @@ const CalendarBody = () => {
                 </WeekGuide>
             ))}
             {days.map(({ day, isCurrentMonth, isHoliday, isToday }, idx) => (
-                <div key={`${day}${idx}`}>
+                <div key={`${day}${idx}`} data-testid={idx}>
                     <DateCell
                         isToday={isToday}
                         isHoliday={isHoliday}

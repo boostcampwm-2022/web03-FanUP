@@ -19,7 +19,7 @@ const CalendarPrevBtn = () => {
     }, [month, year]);
 
     return (
-        <button onClick={clickPrev}>
+        <button data-testid="calendarPrevBtn" onClick={clickPrev}>
             <PrevBtnIcon />
         </button>
     );

@@ -1,7 +1,7 @@
 import { ArtistStore } from '@/types/artist';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: ArtistStore = {
+export const initialState: ArtistStore = {
     calendarYear: new Date().getFullYear(),
     calendarMonth: new Date().getMonth() + 1,
     openSchduleModal: false,

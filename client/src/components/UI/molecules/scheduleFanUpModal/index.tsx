@@ -204,7 +204,7 @@ const ScheduleFanUpModal = () => {
 
     return (
         <Modal open={openSchduleModal} onClose={onClose}>
-            <>
+            <div data-testid="scheduleFanUpModal">
                 <ModalHeader>
                     <h1>Schedule FanUP</h1>
                     <button onClick={onClose}>
@@ -271,7 +271,7 @@ const ScheduleFanUpModal = () => {
                     </ContentFourth>
                     <button onClick={submit}>등록하기</button>
                 </ModalContent>
-            </>
+            </div>
         </Modal>
     );
 };

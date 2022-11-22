@@ -19,7 +19,7 @@ const CalendarNextBtn = () => {
     }, [month, year]);
 
     return (
-        <button onClick={clickNext}>
+        <button data-testid="calendarNextBtn" onClick={clickNext}>
             <NextBtnIcon />
         </button>
     );
