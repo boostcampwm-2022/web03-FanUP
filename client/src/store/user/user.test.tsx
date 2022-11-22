@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import reducer, { setMyStream, initialState } from '@/store/user';
 import { MOCK_FN } from '@/utils/test/mockFn';
 

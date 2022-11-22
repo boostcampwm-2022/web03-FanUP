@@ -4,7 +4,7 @@
   "description": "<p align=\"center\">   <a href=\"http://nestjs.com/\" target=\"blank\"><img src=\"https://nestjs.com/img/logo-small.svg\" width=\"200\" alt=\"Nest Logo\" /></a> </p>",
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit --silent",
-    "coverage": "jest --coverage",
+    "coverage": "jest --coverage --detectOpenHandles",
     "coveralls": "jest --coverage --detectOpenHandles --forceExit  && coveralls < ./coverage/lcov.info"
   },
   "author": "",
@@ -27,23 +27,26 @@
     "moduleFileExtensions": [
       "js",
       "json",
-      "ts"
+      "ts",
+      "tsx"
     ],
     "rootDir": ".",
     "testRegex": [
       ".*\\.spec\\.ts$",
       ".*\\.e2e-spec\\.ts$",
-      ".*\\.test\\.ts$"
+      ".*\\.test\\.tsx$"
     ],
     "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
+      "^.+\\.(ts|tsx|js|jsx)$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.(t|j)s",
+      "**/*.(t|j)sx"
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
+      "jest.setup.js",
       "babel.config.js",
       "App.tsx",
       "coverage",
@@ -60,7 +63,10 @@
       "client/src/services",
       "client/src/style",
       "client/src/types",
-      "client/src/components/icons"
+      "client/src/utils",
+      "client/src/components/icons",
+      "Login",
+      "OAuthContainer"
     ],
     "transformIgnorePatterns": [
       "<rootDir>/node_modules",
@@ -69,6 +75,12 @@
       "<rootDir>/server/services/auth/node_modules/",
       "<rootDir>/server/services/core/node_modules/",
       "<rootDir>/server/services/ticket/node_modules/"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/client/src/$1"
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
     ]
   }
 }
