@@ -1,44 +1,68 @@
 import {
   ConnectedSocket,
+  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
+  SubscribeMessage,
   WebSocketGateway,
+  WebSocketServer,
 } from '@nestjs/websockets';
-import { Socket } from 'socket.io';
-import { CoreService } from '../core/core.service';
+import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway({
   namespace: '/socket/fanup',
 })
 class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  constructor(private readonly coreService: CoreService) {}
+  @WebSocketServer()
+  server: Server;
 
   private room: object = {};
 
+  @SubscribeMessage('join_room')
+  joinRoom(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+    const { email, roomName } = data;
+
+    socket.join(roomName);
+
+    if (this.room[roomName]) {
+      this.room[roomName].push(socket.id);
+    } else {
+      this.room[roomName] = [socket.id];
+    }
+
+    this.server.to(roomName).emit('welcome', { email, socketID: socket.id });
+  }
+
+  @SubscribeMessage('offer')
+  offer(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
+    const { email, offer, targetSocketID } = data;
+    this.server
+      .to(targetSocketID)
+      .emit('offer', { email, offer, socketID: socket.id });
+  }
+
+  @SubscribeMessage('answer')
+  answer(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
+    const { email, answer, targetSocketID } = data;
+    this.server
+      .to(targetSocketID)
+      .emit('answer', { email, answer, socketID: socket.id });
+  }
+
+  @SubscribeMessage('ice')
+  ice(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
+    const { email, ice, targetSocketID } = data;
+    this.server
+      .to(targetSocketID)
+      .emit('ice', { email, ice, socketID: socket.id });
+  }
+
   // 소켓 연결이 생성되면
-  handleConnection(@ConnectedSocket() socket: Socket) {
-    const socketID = socket.id;
-    const room = this.room;
-
-    socket.on('join_room', (roomName) => {
-      socket.join(roomName);
-      if (!room[roomName]) {
-        room[roomName] = [socketID];
-      } else {
-        room[roomName].push(socketID);
-      }
-
-      socket.to(roomName).emit('welcome', socketID);
-    });
-    socket.on('offer', (offer, targetSocketID) => {
-      socket.to(targetSocketID).emit('offer', offer, socketID);
-    });
-    socket.on('answer', (answer, targetSocketID) => {
-      socket.to(targetSocketID).emit('answer', answer, socketID);
-    });
-    socket.on('ice', (ice, targetSocketID) => {
-      socket.to(targetSocketID).emit('ice', ice, socketID);
-    });
+  handleConnection(@ConnectedSocket() socket: Socket): void {
+    // TODO
+    // - Microservice에서 TCP 통신 로직 작성
+    // - 해당 유저의 유효성을 검사 : 지금 이시간대 참여가 맞는지 다른지
+    // - 참여자 업데이트
   }
 
   // 소켓 연결이 끊기면 실행
@@ -49,10 +73,13 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const targetRoomName = Object.keys(room).find((key) =>
       room[key].includes(socketID),
     );
-    room[targetRoomName] = room[targetRoomName].filter(
-      (userSocketID) => userSocketID !== socketID,
-    );
-    socket.to(targetRoomName).emit('leave', socketID);
+
+    if (room[targetRoomName]) {
+      room[targetRoomName] = room[targetRoomName].filter(
+        (userSocketID) => userSocketID !== socketID,
+      );
+    }
+    this.server.to(targetRoomName).emit('leave', { socketID });
   }
 }
 
