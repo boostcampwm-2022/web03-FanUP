@@ -6,6 +6,7 @@ const initialState: UserStore = {
     nickName: null,
     accessToken: null,
     expiredDate: null,
+    myStream: null,
 };
 
 export const userSlice = createSlice({
@@ -24,8 +25,11 @@ export const userSlice = createSlice({
             const { id } = action.payload;
             state.id = id;
         },
+        setMyStream(state, action: PayloadAction<MediaStream>) {
+            state.myStream = action.payload;
+        },
     },
 });
 
-export const { testAction, login, logout } = userSlice.actions;
+export const { testAction, login, logout, setMyStream } = userSlice.actions;
 export default userSlice.reducer;

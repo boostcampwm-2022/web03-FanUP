@@ -1,0 +1,53 @@
+name: TEST-COVERAGE
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Set up Nest.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Set up Node_modules
+        run: |
+          cd ./client
+          npm install
+          cd ..
+          cd ./server/gateway
+          npm install
+          cd ../services/core
+          npm install
+          cd ../auth
+          npm install
+          cd ../ticket
+          npm install
+
+      - name: Run Test Coverage
+        run: |
+          npm install
+          npm run coveralls
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./coverage/lcov.info
