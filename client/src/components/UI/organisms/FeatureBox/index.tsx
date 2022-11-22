@@ -1,12 +1,12 @@
-import FeatureModeSelector from '@/components/UI/atoms/FanUP/FeatureModeSelector';
+import FeatureModeSelector from '@/components/UI/atoms/FeatureModeSelector';
 import { ReducerType } from '@/store/rootReducer';
 import { FanUpStore } from '@/types/fanUp';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import ChatBox from '../chatBox';
-import ParticipantsList from '../participantsList';
-import RoomList from '../RoomList';
+import ChatBox from '@organisms/chatBox';
+import ParticipantsList from '@organisms/participantsList';
+import RoomList from '@organisms/RoomList';
 
 const FeatureBoxWrapper = styled.div`
     background: #ffffff;

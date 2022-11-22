@@ -1,7 +1,7 @@
 import ArtistsBox from '@organisms/artistsBox';
 import Calendar from '@organisms/calendar';
 import Schedules from '@organisms/schedules';
-import Header from '@/components/UI/layout/header';
+import Header from '@/components/UI/organisms/header';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';

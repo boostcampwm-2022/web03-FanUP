@@ -1,4 +1,4 @@
-import Participants from '@/components/UI/atoms/FanUP/Participants';
+import Participants from '@atoms/Participants';
 import React from 'react';
 import styled from 'styled-components';
 

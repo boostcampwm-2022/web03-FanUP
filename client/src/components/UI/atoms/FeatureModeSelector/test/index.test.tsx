@@ -3,7 +3,7 @@
  */
 import { renderWithContext } from '@utils/test/renderWithContext';
 import { fireEvent, screen } from '@testing-library/react';
-import FeatureModeSelector from '@atoms/FanUP/FeatureModeSelector';
+import FeatureModeSelector from '@/components/UI/atoms/FeatureModeSelector';
 import store from '@store/index';
 
 describe('<FeatureModeSelector />', () => {

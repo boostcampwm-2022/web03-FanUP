@@ -1,5 +1,5 @@
-import Chat from '@/components/UI/atoms/FanUP/chat';
-import ChatForm from '@/components/UI/atoms/FanUP/chatForm';
+import Chat from '@atoms/chat';
+import ChatForm from '@atoms/chatForm';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 

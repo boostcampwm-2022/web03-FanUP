@@ -1,7 +1,7 @@
 import React from 'react';
-import CameraBtn from '@/components/UI/atoms/FanUP/CameraBtn';
-import ExitBtn from '@/components/UI/atoms/FanUP/ExitBtn';
-import MuteBtn from '@/components/UI/atoms/FanUP/MuteBtn';
+import CameraBtn from '@atoms/CameraBtn';
+import ExitBtn from '@atoms/ExitBtn';
+import MuteBtn from '@atoms/MuteBtn';
 import styled from 'styled-components';
 
 const BottomOptionBarWrapper = styled.div`

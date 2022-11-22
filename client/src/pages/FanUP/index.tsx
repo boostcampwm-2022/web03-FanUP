@@ -1,7 +1,7 @@
-import Header from '@/components/UI/layout/header';
-import BottomOptionBar from '@/components/UI/organisms/FanUP/BottomOptionBar';
-import FeatureBox from '@/components/UI/organisms/FanUP/FeatureBox';
-import VideoList from '@/components/UI/organisms/FanUP/VideoList';
+import Header from '@/components/UI/organisms/header';
+import BottomOptionBar from '@organisms/BottomOptionBar';
+import FeatureBox from '@/components/UI/organisms/FeatureBox';
+import VideoList from '@/components/UI/organisms/VideoList';
 import { useMyStream } from '@/hooks/useMyStream';
 import usePreventLeave from '@/hooks/usePreventLeave';
 import { useSocket } from '@/hooks/useSocket';

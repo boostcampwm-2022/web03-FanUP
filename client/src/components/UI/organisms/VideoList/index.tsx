@@ -1,6 +1,6 @@
 import React from 'react';
-import Video from '@/components/UI/atoms/FanUP/Video';
-import { ReducerType } from '@/store/rootReducer';
+import Video from '@atoms/Video';
+import { ReducerType } from '@store/rootReducer';
 import { UserStore } from '@/types/user';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
