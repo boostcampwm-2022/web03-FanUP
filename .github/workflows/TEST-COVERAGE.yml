@@ -30,26 +30,26 @@ jobs:
       - name: Set up Node_modules
         run: |
           cd ./client
+          rm -rf node_modules
           yarn install --immutable --immutable-cache --check-cache
           cd ..
           cd ./server/gateway
+          rm -rf node_modules
           npm ci
           cd ../services/core
+          rm -rf node_modules
           npm ci
           cd ../auth
+          rm -rf node_modules
           npm ci
           cd ../ticket
+          rm -rf node_modules
           npm ci
-
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
       - name: Run Test Coverage
         run: |
-          npm install
+          rm -rf node_modules
+          npm ci
           npm run coveralls
 
       - name: Coveralls
