@@ -66,7 +66,6 @@
       "client/src/App.tsx",
       "client/src/components/icons",
       "client/src/hooks",
-      "client/src/store",
       "client/src/images",
       "client/src/mocks",
       "client/src/services",

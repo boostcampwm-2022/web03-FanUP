@@ -1,5 +1,5 @@
 import Header from '@/components/UI/layout/header';
-import Artists from '@organisms/artists';
+import ArtistsBox from '@/components/UI/organisms/artistsBox';
 import Schedules from '@organisms/schedules';
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -43,7 +43,7 @@ const Home = () => {
             </BannerWrapper>
             <MainContentWrapper>
                 <Schedules />
-                <Artists />
+                <ArtistsBox />
             </MainContentWrapper>
             {/* <TicketForm onSubmit={onSubmit}>
                 <div>
