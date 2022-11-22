@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { renderWithContext } from '@utils/test/renderWithContext';
 import CalendarHeader, { addZero, guide } from '@molecules/calendarHeader';
 import { screen } from '@testing-library/react';

@@ -53,17 +53,17 @@
       "@testing-library/jest-dom"
     ],
     "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1",
-      "^@atoms/(.*)$": "<rootDir>/src/components/UI/atoms/$1",
-      "^@molecules/(.*)$": "<rootDir>/src/components/UI/molecules/$1",
-      "^@organisms/(.*)$": "<rootDir>/src/components/UI/organisms/$1",
-      "^@icons/(.*)$": "<rootDir>/src/components/icons/$1",
-      "^@hoc/(.*)$": "<rootDir>/src/components/hoc/$1",
-      "^@images/(.*)$": "<rootDir>/src/images/$1",
-      "^@pages/(.*)$": "<rootDir>/src/pages/$1",
-      "^@style/(.*)$": "<rootDir>/src/style/$1",
-      "^@store/(.*)$": "<rootDir>/src/store/$1",
-      "^@utils/(.*)$": "<rootDir>/src/utils/$1"
+      "^@/(.*)$": "<rootDir>/client/src/$1",
+      "^@atoms/(.*)$": "<rootDir>/client/src/components/UI/atoms/$1",
+      "^@molecules/(.*)$": "<rootDir>/client/src/components/UI/molecules/$1",
+      "^@organisms/(.*)$": "<rootDir>/client/src/components/UI/organisms/$1",
+      "^@icons/(.*)$": "<rootDir>/client/src/components/icons/$1",
+      "^@hoc/(.*)$": "<rootDir>/client/src/components/hoc/$1",
+      "^@images/(.*)$": "<rootDir>/client/src/images/$1",
+      "^@pages/(.*)$": "<rootDir>/client/src/pages/$1",
+      "^@style/(.*)$": "<rootDir>/client/src/style/$1",
+      "^@store/(.*)$": "<rootDir>/client/src/store/$1",
+      "^@utils/(.*)$": "<rootDir>/client/src/utils/$1"
     },
     "testEnvironment": "jsdom",
     "coveragePathIgnorePatterns": [

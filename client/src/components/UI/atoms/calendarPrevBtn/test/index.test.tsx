@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { renderWithContext } from '@utils/test/renderWithContext';
 import CalendarPrevBtn from '@atoms/calendarPrevBtn';
 import store from '@store/index';

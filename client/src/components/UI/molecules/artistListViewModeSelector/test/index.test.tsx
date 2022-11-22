@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { render, screen } from '@testing-library/react';
 import ArtistViewModeSelector, { mode } from '@molecules/artistListViewModeSelector';
 import { renderWithContext } from '@/utils/test/renderWithContext';

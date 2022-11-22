@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { screen } from '@testing-library/react';
 import { renderWithContext } from '@utils/test/renderWithContext';
 import { makeDay, week } from '@molecules/calendarBody/utils';

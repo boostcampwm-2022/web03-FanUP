@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { renderWithContext } from '@/utils/test/renderWithContext';
 import Home from '@pages/Home';
 import { screen } from '@testing-library/react';

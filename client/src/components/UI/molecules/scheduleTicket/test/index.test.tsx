@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { render, screen } from '@testing-library/react';
 import ScheduleTicket from '@molecules/scheduleTicket';
 import { dateForm } from '@utils/dateForm';

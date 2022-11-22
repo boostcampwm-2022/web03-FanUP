@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { render, screen } from '@testing-library/react';
 import DDay from '@atoms/D_Day';
 import { get_D_Day } from '@utils/get_D_Day';
