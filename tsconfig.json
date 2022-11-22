@@ -22,17 +22,17 @@
     "jsx": "react-jsx",
     "paths": {
       "@/*": ["client/src/*"],
-      "@icons/*": ["src/components/icons/*"],
-      "@hoc/*": ["src/components/hoc/*"],
-      "@atoms/*": ["src/components/UI/atoms/*"],
-      "@molecules/*": ["src/components/UI/molecules/*"],
-      "@organisms/*": ["src/components/UI/organisms/*"],
-      "@images/*": ["src/images/*"],
-      "@pages/*": ["src/pages/*"],
-      "@style/*": ["src/style/*"],
-      "@utils/*": ["src/utils/*"],
-      "@store/*": ["src/store/*"],
-      "@types/*": ["src/types/*"]
+      "@icons/*": ["client/src/components/icons/*"],
+      "@hoc/*": ["client/src/components/hoc/*"],
+      "@atoms/*": ["client/src/components/UI/atoms/*"],
+      "@molecules/*": ["client/src/components/UI/molecules/*"],
+      "@organisms/*": ["client/src/components/UI/organisms/*"],
+      "@images/*": ["client/src/images/*"],
+      "@pages/*": ["client/src/pages/*"],
+      "@style/*": ["client/src/style/*"],
+      "@utils/*": ["client/src/utils/*"],
+      "@store/*": ["client/src/store/*"],
+      "@types/*": ["client/src/types/*"]
     }
   }
 }
