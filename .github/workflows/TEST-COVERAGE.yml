@@ -30,7 +30,7 @@ jobs:
       - name: Set up Node_modules
         run: |
           cd ./client
-          npm install
+          yarn install --immutable --immutable-cache --check-cache
           cd ..
           cd ./server/gateway
           npm ci
