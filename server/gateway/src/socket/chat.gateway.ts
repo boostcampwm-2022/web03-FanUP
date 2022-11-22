@@ -9,6 +9,13 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
+import {
+  JoinChatRoom,
+  SendMessage,
+  Welcome,
+  ReceiveMessage,
+} from 'src/types/chat.gateway';
+
 @WebSocketGateway({
   namespace: '/socket/chat',
 })
@@ -19,7 +26,10 @@ class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private room: object = {};
 
   @SubscribeMessage('join-chat-room')
-  joinRoom(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
+  joinRoom(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() data: JoinChatRoom,
+  ): void {
     const { email, roomName } = data;
 
     socket.join(roomName);
@@ -28,15 +38,20 @@ class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     } else {
       this.room[roomName] = [socket.id];
     }
-    this.server.to(roomName).emit('welcome', { email, socketID: socket.id });
+    this.server
+      .to(roomName)
+      .emit('welcome', { email, socketID: socket.id } as Welcome);
   }
 
   @SubscribeMessage('send-message')
-  sendMessage(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
+  sendMessage(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() data: SendMessage,
+  ): void {
     const { email, roomName, isArtist, message } = data;
     this.server
       .to(roomName)
-      .emit('receive-message', { email, isArtist, message });
+      .emit('receive-message', { email, isArtist, message } as ReceiveMessage);
   }
 
   // 소켓 연결이 생성되면
