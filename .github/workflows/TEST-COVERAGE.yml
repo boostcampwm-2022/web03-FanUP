@@ -36,24 +36,21 @@ jobs:
           cd ./server/gateway
           rm -rf node_modules
           npm ci
-          npm run test:cov
           cd ../services/core
           rm -rf node_modules
           npm ci
-          npm run test:cov
           cd ../auth
           rm -rf node_modules
           npm ci
-          npm run test:cov
           cd ../ticket
           rm -rf node_modules
           npm ci
-          npm run test:cov
 
       - name: Run Test Coverage
         run: |
           rm -rf node_modules
           npm ci
+          npm run coveralls
 
       - name: Coveralls
         uses: coverallsapp/github-action@master

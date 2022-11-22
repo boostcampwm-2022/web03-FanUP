@@ -4,8 +4,8 @@
   "description": "<p align=\"center\">   <a href=\"http://nestjs.com/\" target=\"blank\"><img src=\"https://nestjs.com/img/logo-small.svg\" width=\"200\" alt=\"Nest Logo\" /></a> </p>",
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit --silent",
-    "coverage": "jest",
-    "coveralls": "jest --coverage --detectOpenHandles --forceExit  && coveralls < ./coverage/lcov.info"
+    "coverage": "jest --coverage",
+    "coveralls": "jest --coverage --forceExit  && coveralls < ./coverage/lcov.info"
   },
   "author": "",
   "license": "ISC",
@@ -27,28 +27,41 @@
     "moduleFileExtensions": [
       "js",
       "json",
-      "ts",
-      "tsx"
-    ],
-    "moduleDirectories": [
-      "node_modules/",
-      "client/node_modules/",
-      "server/gateway/node_modules/",
-      "server/services/auth/node_modules/",
-      "server/services/core/node_modules/",
-      "server/services/ticket/node_modules/"
+      "ts"
     ],
     "rootDir": ".",
     "testRegex": [
-      ".spec.ts$",
-      ".e2e-spec.ts$",
-      ".test.tsx",
-      ".test.ts"
+      ".*\\.spec\\.ts$",
+      ".*\\.e2e-spec\\.ts$",
+      ".*\\.test\\.ts$"
     ],
     "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest",
-      "^.+\\.(js|jsx)$": "babel-jest"
+      "^.+\\.(t|j)s$": "ts-jest"
     },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "babel.config.js",
+      "App.tsx",
+      "coverage",
+      "dist",
+      ".d.ts",
+      ".css",
+      "config-overrides.js",
+      "reportWebVitals.ts",
+      "setupTests.ts",
+      "Routes.ts",
+      "client/src/hooks",
+      "client/src/images",
+      "client/src/mocks",
+      "client/src/services",
+      "client/src/style",
+      "client/src/types",
+      "client/src/components/icons"
+    ],
     "transformIgnorePatterns": [
       "<rootDir>/node_modules",
       "<rootDir>/client/node_modules/",
@@ -56,50 +69,6 @@
       "<rootDir>/server/services/auth/node_modules/",
       "<rootDir>/server/services/core/node_modules/",
       "<rootDir>/server/services/ticket/node_modules/"
-    ],
-    "collectCoverageFrom": [
-      "**/*.(ts|tsx)",
-      "**/*.(js|jsx)"
-    ],
-    "setupFilesAfterEnv": [
-      "@testing-library/jest-dom"
-    ],
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/client/src/$1"
-    },
-    "testEnvironment": "jsdom",
-    "coveragePathIgnorePatterns": [
-      "babel.config.js",
-      "client/config-overrides.js",
-      "client/public",
-      "client/src/App.tsx",
-      "client/src/components/icons",
-      "client/src/hooks",
-      "client/src/store",
-      "client/src/images",
-      "client/src/mocks",
-      "client/src/services",
-      "client/src/style",
-      "client/src/types",
-      "client/src/utils",
-      "client/src/react-app-env.d.ts",
-      "client/src/reportWebVitals.ts",
-      "client/src/Routes.ts",
-      "client/src/setupTests.ts",
-      "client/src/components/UI/organisms/OAuthContainer/OAuthContainer.tsx",
-      "client/src/pages/Login/index.tsx",
-      "coverage",
-      "server/gateway/dist",
-      "server/services/core/dist",
-      "server/services/auth/dist",
-      "server/services/ticket/dist",
-      "client/node_modules",
-      "server/gateway/node_modules",
-      "server/services/core/node_modules",
-      "server/services/auth/node_modules",
-      "server/services/ticket/node_modules",
-      "except.ts"
-    ],
-    "coverageDirectory": "./coverage"
+    ]
   }
 }
