@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit --silent",
     "coverage": "jest --coverage",
-    "coveralls": "jest --coverage --forceExit  && coveralls < ./coverage/lcov.info"
+    "coveralls": "jest --coverage --detectOpenHandles --forceExit  && coveralls < ./coverage/lcov.info"
   },
   "author": "",
   "license": "ISC",
