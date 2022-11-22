@@ -2,10 +2,8 @@
   "name": "fanup",
   "version": "1.0.0",
   "description": "<p align=\"center\">   <a href=\"http://nestjs.com/\" target=\"blank\"><img src=\"https://nestjs.com/img/logo-small.svg\" width=\"200\" alt=\"Nest Logo\" /></a> </p>",
-  "main": ".eslintrc.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "jest": "jest --coverage",
+    "coverage": "jest --runInBand --coverage",
     "coveralls": "jest --coverage && coveralls < ./coverage/lcov.info"
   },
   "author": "",
@@ -67,7 +65,6 @@
       "^@store/(.*)$": "<rootDir>/src/store/$1",
       "^@utils/(.*)$": "<rootDir>/src/utils/$1"
     },
-    "coverageDirectory": "./coverage",
     "testEnvironment": "jsdom",
     "coveragePathIgnorePatterns": [
       "babel.config.js",
@@ -92,11 +89,10 @@
       "server/gateway/dist",
       "server/services/core/dist",
       "server/services/auth/dist",
-      "server/services/ticket/dist"
+      "server/services/ticket/dist",
+      "except.ts"
     ],
-    "bail": 3
-  },
-  "dependencies": {
-    "whatwg-fetch": "^3.6.2"
+    "coverageDirectory": "./coverage",
+    "collectCoverage": true
   }
 }

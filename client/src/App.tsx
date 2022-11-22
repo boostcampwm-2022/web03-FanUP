@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 
 import theme from '@style/theme';
 import GlobalStyle from '@style/GlobalStyle';
-import { FanUP, Home, Login, NotFound } from './Routes';
+import { FanUP, Home, Login, NotFound, AuthCallback } from './Routes';
 
 function App() {
     return (
@@ -13,6 +13,7 @@ function App() {
             <Suspense fallback={<></>}>
                 <Routes>
                     <Route path="/login" element={<Login />} />
+                    <Route path="/auth/:domain/callback" element={<AuthCallback />} />
                     <Route path="/" element={<Home />} />
                     <Route path="/FanUP/:fanUpId" element={<FanUP />} />
                     <Route path="*" element={<NotFound />} />
