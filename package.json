@@ -4,7 +4,7 @@
   "description": "<p align=\"center\">   <a href=\"http://nestjs.com/\" target=\"blank\"><img src=\"https://nestjs.com/img/logo-small.svg\" width=\"200\" alt=\"Nest Logo\" /></a> </p>",
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit --silent",
-    "coverage": "jest --coverage --detectOpenHandles --forceExit",
+    "coverage": "jest",
     "coveralls": "jest --coverage --detectOpenHandles --forceExit  && coveralls < ./coverage/lcov.info"
   },
   "author": "",
