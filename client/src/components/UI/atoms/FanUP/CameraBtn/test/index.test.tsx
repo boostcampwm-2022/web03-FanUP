@@ -1,7 +1,6 @@
 /**
  * @jest-environment jsdom
  */
-
 import { renderWithContext } from '@/utils/test/renderWithContext';
 import { fireEvent, screen } from '@testing-library/react';
 import CameraBtn from '..';

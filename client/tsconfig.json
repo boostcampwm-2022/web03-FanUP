@@ -19,6 +19,7 @@
         "paths": {
             "@/*": ["src/*"],
             "@icons/*": ["src/components/icons/*"],
+            "@hoc/*": ["src/components/hoc/*"],
             "@atoms/*": ["src/components/UI/atoms/*"],
             "@molecules/*": ["src/components/UI/molecules/*"],
             "@organisms/*": ["src/components/UI/organisms/*"],
@@ -28,9 +29,7 @@
             "@store/*": ["src/store/*"],
             "@types/*": ["src/types/*"],
             "@style/*": ["src/style/*"],
-            "@utils/*": ["src/utils/*"],
-            "@store/*": ["src/store/*"],
-            "@types/*": ["src/types/*"]
+            "@utils/*": ["src/utils/*"]
         }
     },
     "include": ["src", "src/jest.config.js"]

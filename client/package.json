@@ -70,7 +70,17 @@
     },
     "jest": {
         "moduleNameMapper": {
-            "^@/(.*)$": "<rootDir>/src/$1"
+            "^@/(.*)$": "<rootDir>/src/$1",
+            "^@atoms/(.*)$": "<rootDir>/src/components/UI/atoms/$1",
+            "^@molecules/(.*)$": "<rootDir>/src/components/UI/molecules/$1",
+            "^@organisms/(.*)$": "<rootDir>/src/components/UI/organisms/$1",
+            "^@icons/(.*)$": "<rootDir>/src/components/icons/$1",
+            "^@hoc/(.*)$": "<rootDir>/src/components/hoc/$1",
+            "^@images/(.*)$": "<rootDir>/src/images/$1",
+            "^@pages/(.*)$": "<rootDir>/src/pages/$1",
+            "^@style/(.*)$": "<rootDir>/src/style/$1",
+            "^@store/(.*)$": "<rootDir>/src/store/$1",
+            "^@utils/(.*)$": "<rootDir>/src/utils/$1"
         }
     }
 }
