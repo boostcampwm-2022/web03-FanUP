@@ -12,12 +12,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 
-type RequestLoginDto = {
-  code: string;
-};
-
-type ResponseLoginDto = {};
-
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -41,6 +35,24 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<void> {
     const { user } = req;
+    res.cookie('jwt', 'testtest');
+    res.redirect('http://localhost:3000');
+  }
+
+  @Get('kakao')
+  @UseGuards(AuthGuard('kakao'))
+  async kakaoAuth(): Promise<void> {
+    // redirect kakao login page
+  }
+
+  @Get('kakao/callback')
+  @UseGuards(AuthGuard('kakao'))
+  async kakaoAuthCallback(
+    @Req() req: Request,
+    @Res() res: Response,
+  ): Promise<void> {
+    const { user } = req;
+    console.log(user);
     res.cookie('jwt', 'testtest');
     res.redirect('http://localhost:3000');
   }
