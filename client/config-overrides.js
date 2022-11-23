@@ -12,9 +12,10 @@ module.exports = override(
         '@organisms': path.resolve(__dirname, 'src/components/UI/organisms'),
         '@images': path.resolve(__dirname, 'src/images'),
         '@pages': path.resolve(__dirname, 'src/pages'),
-        '@style': path.resolve(__dirname, 'src/style'),
-        '@utils': path.resolve(__dirname, 'src/utils'),
+        '@services': path.resolve(__dirname, 'src/services'),
         '@store': path.resolve(__dirname, 'src/store'),
         '@types': path.resolve(__dirname, 'src/types'),
+        '@style': path.resolve(__dirname, 'src/style'),
+        '@utils': path.resolve(__dirname, 'src/utils'),
     })
 );

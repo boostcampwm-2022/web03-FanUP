@@ -1,12 +1,13 @@
-import FeatureModeSelector from '@/components/UI/atoms/FanUP/FeatureModeSelector';
-import { ReducerType } from '@/store/rootReducer';
-import { FanUpStore } from '@/types/fanUp';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import ChatBox from '../chatBox';
-import ParticipantsList from '../participantsList';
-import RoomList from '../RoomList';
+
+import { ReducerType } from '@store/rootReducer';
+import { FanUpStore } from '@/types/fanUp';
+import ParticipantsList from '@organisms/participantsList';
+import RoomList from '@/components/UI/organisms/RoomList';
+import ChatContainer from '@/components/UI/organisms/ChatContainer';
+import FeatureModeSelector from '@atoms/FanUP/FeatureModeSelector';
 
 const FeatureBoxWrapper = styled.div`
     background: #ffffff;
@@ -30,7 +31,7 @@ const CHAT_MODE = 1;
 const FeatureContent: { [key: string]: JSX.Element } = {
     '-1': <RoomList />,
     '0': <ParticipantsList />,
-    '1': <ChatBox />,
+    '1': <ChatContainer />,
 };
 
 const FeatureBox = () => {
