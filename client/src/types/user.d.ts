@@ -5,4 +5,5 @@ export interface UserStore {
     accessToken: null | string;
     expiredDate: null | string;
     myStream: MediaStream | null;
+    artistListViewMode: number;
 }

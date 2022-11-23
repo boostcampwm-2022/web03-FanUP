@@ -19,6 +19,7 @@
         "paths": {
             "@/*": ["src/*"],
             "@icons/*": ["src/components/icons/*"],
+            "@hoc/*": ["src/components/hoc/*"],
             "@atoms/*": ["src/components/UI/atoms/*"],
             "@molecules/*": ["src/components/UI/molecules/*"],
             "@organisms/*": ["src/components/UI/organisms/*"],

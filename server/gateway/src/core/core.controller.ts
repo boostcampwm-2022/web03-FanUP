@@ -1,17 +1,13 @@
 import { Controller, Get, Inject } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
 
-import { MICRO_SERVICES } from '../constants/microservices';
+import { CoreService } from './core.service';
 
 @Controller('core')
 export class CoreController {
-  constructor(
-    @Inject(MICRO_SERVICES.CORE.NAME)
-    private readonly apiClient: ClientProxy, // todo: ClientProxy, TCP 차이 알아보기
-  ) {}
+  constructor(private readonly coreService: CoreService) {}
 
   @Get()
   getApiHello() {
-    return this.apiClient.send({ cmd: 'getCoreHello' }, {});
+    return this.coreService.getApiHello();
   }
 }

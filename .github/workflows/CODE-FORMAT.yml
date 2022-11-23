@@ -2,13 +2,19 @@ name: CODE-FORMAT
 
 on:
   push:
+    paths:
+      - "server/**"
     branches:
       - main
       - dev
   pull_request:
+    paths:
+      - "server/**"
     branches:
       - main
       - dev
+    types:
+      - closed
 
 jobs:
   build:
@@ -30,6 +36,7 @@ jobs:
       - name: client
         run: |
           cd client
+          npm run format-write
           npm run format
 
       - name: gateway
