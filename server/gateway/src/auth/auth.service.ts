@@ -1,9 +1,4 @@
-import {
-  Inject,
-  Injectable,
-  OnModuleDestroy,
-  OnModuleInit,
-} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 import { MICRO_SERVICES } from '../constants/microservices';
@@ -16,6 +11,6 @@ export class AuthService {
   ) {}
 
   getAuthHello() {
-    return this.authClient.send({ cmd: 'getAuthHello' }, { text: 'testtest' });
+    return this.authClient.send({ cmd: 'getAuthHello' }, {});
   }
 }
