@@ -94,4 +94,5 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             cd ./fanup/server
-            docker-compose up -d
+            docker-compose pull
+            docker-compose up --force-recreate --build -d
