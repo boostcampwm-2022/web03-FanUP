@@ -34,9 +34,7 @@ export class AuthController {
     @Req() req: Request,
     @Res() res: Response,
   ): Promise<void> {
-    const { user } = req;
-    res.cookie('jwt', 'testtest');
-    res.redirect('http://localhost:3000');
+    this.authService.login(req, res);
   }
 
   @Get('kakao')
@@ -51,9 +49,6 @@ export class AuthController {
     @Req() req: Request,
     @Res() res: Response,
   ): Promise<void> {
-    const { user } = req;
-    console.log(user);
-    res.cookie('jwt', 'testtest');
-    res.redirect('http://localhost:3000');
+    this.authService.login(req, res);
   }
 }

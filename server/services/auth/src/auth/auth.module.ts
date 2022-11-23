@@ -10,6 +10,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { KakaoStrategy } from './strategies/kaako.strategy';
+import { UserService } from 'src/user/user.service';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { KakaoStrategy } from './strategies/kaako.strategy';
   providers: [
     AuthService,
     PrismaService,
+    UserService,
     JwtStrategy,
     JwtRefreshStrategy,
     GoogleStrategy,

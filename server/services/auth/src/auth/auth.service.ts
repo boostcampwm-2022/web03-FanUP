@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { HttpService } from '@nestjs/axios';
 import { JwtService } from '@nestjs/jwt';
-import { AxiosError } from 'axios';
-import { catchError, firstValueFrom, map } from 'rxjs';
+import { Request, Response } from 'express';
+
+import { UserDto } from 'src/user/dto/user.dto';
+import { UserService } from 'src/user/user.service';
 
 export interface LoginResponse {
   accessToken: string;
@@ -19,13 +20,17 @@ export interface LoginResponse {
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly httpService: HttpService,
+    private readonly userService: UserService,
     private readonly jwtService: JwtService,
-    private readonly config: ConfigService,
+    private readonly configService: ConfigService,
   ) {}
 
   getAuthHello(): string {
     return 'Auth server is running!';
+  }
+
+  async getAccessToken(userId: number): Promise<string> {
+    return this.jwtService.sign({ userId });
   }
 
   async getRefreshToken(userId: number): Promise<string> {
@@ -35,46 +40,21 @@ export class AuthService {
     );
   }
 
-  async getAccessToken(userId: number): Promise<string> {
-    return this.jwtService.sign({ userId });
-  }
+  async login(req: Request, res: Response): Promise<any> {
+    const loginUser = new UserDto(req.user);
 
-  async googleLogin(accessCode: string): Promise<any> {
-    const { data } = await firstValueFrom(
-      this.httpService
-        .get('https://www.googleapis.com/oauth2/v3/tokeninfo', {
-          params: {
-            id_token: accessCode,
-          },
-        })
-        .pipe(
-          map(async (response) => {
-            return response.data;
-          }),
-          catchError((error: AxiosError) => {
-            console.error(error.response.data);
-            throw error;
-          }),
-        ),
-    );
-    console.log(data);
+    let user = null;
+    try {
+      user = await this.userService.findOneByProviderInfo(
+        loginUser.provider,
+        loginUser.providerId,
+      );
+    } catch (e) {
+      user = await this.userService.create(loginUser);
+    }
 
-    return data;
-
-    // let user = null;
-    // try {
-    //   user = await this.userService.findOneByEmail(email);
-    // } catch (e) {
-    //   user = await this.userService.create({
-    //     email,
-    //     name,
-    //   });
-    // }
-
-    // return {
-    //   token: await this.getToken(user.id),
-    //   refreshToken: await this.getRefreshToken(user.id),
-    //   profile: { email, name, hd, picture },
-    // };
+    res.cookie('accessToken', await this.getAccessToken(user.id));
+    res.cookie('refreshToken', await this.getRefreshToken(user.id));
+    res.redirect(this.configService.get('DOMAIN_URL'));
   }
 }
