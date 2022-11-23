@@ -1,21 +1,23 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-
 import { MICRO_SERVICES } from '../constants/microservices';
-import { ApiController } from './api.controller';
+import { CoreController } from './core.controller';
+import { CoreService } from './core.service';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: MICRO_SERVICES.API.NAME,
+        name: MICRO_SERVICES.CORE.NAME,
         transport: Transport.TCP,
         options: {
-          port: MICRO_SERVICES.API.PORT,
+          port: MICRO_SERVICES.CORE.PORT,
         },
       },
     ]),
   ],
-  controllers: [ApiController],
+  controllers: [CoreController],
+  providers: [CoreService],
+  exports: [CoreService],
 })
-export class ApiModule {}
+export class CoreModule {}

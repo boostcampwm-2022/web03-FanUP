@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { socialLogin } from '@/utils/OAuth';
@@ -18,10 +18,10 @@ const StyledOAuthContainer = styled.div`
 
 const OAuthContainer: FC = () => {
     const OAuthCategory = {
-        NAVER: { backgroundColor: '#0eb817', color: '#FFFFFF' },
-        Google: { backgroundColor: '#FFFFFF', color: '#000000' },
-        Kakao: { backgroundColor: '#F7E600', color: '#FFFFFF' },
-        Facebook: { backgroundColor: '#445DD0', color: '#FFFFFF' },
+        naver: { title: 'NAVER', backgroundColor: '#0eb817', color: '#FFFFFF' },
+        google: { title: 'Google', backgroundColor: '#FFFFFF', color: '#000000' },
+        kakao: { title: 'Kakao', backgroundColor: '#F7E600', color: '#FFFFFF' },
+        facebook: { title: 'Facebook', backgroundColor: '#445DD0', color: '#FFFFFF' },
     };
 
     return (

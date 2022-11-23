@@ -28,7 +28,9 @@
             "@store/*": ["src/store/*"],
             "@types/*": ["src/types/*"],
             "@style/*": ["src/style/*"],
-            "@utils/*": ["src/utils/*"]
+            "@utils/*": ["src/utils/*"],
+            "@store/*": ["src/store/*"],
+            "@types/*": ["src/types/*"]
         }
     },
     "include": ["src", "src/jest.config.js"]

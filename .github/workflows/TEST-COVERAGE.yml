@@ -1,16 +1,27 @@
 name: TEST-COVERAGE
 
 on:
-  pull_request:
+  push:
+    paths:
+      - "server/**"
     branches:
       - main
       - dev
+  pull_request:
+    paths:
+      - "server/**"
+    branches:
+      - main
+      - dev
+    types:
+      - closed
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: true
       matrix:
         node-version: [18.x]
 
@@ -26,25 +37,30 @@ jobs:
       - name: Set up Node_modules
         run: |
           cd ./client
-          npm install
+          rm -rf node_modules
+          yarn install --immutable --immutable-cache --check-cache
           cd ..
           cd ./server/gateway
-          npm install
-          cd ../services/api
-          npm install
+          rm -rf node_modules
+          npm ci
+          cd ../services/core
+          rm -rf node_modules
+          npm ci
           cd ../auth
-          npm install
+          rm -rf node_modules
+          npm ci
           cd ../ticket
-          npm install
+          rm -rf node_modules
+          npm ci
 
       - name: Run Test Coverage
         continue-on-error: true
         run: |
-          npm install
+          rm -rf node_modules
+          npm ci
           npm run coveralls
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: ./coverage/lcov.info
