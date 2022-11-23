@@ -23,7 +23,6 @@ defaults:
 
 jobs:
   build-image:
-    if: ${{ github.event.pull_request.merged }}
     name: Deploy MSA
     runs-on: ubuntu-latest
     strategy:
