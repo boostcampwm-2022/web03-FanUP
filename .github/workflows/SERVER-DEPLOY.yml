@@ -2,17 +2,18 @@ name: SERVER-DEPLOY
 
 on:
   push:
-    paths:
-      - "server/**"
+    # paths:
+    #   - "server/**"
     branches:
       - main
-  pull_request:
-    paths:
-      - "server/**"
-    branches:
-      - main
-    types:
-      - closed
+      - Feat/#47-chatting-server
+  # pull_request:
+  #   paths:
+  #     - "server/**"
+  #   branches:
+  #     - main
+  #   types:
+  #     - closed
 
 defaults:
   run:
