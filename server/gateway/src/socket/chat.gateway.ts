@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -8,6 +9,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { AppService } from '../app.service';
 
 import {
   JoinChatRoom,
@@ -18,11 +20,16 @@ import {
 
 @WebSocketGateway({
   namespace: '/socket/chat',
+  cors: {
+    origin: '*',
+    credential: true,
+  },
 })
 class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
+  private readonly logger = new Logger(AppService.name);
   private room: object = {};
 
   @SubscribeMessage('join-chat-room')
@@ -31,6 +38,7 @@ class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() data: JoinChatRoom,
   ): void {
     const { email, roomName } = data;
+    this.logger.log('join-chat-room');
 
     socket.join(roomName);
     if (this.room[roomName]) {
@@ -48,6 +56,7 @@ class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() socket: Socket,
     @MessageBody() data: SendMessage,
   ): void {
+    this.logger.log('send-message');
     const { email, roomName, isArtist, message } = data;
     this.server
       .to(roomName)
