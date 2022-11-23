@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Profile } from 'passport-google-oauth20';
 
-import { RequestLoginDto } from '../dto/RequestLoginDto';
+import { UserDto } from '../../user/dto/user.dto';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -20,7 +20,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     accessToken: string,
     refreshToken: string,
     profile: Profile,
-  ): RequestLoginDto {
+  ): UserDto {
     const { id, name, emails } = profile;
 
     return {
