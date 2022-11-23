@@ -12,7 +12,7 @@ datasource db {
 
 model User {
   id          Int     @default(autoincrement()) @id
-  providerId  String  @unique
+  providerId  String
   provider    String
   email       String?
   nickname    String?
