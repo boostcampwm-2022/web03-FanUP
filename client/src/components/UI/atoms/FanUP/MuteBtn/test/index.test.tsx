@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import React from 'react';
 import { renderWithContext } from '@/utils/test/renderWithContext';
 import { fireEvent, screen } from '@testing-library/react';

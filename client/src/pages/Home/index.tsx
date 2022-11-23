@@ -1,5 +1,8 @@
+import ArtistsBox from '@organisms/artistsBox';
+import Calendar from '@organisms/calendar';
+import Schedules from '@organisms/schedules';
 import Header from '@/components/UI/layout/header';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -14,32 +17,40 @@ const BannerWrapper = styled.div`
     }
 `;
 
-const TicketForm = styled.form`
+const ArtistCalendarWrapper = styled.div`
+    background: ${({ theme }) => theme.LIGHT_GRAY};
     width: 100%;
+    height: calc(100vh - 75px);
+    padding: 40px 0;
+`;
+
+const UserContentsWrapper = styled.div`
     display: flex;
-    justify-content: center;
+    gap: 20px;
+    padding: 20px 30px;
 `;
 
 const Home = () => {
-    const navigate = useNavigate();
-    const inputRef = useRef<HTMLInputElement>(null);
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        navigate(`/FanUP/${inputRef.current?.value}`);
-    };
+    const [isArtist, setIsArtist] = useState(false);
+
     return (
         <>
             <Header />
-            <BannerWrapper>
-                <img src="/banner.png" alt="banner" />
-            </BannerWrapper>
-            <TicketForm onSubmit={onSubmit}>
-                <div>
-                    <label>티켓번호 입력</label>
-                    <input ref={inputRef} />
-                </div>
-                <button>입력</button>
-            </TicketForm>
+            {isArtist ? (
+                <ArtistCalendarWrapper>
+                    <Calendar />
+                </ArtistCalendarWrapper>
+            ) : (
+                <>
+                    <BannerWrapper>
+                        <img src="/banner.png" alt="banner" />
+                    </BannerWrapper>
+                    <UserContentsWrapper>
+                        <Schedules />
+                        <ArtistsBox />
+                    </UserContentsWrapper>
+                </>
+            )}
         </>
     );
 };

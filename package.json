@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "description": "<p align=\"center\">   <a href=\"http://nestjs.com/\" target=\"blank\"><img src=\"https://nestjs.com/img/logo-small.svg\" width=\"200\" alt=\"Nest Logo\" /></a> </p>",
   "scripts": {
-    "coverage": "jest --runInBand --coverage",
-    "coveralls": "jest --coverage && coveralls < ./coverage/lcov.info"
+    "test": "jest --detectOpenHandles --forceExit --silent",
+    "coverage": "jest --coverage --detectOpenHandles",
+    "coveralls": "jest --coverage --detectOpenHandles --forceExit  && coveralls < ./coverage/lcov.info"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.18.6",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
@@ -28,62 +30,66 @@
       "ts",
       "tsx"
     ],
-    "moduleDirectories": [
-      "node_modules"
-    ],
     "rootDir": ".",
     "testRegex": [
-      ".spec.ts$",
-      ".e2e-spec.ts$",
-      ".test.tsx",
-      ".test.ts"
+      ".*\\.spec\\.ts$",
+      ".*\\.e2e-spec\\.ts$",
+      ".*\\.test\\.tsx$"
     ],
     "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest",
-      "^.+\\.(js|jsx)$": "babel-jest"
+      "^.+\\.(ts|tsx|js|jsx)$": "ts-jest"
     },
-    "transformIgnorePatterns": [
-      "client/node_modules/"
-    ],
     "collectCoverageFrom": [
-      "**/*.(ts|tsx)",
-      "**/*.(js|jsx)"
-    ],
-    "setupFilesAfterEnv": [
-      "@testing-library/jest-dom"
+      "**/*.(t|j)s",
+      "**/*.(t|j)sx"
     ],
     "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/client/src/$1"
+      "^@/(.*)$": "<rootDir>/client/src/$1",
+      "^@atoms/(.*)$": "<rootDir>/client/src/components/UI/atoms/$1",
+      "^@molecules/(.*)$": "<rootDir>/client/src/components/UI/molecules/$1",
+      "^@organisms/(.*)$": "<rootDir>/client/src/components/UI/organisms/$1",
+      "^@icons/(.*)$": "<rootDir>/client/src/components/icons/$1",
+      "^@hoc/(.*)$": "<rootDir>/client/src/components/hoc/$1",
+      "^@images/(.*)$": "<rootDir>/client/src/images/$1",
+      "^@pages/(.*)$": "<rootDir>/client/src/pages/$1",
+      "^@style/(.*)$": "<rootDir>/client/src/style/$1",
+      "^@store/(.*)$": "<rootDir>/client/src/store/$1",
+      "^@utils/(.*)$": "<rootDir>/client/src/utils/$1"
     },
     "testEnvironment": "jsdom",
     "coveragePathIgnorePatterns": [
+      "jest.setup.js",
       "babel.config.js",
-      "client/config-overrides.js",
-      "client/public",
-      "client/src/App.tsx",
-      "client/src/components/icons",
+      "App.tsx",
+      "coverage",
+      "dist",
+      ".d.ts",
+      ".css",
+      "config-overrides.js",
+      "reportWebVitals.ts",
+      "setupTests.ts",
+      "Routes.ts",
       "client/src/hooks",
-      "client/src/store",
       "client/src/images",
       "client/src/mocks",
       "client/src/services",
       "client/src/style",
       "client/src/types",
       "client/src/utils",
-      "client/src/react-app-env.d.ts",
-      "client/src/reportWebVitals.ts",
-      "client/src/Routes.ts",
-      "client/src/setupTests.ts",
-      "client/src/components/UI/organisms/OAuthContainer/OAuthContainer.tsx",
-      "client/src/pages/Login/index.tsx",
-      "coverage",
-      "server/gateway/dist",
-      "server/services/core/dist",
-      "server/services/auth/dist",
-      "server/services/ticket/dist",
-      "except.ts"
+      "client/src/components/icons",
+      "Login",
+      "OAuthContainer"
     ],
-    "coverageDirectory": "./coverage",
-    "collectCoverage": true
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules",
+      "<rootDir>/client/node_modules/",
+      "<rootDir>/server/gateway/node_modules/",
+      "<rootDir>/server/services/auth/node_modules/",
+      "<rootDir>/server/services/core/node_modules/",
+      "<rootDir>/server/services/ticket/node_modules/"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ]
   }
 }
