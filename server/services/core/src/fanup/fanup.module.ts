@@ -1,4 +1,9 @@
 import { Module } from '@nestjs/common';
+import { FanupService } from './fanup.service';
+import { FanupController } from './fanup.controller';
 
-@Module({})
-export class FanUPModule {}
+@Module({
+  controllers: [FanupController],
+  providers: [FanupService]
+})
+export class FanupModule {}
