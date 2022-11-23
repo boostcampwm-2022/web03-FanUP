@@ -3,6 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Profile } from 'passport-kakao';
 
+import { RequestLoginDto } from '../dto/RequestLoginDto';
+
 @Injectable()
 export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
   constructor(readonly config: ConfigService) {
@@ -12,13 +14,17 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     });
   }
 
-  validate(accessToken: string, refreshToken: string, profile: Profile) {
+  validate(
+    accessToken: string,
+    refreshToken: string,
+    profile: Profile,
+  ): RequestLoginDto {
     const { provider, id, displayName, _json } = profile;
-    console.log(profile);
+
     return {
       provider: provider,
       providerId: id,
-      name: displayName,
+      nickname: displayName,
       email: _json.kakao_account.email,
     };
   }
