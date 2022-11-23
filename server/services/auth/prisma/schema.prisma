@@ -11,9 +11,9 @@ datasource db {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  token String @unique
-  provider String
-  email String?
-  nickname  String?
+  id          Int     @default(autoincrement()) @id
+  providerId  String  @unique
+  provider    String
+  email       String?
+  nickname    String?
 }
