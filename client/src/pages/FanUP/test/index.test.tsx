@@ -3,7 +3,7 @@
  */
 import { renderWithContext } from '@/utils/test/renderWithContext';
 import { screen } from '@testing-library/react';
-import FanUP from '..';
+import FanUP from '../index';
 import { MOCK_FN } from '@/utils/test/mockFn';
 
 describe('<FanUp />', () => {

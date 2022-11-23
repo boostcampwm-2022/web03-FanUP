@@ -11,12 +11,12 @@ describe('<FeatureBox/>', () => {
         expect(screen.getByTestId('clockIcon')).toBeInTheDocument();
         expect(screen.getByTestId('chatIcon')).toBeInTheDocument();
         expect(screen.getByTestId('participantsIcon')).toBeInTheDocument();
-        expect(screen.getByTestId('chatBox')).toBeInTheDocument();
+        expect(screen.getByTestId('chatContainer')).toBeInTheDocument();
     });
 
     it('interaction test', () => {
         renderWithContext(<FeatureBox />);
-        expect(screen.getByTestId('chatBox')).toBeInTheDocument();
+        expect(screen.getByTestId('chatContainer')).toBeInTheDocument();
         fireEvent.click(screen.getByTestId('참여자목록'));
         expect(screen.getByTestId('participantsList')).toBeInTheDocument();
         fireEvent.click(screen.getByTestId('시간별방리스트'));

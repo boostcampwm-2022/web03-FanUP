@@ -24,10 +24,14 @@
                     ["@", "./src"],
                     ["@icons", "./src/components/icons"],
                     ["@atoms", "./src/components/UI/atoms"],
+                    ["@molecules", "./src/components/UI/molecules"],
                     ["@organisms", "./src/components/UI/organisms"],
                     ["@images", "./src/images"],
                     ["@pages", "./src/pages"],
+                    ["@services", "./src/services"],
+                    ["@store", "./src/store"],
                     ["@style", "./src/style"],
+                    ["@types", "./src/types"],
                     ["@utils", "./src/utils"]
                 ]
             }

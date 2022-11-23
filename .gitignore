@@ -1,2 +1,4 @@
 node_modules
-coverage
+coverage/lcov-report
+coverage/clover.xml
+coverage/coverage-final.json
