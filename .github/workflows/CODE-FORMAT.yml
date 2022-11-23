@@ -2,14 +2,10 @@ name: CODE-FORMAT
 
 on:
   push:
-    paths:
-      - "server/**"
     branches:
       - main
       - dev
   pull_request:
-    paths:
-      - "server/**"
     branches:
       - main
       - dev
