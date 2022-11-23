@@ -33,7 +33,7 @@ jobs:
             image: jinsungguri/FanUP-gateway
           - dockerfile: ./server/services/auth/Dockerfile
             image: jinsungguri/FanUP-auth
-          - dockerfile: ./server/services/api/Dockerfile
+          - dockerfile: ./server/services/core/Dockerfile
             image: jinsungguri/FanUP-core
           - dockerfile: ./server/services/ticket/Dockerfile
             image: jinsungguri/FanUP-ticket
