@@ -7,7 +7,11 @@ interface StyledProps {
     isArtist: boolean;
 }
 
-type Props = ChatMessage;
+interface Props {
+    isArtist: boolean;
+    email: string;
+    message: string;
+}
 
 const StyledChat = styled('div')<StyledProps>`
     display: flex;
@@ -30,12 +34,12 @@ const Content = styled('div')<StyledProps>`
     max-width: 75%;
 `;
 
-const Chat: FC<Props> = ({ nickname, isArtist, content }) => {
+const Chat: FC<Props> = ({ email, isArtist, message }) => {
     return (
         <StyledChat isArtist={isArtist}>
-            <Nickname>{nickname}</Nickname>
+            <Nickname>{email}</Nickname>
             <Content isArtist={isArtist}>
-                <span> {content}</span>
+                <span> {message}</span>
             </Content>
         </StyledChat>
     );

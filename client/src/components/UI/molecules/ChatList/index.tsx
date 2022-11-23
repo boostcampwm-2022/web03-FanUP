@@ -24,13 +24,8 @@ const StyledChatList = styled.div`
 const ChatList: FC<Props> = ({ chatData }) => {
     return (
         <StyledChatList>
-            {chatData.map(({ nickname, isArtist, content }, idx) => (
-                <Chat
-                    key={content + idx}
-                    isArtist={isArtist}
-                    nickname={nickname}
-                    content={content}
-                />
+            {chatData.map(({ email, isArtist, message }, idx) => (
+                <Chat key={idx} isArtist={isArtist} email={email} message={message} />
             ))}
         </StyledChatList>
     );
