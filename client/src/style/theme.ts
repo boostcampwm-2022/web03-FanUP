@@ -5,6 +5,7 @@ const theme: DefaultTheme = {
     PRIMARY_LIGHT: '#E7D6FF',
     SECONDARY: '#FCEDBD',
     DARK_GRAY: '#929292',
+    MEDIUM_GRAY: '#D2D2D2',
     LIGHT_GRAY: '#F5F5F5',
     PINK: '#FF6666',
 };

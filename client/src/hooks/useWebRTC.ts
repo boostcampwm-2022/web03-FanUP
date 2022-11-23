@@ -1,7 +1,9 @@
-import { ReducerType } from '@/store/rootReducer';
+import { initializeMyStream } from '@/store/user';
 import { UserStore } from '@/types/user';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { ReducerType } from '@store/rootReducer';
+
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useSocket } from './useSocket';
 
@@ -24,6 +26,7 @@ export const useWebRTC = (): [
     const socket = useSocket(fanUpId as string);
     const peerConnections = useRef<{ [key: string]: RTCPeerConnection }>({});
     const { myStream } = useSelector<ReducerType, UserStore>((state) => state.userSlice);
+    const dispatch = useDispatch();
 
     const createPeerConnection = (socketID: string) => {
         try {
@@ -80,10 +83,8 @@ export const useWebRTC = (): [
         setUsers((prev) => prev.filter((data) => data.socketID !== socketID));
     };
 
-    const unMount = (e: BeforeUnloadEvent) => {
+    const unMount = () => {
         setUsers([]);
-        console.log(socket);
-        socket.emit('leave_room', fanUpId);
         socket.off('welcome', welcomeCallback);
         socket.off('offer', offerCallback);
         socket.off('answer', answerCallback);
@@ -93,11 +94,7 @@ export const useWebRTC = (): [
             peerConnections.current[key].close();
         });
         peerConnections.current = {};
-        console.log('unMountInBeforeUnLoad');
-        console.log(fanUpId);
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        e.returnValue = '';
+        dispatch(initializeMyStream());
     };
 
     useEffect(() => {
@@ -111,20 +108,7 @@ export const useWebRTC = (): [
         socket.on('ice', iceCallback);
         socket.on('leave', leaveCallback);
         return () => {
-            console.log(socket);
-            console.log('unMountInUseEffect');
-            console.log(fanUpId);
-            setUsers([]);
-            socket.emit('leave_room', fanUpId);
-            socket.off('welcome', welcomeCallback);
-            socket.off('offer', offerCallback);
-            socket.off('answer', answerCallback);
-            socket.off('ice', iceCallback);
-            socket.off('leave', leaveCallback);
-            Object.keys(peerConnections.current).forEach((key) => {
-                peerConnections.current[key].close();
-            });
-            peerConnections.current = {};
+            unMount();
         };
     }, [myStream]);
 
@@ -133,7 +117,7 @@ export const useWebRTC = (): [
         return () => {
             window.removeEventListener('unload', unMount);
         };
-    }, [socket]);
+    }, []);
 
     return [users, peerConnections];
 };

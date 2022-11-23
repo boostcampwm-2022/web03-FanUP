@@ -6,13 +6,13 @@ on:
       - "server/**"
     branches:
       - main
-      - dev
   pull_request:
     paths:
       - "server/**"
     branches:
       - main
-      - dev
+    types:
+      - closed
 
 defaults:
   run:
@@ -20,7 +20,6 @@ defaults:
 
 jobs:
   build-image:
-    if: github.event.pull_request.merged == true
     name: Deploy MSA
     runs-on: ubuntu-latest
     strategy:
@@ -31,7 +30,7 @@ jobs:
             image: jinsungguri/FanUP-gateway
           - dockerfile: ./server/services/auth/Dockerfile
             image: jinsungguri/FanUP-auth
-          - dockerfile: ./server/services/api/Dockerfile
+          - dockerfile: ./server/services/core/Dockerfile
             image: jinsungguri/FanUP-core
           - dockerfile: ./server/services/ticket/Dockerfile
             image: jinsungguri/FanUP-ticket
@@ -92,4 +91,5 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             cd ./fanup/server
-            docker-compose up -d
+            docker-compose pull
+            docker-compose up --force-recreate --build -d
