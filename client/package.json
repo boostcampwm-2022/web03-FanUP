@@ -24,6 +24,8 @@
         "react-redux": "^8.0.5",
         "react-router-dom": "^6.4.3",
         "react-scripts": "5.0.1",
+        "react-slick": "^0.29.0",
+        "slick-carousel": "^1.8.1",
         "socket.io-client": "^4.5.3",
         "styled-components": "^5.3.6",
         "styled-reset": "^4.4.2",
@@ -56,6 +58,7 @@
         ]
     },
     "devDependencies": {
+        "@types/react-slick": "^0.23.10",
         "@types/styled-components": "^5.1.26",
         "@typescript-eslint/eslint-plugin": "^5.42.1",
         "@typescript-eslint/parser": "^5.42.1",
