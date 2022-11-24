@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PrevBtnIcon = () => {
+const PrevBtnIcon = ({ stroke }: { stroke: string }) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -14,7 +14,7 @@ const PrevBtnIcon = () => {
                     d="M10.264.18-.09,10.332,10.264,20.18"
                     transform="translate(0.09 -0.18)"
                     fill="none"
-                    stroke="#333d4b"
+                    stroke={stroke}
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"

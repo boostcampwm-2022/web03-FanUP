@@ -1,14 +1,22 @@
-import { dateForm } from '@/utils/dateForm';
-import React from 'react';
+import { Ticket } from '@/types/ticket';
+import { dateForm } from '@utils/dateForm';
+import React, { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { StringLiteral } from 'typescript';
-import TicketBarCode from '../../atoms/TicketBarCode';
+import TicketBarCode from '@atoms/TicketBarCode';
 
 const TodayTicketWrapper = styled.div`
     cursor: pointer;
+    white-space: nowrap;
+    height: 220px;
+    width: fit-content;
     border-radius: 14px;
     display: flex;
-    box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.12);
+    margin-right: 20px;
+    background: white;
+    padding-right: 20px;
+    border: 1px solid ${({ theme }) => theme.MEDIUM_GRAY};
+    overflow: hidden;
 `;
 
 const Contents = styled.div`
@@ -20,8 +28,9 @@ const LeftContent = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 20px;
-    //padding-right: 20px;
+    margin: 20px;
+    margin-right: 0px;
+    padding-right: 20px;
     border-right: 1px solid ${({ theme }) => theme.MEDIUM_GRAY};
     h2 {
         font-size: 17px;
@@ -46,25 +55,26 @@ const Price = styled.div`
 
 const RightContent = styled.div`
     padding: 20px;
+    padding-right: 0px;
     display: flex;
     flex-direction: column;
     gap: 20px;
 `;
 
 interface Props {
-    ticket: {
-        date: Date;
-        time: string;
-        description: string;
-        name: string;
-        price: number;
-    };
+    ticket: Ticket;
 }
 
 const TodayTicket = ({ ticket }: Props) => {
+    const navigate = useNavigate();
+
+    const gotoTicket = useCallback(() => {
+        navigate(`/ticket/${ticket.id}`);
+    }, [navigate, ticket]);
+
     return (
-        <TodayTicketWrapper>
-            <TicketBarCode width="20px" />
+        <TodayTicketWrapper onClick={gotoTicket}>
+            <TicketBarCode width="20px" height="220px" />
             <Contents>
                 <LeftContent>
                     <div>

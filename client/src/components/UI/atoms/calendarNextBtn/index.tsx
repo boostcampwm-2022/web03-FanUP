@@ -20,7 +20,7 @@ const CalendarNextBtn = () => {
 
     return (
         <button data-testid="calendarNextBtn" onClick={clickNext}>
-            <NextBtnIcon />
+            <NextBtnIcon stroke="#333d4b" />
         </button>
     );
 };

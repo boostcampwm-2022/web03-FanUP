@@ -4,13 +4,33 @@ import TodayTicket from '@molecules/todayTicket';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled from 'styled-components';
+import PrevBtnIcon from '@icons/prev';
+import NextBtnIcon from '@icons/next';
+import { dummyTickets } from '@utils/dummy';
 
 const TodayTicketsWrapper = styled.div`
     position: relative;
     margin-bottom: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
 `;
 
-const TicketsWrapper = styled.div``;
+const HandleButton = styled.button<{ left?: string; right?: string }>`
+    border: none;
+    background: ${({ theme }) => theme.SECONDARY};
+    border-radius: 100%;
+    cursor: pointer;
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    bottom: 100px;
+    left: ${({ left }) => left || null};
+    right: ${({ right }) => right || null};
+    svg {
+        width: 7.5px;
+        height: 15px;
+    }
+`;
 
 const TodayTickets = () => {
     const sliderRef = useRef<any>(null);
@@ -35,21 +55,16 @@ const TodayTickets = () => {
     }, []);
 
     const settings = {
-        dots: true,
+        dots: false,
         autoplay: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
+        slidesToShow: 4,
+        slidesToScroll: 3,
     };
 
     return (
         <TodayTicketsWrapper>
-            {/* <TicketsWrapper>
-                {dummyTickets.map((ticket, idx) => (
-                    <TodayTicket key={idx + ticket.name} ticket={ticket} />
-                ))}
-            </TicketsWrapper> */}
             <Slider
                 {...settings}
                 ref={sliderRef}
@@ -57,40 +72,17 @@ const TodayTickets = () => {
                 afterChange={handleAfterChange}
             >
                 {dummyTickets.map((ticket, idx) => (
-                    <div key={idx}>{idx}</div>
-                    // <TodayTicket key={idx} data-index={idx} ticket={ticket} />
+                    <TodayTicket key={idx} data-index={idx} ticket={ticket} />
                 ))}
             </Slider>
+            <HandleButton left="0px" onClick={handlePrevCarousel}>
+                <PrevBtnIcon stroke="#9E57FF" />
+            </HandleButton>
+            <HandleButton right="5px" onClick={handleNextCarousel}>
+                <NextBtnIcon stroke="#9E57FF" />
+            </HandleButton>
         </TodayTicketsWrapper>
     );
 };
-
-const dummyTickets = [
-    { date: new Date(), price: 3, time: '13:00', name: 'BTS', description: '모두모두모여라' },
-    { date: new Date(), price: 3, time: '15:00', name: 'IZ*ONE', description: '모두모두모여라' },
-    { date: new Date(), price: 3, time: '12:00', name: 'NMIXX', description: '모두모두모여라' },
-    {
-        date: new Date(),
-        price: 3,
-        time: '09:00',
-        name: 'FROMIS*NINE',
-        description: '모두모두모여라',
-    },
-    { date: new Date(), price: 3, time: '15:00', name: 'BTS', description: '모두모두모여라' },
-    { date: new Date(), price: 3, time: '20:00', name: 'NewJeans', description: '모두모두모여라' },
-    { date: new Date(), price: 3, time: '15:00', name: 'IZ*ONE', description: '모두모두모여라' },
-    { date: new Date(), price: 3, time: '14:00', name: 'BTS', description: '모두모두모여라' },
-    {
-        date: new Date(),
-        price: 3,
-        time: '12:00',
-        name: 'FROMIS*NINE',
-        description: '모두모두모여라',
-    },
-    { date: new Date(), price: 3, time: '16:00', name: 'NewJeans', description: '모두모두모여라' },
-    { date: new Date(), price: 3, time: '18:00', name: 'IZ*ONE', description: '모두모두모여라' },
-    { date: new Date(), price: 3, time: '11:00', name: 'NMIXX', description: '모두모두모여라' },
-    { date: new Date(), price: 3, time: '13:00', name: 'IZ*ONE', description: '모두모두모여라' },
-];
 
 export default TodayTickets;

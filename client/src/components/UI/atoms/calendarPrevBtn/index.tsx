@@ -20,7 +20,7 @@ const CalendarPrevBtn = () => {
 
     return (
         <button data-testid="calendarPrevBtn" onClick={clickPrev}>
-            <PrevBtnIcon />
+            <PrevBtnIcon stroke="#333d4b" />
         </button>
     );
 };
