@@ -9,27 +9,25 @@ export interface ChatMessage {
     roomName: string;
     isArtist: boolean;
     email: string;
+    nickname: string;
     message: string;
 }
 
 const dummyChatData: ChatMessage[] = [
-    { email: '장원영', roomName: '슈크림붕어빵', isArtist: true, message: '안녕하세요 ㅎㅎ' },
-    { email: '성은', roomName: '슈크림붕어빵', isArtist: false, message: '예쁘다~' },
     {
-        email: '진성',
+        roomName: '슈크림붕어빵',
+        isArtist: true,
+        email: 'wonyoung@gmail.com',
+        nickname: '장원영',
+        message: '안녕하세요',
+    },
+    {
         roomName: '슈크림붕어빵',
         isArtist: false,
-        message:
-            'Custom IntegrationDevelop a fully customizable live audio-video app for any platform within a few hours.',
+        email: 'seongeun@gmail.com',
+        nickname: '성은',
+        message: 'Hello',
     },
-    { email: '장원영', roomName: '슈크림붕어빵', isArtist: true, message: '안녕하세요 ㅎㅎ' },
-    { email: '성은', roomName: '슈크림붕어빵', isArtist: false, message: '예쁘다~' },
-    { email: '장원영', roomName: '슈크림붕어빵', isArtist: true, message: '안녕하세요 ㅎㅎ' },
-    { email: '성은', roomName: '슈크림붕어빵', isArtist: false, message: '예쁘다~' },
-    { email: '장원영', roomName: '슈크림붕어빵', isArtist: true, message: '안녕하세요 ㅎㅎ' },
-    { email: '성은', roomName: '슈크림붕어빵', isArtist: false, message: '예쁘다~' },
-    { email: '장원영', roomName: '슈크림붕어빵', isArtist: true, message: '안녕하세요 ㅎㅎ' },
-    { email: '성은', roomName: '슈크림붕어빵', isArtist: false, message: '예쁘다~' },
 ];
 
 const StyledChatContainer = styled.div`
