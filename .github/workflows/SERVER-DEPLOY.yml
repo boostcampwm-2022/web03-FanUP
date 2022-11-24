@@ -93,7 +93,7 @@ jobs:
           script: |
             cd ./fanup/server
             docker-compose pull
-            docker run -p 3001:3001 -p 4001:4001 jinsungguri/fanup-auth:latest
-            docker run -p 3002:3002 jinsungguri/fanup-core:latest
-            docker run -p 3003:3003 jinsungguri/fanup-ticket:latest
-            docker run -p 3000:3000 jinsungguri/fanup-gateway:latest
+            docker run -d --name "fanup-auth" -p 3001:3001 -p 4001:4001 jinsungguri/fanup-auth:latest
+            docker run -d --name "fanup-core" -p 3002:3002 jinsungguri/fanup-core:latest
+            docker run -d --name "fanup-ticket" -p 3003:3003 jinsungguri/fanup-ticket:latest
+            docker run -d --name "fanup-gateway" -p 3000:3000 jinsungguri/fanup-gateway:latest

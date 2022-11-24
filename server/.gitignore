@@ -3,6 +3,7 @@
 **/*/node_modules
 **/coverage
 **/*/.env
+**/*/prisma/migrations
 
 # Logs
 logs
