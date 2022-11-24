@@ -5,6 +5,7 @@ import InputForm from '@molecules/InputForm';
 import ChatList from '@molecules/ChatList';
 import useSocket2 from '@hooks/useSocket2';
 import SocketIO from '@hooks/socket';
+import { useCallback } from 'react';
 
 export interface ChatMessage {
     roomName: string;
@@ -91,11 +92,13 @@ const ChatContainer: FC = () => {
         });
     }, []);
 
-    const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        console.log('submit');
-        socket.sendMessage({ message: message });
-    };
+    const handleSubmit = useCallback(
+        (e: React.FormEvent<HTMLButtonElement>) => {
+            e.preventDefault();
+            socket.sendMessage({ message: message });
+        },
+        [message]
+    );
 
     return (
         <StyledChatContainer data-testid="chatContainer">
