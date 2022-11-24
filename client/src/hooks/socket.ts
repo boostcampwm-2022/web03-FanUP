@@ -3,16 +3,21 @@ import { io, Socket } from 'socket.io-client';
 export default class SocketIO {
     instance: Socket | null;
     ENDPOINT: string;
+    receivedData: any;
 
     constructor() {
         this.instance = null;
         this.ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/socket/chat`;
+        this.connect();
+        this.receivedData = [];
     }
 
     connect = () => {
         if (this.instance) return;
 
         this.instance = io(this.ENDPOINT);
+        this.joinRoom();
+        return this.instance;
     };
 
     joinRoom = () => {
@@ -42,5 +47,12 @@ export default class SocketIO {
         };
 
         this.instance?.emit('send-message', data);
+    };
+
+    receiveMessage = () => {
+        this.instance?.on('receive-message', (data: any) => {
+            console.log(data);
+            this.receivedData = data;
+        });
     };
 }

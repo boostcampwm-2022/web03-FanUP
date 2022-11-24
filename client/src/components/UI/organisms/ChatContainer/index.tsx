@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import InputForm from '@molecules/InputForm';
 import ChatList from '@molecules/ChatList';
 import useSocket2 from '@hooks/useSocket2';
+import SocketIO from '@hooks/socket';
 
 export interface ChatMessage {
     roomName: string;
@@ -28,6 +29,48 @@ const dummyChatData: ChatMessage[] = [
         nickname: '성은',
         message: 'Hello',
     },
+    {
+        roomName: '슈크림붕어빵',
+        isArtist: true,
+        email: 'wonyoung@gmail.com',
+        nickname: '장원영',
+        message: '안녕하세요',
+    },
+    {
+        roomName: '슈크림붕어빵',
+        isArtist: false,
+        email: 'seongeun@gmail.com',
+        nickname: '성은',
+        message: 'Hello',
+    },
+    {
+        roomName: '슈크림붕어빵',
+        isArtist: true,
+        email: 'wonyoung@gmail.com',
+        nickname: '장원영',
+        message: '안녕하세요',
+    },
+    {
+        roomName: '슈크림붕어빵',
+        isArtist: false,
+        email: 'seongeun@gmail.com',
+        nickname: '성은',
+        message: 'Hello',
+    },
+    {
+        roomName: '슈크림붕어빵',
+        isArtist: true,
+        email: 'wonyoung@gmail.com',
+        nickname: '장원영',
+        message: '------끝------',
+    },
+    {
+        roomName: '슈크림붕어빵',
+        isArtist: false,
+        email: 'seongeun@gmail.com',
+        nickname: '성은',
+        message: '==============================',
+    },
 ];
 
 const StyledChatContainer = styled.div`
@@ -36,35 +79,22 @@ const StyledChatContainer = styled.div`
 `;
 
 const ChatContainer: FC = () => {
-    const socket = useSocket2();
+    const socket = new SocketIO();
     const [message, setMessage] = useState('');
     const [chatData, setChatData] = useState<ChatMessage[]>(dummyChatData);
 
     useEffect(() => {
-        if (!socket) return;
-
-        socket.on('receive-message', (data: any) => {
-            setChatData([...chatData, data]);
+        if (!socket.instance) return;
+        socket.instance.on('receive-message', (data: any) => {
+            console.log(data);
+            setChatData((current) => [...current, data]);
         });
-    }, [socket]);
+    }, []);
 
     const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
-
-        const URLSearch = new URLSearchParams(location.search);
-        const userId = URLSearch.get('userId');
-
-        if (!socket) return;
-
-        const data = {
-            email: userId,
-            roomName: '슈크림붕어빵',
-            isArtist: false,
-            message: message,
-        };
-
-        console.log('message 전송', data);
-        socket.emit('send-message', data);
+        console.log('submit');
+        socket.sendMessage({ message: message });
     };
 
     return (
