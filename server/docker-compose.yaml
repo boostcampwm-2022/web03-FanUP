@@ -12,6 +12,7 @@ services:
     image: jinsungguri/fanup-auth:latest
     ports:
       - '3001:3001'
+      - '4001:4001'
     networks:
       - backend
 
@@ -19,11 +20,15 @@ services:
     image: jinsungguri/fanup-core:latest
     ports:
       - '3002:3002'
+      - '4002:4002'
+    networks:
+      - backend
 
   ticket:
     image: jinsungguri/fanup-ticket:latest
     ports:
       - '3003:3003'
+      - '4003:4003'
     networks:
       - backend
 
