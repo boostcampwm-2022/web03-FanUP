@@ -1,5 +1,5 @@
-import ExitIcon from '@/components/icons/exit';
-import React from 'react';
+import ExitIcon from '@icons/ExitIcon';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 
 const ExitBtnWrapper = styled.button`
@@ -14,4 +14,4 @@ const ExitBtn = () => {
     );
 };
 
-export default ExitBtn;
+export default memo(ExitBtn);

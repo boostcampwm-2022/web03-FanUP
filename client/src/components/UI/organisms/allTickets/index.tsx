@@ -16,7 +16,7 @@ const AllTickets = () => {
     return (
         <AllTicketsWrapper>
             {dummyTickets.map((ticket, idx) => (
-                <AllTicket ticket={ticket} key={ticket.name + ticket.description} />
+                <AllTicket ticket={ticket} key={ticket.artistName + ticket.description} />
             ))}
         </AllTicketsWrapper>
     );

@@ -1,8 +1,15 @@
 export interface Ticket {
-    date: Date;
-    time: string;
+    ticketingDate: Date;
+    ticketingTime: string;
     description: string;
-    name: string;
+    artistName: string;
     price: number;
-    id: number;
+    ticketId: number;
+    userCount: number;
+    fanUpDate: Date;
+    fanUpTime: string;
 }
+
+export interface TodayTicket extends Ticket {}
+
+export interface DetailTicket extends Ticket {}

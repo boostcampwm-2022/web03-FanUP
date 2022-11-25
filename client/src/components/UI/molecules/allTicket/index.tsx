@@ -5,6 +5,7 @@ import Button from '@atoms/Button';
 import theme from '@style/theme';
 import { Ticket } from '@/types/ticket';
 import { useNavigate } from 'react-router-dom';
+import Fish from '@icons/Fish';
 
 const AllTicketWrapper = styled.div`
     cursor: pointer;
@@ -21,6 +22,10 @@ const AllTicketWrapper = styled.div`
         transition-duration: 0.3s;
         transform: translateY(-6px) translateX(-3px);
         box-shadow: 0 3px 5px 3px rgb(0 0 0 / 8%);
+    }
+    svg {
+        width: 25px;
+        height: 25px;
     }
 `;
 
@@ -84,24 +89,24 @@ const AllTicket = ({ ticket }: Props) => {
     const navigate = useNavigate();
 
     const gotoTicket = useCallback(() => {
-        navigate(`/ticket/${ticket.id}`);
+        navigate(`/ticket/${ticket.ticketId}`);
     }, [navigate, ticket]);
 
     return (
-        <AllTicketWrapper onClick={gotoTicket}>
+        <AllTicketWrapper data-testid="allTicket" onClick={gotoTicket}>
             <TicketLeft>
                 <img src="/dummyBackgroundThumbnail2.png" alt="thumbnail" />
-                <h3>{ticket.name}</h3>
+                <h3>{ticket.artistName}</h3>
                 <span>{ticket.description}</span>
             </TicketLeft>
             <TicketRight>
                 <Price>
-                    <img src="/signature.png" /> <span>x </span>
+                    <Fish /> <span>x </span>
                     <strong>10</strong>
                 </Price>
                 <Time>
-                    <span>{dateForm(ticket.date)}</span>
-                    <span>{ticket.time}</span>
+                    <span>{dateForm(ticket.ticketingDate)}</span>
+                    <span>{ticket.ticketingTime}</span>
                 </Time>
                 <Button
                     padding="10px 20px"

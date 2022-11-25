@@ -14,6 +14,7 @@ type StyleProps = {
 };
 
 interface Props extends StyleProps {
+    disabled?: boolean;
     content: string | JSX.Element;
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -38,9 +39,9 @@ const StyledButton = styled('button')<StyleProps>`
     }
 `;
 
-const Button: FC<Props> = ({ content, onClick, ...props }) => {
+const Button: FC<Props> = ({ content, onClick, disabled, ...props }) => {
     return (
-        <StyledButton onClick={onClick} {...props}>
+        <StyledButton onClick={onClick} disabled={disabled} {...props}>
             {content}
         </StyledButton>
     );

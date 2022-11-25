@@ -1,4 +1,4 @@
-import SendIcon from '@/components/icons/send';
+import SendIcon from '@/components/icons/SendIcon';
 import React from 'react';
 import styled from 'styled-components';
 

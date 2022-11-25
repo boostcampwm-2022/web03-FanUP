@@ -4,9 +4,10 @@ import TodayTicket from '@molecules/todayTicket';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled from 'styled-components';
-import PrevBtnIcon from '@icons/prev';
-import NextBtnIcon from '@icons/next';
+import PrevBtnIcon from '@/components/icons/PrevBtnIcon';
+import NextBtnIcon from '@/components/icons/NextBtnIcon';
 import { dummyTickets } from '@utils/dummy';
+import { useGetTodayTicketQuery } from '@/services/ticket';
 
 const TodayTicketsWrapper = styled.div`
     position: relative;
@@ -62,7 +63,7 @@ const TodayTickets = () => {
         slidesToShow: 4,
         slidesToScroll: 3,
     };
-
+    console.log(dummyTickets);
     return (
         <TodayTicketsWrapper>
             <Slider

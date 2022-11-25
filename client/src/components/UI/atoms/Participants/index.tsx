@@ -1,8 +1,8 @@
-import CameraOffIcon from '@/components/icons/cameraOff';
-import CameraOnIcon from '@/components/icons/cameraOn';
-import MoreIcon from '@/components/icons/more';
-import MuteOffIcon from '@/components/icons/muteOff';
-import MuteOnIcon from '@/components/icons/muteOn';
+import CameraOffIcon from '@icons/CameraOffIcon';
+import CameraOnIcon from '@icons/CameraOnIcon';
+import MoreIcon from '@icons/MoreIcon';
+import MuteOffIcon from '@icons/MuteOffIcon';
+import MuteOnIcon from '@icons/MuteOnIcon';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 

@@ -4,6 +4,7 @@ import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import TicketBarCode from '@atoms/TicketBarCode';
+import Fish from '@icons/Fish';
 
 const TodayTicketWrapper = styled.div`
     cursor: pointer;
@@ -17,6 +18,10 @@ const TodayTicketWrapper = styled.div`
     padding-right: 20px;
     border: 1px solid ${({ theme }) => theme.MEDIUM_GRAY};
     overflow: hidden;
+    svg {
+        width: 25px;
+        height: 25px;
+    }
 `;
 
 const Contents = styled.div`
@@ -69,11 +74,11 @@ const TodayTicket = ({ ticket }: Props) => {
     const navigate = useNavigate();
 
     const gotoTicket = useCallback(() => {
-        navigate(`/ticket/${ticket.id}`);
+        navigate(`/ticket/${ticket.ticketId}`);
     }, [navigate, ticket]);
 
     return (
-        <TodayTicketWrapper onClick={gotoTicket}>
+        <TodayTicketWrapper data-testid="todayTicket" onClick={gotoTicket}>
             <TicketBarCode width="20px" height="220px" />
             <Contents>
                 <LeftContent>
@@ -82,21 +87,21 @@ const TodayTicket = ({ ticket }: Props) => {
                             <h2>OPEN</h2>
                         </div>
                         <div>
-                            <span>{dateForm(ticket.date)}</span>
+                            <span>{dateForm(ticket.ticketingDate)}</span>
                         </div>
                         <div>
-                            <span>{ticket.time}</span>
+                            <span>{ticket.ticketingTime}</span>
                         </div>
                     </div>
                     <Price>
-                        <img src="/signature.png" /> <span>x </span>
-                        <strong>10</strong>
+                        <Fish /> <span>x </span>
+                        <strong>{ticket.price}</strong>
                     </Price>
                 </LeftContent>
                 <RightContent>
                     <img src="/dummyBackgroundThumbnail2.png" alt="thumbnail" />
                     <span>
-                        <strong>{ticket.name}</strong>
+                        <strong>{ticket.artistName}</strong>
                     </span>
                     <span>{ticket.description}</span>
                 </RightContent>

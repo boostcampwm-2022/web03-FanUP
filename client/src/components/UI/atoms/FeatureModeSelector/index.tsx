@@ -1,9 +1,9 @@
-import ChatIcon from '@/components/icons/chat';
-import ClockIcon from '@/components/icons/clock';
-import ParticipantsIcon from '@/components/icons/participants';
-import { AppDispatch } from '@/store';
+import ChatIcon from '@icons/ChatIcon';
+import ClockIcon from '@icons/ClockIcon';
+import ParticipantsIcon from '@icons/ParticipantsIcon';
+import { AppDispatch } from '@store/index';
 import { changeMode } from '@/store/fanUp';
-import { ReducerType } from '@/store/rootReducer';
+import { ReducerType } from '@store/rootReducer';
 import { FanUpStore } from '@/types/fanUp';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

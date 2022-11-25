@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import CameraOffIcon from '@/components/icons/cameraOff';
-import CameraOnIcon from '@/components/icons/cameraOn';
+import CameraOffIcon from '@/components/icons/CameraOffIcon';
+import CameraOnIcon from '@/components/icons/CameraOnIcon';
 import theme from '@/style/theme';
 import { useToggle } from '@/hooks/useToggle';
 import { useSelector } from 'react-redux';

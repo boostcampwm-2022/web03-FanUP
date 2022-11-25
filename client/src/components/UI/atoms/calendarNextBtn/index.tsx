@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
-import NextBtnIcon from '@/components/icons/next';
+import NextBtnIcon from '@/components/icons/NextBtnIcon';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReducerType } from '@store/rootReducer';
 import { ArtistStore } from '@/types/artist';
-import { setMonth, setYear } from '@store/artist';
+import { setMonth, setYear } from '@/store/artist';
 
 const CalendarNextBtn = () => {
     const dispatch = useDispatch();

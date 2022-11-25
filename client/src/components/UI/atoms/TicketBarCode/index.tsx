@@ -14,4 +14,4 @@ const TicketBarCode = ({ width, height }: { width: string; height: string }) => 
     return <TicketBarCodeWrapper data-testid="ticketBarCode" width={width} height={height} />;
 };
 
-export default TicketBarCode;
+export default React.memo(TicketBarCode);

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import MuteOffIcon from '@/components/icons/muteOff';
-import MuteOnIcon from '@/components/icons/muteOn';
+import MuteOffIcon from '@/components/icons/MuteOffIcon';
+import MuteOnIcon from '@/components/icons/MuteOnIcon';
 import theme from '@/style/theme';
 import { useToggle } from '@/hooks/useToggle';
 import { useSelector } from 'react-redux';

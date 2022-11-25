@@ -1,4 +1,4 @@
-import ScheduleIcon from '@/components/icons/schedule';
+import ScheduleIcon from '@/components/icons/ScheduleIcon';
 import React from 'react';
 import styled from 'styled-components';
 import ScheduleTicket from '../../molecules/scheduleTicket';

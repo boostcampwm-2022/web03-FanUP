@@ -1,7 +1,7 @@
-import AlarmIcon from '@/components/icons/alarm';
-import Logo from '@/components/icons/logo';
-import SearchIcon from '@/components/icons/search';
-import UserIcon from '@/components/icons/user';
+import AlarmIcon from '@icons/AlarmIcon';
+import Logo from '@/components/icons/Logo';
+import SearchIcon from '@/components/icons/SearchIcon';
+import UserIcon from '@icons/UserIcon';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -80,7 +80,7 @@ const Header = () => {
                     {isArtist ? (
                         <button onClick={gotoPage('/schedule')}>스케쥴</button>
                     ) : (
-                        <button onClick={gotoPage('/tickets')}>티켓팅</button>
+                        <button onClick={gotoPage('/ticketing')}>티켓팅</button>
                     )}
                 </div>
             </HeaderLeft>
