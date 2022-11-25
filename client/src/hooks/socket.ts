@@ -8,6 +8,7 @@ export default class SocketIO {
     constructor() {
         this.instance = null;
         this.ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/socket/chat`;
+
         this.connect();
         this.receivedData = [];
     }

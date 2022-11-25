@@ -19,58 +19,23 @@ const dummyChatData: ChatMessage[] = [
     {
         roomName: '슈크림붕어빵',
         isArtist: true,
-        email: 'wonyoung@gmail.com',
+        email: '장원영',
         nickname: '장원영',
         message: '안녕하세요',
     },
     {
         roomName: '슈크림붕어빵',
         isArtist: false,
-        email: 'seongeun@gmail.com',
+        email: '성은',
         nickname: '성은',
         message: 'Hello',
     },
     {
         roomName: '슈크림붕어빵',
         isArtist: true,
-        email: 'wonyoung@gmail.com',
+        email: '장원영',
         nickname: '장원영',
-        message: '안녕하세요',
-    },
-    {
-        roomName: '슈크림붕어빵',
-        isArtist: false,
-        email: 'seongeun@gmail.com',
-        nickname: '성은',
-        message: 'Hello',
-    },
-    {
-        roomName: '슈크림붕어빵',
-        isArtist: true,
-        email: 'wonyoung@gmail.com',
-        nickname: '장원영',
-        message: '안녕하세요',
-    },
-    {
-        roomName: '슈크림붕어빵',
-        isArtist: false,
-        email: 'seongeun@gmail.com',
-        nickname: '성은',
-        message: 'Hello',
-    },
-    {
-        roomName: '슈크림붕어빵',
-        isArtist: true,
-        email: 'wonyoung@gmail.com',
-        nickname: '장원영',
-        message: '------끝------',
-    },
-    {
-        roomName: '슈크림붕어빵',
-        isArtist: false,
-        email: 'seongeun@gmail.com',
-        nickname: '성은',
-        message: '==============================',
+        message: '반가워요',
     },
 ];
 
@@ -87,7 +52,6 @@ const ChatContainer: FC = () => {
     useEffect(() => {
         if (!socket.instance) return;
         socket.instance.on('receive-message', (data: any) => {
-            console.log(data);
             setChatData((current) => [...current, data]);
         });
     }, []);
@@ -96,6 +60,7 @@ const ChatContainer: FC = () => {
         (e: React.FormEvent<HTMLButtonElement>) => {
             e.preventDefault();
             socket.sendMessage({ message: message });
+            setMessage(() => '');
         },
         [message]
     );
@@ -103,7 +68,7 @@ const ChatContainer: FC = () => {
     return (
         <StyledChatContainer data-testid="chatContainer">
             <ChatList chatData={chatData} />
-            <InputForm handleSubmit={handleSubmit} setMessage={setMessage} />
+            <InputForm handleSubmit={handleSubmit} message={message} setMessage={setMessage} />
         </StyledChatContainer>
     );
 };

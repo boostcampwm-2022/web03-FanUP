@@ -25,14 +25,18 @@ const InputFormWrapper = styled.form`
     }
 `;
 
-const InputForm = ({ setMessage, handleSubmit }: any) => {
+const InputForm = ({ message, setMessage, handleSubmit }: any) => {
     const handleInput = (e: any) => {
         setMessage(e.target.value);
     };
 
     return (
         <InputFormWrapper>
-            <input placeholder="메시지를 입력하세요" onChange={(e) => handleInput(e)} />
+            <input
+                placeholder="메시지를 입력하세요"
+                onChange={(e) => handleInput(e)}
+                value={message}
+            />
             <Button
                 content={<SendIcon />}
                 onClick={(e) => handleSubmit(e)}
