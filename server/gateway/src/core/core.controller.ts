@@ -1,4 +1,4 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 
 import { CoreService } from './core.service';
 
@@ -7,7 +7,7 @@ export class CoreController {
   constructor(private readonly coreService: CoreService) {}
 
   @Get()
-  getApiHello() {
-    return this.coreService.getApiHello();
+  async getApiHello() {
+    return await this.coreService.getApiHello();
   }
 }

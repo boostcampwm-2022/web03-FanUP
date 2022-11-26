@@ -10,8 +10,10 @@ export class CoreService {
     private readonly apiClient: ClientTCP,
   ) {}
 
-  getApiHello() {
-    return this.apiClient.send({ cmd: 'getCoreHello' }, {});
+  async getApiHello() {
+    return await lastValueFrom(
+      this.apiClient.send({ cmd: 'getCoreHello' }, {}),
+    );
   }
 
   // async createFanUPRoom() {

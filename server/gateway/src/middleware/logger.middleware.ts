@@ -10,7 +10,8 @@ export class LoggerMiddleware implements NestMiddleware {
     const { statusCode } = res;
 
     // Request 출력
-    this.logger.log('req : ', { headers, body, originalUrl });
+    const requestMessage = { headers, body, originalUrl };
+    this.logger.log(`Request: ${JSON.stringify(requestMessage)}`);
 
     // Response 출력
     const response = res.write;
@@ -43,13 +44,13 @@ export class LoggerMiddleware implements NestMiddleware {
 
       const body = Buffer.concat(chunkBuffers).toString('utf8');
 
-      this.logger.log('res : ', {
-        response: {
-          statusCode,
-          body: body || {},
-          headers: res.getHeaders(),
-        } as any as Response,
-      });
+      const responseMessage = {
+        statusCode,
+        body: JSON.stringify(body) || body || {},
+        headers: res.getHeaders(),
+      };
+
+      this.logger.log(`Response: ${JSON.stringify(responseMessage)}`);
       return responseEnd.apply(res, resArgs);
     };
 
