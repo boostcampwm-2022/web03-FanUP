@@ -1,7 +1,7 @@
-interface Response<T> {
+interface CustomRes<T> {
   status: number;
   data: T;
   message: string;
 }
 
-export { Response };
+export { CustomRes };
