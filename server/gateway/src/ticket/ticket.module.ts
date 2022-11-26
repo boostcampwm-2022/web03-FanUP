@@ -11,6 +11,7 @@ import { TicketController } from './ticket.controller';
         name: MICRO_SERVICES.TICKET.NAME,
         transport: Transport.TCP,
         options: {
+          host: MICRO_SERVICES.TICKET.HOST,
           port: MICRO_SERVICES.TICKET.PORT,
         },
       },
