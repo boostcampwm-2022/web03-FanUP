@@ -29,12 +29,13 @@ const OAuthContainer: FC = () => {
             {Object.entries(OAuthCategory).map(([key, value]) => (
                 <Button
                     key={key}
+                    content={key + '로그인'}
                     onClick={() => socialLogin(key)}
-                    text={value.title + '로그인'}
                     width="440px"
                     height="64px"
                     backgroundColor={value.backgroundColor}
                     color={value.color}
+                    borderRadius="8px"
                 ></Button>
             ))}
         </StyledOAuthContainer>

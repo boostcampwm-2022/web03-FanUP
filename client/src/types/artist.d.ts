@@ -1,4 +1,7 @@
 export interface ArtistStore {
     [key: string]: any;
-    name: string;
+    calendarYear: number;
+    calendarMonth: number;
+    openSchduleModal: boolean;
+    selectedDay: null | { year: number; month: number; day: number };
 }

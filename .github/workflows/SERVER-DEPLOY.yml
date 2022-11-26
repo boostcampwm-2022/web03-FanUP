@@ -6,6 +6,7 @@ on:
       - "server/**"
     branches:
       - main
+      - dev
   pull_request:
     paths:
       - "server/**"
@@ -92,4 +93,4 @@ jobs:
           script: |
             cd ./fanup/server
             docker-compose pull
-            docker-compose up --force-recreate --build -d
+            docker-compose up -d

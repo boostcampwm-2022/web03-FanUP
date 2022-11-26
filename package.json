@@ -43,8 +43,20 @@
       "**/*.(t|j)s",
       "**/*.(t|j)sx"
     ],
-    "coverageDirectory": "./coverage",
-    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/client/src/$1",
+      "^@atoms/(.*)$": "<rootDir>/client/src/components/UI/atoms/$1",
+      "^@molecules/(.*)$": "<rootDir>/client/src/components/UI/molecules/$1",
+      "^@organisms/(.*)$": "<rootDir>/client/src/components/UI/organisms/$1",
+      "^@icons/(.*)$": "<rootDir>/client/src/components/icons/$1",
+      "^@hoc/(.*)$": "<rootDir>/client/src/components/hoc/$1",
+      "^@images/(.*)$": "<rootDir>/client/src/images/$1",
+      "^@pages/(.*)$": "<rootDir>/client/src/pages/$1",
+      "^@style/(.*)$": "<rootDir>/client/src/style/$1",
+      "^@store/(.*)$": "<rootDir>/client/src/store/$1",
+      "^@utils/(.*)$": "<rootDir>/client/src/utils/$1"
+    },
+    "testEnvironment": "jsdom",
     "coveragePathIgnorePatterns": [
       "jest.setup.js",
       "babel.config.js",
@@ -76,9 +88,6 @@
       "<rootDir>/server/services/core/node_modules/",
       "<rootDir>/server/services/ticket/node_modules/"
     ],
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/client/src/$1"
-    },
     "setupFilesAfterEnv": [
       "<rootDir>/jest.setup.js"
     ]
