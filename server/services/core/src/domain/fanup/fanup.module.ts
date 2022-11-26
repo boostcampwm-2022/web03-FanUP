@@ -4,6 +4,6 @@ import { FanupController } from './fanup.controller';
 
 @Module({
   controllers: [FanupController],
-  providers: [FanupService]
+  providers: [FanupService],
 })
-export class FanupModule {}
+export class FanUPModule {}
