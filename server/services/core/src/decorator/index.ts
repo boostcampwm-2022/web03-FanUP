@@ -1,1 +1,1 @@
-export { ResponseMessage, ResponseMessageKey } from './response.decorator';
+export { SetResponse, ResponseMessageKey } from './response.decorator';
