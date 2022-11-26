@@ -16,7 +16,7 @@ import {
   SendMessage,
   Welcome,
   ReceiveMessage,
-} from '../../src/types/chat.gateway';
+} from '../../src/types';
 
 @WebSocketGateway({
   namespace: '/socket/chat',

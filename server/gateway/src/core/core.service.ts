@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { ClientTCP } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-
+import { CustomRes } from '../types';
 import { MICRO_SERVICES } from '../constants/microservices';
 
 export class CoreService {
@@ -11,9 +11,10 @@ export class CoreService {
   ) {}
 
   async getApiHello() {
-    return await lastValueFrom(
+    const { status, data, message }: CustomRes = await lastValueFrom(
       this.apiClient.send({ cmd: 'getCoreHello' }, {}),
     );
+    return data;
   }
 
   // async createFanUPRoom() {
