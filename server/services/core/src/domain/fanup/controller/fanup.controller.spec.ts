@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FanupController } from './fanup.controller';
-import { FanupService } from './fanup.service';
+import { FanupService } from '../service/fanup.service';
 
 describe('FanupController', () => {
   let controller: FanupController;

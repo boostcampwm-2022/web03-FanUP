@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { FanupService } from './fanup.service';
-import { FanupController } from './fanup.controller';
+import { FanupService } from './service/fanup.service';
+import { FanupController } from './controller/fanup.controller';
 
 @Module({
   controllers: [FanupController],

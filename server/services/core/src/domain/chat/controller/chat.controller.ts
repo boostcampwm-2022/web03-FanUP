@@ -1,9 +1,9 @@
 import { Controller, UseInterceptors } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { LoggingInterceptor } from '../../interceptor/index';
-import { ChatService } from './chat.service';
-import { CreateChatDto } from './dto/create-chat.dto';
-import { UpdateChatDto } from './dto/update-chat.dto';
+import { LoggingInterceptor } from '../../../interceptor/index';
+import { ChatService } from '../service/chat.service';
+import { CreateChatDto } from '../dto/create-chat.dto';
+import { UpdateChatDto } from '../dto/update-chat.dto';
 
 @UseInterceptors(LoggingInterceptor)
 @Controller()

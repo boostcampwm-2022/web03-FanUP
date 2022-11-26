@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFanupDto } from './dto/create-fanup.dto';
-import { UpdateFanupDto } from './dto/update-fanup.dto';
+import { CreateFanupDto } from '../dto/create-fanup.dto';
+import { UpdateFanupDto } from '../dto/update-fanup.dto';
 
 @Injectable()
 export class FanupService {
