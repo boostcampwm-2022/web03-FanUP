@@ -1,3 +1,4 @@
+// MessagePattern을 제외한 HTTP로 들어온 요소에 대한 로그를 보여주는 미들웨어
 import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 

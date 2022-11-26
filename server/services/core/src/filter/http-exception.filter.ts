@@ -1,3 +1,4 @@
+// 서비스 내부 비즈니스 로직에서 발생한 에러를 잡아주는 요소
 import {
   ArgumentsHost,
   Catch,

@@ -1,3 +1,4 @@
+// 해당 인터셉터는 정상적인 응답에 대하여 응답 메시지를 구성하도록 도와주는 인터셉터
 import {
   Injectable,
   NestInterceptor,
