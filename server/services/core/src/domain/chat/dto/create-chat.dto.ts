@@ -1,16 +1,16 @@
 import { Prisma } from '@prisma/client';
-import { Expose } from 'class-transformer';
-import { IsEmail } from 'class-validator';
+import { IsBoolean, IsEmail, IsUUID, MinLength } from 'class-validator';
 
 export class CreateChatDto implements Prisma.ChatCreateInput {
-  @Expose({ name: 'fanupId' })
-  fanup_id: number;
+  @IsUUID()
+  fanup_id: string;
 
   @IsEmail()
   email: string;
 
-  @Expose({ name: 'isArtist' })
+  @IsBoolean()
   is_artist: boolean;
 
+  @MinLength(1)
   message: string;
 }

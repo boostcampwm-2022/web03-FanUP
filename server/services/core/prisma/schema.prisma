@@ -9,7 +9,7 @@ datasource db {
 
 model Chat {
     id  Int @id @default(autoincrement())
-    fanup_id Int
+    fanup_id String
     email String
     is_artist Boolean
     message String

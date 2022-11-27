@@ -37,6 +37,7 @@ class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() socket: Socket,
     @MessageBody() data: JoinChatRoom,
   ): void {
+    // 해당 방의 유저가 맞는지 로직을 확인
     const { email, roomName } = data;
     this.logger.log('join-chat-room');
 

@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
-import { Chat, Prisma } from '@prisma/client';
-import {
-  ChatNotFoundException,
-  ChatRoomNotFoundException,
-} from '../../../common/exception';
+import { Prisma } from '@prisma/client';
+import { ChatNotFoundException } from '../../../common/exception';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
 import { ChatDto, CreateChatDto } from '../dto';
 
@@ -15,16 +11,30 @@ export class ChatService {
   async createChat(
     createChatDto: CreateChatDto,
   ): Promise<Prisma.ChatCreateInput> {
-    return await this.prisma.chat.create({ data: createChatDto });
+    try {
+      return await this.prisma.chat.create({
+        data: createChatDto,
+        select: {
+          fanup_id: true,
+          email: true,
+          is_artist: true,
+          message: true,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   }
 
   // 특정 방의 채팅 메시지 전체를 가져오는 함수
-  async findChatByFanUPId(fanupId: number): Promise<ChatDto[]> {
+  async findChatByFanUPId(fanup_id: string): Promise<ChatDto[]> {
     let chatList: ChatDto[];
     try {
       chatList = await this.prisma.chat.findMany({
-        where: { fanup_id: fanupId },
+        where: { fanup_id },
         select: {
+          fanup_id: true,
           email: true,
           is_artist: true,
           message: true,
@@ -36,7 +46,6 @@ export class ChatService {
         throw new ChatNotFoundException();
       }
     } catch (err) {
-      console.log(err);
       return err;
     }
     return chatList;
