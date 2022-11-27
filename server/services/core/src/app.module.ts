@@ -2,9 +2,9 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { FanUPModule } from './domain/fanup/fanup.module';
-import { PrismaModule } from './prisma/prisma.module';
+import { PrismaModule } from './provider/prisma/prisma.module';
 import { ChatModule } from './domain/chat/chat.module';
-import { LoggerMiddleware } from './middleware/logger.middleware';
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
 
 @Module({
   imports: [FanUPModule, PrismaModule, ChatModule],
