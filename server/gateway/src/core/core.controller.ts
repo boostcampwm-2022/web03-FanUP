@@ -10,4 +10,9 @@ export class CoreController {
   async getApiHello() {
     return await this.coreService.getApiHello();
   }
+
+  @Get('/chat')
+  async getAllchat() {
+    return await this.coreService.getAllChatMessage();
+  }
 }

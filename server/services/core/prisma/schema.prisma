@@ -9,8 +9,9 @@ datasource db {
 
 model Chat {
     id  Int @id @default(autoincrement())
-    room Int
+    fanup_id Int
     email String
+    is_artist Boolean
     message String
-    created_time DateTime
+    created_time DateTime @default(now())
 }

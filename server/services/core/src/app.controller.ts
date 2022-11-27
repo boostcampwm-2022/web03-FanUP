@@ -1,9 +1,9 @@
 import { Controller, Get, UseInterceptors } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { AppService } from './app.service';
-import { ResMessage, ResStatusCode } from './constants';
-import { SetResponse } from './decorator';
-import { TransformInterceptor } from './interceptor';
+import { ResMessage, ResStatusCode } from './common/constants';
+import { SetResponse } from './common/decorator';
+import { TransformInterceptor } from './common/interceptor';
 
 @UseInterceptors(TransformInterceptor)
 @Controller()
@@ -16,7 +16,7 @@ export class AppController {
   }
 
   @SetResponse(ResMessage.CORE_HELLO, ResStatusCode.OK)
-  @MessagePattern({ cmd: 'getCoreHello' })
+  @MessagePattern('getCoreHello')
   getApiHello(): string {
     return this.appService.getCoreHello();
   }

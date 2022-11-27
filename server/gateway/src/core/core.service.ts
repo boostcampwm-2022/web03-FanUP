@@ -12,9 +12,13 @@ export class CoreService {
 
   async getApiHello() {
     const { status, data, message }: CustomRes = await lastValueFrom(
-      this.apiClient.send({ cmd: 'getCoreHello' }, {}),
+      this.apiClient.send('getCoreHello', {}),
     );
     return data;
+  }
+
+  async getAllChatMessage() {
+    return this.apiClient.send('findChatByFanUPId', {});
   }
 
   // async createFanUPRoom() {

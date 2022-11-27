@@ -1,37 +1,26 @@
-import { Controller, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, UseInterceptors } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { LoggingInterceptor } from '../../../common/interceptor/index';
 import { ChatService } from '../service/chat.service';
 import { CreateChatDto } from '../dto/create-chat.dto';
-import { UpdateChatDto } from '../dto/update-chat.dto';
 
 @UseInterceptors(LoggingInterceptor)
-@Controller()
+@Controller('/chat')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
+  @Get()
+  get() {
+    return 'this is chat service';
+  }
+
   @MessagePattern('createChat')
-  create(@Payload() createChatDto: CreateChatDto) {
-    return this.chatService.create(createChatDto);
+  async create(@Payload() createChatDto: CreateChatDto) {
+    return await this.chatService.createChat(createChatDto);
   }
 
-  @MessagePattern('findAllChat')
-  findAll() {
-    return this.chatService.findAll();
-  }
-
-  @MessagePattern('findOneChat')
-  findOne(@Payload() id: number) {
-    return this.chatService.findOne(id);
-  }
-
-  @MessagePattern('updateChat')
-  update(@Payload() updateChatDto: UpdateChatDto) {
-    return this.chatService.update(updateChatDto.id, updateChatDto);
-  }
-
-  @MessagePattern('removeChat')
-  remove(@Payload() id: number) {
-    return this.chatService.remove(id);
+  @MessagePattern('findChatByFanUPId')
+  async findChatByFanUPId() {
+    return await this.chatService.findChatByFanUPId(1);
   }
 }
