@@ -65,6 +65,7 @@
       "dist",
       ".d.ts",
       ".css",
+      ".dto.ts",
       "config-overrides.js",
       "reportWebVitals.ts",
       "setupTests.ts",
@@ -78,7 +79,8 @@
       "client/src/utils",
       "client/src/components/icons",
       "Login",
-      "OAuthContainer"
+      "OAuthContainer",
+      "strategy.ts"
     ],
     "transformIgnorePatterns": [
       "<rootDir>/node_modules",
