@@ -38,9 +38,9 @@ export class ChatService {
       if (chatList.length === 0) {
         throw new ChatNotFoundException();
       }
+      return chatList;
     } catch (err) {
       return err;
     }
-    return chatList;
   }
 }
