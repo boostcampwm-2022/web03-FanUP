@@ -25,14 +25,17 @@ export class TransformInterceptor<T>
       context.getHandler(),
     );
 
+    const status = response.status
+      ? response.status
+      : context.switchToHttp().getResponse().statusCode;
     return next.handle().pipe(
-      map((data) => ({
-        status: response.status
-          ? response.status
-          : context.switchToHttp().getResponse().statusCode,
-        data,
-        message: response.message,
-      })),
+      map((data) => {
+        return {
+          status: data['status'] >= 400 ? data['status'] : status,
+          data: data['status'] >= 400 ? null : data,
+          message: data['status'] >= 400 ? data['message'] : response.message,
+        };
+      }),
     );
   }
 }

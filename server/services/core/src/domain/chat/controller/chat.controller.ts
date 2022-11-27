@@ -1,10 +1,15 @@
 import { Controller, Get, Post, UseInterceptors } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { LoggingInterceptor } from '../../../common/interceptor/index';
+import {
+  LoggingInterceptor,
+  TransformInterceptor,
+} from '../../../common/interceptor/index';
 import { ChatService } from '../service/chat.service';
-import { CreateChatDto } from '../dto/create-chat.dto';
+import { SetResponse } from '../../../common/decorator';
+import { ResMessage, ResStatusCode } from '../../../common/constants';
+import { CreateChatDto } from '../dto';
 
-@UseInterceptors(LoggingInterceptor)
+@UseInterceptors(LoggingInterceptor, TransformInterceptor)
 @Controller('/chat')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
@@ -19,6 +24,7 @@ export class ChatController {
     return await this.chatService.createChat(createChatDto);
   }
 
+  @SetResponse(ResMessage.GET_ALL_CHAT, ResStatusCode.OK)
   @MessagePattern('findChatByFanUPId')
   async findChatByFanUPId() {
     return await this.chatService.findChatByFanUPId(1);
