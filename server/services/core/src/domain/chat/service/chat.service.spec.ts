@@ -31,6 +31,10 @@ describe('ChatService', () => {
     prismaService = module.get<PrismaService>(PrismaService);
   });
 
+  afterAll(() => {
+    jest.resetModules();
+  });
+
   it('should be defined', () => {
     expect(service).toBeDefined();
     expect(prismaService).toBeDefined();
