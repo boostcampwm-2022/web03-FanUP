@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit --silent",
     "coverage": "jest --coverage --detectOpenHandles",
-    "coveralls": "jest --coverage --detectOpenHandles --forceExit  && coveralls < ./coverage/lcov.info"
+    "coveralls": "jest --coverage --detectOpenHandles --forceExit && coveralls < ./coverage/lcov.info"
   },
   "author": "",
   "license": "ISC",
@@ -80,7 +80,7 @@
       "client/src/components/icons",
       "Login",
       "OAuthContainer",
-      "strategy.ts"
+      "server/services/auth"
     ],
     "transformIgnorePatterns": [
       "<rootDir>/node_modules",
