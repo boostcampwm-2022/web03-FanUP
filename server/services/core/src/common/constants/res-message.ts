@@ -9,6 +9,9 @@ const ResMessage = {
   CHAT_CANNOT_CREATED: '채팅을 생성하지 못하였습니다.',
   CHAT_NOT_FOUND: '채팅 내역이 존재하지 않습니다.',
   CHAT_ROOM_NOT_FOUND: '채팅방이 존재하지 않습니다.',
+
+  // 파일 관련
+  FILE_BAD_REQUEST: '보낸 파일이 존재하지 않습니다.',
 };
 
 export { ResMessage };

@@ -8,10 +8,17 @@ datasource db {
 }
 
 model Chat {
-    id  Int @id @default(autoincrement())
+    id Int @id @default(autoincrement())
     fanup_id String
     email String
     is_artist Boolean
     message String
     created_at DateTime @default(now())
+}
+
+model FileEntity {
+  id Int @id @default(autoincrement())
+  link String @unique
+  name String?
+  mimeType String?
 }
