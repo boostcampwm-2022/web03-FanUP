@@ -13,5 +13,5 @@ model Chat {
     email String
     is_artist Boolean
     message String
-    created_time DateTime @default(now())
+    created_at DateTime @default(now())
 }
