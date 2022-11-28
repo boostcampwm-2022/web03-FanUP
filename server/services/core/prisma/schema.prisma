@@ -7,6 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model FanUp {
+  id Int @id @default(autoincrement())
+  ticket_id Int
+  room_id Int
+  start_time DateTime
+  end_time DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
 model Chat {
     id Int @id @default(autoincrement())
     fanup_id String
