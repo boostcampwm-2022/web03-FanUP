@@ -1,4 +1,5 @@
-import React from 'react';
+import { IAritst } from '@/types/artist';
+import React, { useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 const ArtistCardWrapper = styled.div`
@@ -24,7 +25,6 @@ const ArtistCardWrapper = styled.div`
 
 const BackgroundThumbNail = styled.img`
     width: 100%;
-    height: 150px;
     backface-visibility: hidden;
     image-rendering: -webkit-optimize-contrast;
     margin-bottom: 20px;
@@ -50,19 +50,39 @@ const Logo = styled.div`
     }
 `;
 
+//height: 150px;
 interface Props {
-    artistName: string;
-    backgroundThumbnail: string;
-    logo: string;
+    artist: IAritst;
 }
 
-const ArtistCard = ({ artistName, backgroundThumbnail, logo }: Props) => {
+const ArtistCard = ({ artist }: Props) => {
+    const imgRef = useRef<HTMLImageElement>(null);
+
+    const observerCallback = useCallback(
+        (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const target = entry.target as HTMLImageElement;
+                    target.src = target.dataset.src as string;
+                    observer.unobserve(entry.target);
+                }
+            });
+        },
+        []
+    );
+
+    useEffect(() => {
+        if (!imgRef.current) return;
+        const observer = new IntersectionObserver(observerCallback, {});
+        observer.observe(imgRef.current);
+    }, []);
+
     return (
         <ArtistCardWrapper>
-            <BackgroundThumbNail src={backgroundThumbnail} alt="background" />
-            <span>{artistName}</span>
+            <BackgroundThumbNail ref={imgRef} data-src={artist.profile_url} alt="background" />
+            <span>{artist.name}</span>
             <Logo>
-                <img src={logo} alt="logo" />
+                <img src={'/dummyArtistLogo.png'} alt="logo" />
             </Logo>
         </ArtistCardWrapper>
     );
