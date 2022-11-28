@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { ClientTCP } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
-
+import { catchError, lastValueFrom, of } from 'rxjs';
+import { CustomRes } from '../types';
 import { MICRO_SERVICES } from '../constants/microservices';
 
 export class CoreService {
@@ -10,8 +10,17 @@ export class CoreService {
     private readonly apiClient: ClientTCP,
   ) {}
 
-  getApiHello() {
-    return this.apiClient.send({ cmd: 'getCoreHello' }, {});
+  async getApiHello() {
+    const { status, data, message }: CustomRes = await lastValueFrom(
+      this.apiClient.send('getCoreHello', {}),
+    );
+    return data;
+  }
+
+  async getAllChatMessage() {
+    return this.apiClient
+      .send('findChatByFanUPId', {})
+      .pipe(catchError((val) => of({ error: val.message })));
   }
 
   // async createFanUPRoom() {

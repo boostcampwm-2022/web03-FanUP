@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit --silent",
     "coverage": "jest --coverage --detectOpenHandles",
-    "coveralls": "jest --coverage --detectOpenHandles --forceExit  && coveralls < ./coverage/lcov.info"
+    "coveralls": "jest --coverage --detectOpenHandles --forceExit && coveralls < ./coverage/lcov.info"
   },
   "author": "",
   "license": "ISC",
@@ -65,6 +65,7 @@
       "dist",
       ".d.ts",
       ".css",
+      ".dto.ts",
       "config-overrides.js",
       "reportWebVitals.ts",
       "setupTests.ts",
@@ -78,7 +79,8 @@
       "client/src/utils",
       "client/src/components/icons",
       "Login",
-      "OAuthContainer"
+      "OAuthContainer",
+      "server/services/auth"
     ],
     "transformIgnorePatterns": [
       "<rootDir>/node_modules",
