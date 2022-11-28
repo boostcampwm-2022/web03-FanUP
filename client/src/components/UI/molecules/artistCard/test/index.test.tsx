@@ -6,19 +6,19 @@ import ArtistCard from '@molecules/artistCard';
 
 describe('<ArtistCard />', () => {
     const props = {
-        name: 'test',
+        artistName: 'test',
         backgroundThumbnail: '/test.png',
         logo: '/testLogo.png',
     };
     it('rendering test', () => {
         render(
             <ArtistCard
-                name={props.name}
+                artistName={props.artistName}
                 backgroundThumbnail={props.backgroundThumbnail}
                 logo={props.logo}
             />
         );
-        expect(screen.getByText(props.name)).toBeInTheDocument();
+        expect(screen.getByText(props.artistName)).toBeInTheDocument();
         expect(screen.getByAltText('background')).toBeInTheDocument();
         expect(screen.getByAltText('logo')).toBeInTheDocument();
     });

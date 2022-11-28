@@ -18,7 +18,7 @@ const ArtistListWrapper = styled.div`
 
 interface Props {
     title: string;
-    artistList: { name: string; backgroundThumbnail: string; logo: string }[];
+    artistList: { artistName: string; backgroundThumbnail: string; logo: string }[];
 }
 
 const Artists = ({ title, artistList }: Props) => {
@@ -26,10 +26,10 @@ const Artists = ({ title, artistList }: Props) => {
         <div>
             <Title>{title}</Title>
             <ArtistListWrapper>
-                {artistList.map(({ name, logo, backgroundThumbnail }, idx) => (
+                {artistList.map(({ artistName, logo, backgroundThumbnail }, idx) => (
                     <ArtistCard
-                        key={name + idx}
-                        name={name}
+                        key={artistName + idx}
+                        artistName={artistName}
                         logo={logo}
                         backgroundThumbnail={backgroundThumbnail}
                     />

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import Fish from '@icons/fish';
+import Fish from '@icons/Fish';
 
 const spinner = keyframes`
     0% {

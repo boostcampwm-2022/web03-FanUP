@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 
 import { ChatMessage } from '@organisms/ChatContainer';
-import Chat from '@atoms/Chat';
+import Chat from '@atoms/chat';
 
 interface Props {
     chatData: ChatMessage[];

@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { closeScheduleModal, initializeSelectedDay } from '@store/artist';
-import Modal from '@hoc/modal';
+import { closeScheduleModal, initializeSelectedDay } from '@/store/artist';
+import Modal from '@/components/hoc/modal';
 import { ReducerType } from '@store/rootReducer';
 import { ArtistStore } from '@/types/artist';
-import CloseIcon from '@icons/close';
+import CloseIcon from '@icons/CloseIcon';
 import { ERR_MESSAGE } from './constants';
+import Fish from '@icons/Fish';
 
 const ModalHeader = styled.div`
     display: flex;
@@ -26,6 +27,7 @@ const ModalHeader = styled.div`
 
 const ModalContent = styled.div`
     width: 30vw;
+    min-width: 500px;
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -68,6 +70,10 @@ const ModalContent = styled.div`
             background: ${({ theme }) => theme.PRIMARY_LIGHT};
         }
     }
+    svg {
+        width: 25px;
+        height: 25px;
+    }
 `;
 
 const ContentItem = styled.div`
@@ -107,6 +113,8 @@ const ContentFourth = styled.div`
             position: absolute;
             right: 10px;
             bottom: 16px;
+            display: flex;
+            align-items: center;
             img {
                 margin-bottom: -5px;
             }
@@ -160,7 +168,7 @@ const ScheduleFanUpModal = () => {
             {
                 label: '팀당 가격',
                 ref: priceRef,
-                unit: <img src="/signature.png" alt="logo" />,
+                unit: <Fish />,
             },
         ],
         []

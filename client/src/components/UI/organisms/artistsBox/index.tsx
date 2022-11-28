@@ -34,7 +34,7 @@ const ArtistsBox = () => {
 
 const dummyArtistList = Array.from({ length: 14 }, (_, idx) => {
     return {
-        name: 'IZ*ONE',
+        artistName: 'IZ*ONE',
         backgroundThumbnail: `/dummyBackgroundThumbnail${(idx % 2) + 1}.png`,
         logo: '/dummyArtistLogo.png',
     };
