@@ -3,7 +3,7 @@ import { ClientTCP } from '@nestjs/microservices';
 import { catchError, lastValueFrom, of } from 'rxjs';
 import * as FormData from 'form-data';
 import { MICRO_SERVICES } from '../constants/microservices';
-import { CustomRes } from '../types';
+import { CustomRes } from '../common/types';
 
 export class CoreService {
   constructor(
