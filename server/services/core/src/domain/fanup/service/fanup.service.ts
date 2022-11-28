@@ -7,6 +7,21 @@ import { CreateFanupDto, UpdateFanupDto } from '../dto';
 export class FanupService {
   constructor(private prisma: PrismaService) {}
 
+  async findAllByTicketId(ticket_id: number) {
+    try {
+      return await this.prisma.fanUp.findMany({
+        where: {
+          ticket_id,
+        },
+        select: {
+          room_id: true,
+        },
+      });
+    } catch (err) {
+      throw new FanUPNotFoundException();
+    }
+  }
+
   async create(start_time: Date, end_time: Date) {
     const createFanupDto = new CreateFanupDto(start_time, end_time);
 

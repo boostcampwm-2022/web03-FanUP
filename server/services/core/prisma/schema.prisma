@@ -9,7 +9,7 @@ datasource db {
 
 model FanUp {
   id Int @id @default(autoincrement())
-  ticket_id Int?
+  ticket_id Int
   room_id String @unique
   start_time DateTime
   end_time DateTime
