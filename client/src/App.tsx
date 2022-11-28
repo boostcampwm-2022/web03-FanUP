@@ -15,7 +15,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/auth/:domain/callback" element={<AuthCallback />} />
                     <Route path="/" element={<Home />} />
-                    <Route path="/fanUp/:fanUpId" element={<FanUP />} />
+                    <Route path="/fanup/:fanUpId" element={<FanUP />} />
                     <Route path="/tickets" element={<Tickets />} />
                     <Route path="/ticket/:ticketId" element={<Ticket />} />
                     <Route path="*" element={<NotFound />} />

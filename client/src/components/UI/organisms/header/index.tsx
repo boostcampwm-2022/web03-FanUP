@@ -80,7 +80,7 @@ const Header = () => {
                     {isArtist ? (
                         <button onClick={gotoPage('/schedule')}>스케쥴</button>
                     ) : (
-                        <button onClick={gotoPage('/ticketing')}>티켓팅</button>
+                        <button onClick={gotoPage('/tickets')}>티켓팅</button>
                     )}
                 </div>
             </HeaderLeft>

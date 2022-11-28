@@ -1,5 +1,6 @@
 import * as ReactRouter from 'react-router';
 import * as ReactRouterDom from 'react-router-dom';
+import * as React from 'react';
 
 export const MOCK_FN = {
     getUserMedia: () => {
@@ -20,5 +21,8 @@ export const MOCK_FN = {
     },
     useNaviagte: (navigate: any) => {
         jest.spyOn(ReactRouter, 'useNavigate').mockReturnValue(navigate);
+    },
+    memo: (memoFn: any) => {
+        jest.spyOn(React, 'memo').mockReturnValue(memoFn);
     },
 };
