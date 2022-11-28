@@ -1,7 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { ClientTCP } from '@nestjs/microservices';
 import { catchError, lastValueFrom, of } from 'rxjs';
-
 import * as FormData from 'form-data';
 import { MICRO_SERVICES } from '../constants/microservices';
 import { CustomRes } from '../types';
@@ -50,28 +49,4 @@ export class CoreService {
       },
     );
   }
-
-  // async createFanUPRoom() {
-  //   return await lastValueFrom(
-  //     this.apiClient.send({ cme: 'createFanUPRoom' }, {}),
-  //   );
-  // }
-
-  // async enterFanUPRoom() {
-  //   return await lastValueFrom(
-  //     this.apiClient.send({ cme: 'enterFanUPRoom' }, {}),
-  //   );
-  // }
-
-  // async exitFanUPRoom() {
-  //   return await lastValueFrom(
-  //     this.apiClient.send({ cme: 'exitFanUPRoom' }, {}),
-  //   );
-  // }
-
-  // async deleteFanUPRoom() {
-  //   return await lastValueFrom(
-  //     this.apiClient.send({ cme: 'deleteFanUPRoom' }, {}),
-  //   );
-  // }
 }
