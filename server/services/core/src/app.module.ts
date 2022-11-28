@@ -25,6 +25,6 @@ import { ConfigModule } from '@nestjs/config';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     // TODO 추후 HTTP 호출되는 path 적용
-    consumer.apply(LoggerMiddleware);
+    consumer.apply(LoggerMiddleware).forRoutes('/file');
   }
 }

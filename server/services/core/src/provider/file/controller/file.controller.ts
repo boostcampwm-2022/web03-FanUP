@@ -12,7 +12,18 @@ import { FileService } from '../service/file.service';
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
-  @Post()
+  @Post('single')
+  @UseInterceptors(
+    FilesInterceptor('file', 1, {
+      storage: S3Storage,
+      limits: { fileSize: 1048576 },
+    }),
+  )
+  async uploadSingleFile(@UploadedFiles() file: Array<Express.MulterS3.File>) {
+    return await this.fileService.uploadSingleFile(file);
+  }
+
+  @Post('multiple')
   @UseInterceptors(
     FilesInterceptor('files', 10, {
       storage: S3Storage,
