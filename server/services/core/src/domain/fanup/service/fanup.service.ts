@@ -37,11 +37,7 @@ export class FanupService {
 
   async update(room_id: string, updateFanupDto: UpdateFanupDto) {
     try {
-      const exist = this.isExist(room_id);
-      if (!exist) {
-        throw new FanUPNotFoundException();
-      }
-
+      this.isExist(room_id);
       return await this.prisma.fanUp.update({
         where: {
           room_id,
@@ -63,6 +59,6 @@ export class FanupService {
     if (fanUp) {
       return true;
     }
-    return false;
+    throw new FanUPNotFoundException();
   }
 }

@@ -31,7 +31,11 @@ export class TransformInterceptor<T>
     return next.handle().pipe(
       map((data) => {
         return {
-          status: data['status'] >= 400 ? data['status'] : status,
+          status: status
+            ? 'error'
+            : data['status'] >= 400
+            ? data['status']
+            : status,
           data: data['status'] >= 400 ? null : data,
           message: data['status'] >= 400 ? data['message'] : response.message,
         };

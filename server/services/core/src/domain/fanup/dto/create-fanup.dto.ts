@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { FanUPStatus, Prisma } from '@prisma/client';
 import { IsDate, IsOptional, IsUUID } from 'class-validator';
 import { v4 as uuid } from 'uuid';
 
@@ -7,6 +7,7 @@ export class CreateFanupDto implements Prisma.FanUpCreateInput {
     this.room_id = uuid();
     this.start_time = start_time;
     this.end_time = end_time;
+    this.status = FanUPStatus.WAITING;
   }
 
   ticket_id: number;
@@ -20,4 +21,6 @@ export class CreateFanupDto implements Prisma.FanUpCreateInput {
 
   @IsDate()
   end_time: Date;
+
+  status: FanUPStatus;
 }
