@@ -36,7 +36,7 @@ const Home = () => {
     return (
         <>
             <Header />
-            {isArtist ? (
+            {!isArtist ? (
                 <ArtistCalendarWrapper>
                     <Calendar />
                 </ArtistCalendarWrapper>
