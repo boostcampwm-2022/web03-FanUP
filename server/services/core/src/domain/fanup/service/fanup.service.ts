@@ -1,11 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { FanUPNotFoundException } from 'src/common/exception';
+import { FanUPStatus } from '@prisma/client';
+import {
+  FanUPNotFoundException,
+  FanUPUpdateException,
+} from '../../../common/exception';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
 import { CreateFanupDto, UpdateFanupDto } from '../dto';
 
 @Injectable()
 export class FanupService {
   constructor(private prisma: PrismaService) {}
+
+  fanUPStatus() {
+    return {
+      WAITING: FanUPStatus.WAITING,
+      ONGOING: FanUPStatus.ONGOING,
+      END: FanUPStatus.END,
+    };
+  }
 
   async findAllByTicketId(ticket_id: number) {
     try {
@@ -44,8 +56,24 @@ export class FanupService {
         },
         data: updateFanupDto,
       });
-    } catch (error) {
-      return error;
+    } catch (err) {
+      throw new FanUPUpdateException();
+    }
+  }
+
+  async updateStatus(room_id: string, status: string) {
+    try {
+      this.isExist(room_id);
+      return await this.prisma.fanUp.update({
+        where: {
+          room_id,
+        },
+        data: {
+          status: this.fanUPStatus[status],
+        },
+      });
+    } catch (err) {
+      throw new FanUPUpdateException();
     }
   }
 
