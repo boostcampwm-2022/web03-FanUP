@@ -1,11 +1,23 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../../../provider/prisma/prisma.service';
 import { CreateFanupDto } from '../dto/create-fanup.dto';
 import { UpdateFanupDto } from '../dto/update-fanup.dto';
 
 @Injectable()
 export class FanupService {
-  create(createFanupDto: CreateFanupDto) {
-    return 'This action adds a new fanup';
+  constructor(private prisma: PrismaService) {}
+
+  async create(start_time: Date, end_time: Date) {
+    const createFanupDto = new CreateFanupDto(start_time, end_time);
+
+    return await this.prisma.fanUp.create({
+      data: createFanupDto,
+      select: {
+        room_id: true,
+        start_time: true,
+        end_time: true,
+      },
+    });
   }
 
   findAll() {
