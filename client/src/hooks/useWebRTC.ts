@@ -1,4 +1,4 @@
-import { initalizeMyStream } from '@/store/user';
+import { initializeMyStream } from '@/store/user';
 import { UserStore } from '@/types/user';
 import { ReducerType } from '@store/rootReducer';
 
@@ -23,7 +23,7 @@ export const useWebRTC = (): [
 ] => {
     const { fanUpId } = useParams();
     const [users, setUsers] = useState<any[]>([]);
-    const socket = useSocket(fanUpId as string);
+    const [socket] = useSocket(fanUpId as string);
     const peerConnections = useRef<{ [key: string]: RTCPeerConnection }>({});
     const { myStream } = useSelector<ReducerType, UserStore>((state) => state.userSlice);
     const dispatch = useDispatch();
@@ -94,7 +94,7 @@ export const useWebRTC = (): [
             peerConnections.current[key].close();
         });
         peerConnections.current = {};
-        dispatch(initalizeMyStream());
+        dispatch(initializeMyStream());
     };
 
     useEffect(() => {

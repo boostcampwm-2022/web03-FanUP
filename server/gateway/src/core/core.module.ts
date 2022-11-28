@@ -11,6 +11,7 @@ import { CoreService } from './core.service';
         name: MICRO_SERVICES.CORE.NAME,
         transport: Transport.TCP,
         options: {
+          host: MICRO_SERVICES.CORE.HOST,
           port: MICRO_SERVICES.CORE.PORT,
         },
       },
