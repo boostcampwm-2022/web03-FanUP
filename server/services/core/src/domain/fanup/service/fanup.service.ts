@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { FanUPNotFoundException } from 'src/common/exception';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
-import { CreateFanupDto } from '../dto/create-fanup.dto';
-import { UpdateFanupDto } from '../dto/update-fanup.dto';
+import { CreateFanupDto, UpdateFanupDto } from '../dto';
 
 @Injectable()
 export class FanupService {
@@ -20,19 +20,34 @@ export class FanupService {
     });
   }
 
-  findAll() {
-    return `This action returns all fanup`;
+  async update(room_id: string, updateFanupDto: UpdateFanupDto) {
+    try {
+      const exist = this.isExist(room_id);
+      if (!exist) {
+        throw new FanUPNotFoundException();
+      }
+
+      return await this.prisma.fanUp.update({
+        where: {
+          room_id,
+        },
+        data: updateFanupDto,
+      });
+    } catch (error) {
+      return error;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} fanup`;
-  }
+  async isExist(room_id: string) {
+    const fanUp = await this.prisma.fanUp.findUnique({
+      where: {
+        room_id,
+      },
+    });
 
-  update(id: number, updateFanupDto: UpdateFanupDto) {
-    return `This action updates a #${id} fanup`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} fanup`;
+    if (fanUp) {
+      return true;
+    }
+    return false;
   }
 }

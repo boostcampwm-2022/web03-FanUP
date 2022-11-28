@@ -10,6 +10,9 @@ const ResMessage = {
   CHAT_NOT_FOUND: '채팅 내역이 존재하지 않습니다.',
   CHAT_ROOM_NOT_FOUND: '채팅방이 존재하지 않습니다.',
 
+  // FanUP 관련
+  FANUP_NOT_FOUND: '해당 팬미팅 방이 존재하지 않습니다.',
+
   // 파일 관련
   FILE_BAD_REQUEST: '보낸 파일이 존재하지 않습니다.',
 };
