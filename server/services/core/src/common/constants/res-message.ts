@@ -11,6 +11,11 @@ const ResMessage = {
   CHAT_ROOM_NOT_FOUND: '채팅방이 존재하지 않습니다.',
 
   // FanUP 관련
+  CREATE_FANUP: '팬미팅을 생성하였습니다.',
+  UPDATE_FANUP: '팬미팅 정보를 업데이트 하였습니다.',
+  GET_ALL_FANUP_BY_TICKET: '해당 티켓에 대한 팬미팅 정보를 모두 가져왔습니다.',
+  FANUP_EXIST: '해당 방이 존재하고 있습니다.',
+
   FANUP_NOT_FOUND: '해당 팬미팅 방이 존재하지 않습니다.',
 
   // 파일 관련
