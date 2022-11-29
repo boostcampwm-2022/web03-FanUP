@@ -10,6 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Status {
+  OPEN
+  CLOSED
+  CANCELLED
+}
+
 model Ticket {
   id        Int      @id @default(autoincrement())
   title     String
@@ -19,6 +25,7 @@ model Ticket {
   artistId  Int
   salesTime DateTime
   startTime DateTime
+  status    Status  @default(CLOSED)
   totalAmount Int @default(0)
   numberTeam Int  @default(1)
   timeTeam  Int
