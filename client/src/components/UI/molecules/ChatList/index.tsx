@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import { ChatMessage } from '@organisms/ChatContainer';
 import Chat from '@atoms/Chat';
+import { useRef } from 'react';
+import { useEffect } from 'react';
 
 interface Props {
     chatData: ChatMessage[];
@@ -22,16 +24,23 @@ const StyledChatList = styled.div`
 `;
 
 const ChatList: FC<Props> = ({ chatData }) => {
+    const lastChatRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (!lastChatRef.current) return;
+
+        lastChatRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+        });
+    }, [chatData.length]);
+
     return (
         <StyledChatList>
-            {chatData.map(({ nickname, isArtist, content }, idx) => (
-                <Chat
-                    key={content + idx}
-                    isArtist={isArtist}
-                    nickname={nickname}
-                    content={content}
-                />
+            {chatData.map(({ email, isArtist, message }, idx) => (
+                <Chat key={idx} isArtist={isArtist} email={email} message={message} />
             ))}
+            <div ref={lastChatRef}></div>
         </StyledChatList>
     );
 };

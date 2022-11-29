@@ -23,6 +23,7 @@
             "@atoms/*": ["src/components/UI/atoms/*"],
             "@molecules/*": ["src/components/UI/molecules/*"],
             "@organisms/*": ["src/components/UI/organisms/*"],
+            "@hooks/*": ["src/hooks/*"],
             "@images/*": ["src/images/*"],
             "@pages/*": ["src/pages/*"],
             "@services/*": ["src/services/*"],

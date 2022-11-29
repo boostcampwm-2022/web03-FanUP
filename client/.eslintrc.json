@@ -27,6 +27,7 @@
                     ["@molecules", "./src/components/UI/molecules"],
                     ["@organisms", "./src/components/UI/organisms"],
                     ["@images", "./src/images"],
+                    ["@hooks", "./src/hooks"],
                     ["@pages", "./src/pages"],
                     ["@services", "./src/services"],
                     ["@store", "./src/store"],
