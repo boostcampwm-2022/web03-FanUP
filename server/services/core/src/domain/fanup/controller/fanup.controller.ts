@@ -1,4 +1,4 @@
-import { Controller, UseInterceptors } from '@nestjs/common';
+import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { FanupService } from '../service/fanup.service';
 import {
@@ -8,7 +8,9 @@ import {
 import { CreateTimeDto, UpdateTimeDto } from '../dto';
 import { SetResponse } from 'src/common/decorator';
 import { ResMessage, ResStatusCode } from 'src/common/constants';
+import { AllRPCExceptionFilter } from 'src/common/filter';
 
+@UseFilters(new AllRPCExceptionFilter())
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
 @Controller()
 export class FanupController {

@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { json, urlencoded } from 'express';
 import { AppModule } from './app.module';
-import { AllRPCExceptionFilter, HttpExceptionFilter } from './common/filter';
+import { HttpExceptionFilter } from './common/filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,7 +17,7 @@ async function bootstrap() {
     { inheritAppConfig: true },
   );
 
-  app.useGlobalFilters(new HttpExceptionFilter(), new AllRPCExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter());
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
   await app.startAllMicroservices();

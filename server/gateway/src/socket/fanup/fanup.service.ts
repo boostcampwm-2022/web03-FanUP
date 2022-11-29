@@ -53,11 +53,9 @@ export class FanUPService {
     const result = await lastValueFrom(
       this.coreTCP
         .send('isFanUPExist', { room_id: room })
-        .pipe(catchError((err) => of({ ...err, status: 404 }))),
+        .pipe(catchError((err) => of({ ...err }))),
     );
-    return result['status'] >= 400
-      ? { ...result, data: null, validate: false }
-      : { ...result, validate: true };
+    return { ...result, validate: result.data ? true : false };
   }
 
   async validateUser({ room, email }: ValidateUser) {
