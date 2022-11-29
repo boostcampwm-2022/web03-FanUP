@@ -1,7 +1,7 @@
 import { BasicDate } from '../type';
 
 export function strToDate({ year, month, day }: BasicDate) {
-  return new Date(year, month, day);
+  return new Date(year, month - 1, day);
 }
 
 export function dateToDict(date: Date) {
@@ -26,7 +26,7 @@ export function isToday({ year, month, day }: BasicDate) {
 }
 
 export function getDate({ year, month, day, hour, minute }) {
-  return new Date(year, month, day, hour, minute, 0);
+  return new Date(year, month - 1, day, hour, minute, 0);
 }
 
 export function minusMinutes(date: Date, minutes: number) {
