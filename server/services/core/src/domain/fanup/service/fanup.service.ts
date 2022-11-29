@@ -119,7 +119,7 @@ export class FanupService {
    * @param ticketAmount 판매된 티켓
    * @param maxNum 한 방당 들어갈 수 있는 최대 인원
    */
-  calculateFanUP(ticketAmount: number, maxNum: number) {
+  calculateFanUP(ticketAmount: number, maxNum: number): number {
     if (ticketAmount === 0) {
       return 0;
     } else {

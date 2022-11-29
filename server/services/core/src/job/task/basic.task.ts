@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
-import { getDate, minusMinutes } from 'src/common/util';
+import { addMinutes, getDate, minusMinutes } from 'src/common/util';
 import { FanupService } from 'src/domain/fanup/service/fanup.service';
 
 @Injectable()
@@ -22,8 +22,9 @@ export class BasicTask {
   }
 
   addTask(name: string, date: Date) {
-    const job = new CronJob(date, () => {
+    const job = new CronJob(date, async () => {
       this.logger.log('fanup create');
+      await this.fanUPTask();
     });
     this.schedulerRegistry.addCronJob(name, job);
     job.start();
@@ -106,6 +107,37 @@ export class BasicTask {
       const date: Date = minusMinutes(getDate(ticket.meetingStartTime), 30);
       this.logger.log(date);
       this.addTask(name, date);
+    });
+  }
+
+  async fanUPTask() {
+    // TODO Ticket Module에서 판매된 수량과 최대 인원, 팀당 시간을 불러오는 로직
+    const ticket = {
+      ticketId: 5,
+      ticketAmount: 100,
+      maxNum: 5,
+      timePerTeam: 10,
+      meetingStartTime: {
+        year: 2022,
+        month: 11,
+        day: 30,
+        hour: 1,
+        minute: 55,
+      },
+    };
+
+    const date: Date = getDate(ticket.meetingStartTime);
+    const roomAmount = this.fanupService.calculateFanUP(
+      ticket.ticketAmount,
+      ticket.maxNum,
+    );
+
+    Array.from({ length: roomAmount }, (_, i) => i).forEach((element) => {
+      const startTime = addMinutes(date, element * ticket.timePerTeam);
+      const endTime = addMinutes(startTime, ticket.timePerTeam);
+      const fanUP = this.fanupService.create(startTime, endTime);
+
+      // TODO Ticket Module에서 room_id가 비어있는 user-ticket을 불러와 방 업데이트
     });
   }
 }
