@@ -1,5 +1,3 @@
-import { Inject } from '@nestjs/common';
-import { ClientTCP } from '@nestjs/microservices';
 import {
   ConnectedSocket,
   MessageBody,
@@ -9,18 +7,15 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { catchError, lastValueFrom, of } from 'rxjs';
 import { Server, Socket } from 'socket.io';
-import { MICRO_SERVICES } from '../../constants/microservices';
+import { ValidateUser } from '../../common/types';
+import { FanUPService } from './fanup.service';
 
 @WebSocketGateway({
   namespace: '/socket/fanup',
 })
 class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  constructor(
-    @Inject(MICRO_SERVICES.CORE.NAME)
-    private readonly apiClient: ClientTCP,
-  ) {}
+  constructor(private fanUPService: FanUPService) {}
 
   @WebSocketServer()
   server: Server;
@@ -28,29 +23,11 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private room: object = {};
 
   @SubscribeMessage('join_room')
-  async joinRoom(@ConnectedSocket() socket: Socket, @MessageBody() data) {
-    const { email, roomName } = data;
-
-    // 방 존재 여부 확인
-    const isRoomExist = await lastValueFrom(
-      this.apiClient
-        .send('isFanUPExist', { room_id: roomName })
-        .pipe(catchError((err) => of({ ...err, status: 404 }))),
-    );
-
-    if (isRoomExist.data) {
-      socket.join(roomName);
-
-      if (this.room[roomName]) {
-        this.room[roomName].push(socket.id);
-      } else {
-        this.room[roomName] = [socket.id];
-      }
-
-      this.server.to(roomName).emit('welcome', { email, socketID: socket.id });
-    }
-
-    this.server.to(socket.id).emit('room-not-exist', { ...isRoomExist });
+  async joinRoom(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() data: ValidateUser,
+  ) {
+    this.fanUPService.joinRoom({ server: this.server, socket, ...data });
   }
 
   @SubscribeMessage('offer')
