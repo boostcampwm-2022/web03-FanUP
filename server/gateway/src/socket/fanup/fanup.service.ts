@@ -12,11 +12,30 @@ export class FanUPService {
   ) {}
 
   socketRoom: object = {
+    // 소켓 룸 구조
     room_example: {
       participant: [], // 참가자 이메일
       chat: [], // 해당 방 채팅 내역
     }, // room_info
   };
+
+  handleDisconnect(server: Server, socket: Socket) {
+    const socketId = socket.id;
+
+    // 해당 소켓 아이디가 참가하고 있는 방
+    const targetRoom = Object.keys(this.socketRoom).find((key) =>
+      this.socketRoom[key].includes(socketId),
+    );
+
+    // 해당 소켓 아이디를 가지고 있는 참가자 제거
+    if (this.socketRoom[targetRoom]) {
+      this.socketRoom[targetRoom] = this.socketRoom[
+        targetRoom
+      ].participant.filter((element) => element.socketId !== socketId);
+    }
+
+    server.to(targetRoom).emit('leave', { socketId });
+  }
 
   async validateRoom(room: string) {
     const result = await lastValueFrom(
@@ -91,4 +110,6 @@ export class FanUPService {
 
     server.to(room).emit('welcome', { email, nickname, socketID: socket.id });
   }
+
+  async getParticipantList() {}
 }

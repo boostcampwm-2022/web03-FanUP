@@ -20,8 +20,6 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
-  private room: object = {};
-
   @SubscribeMessage('join_room')
   async joinRoom(
     @ConnectedSocket() socket: Socket,
@@ -64,19 +62,7 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   // 소켓 연결이 끊기면 실행
   handleDisconnect(@ConnectedSocket() socket: Socket) {
-    const socketID = socket.id;
-    const room = this.room;
-
-    const targetRoomName = Object.keys(room).find((key) =>
-      room[key].includes(socketID),
-    );
-
-    if (room[targetRoomName]) {
-      room[targetRoomName] = room[targetRoomName].filter(
-        (userSocketID) => userSocketID !== socketID,
-      );
-    }
-    this.server.to(targetRoomName).emit('leave', { socketID });
+    this.fanUPService.handleDisconnect(this.server, socket);
   }
 }
 
