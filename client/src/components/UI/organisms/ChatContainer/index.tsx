@@ -48,9 +48,9 @@ const ChatContainer: FC = () => {
 
     useEffect(() => {
         connectSocket();
+        // TODO : 값 가져오기
         joinRoom({ roomName: '슈붕', email: 'seongeun' });
         socket?.on(SOCKET_EVENTS.receiveMessage, (data: any) => {
-            console.log(data);
             setChatData((current) => [...current, data]);
         });
     }, []);
@@ -58,7 +58,8 @@ const ChatContainer: FC = () => {
     const handleSubmit = useCallback(
         (e: React.FormEvent<HTMLButtonElement>) => {
             e.preventDefault();
-            sendMessage({ roomName: '슈븅', email: 'seongeun', message: message });
+            // TODO : 값 가져오기
+            sendMessage({ roomName: '슈붕', email: 'seongeun', message: message });
             setMessage(() => '');
         },
         [message]

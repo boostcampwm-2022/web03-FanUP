@@ -25,7 +25,7 @@ const joinRoom = ({ roomName, email }: any) => {
     });
 
     socket?.on('welcome', (data) => {
-        console.log(data);
+        console.log('welcome!', data);
     });
 };
 
@@ -36,11 +36,6 @@ const sendMessage = ({ roomName, email, message }: any) => {
         isArtist: false,
         message: message,
     };
-
-    if (socket) {
-        console.log(socket);
-        socket.emit(SOCKET_EVENTS.sendMessage, data);
-    }
 
     socket?.emit(SOCKET_EVENTS.sendMessage, data);
 };
