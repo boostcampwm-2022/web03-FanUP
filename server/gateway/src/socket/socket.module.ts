@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MICRO_SERVICES } from '../constants/microservices';
 import { CoreModule } from '../core/core.module';
-import { ChatGateway } from './chat.gateway';
 import { FanUPGateway } from './fanup/fanup.gateway';
 import { FanUPService } from './fanup/fanup.service';
 
@@ -28,7 +27,7 @@ import { FanUPService } from './fanup/fanup.service';
       },
     ]),
   ],
-  providers: [FanUPGateway, ChatGateway, FanUPService],
+  providers: [FanUPGateway, FanUPService],
   exports: [FanUPService],
 })
 export class SocketModule {}
