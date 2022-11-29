@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 
-export class BasicService {
-  private readonly logger = new Logger(BasicService.name);
+export class BasicTask {
+  private readonly logger = new Logger(BasicTask.name);
 
   constructor(private schedulerRegistry: SchedulerRegistry) {}
 
