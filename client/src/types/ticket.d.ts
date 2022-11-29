@@ -10,6 +10,23 @@ export interface Ticket {
     fanUpTime: string;
 }
 
-export interface TodayTicket extends Ticket {}
+interface ITicket {
+    ticket_id: number;
+    name: string;
+    title: string;
+    profile_url: string;
+    start_time: Date;
+}
 
-export interface DetailTicket extends Ticket {}
+interface MyTicket extends ITicket {}
+export interface TicketSales extends ITicket {
+    sales_time: Date;
+    price: number;
+}
+
+export interface TicketDetail extends ITicket {
+    description: string;
+    sales_time: Date;
+    price: number;
+    total_amount: number;
+}

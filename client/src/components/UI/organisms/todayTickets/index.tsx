@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import PrevBtnIcon from '@/components/icons/PrevBtnIcon';
 import NextBtnIcon from '@/components/icons/NextBtnIcon';
 import { dummyTickets } from '@utils/dummy';
-import { useGetTodayTicketQuery } from '@/services/ticket';
+import { useGetTodayTicketsQuery } from '@/services/ticket';
 
 const TodayTicketsWrapper = styled.div`
     position: relative;

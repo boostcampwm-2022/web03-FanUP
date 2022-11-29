@@ -22,12 +22,14 @@
     "test:e2e": "jest --detectOpenHandles --runInBand --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/axios": "^1.0.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/microservices": "^9.2.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/platform-socket.io": "^9.2.0",
     "@nestjs/websockets": "^9.2.0",
+    "form-data": "^4.0.0",
     "nyc": "^15.1.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

@@ -27,7 +27,7 @@ describe('<Header />', () => {
 
         renderWithContext(<Header />);
         fireEvent.click(screen.getByRole('button', { name: '티켓팅' }));
-        expect(navigate).toBeCalledWith('/ticketing');
+        expect(navigate).toBeCalledWith('/tickets');
 
         fireEvent.click(screen.getByTestId('search'));
         expect(alertMock).toBeCalledWith('searchCallback');
