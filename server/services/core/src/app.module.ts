@@ -7,6 +7,7 @@ import { ChatModule } from './domain/chat/chat.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { FileModule } from './provider/file/file.module';
 import { ConfigModule } from '@nestjs/config';
+import { JobModule } from './job/job.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath: [`${__dirname}/.env`],
       isGlobal: true,
     }),
+    JobModule,
   ],
   controllers: [AppController],
   providers: [AppService],

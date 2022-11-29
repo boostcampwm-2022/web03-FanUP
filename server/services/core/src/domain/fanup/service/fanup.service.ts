@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FanUPStatus } from '@prisma/client';
+import { dateToDict, isToday } from '../../../common/util';
 import {
   FanUPNotFoundException,
   FanUPUpdateException,
@@ -50,6 +51,11 @@ export class FanupService {
   async update(room_id: string, updateFanupDto: UpdateFanupDto) {
     try {
       this.isExist(room_id);
+      const fanUP = await this.findOne(room_id);
+      if (isToday(dateToDict(fanUP.start_time))) {
+        throw new FanUPUpdateException();
+      }
+
       return await this.prisma.fanUp.update({
         where: {
           room_id,
@@ -77,6 +83,24 @@ export class FanupService {
     }
   }
 
+  async findOne(room_id: string) {
+    try {
+      return await this.prisma.fanUp.findUnique({
+        where: {
+          room_id,
+        },
+        select: {
+          ticket_id: true,
+          room_id: true,
+          start_time: true,
+          end_time: true,
+        },
+      });
+    } catch (err) {
+      throw new FanUPNotFoundException();
+    }
+  }
+
   async isExist(room_id: string) {
     const fanUp = await this.prisma.fanUp.findUnique({
       where: {
@@ -88,5 +112,19 @@ export class FanupService {
       return true;
     }
     throw new FanUPNotFoundException();
+  }
+
+  /**
+   * 판매된 티켓을 기반으로 필요한 방개수를 계산하는 함수
+   * @param ticketAmount 판매된 티켓
+   * @param maxNum 한 방당 들어갈 수 있는 최대 인원
+   */
+  calculateFanUP(ticketAmount: number, maxNum: number): number {
+    if (ticketAmount === 0) {
+      return 0;
+    } else {
+      const num = Number(ticketAmount / maxNum);
+      return ticketAmount % maxNum === 0 ? num : num + 1;
+    }
   }
 }
