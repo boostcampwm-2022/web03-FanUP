@@ -51,16 +51,16 @@ const Logo = styled.div`
 `;
 
 interface Props {
-    name: string;
+    artistName: string;
     backgroundThumbnail: string;
     logo: string;
 }
 
-const ArtistCard = ({ name, backgroundThumbnail, logo }: Props) => {
+const ArtistCard = ({ artistName, backgroundThumbnail, logo }: Props) => {
     return (
         <ArtistCardWrapper>
             <BackgroundThumbNail src={backgroundThumbnail} alt="background" />
-            <span>{name}</span>
+            <span>{artistName}</span>
             <Logo>
                 <img src={logo} alt="logo" />
             </Logo>

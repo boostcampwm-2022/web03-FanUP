@@ -13,6 +13,7 @@ import { AuthService } from './auth.service';
         name: MICRO_SERVICES.AUTH.NAME,
         transport: Transport.TCP,
         options: {
+          host: MICRO_SERVICES.AUTH.HOST,
           port: MICRO_SERVICES.AUTH.PORT,
         },
       },

@@ -1,5 +1,5 @@
 import { ReducerType } from '@store/rootReducer';
-import { setArtistListViewMode } from '@store/user';
+import { setArtistListViewMode } from '@/store/user';
 import { UserStore } from '@/types/user';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

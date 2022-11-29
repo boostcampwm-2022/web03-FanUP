@@ -23,7 +23,7 @@ export const useWebRTC = (): [
 ] => {
     const { fanUpId } = useParams();
     const [users, setUsers] = useState<any[]>([]);
-    const socket = useSocket(fanUpId as string);
+    const [socket] = useSocket(fanUpId as string);
     const peerConnections = useRef<{ [key: string]: RTCPeerConnection }>({});
     const { myStream } = useSelector<ReducerType, UserStore>((state) => state.userSlice);
     const dispatch = useDispatch();

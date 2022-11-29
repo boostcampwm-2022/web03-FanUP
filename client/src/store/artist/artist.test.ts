@@ -6,7 +6,7 @@ import reducer, {
     closeScheduleModal,
     initializeSelectedDay,
     setSelectedDay,
-} from '@/store/artist';
+} from '@store/artist';
 
 describe('artistSlice', () => {
     it('setYear', async () => {

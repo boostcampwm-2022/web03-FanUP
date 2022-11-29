@@ -8,7 +8,8 @@ import { ArtistStore } from '@/types/artist';
 import ScheduleFanUpModal from '../../molecules/scheduleFanUpModal';
 
 const CalendarWrapper = styled.div`
-    width: 80vw;
+    width: 60vw;
+    min-width: 500px;
     padding: 60px 40px;
     margin: 0 auto;
     background: white;

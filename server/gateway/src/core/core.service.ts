@@ -1,8 +1,9 @@
 import { Inject } from '@nestjs/common';
 import { ClientTCP } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
-
+import { catchError, lastValueFrom, of } from 'rxjs';
+import * as FormData from 'form-data';
 import { MICRO_SERVICES } from '../constants/microservices';
+import { CustomRes } from '../types';
 
 export class CoreService {
   constructor(
@@ -10,31 +11,42 @@ export class CoreService {
     private readonly apiClient: ClientTCP,
   ) {}
 
-  getApiHello() {
-    return this.apiClient.send({ cmd: 'getCoreHello' }, {});
+  async getApiHello() {
+    const { status, data, message }: CustomRes = await lastValueFrom(
+      this.apiClient.send('getCoreHello', {}),
+    );
+    return data;
   }
 
-  // async createFanUPRoom() {
-  //   return await lastValueFrom(
-  //     this.apiClient.send({ cme: 'createFanUPRoom' }, {}),
-  //   );
-  // }
+  async getAllChatMessage() {
+    return this.apiClient
+      .send('findChatByFanUPId', {})
+      .pipe(catchError((val) => of({ error: val.message })));
+  }
 
-  // async enterFanUPRoom() {
-  //   return await lastValueFrom(
-  //     this.apiClient.send({ cme: 'enterFanUPRoom' }, {}),
-  //   );
-  // }
+  uploadSingleFile(file) {
+    const formData = new FormData();
+    formData.append('file', file.buffer, { filename: file.originalname });
+    return formData.submit(
+      `http://${MICRO_SERVICES.CORE.HOST}:4002/file/single`,
+      function (err, res) {
+        if (err) return err;
+        return res;
+      },
+    );
+  }
 
-  // async exitFanUPRoom() {
-  //   return await lastValueFrom(
-  //     this.apiClient.send({ cme: 'exitFanUPRoom' }, {}),
-  //   );
-  // }
-
-  // async deleteFanUPRoom() {
-  //   return await lastValueFrom(
-  //     this.apiClient.send({ cme: 'deleteFanUPRoom' }, {}),
-  //   );
-  // }
+  uploadMultipleFile(files) {
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append('files', file.buffer, { filename: file.originalname });
+    });
+    return formData.submit(
+      `http://${MICRO_SERVICES.CORE.HOST}:4002/file/multiple`,
+      function (err, res) {
+        if (err) return err;
+        return res;
+      },
+    );
+  }
 }
