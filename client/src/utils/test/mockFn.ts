@@ -25,4 +25,10 @@ export const MOCK_FN = {
     memo: (memoFn: any) => {
         jest.spyOn(React, 'memo').mockReturnValue(memoFn);
     },
+    intersectionObserver: () => {
+        const intersectionObserverMock = () => ({
+            observe: () => null,
+        });
+        window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+    },
 };

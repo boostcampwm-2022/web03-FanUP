@@ -1,14 +1,19 @@
 import React, { useCallback } from 'react';
 import PrevBtnIcon from '@/components/icons/PrevBtnIcon';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { ReducerType } from '@store/rootReducer';
-import { ArtistStore } from '@/types/artist';
+import { CalendarData } from '@/types/artist';
 import { setMonth, setYear } from '@/store/artist';
 
 const CalendarPrevBtn = () => {
     const dispatch = useDispatch();
-    const { calendarMonth: month, calendarYear: year } = useSelector<ReducerType, ArtistStore>(
-        (state) => state.artistSlice
+
+    const { calendarYear: year, calendarMonth: month } = useSelector<ReducerType, CalendarData>(
+        ({ artistSlice }) => ({
+            calendarYear: artistSlice.calendarYear,
+            calendarMonth: artistSlice.calendarMonth,
+        }),
+        shallowEqual
     );
 
     const clickPrev = useCallback(() => {

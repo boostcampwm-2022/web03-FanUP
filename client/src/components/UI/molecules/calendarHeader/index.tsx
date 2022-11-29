@@ -1,7 +1,6 @@
 import React from 'react';
 import { ReducerType } from '@store/rootReducer';
-import { ArtistStore } from '@/types/artist';
-import { useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import CalendarPrevBtn from '@atoms/calendarPrevBtn';
@@ -61,10 +60,18 @@ export const guide = [
     { background: '#9E57FF', text: '예정' },
     { background: '#FF6666', text: '완료' },
 ];
+interface StoreState {
+    calendarMonth: number;
+    calendarYear: number;
+}
 
 const CalendarHeader = () => {
-    const { calendarYear: year, calendarMonth: month } = useSelector<ReducerType, ArtistStore>(
-        (state) => state.artistSlice
+    const { calendarYear: year, calendarMonth: month } = useSelector<ReducerType, StoreState>(
+        ({ artistSlice }) => ({
+            calendarYear: artistSlice.calendarYear,
+            calendarMonth: artistSlice.calendarMonth,
+        }),
+        shallowEqual
     );
 
     return (
@@ -87,7 +94,6 @@ const CalendarHeader = () => {
         </CalendarHeaderWrapper>
     );
 };
-
 export const addZero = (month: number) => (month < 10 ? `0${month}` : `${month}`);
 
 export default CalendarHeader;
