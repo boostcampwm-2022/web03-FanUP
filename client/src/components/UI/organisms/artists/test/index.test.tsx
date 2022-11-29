@@ -1,9 +1,13 @@
 import { renderWithContext } from '@utils/test/renderWithContext';
 import Artists from '@organisms/artists';
 import { screen } from '@testing-library/react';
-import { DummyMyArtists } from '@/utils/dummy';
+import { DummyMyArtists } from '@utils/dummy';
+import { MOCK_FN } from '@utils/test/mockFn';
 
 describe('<Artists />', () => {
+    beforeEach(() => {
+        MOCK_FN.intersectionObserver();
+    });
     const props = {
         title: '나의 아티스트',
         artistList: DummyMyArtists,

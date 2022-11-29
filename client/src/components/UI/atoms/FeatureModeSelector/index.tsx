@@ -4,7 +4,6 @@ import ParticipantsIcon from '@icons/ParticipantsIcon';
 import { AppDispatch } from '@store/index';
 import { changeMode } from '@/store/fanUp';
 import { ReducerType } from '@store/rootReducer';
-import { FanUpStore } from '@/types/fanUp';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -30,7 +29,7 @@ const CHAT_MODE = 1;
 
 const FeatureModeSelector = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const { mode } = useSelector<ReducerType, FanUpStore>((state) => state.fanUpSlice);
+    const mode = useSelector<ReducerType, number>(({ fanUpSlice }) => fanUpSlice.mode);
 
     const modes = useMemo(
         () => [

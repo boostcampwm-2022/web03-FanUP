@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ReducerType } from '@store/rootReducer';
-import { UserStore } from '@/types/user';
 import { useSelector } from 'react-redux';
 import ArtistListViewModeSelector from '@molecules/artistListViewModeSelector';
 import Artists from '@organisms/artists';
@@ -22,12 +21,11 @@ const 나의아티스트 = 1;
 const 아티스트만나보기 = 2;
 
 const ArtistsBox = () => {
-    const { artistListViewMode: mode } = useSelector<ReducerType, UserStore>(
-        (state) => state.userSlice
-    );
+    const mode = useSelector<ReducerType, number>(({ userSlice }) => userSlice.artistListViewMode);
+
     return (
         <ArtistsWrapper>
-            {/* <ArtistListViewModeSelector /> */}
+            <ArtistListViewModeSelector />
             <ArtistsListWrapper>
                 {(mode === 전체 || mode === 나의아티스트) && (
                     <Artists title="나의 아티스트" artistList={DummyMyArtists} />

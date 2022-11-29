@@ -1,6 +1,7 @@
 import { IAritst } from '@/types/artist';
 import React, { useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import LazyImg from '@atoms/LazyImg';
 
 const ArtistCardWrapper = styled.div`
     cursor: pointer;
@@ -15,11 +16,21 @@ const ArtistCardWrapper = styled.div`
         font-size: 20px;
         font-weight: 700;
     }
+    div {
+        &:first-child {
+            overflow: hidden;
+            margin-bottom: 20px;
+            img {
+            }
+        }
+    }
     &:hover {
         filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.05));
     }
-    &:hover > img {
-        transform: scale(1.05);
+    &:hover > div:first-child {
+        img {
+            transform: scale(1.05);
+        }
     }
 `;
 
@@ -28,7 +39,6 @@ const BackgroundThumbNail = styled.img`
     backface-visibility: hidden;
     image-rendering: -webkit-optimize-contrast;
     margin-bottom: 20px;
-    transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;
 `;
 
 const Logo = styled.div`
@@ -41,12 +51,12 @@ const Logo = styled.div`
     background: white;
     border-radius: 100%;
     left: 50%;
-    bottom: 30px;
+    bottom: 5%;
     transform: translate(-50%, -50%);
     img {
         border-radius: 100%;
-        width: 35px;
-        height: 35px;
+        width: 85%;
+        height: 85%;
     }
 `;
 
@@ -56,30 +66,9 @@ interface Props {
 }
 
 const ArtistCard = ({ artist }: Props) => {
-    const imgRef = useRef<HTMLImageElement>(null);
-
-    const observerCallback = useCallback(
-        (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const target = entry.target as HTMLImageElement;
-                    target.src = target.dataset.src as string;
-                    observer.unobserve(entry.target);
-                }
-            });
-        },
-        []
-    );
-
-    useEffect(() => {
-        if (!imgRef.current) return;
-        const observer = new IntersectionObserver(observerCallback, {});
-        observer.observe(imgRef.current);
-    }, []);
-
     return (
         <ArtistCardWrapper>
-            <BackgroundThumbNail ref={imgRef} data-src={artist.profile_url} alt="background" />
+            <LazyImg src={artist.profile_url} alt="background" width="100%" height="100%" />
             <span>{artist.name}</span>
             <Logo>
                 <img src={'/dummyArtistLogo.png'} alt="logo" />

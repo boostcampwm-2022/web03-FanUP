@@ -1,11 +1,32 @@
 import React, { useCallback, useEffect, useRef } from 'react';
+import styled from 'styled-components';
 
+interface StyledProps {
+    width?: string;
+    height?: string;
+}
 interface Props {
     src: string;
     alt: string;
+    width: string;
+    height: string;
 }
 
-const LazyImg = ({ src, alt, ...props }: Props) => {
+const ImgWrapper = styled.div<StyledProps>`
+    width: ${({ width }) => width};
+    padding-bottom: ${({ height }) => height};
+    position: relative;
+`;
+
+const Img = styled.img`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+`;
+
+const LazyImg = ({ src, alt, width, height }: Props) => {
     const imgRef = useRef<HTMLImageElement>(null);
 
     const observerCallback = useCallback(
@@ -27,7 +48,11 @@ const LazyImg = ({ src, alt, ...props }: Props) => {
         observer.observe(imgRef.current);
     }, []);
 
-    return <img data-src={src} alt={alt} ref={imgRef} {...props} />;
+    return (
+        <ImgWrapper width={width} height={height}>
+            <Img data-src={src} alt={alt} ref={imgRef} />
+        </ImgWrapper>
+    );
 };
 
 export default LazyImg;

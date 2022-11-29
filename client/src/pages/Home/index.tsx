@@ -5,6 +5,7 @@ import Header from '@/components/UI/organisms/header';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import LazyImg from '@/components/UI/atoms/LazyImg';
 
 const BannerWrapper = styled.div`
     background: black;
@@ -43,7 +44,7 @@ const Home = () => {
             ) : (
                 <>
                     <BannerWrapper>
-                        <img src="/banner.png" alt="banner" />
+                        <LazyImg src="/banner.png" alt="banner" width="620px" height="237px" />
                     </BannerWrapper>
                     <UserContentsWrapper>
                         <Schedules />
