@@ -1,11 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 
+import { socket, SOCKET_EVENTS, connectSocket, joinRoom, sendMessage } from '@/socket';
 import InputForm from '@molecules/InputForm';
 import ChatList from '@molecules/ChatList';
-import useSocket2 from '@hooks/useSocket2';
-import SocketIO from '@hooks/socket';
-import { useCallback } from 'react';
 
 export interface ChatMessage {
     roomName: string;
@@ -45,13 +43,14 @@ const StyledChatContainer = styled.div`
 `;
 
 const ChatContainer: FC = () => {
-    const socket = new SocketIO();
     const [message, setMessage] = useState('');
     const [chatData, setChatData] = useState<ChatMessage[]>(dummyChatData);
 
     useEffect(() => {
-        if (!socket.instance) return;
-        socket.instance.on('receive-message', (data: any) => {
+        connectSocket();
+        joinRoom({ roomName: '슈붕', email: 'seongeun' });
+        socket?.on(SOCKET_EVENTS.receiveMessage, (data: any) => {
+            console.log(data);
             setChatData((current) => [...current, data]);
         });
     }, []);
@@ -59,7 +58,7 @@ const ChatContainer: FC = () => {
     const handleSubmit = useCallback(
         (e: React.FormEvent<HTMLButtonElement>) => {
             e.preventDefault();
-            socket.sendMessage({ message: message });
+            sendMessage({ roomName: '슈븅', email: 'seongeun', message: message });
             setMessage(() => '');
         },
         [message]
