@@ -13,12 +13,18 @@ import { FanUPService } from './fanup.service';
 
 @WebSocketGateway({
   namespace: '/socket/fanup',
+  cors: {
+    origin: '*',
+    credential: true,
+  },
 })
 class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(private fanUPService: FanUPService) {}
 
   @WebSocketServer()
   server: Server;
+
+  // =========== WebRTC ===========
 
   @SubscribeMessage('join_room')
   async joinRoom(
@@ -52,13 +58,27 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
       .emit('ice', { email, ice, socketID: socket.id });
   }
 
-  // 소켓 연결이 생성되면
-  handleConnection(@ConnectedSocket() socket: Socket): void {
-    // TODO
-    // - Microservice에서 TCP 통신 로직 작성
-    // - 해당 유저의 유효성을 검사 : 지금 이시간대 참여가 맞는지 다른지
-    // - 참여자 업데이트
+  // =========== 채팅 및 참여자 ===========
+
+  @SubscribeMessage('send-message')
+  sendMessage(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
+    this.fanUPService.sendMessage({ ...data, socket, server: this.server });
   }
+
+  @SubscribeMessage('request-chat')
+  getAllChat(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+    const { room } = data;
+    this.fanUPService.getAllChat(room, this.server, socket);
+  }
+
+  @SubscribeMessage('request-participant-user')
+  getParticipantUser(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+    const { room } = data;
+    this.fanUPService.getParticipantList(room, this.server, socket);
+  }
+
+  // 소켓 연결이 생성되면
+  handleConnection(@ConnectedSocket() socket: Socket): void {}
 
   // 소켓 연결이 끊기면 실행
   handleDisconnect(@ConnectedSocket() socket: Socket) {

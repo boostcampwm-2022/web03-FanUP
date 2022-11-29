@@ -58,9 +58,9 @@ class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() data: SendMessage,
   ): void {
     this.logger.log('send-message');
-    const { email, roomName, isArtist, message } = data;
+    const { email, room, isArtist, message } = data;
     this.server
-      .to(roomName)
+      .to(room)
       .emit('receive-message', { email, isArtist, message } as ReceiveMessage);
   }
 

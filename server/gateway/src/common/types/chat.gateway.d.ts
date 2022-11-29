@@ -8,17 +8,10 @@ interface Welcome {
   socketID: string;
 }
 
-interface SendMessage {
-  email: string;
-  roomName: string;
-  isArtist: boolean;
-  message: string;
-}
-
 interface ReceiveMessage {
   email: string;
   isArtist: boolean;
   message: string;
 }
 
-export { JoinChatRoom, Welcome, SendMessage, ReceiveMessage };
+export { JoinChatRoom, Welcome, ReceiveMessage };

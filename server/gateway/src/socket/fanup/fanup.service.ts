@@ -1,15 +1,25 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import { ClientTCP } from '@nestjs/microservices';
 import { catchError, lastValueFrom, of } from 'rxjs';
 import { Server, Socket } from 'socket.io';
-import { JoinRoom, JoinSocketRoom, ValidateUser } from '../../common/types';
+import { AppService } from '../../app.service';
+import {
+  CreateChat,
+  JoinRoom,
+  JoinSocketRoom,
+  SendMessage,
+  SocketChat,
+  ValidateUser,
+} from '../../common/types';
 import { MICRO_SERVICES } from '../../constants/microservices';
 
 export class FanUPService {
   constructor(
     @Inject(MICRO_SERVICES.CORE.NAME)
-    private readonly fanUPTCP: ClientTCP,
+    private readonly coreTCP: ClientTCP,
   ) {}
+
+  private readonly logger = new Logger(AppService.name);
 
   socketRoom: object = {
     // 소켓 룸 구조
@@ -37,9 +47,11 @@ export class FanUPService {
     server.to(targetRoom).emit('leave', { socketId });
   }
 
+  // =========== WebRTC ===========
+
   async validateRoom(room: string) {
     const result = await lastValueFrom(
-      this.fanUPTCP
+      this.coreTCP
         .send('isFanUPExist', { room_id: room })
         .pipe(catchError((err) => of({ ...err, status: 404 }))),
     );
@@ -73,7 +85,8 @@ export class FanUPService {
     const checkRoom = await this.validateRoom(room);
     const checkUser = await this.validateUser({ room, email });
 
-    if (checkRoom.validate && checkUser) {
+    // checkRoom.validate && 생략
+    if (checkUser.validate) {
       this.joinSocketRoom({
         server,
         socket,
@@ -111,5 +124,70 @@ export class FanUPService {
     server.to(room).emit('welcome', { email, nickname, socketID: socket.id });
   }
 
-  async getParticipantList() {}
+  // =========== 채팅 및 참여자 ===========
+
+  async storeMessage(data: CreateChat) {
+    const result = await lastValueFrom(
+      this.coreTCP
+        .send('createChat', data)
+        .pipe(catchError((err) => of({ ...err, status: 403 }))),
+    );
+    return result['status'] >= 400
+      ? { ...result, data: null, success: false }
+      : { ...result, success: true };
+  }
+
+  async sendMessage(data: SendMessage) {
+    const { email, nickname, room, isArtist, message, socket, server } = data;
+    const checkRoom = await this.validateRoom(room);
+
+    if (checkRoom.validate === false) {
+      const storeResult = await this.storeMessage({
+        fanup_id: room,
+        email,
+        is_artist: isArtist,
+        message: message,
+      });
+
+      if (storeResult.success === false) {
+        const socketChat: SocketChat = {
+          nickname,
+          isArtist,
+          message,
+          date: Date.now(),
+        };
+
+        this.socketRoom[room].chat.push(socketChat);
+        server.to(room).emit('receive-message', socketChat);
+      } else {
+        server.to(socket.id).emit('cannot-send-message', { ...storeResult });
+      }
+    }
+  }
+
+  async getAllChat(room: string, server: Server, socket: Socket) {
+    const checkRoom = await this.validateRoom(room);
+
+    if (checkRoom.validate === false) {
+      server.to(room).emit('response-chat', {
+        result: this.socketRoom[room].chat,
+      });
+    } else {
+      server.to(socket.id).emit('cannot-get-all-chat', { result: null });
+    }
+  }
+
+  async getParticipantList(room: string, server: Server, socket: Socket) {
+    const checkRoom = await this.validateRoom(room);
+
+    if (checkRoom.validate === false) {
+      server.to(room).emit('response-participant-user', {
+        result: this.socketRoom[room].participant,
+      });
+    } else {
+      server
+        .to(socket.id)
+        .emit('cannot-get-participant-list', { result: null });
+    }
+  }
 }
