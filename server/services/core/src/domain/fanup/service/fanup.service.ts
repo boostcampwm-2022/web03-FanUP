@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FanUPStatus } from '@prisma/client';
+import { dateToDict, isToday } from '../../../common/util';
 import {
   FanUPNotFoundException,
   FanUPUpdateException,
@@ -50,6 +51,11 @@ export class FanupService {
   async update(room_id: string, updateFanupDto: UpdateFanupDto) {
     try {
       this.isExist(room_id);
+      const fanUP = await this.findOne(room_id);
+      if (isToday(dateToDict(fanUP.start_time))) {
+        throw new FanUPUpdateException();
+      }
+
       return await this.prisma.fanUp.update({
         where: {
           room_id,
@@ -74,6 +80,24 @@ export class FanupService {
       });
     } catch (err) {
       throw new FanUPUpdateException();
+    }
+  }
+
+  async findOne(room_id: string) {
+    try {
+      return await this.prisma.fanUp.findUnique({
+        where: {
+          room_id,
+        },
+        select: {
+          ticket_id: true,
+          room_id: true,
+          start_time: true,
+          end_time: true,
+        },
+      });
+    } catch (err) {
+      throw new FanUPNotFoundException();
     }
   }
 
