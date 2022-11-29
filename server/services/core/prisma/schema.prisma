@@ -16,7 +16,7 @@ enum FanUPStatus {
 model FanUp {
   id Int @id @default(autoincrement())
   ticket_id Int
-  room_id String @unique
+  room_id String @default(uuid())
   start_time DateTime
   end_time DateTime
   status FanUPStatus
