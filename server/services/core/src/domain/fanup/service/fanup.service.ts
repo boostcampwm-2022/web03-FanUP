@@ -113,4 +113,18 @@ export class FanupService {
     }
     throw new FanUPNotFoundException();
   }
+
+  /**
+   * 판매된 티켓을 기반으로 필요한 방개수를 계산하는 함수
+   * @param ticketAmount 판매된 티켓
+   * @param maxNum 한 방당 들어갈 수 있는 최대 인원
+   */
+  calculateFanUP(ticketAmount: number, maxNum: number) {
+    if (ticketAmount === 0) {
+      return 0;
+    } else {
+      const num = Number(ticketAmount / maxNum);
+      return ticketAmount % maxNum === 0 ? num : num + 1;
+    }
+  }
 }
