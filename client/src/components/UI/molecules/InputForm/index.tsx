@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import Button from '@atoms/Button';
@@ -25,15 +25,18 @@ const InputFormWrapper = styled.form`
     }
 `;
 
-const InputForm = () => {
-    const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        console.log('submit');
+const InputForm = ({ message, setMessage, handleSubmit }: any) => {
+    const handleInput = (e: any) => {
+        setMessage(e.target.value);
     };
 
     return (
         <InputFormWrapper>
-            <input placeholder="메시지를 입력하세요" />
+            <input
+                placeholder="메시지를 입력하세요"
+                onChange={(e) => handleInput(e)}
+                value={message}
+            />
             <Button
                 content={<SendIcon />}
                 onClick={(e) => handleSubmit(e)}
