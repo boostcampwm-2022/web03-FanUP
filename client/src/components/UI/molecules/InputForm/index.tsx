@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Button from '@atoms/Button';
-import SendIcon from '@icons/send';
+import SendIcon from '@/components/icons/SendIcon';
 import theme from '@style/theme';
 
 const InputFormWrapper = styled.form`

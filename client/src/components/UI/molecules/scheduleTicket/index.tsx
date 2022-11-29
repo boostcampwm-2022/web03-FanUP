@@ -57,7 +57,7 @@ interface Props {
 const ScheduleTicket = ({ title, date, thumbNail }: Props) => {
     return (
         <ScheduleTicketWrapper>
-            <TicketBarCode width="9px" />
+            <TicketBarCode width="9px" height="65px" />
             <ScheduleContent>
                 <ScheduleTicketLeft>
                     <ImageChip src={thumbNail} width="50px" height="50px" />

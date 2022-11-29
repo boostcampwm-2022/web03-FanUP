@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseInterceptors } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { AppService } from './app.service';
 
@@ -11,7 +11,7 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @MessagePattern({ cmd: 'getCoreHello' })
+  @MessagePattern('getCoreHello')
   getApiHello(): string {
     return this.appService.getCoreHello();
   }

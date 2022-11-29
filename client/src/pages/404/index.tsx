@@ -1,4 +1,4 @@
-import NotFoundIcon from '@icons/404';
+import NotFoundIcon from '@icons/NotFoundIcon';
 import React from 'react';
 import styled from 'styled-components';
 

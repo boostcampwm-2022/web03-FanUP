@@ -7,3 +7,10 @@ export interface UserStore {
     myStream: MediaStream | null;
     artistListViewMode: number;
 }
+
+export interface IUser {
+    id: number;
+    type: string;
+    email: string;
+    nickname: string;
+}

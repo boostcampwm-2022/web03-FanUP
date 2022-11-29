@@ -1,4 +1,4 @@
-import RoomBtn from '@/components/UI/atoms/FanUP/RoomBtn';
+import RoomBtn from '@atoms/RoomBtn';
 import React from 'react';
 import styled from 'styled-components';
 

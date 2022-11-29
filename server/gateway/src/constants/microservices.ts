@@ -7,12 +7,18 @@ const MICRO_SERVICES = {
   },
   CORE: {
     NAME: 'CORE_SERVICE',
-    HOST: environment === 'development' ? 'localhost' : 'host.docker.internal',
+    HOST:
+      process.env.NODE_ENV === 'development'
+        ? '0.0.0.0'
+        : 'host.docker.internal',
     PORT: 3002,
   },
   TICKET: {
     NAME: 'TICKET_SERVICE',
-    HOST: environment === 'development' ? 'localhost' : 'host.docker.internal',
+    HOST:
+      process.env.NODE_ENV === 'development'
+        ? '0.0.0.0'
+        : 'host.docker.internal',
     PORT: 3003,
   },
 };
