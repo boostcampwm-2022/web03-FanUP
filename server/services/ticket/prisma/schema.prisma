@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Ticket {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  artistId  Int
+  salesTime DateTime
+  startTime DateTime
+  totalAmount Int @default(0)
+  numberTeam Int  @default(1)
+  timeTeam  Int
+  price     Int
+}
+
+model UserTicket {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  ticketId  Int
+  createdAt DateTime @default(now())
+  fanupId   Int?
+}
