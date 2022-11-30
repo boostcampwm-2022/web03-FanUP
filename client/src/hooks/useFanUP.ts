@@ -23,7 +23,11 @@ const useFanUP = (): [
 ] => {
     const [users, setUsers] = useState<any[]>([]);
     const peerConnections = useRef<{ [key: string]: RTCPeerConnection }>({});
-    const { myStream } = useSelector<ReducerType, UserStore>((state) => state.userSlice);
+
+    const myStream = useSelector<ReducerType, MediaStream | null>(
+        ({ userSlice }) => userSlice.myStream
+    );
+
     const dispatch = useDispatch();
 
     const createPeerConnection = (socketID: string) => {

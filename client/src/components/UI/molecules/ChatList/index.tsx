@@ -7,7 +7,7 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 
 interface Props {
-    chatData: ChatMessage[];
+    chatData: any[];
 }
 
 const StyledChatList = styled.div`

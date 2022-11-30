@@ -1,7 +1,6 @@
 import React from 'react';
 import Video from '@atoms/Video';
 import { ReducerType } from '@store/rootReducer';
-import { UserStore } from '@/types/user';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -27,7 +26,10 @@ interface Props {
 }
 
 const VideoList = ({ userStream }: Props) => {
-    const { myStream } = useSelector<ReducerType, UserStore>((state) => state.userSlice);
+    const myStream = useSelector<ReducerType, MediaStream | null>(
+        ({ userSlice }) => userSlice.myStream
+    );
+
     return (
         <VideoListWrapper style={gridTemplate[String(userStream.length)]}>
             {userStream.map((data, idx) => (

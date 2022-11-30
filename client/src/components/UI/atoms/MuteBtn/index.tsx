@@ -1,11 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import MuteOffIcon from '@/components/icons/MuteOffIcon';
 import MuteOnIcon from '@/components/icons/MuteOnIcon';
 import theme from '@/style/theme';
 import { useToggle } from '@/hooks/useToggle';
 import { useSelector } from 'react-redux';
 import { ReducerType } from '@/store/rootReducer';
-import { UserStore } from '@/types/user';
 
 interface Props {
     peerConnections?: React.MutableRefObject<{
@@ -14,7 +13,9 @@ interface Props {
 }
 
 const MuteBtn = ({ peerConnections }: Props) => {
-    const { myStream } = useSelector<ReducerType, UserStore>((state) => state.userSlice);
+    const myStream = useSelector<ReducerType, MediaStream | null>(
+        ({ userSlice }) => userSlice.myStream
+    );
     const [mute, _, toggleMute] = useToggle(false);
 
     const replaceAudioTrack = () => {

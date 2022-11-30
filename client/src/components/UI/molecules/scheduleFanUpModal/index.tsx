@@ -124,7 +124,11 @@ const ContentFourth = styled.div`
 
 const ScheduleFanUpModal = () => {
     const dispatch = useDispatch();
-    const { selectedDay } = useSelector<ReducerType, ArtistStore>((state) => state.artistSlice);
+    const selectedDay = useSelector<
+        ReducerType,
+        null | { year: number; month: number; day: number }
+    >(({ artistSlice }) => artistSlice.selectedDay);
+
     const titleRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const teamNumberRef = useRef<HTMLInputElement>(null);

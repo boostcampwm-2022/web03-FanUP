@@ -92,5 +92,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             cd ./fanup/server
+            docker rm -f $(docker ps -aq) && docker image rm -f $(docker image ls -q)
             docker-compose pull
-            docker-compose up -d
+            docker run --env-file /root/fanup/server/.env -p 3002:3002 -p 4002:4002 -d jinsungguri/fanup-core:latest
+            docker run -p 3000:3000 -d jinsungguri/fanup-gateway:latest

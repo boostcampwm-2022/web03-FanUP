@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ChatNotFoundException } from '../../../common/exception';
+import {
+  ChatCreateFailException,
+  ChatNotFoundException,
+} from '../../../common/exception';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
 import { ChatDto, CreateChatDto } from '../dto';
 
@@ -9,15 +12,19 @@ export class ChatService {
 
   async createChat(createChatDto: CreateChatDto) {
     // TODO 해당 채팅방의 존재 여부를 확인하는 로직이 필요
-    return await this.prisma.chat.create({
-      data: createChatDto,
-      select: {
-        fanup_id: true,
-        email: true,
-        is_artist: true,
-        message: true,
-      },
-    });
+    try {
+      return await this.prisma.chat.create({
+        data: createChatDto,
+        select: {
+          fanup_id: true,
+          email: true,
+          is_artist: true,
+          message: true,
+        },
+      });
+    } catch (err) {
+      throw new ChatCreateFailException();
+    }
   }
 
   // 특정 방의 채팅 메시지 전체를 가져오는 함수

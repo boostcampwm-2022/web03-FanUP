@@ -1,8 +1,8 @@
 import { openScheduleModal, setSelectedDay } from '@/store/artist';
 import { ReducerType } from '@/store/rootReducer';
-import { ArtistStore } from '@/types/artist';
+import { CalendarData } from '@/types/artist';
 import React, { useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { makeDay, week } from './utils';
 
@@ -44,9 +44,14 @@ const DateContent = styled.div`
 
 const CalendarBody = () => {
     const dispatch = useDispatch();
-    const { calendarYear: year, calendarMonth: month } = useSelector<ReducerType, ArtistStore>(
-        (state) => state.artistSlice
+    const { calendarYear: year, calendarMonth: month } = useSelector<ReducerType, CalendarData>(
+        ({ artistSlice }) => ({
+            calendarYear: artistSlice.calendarYear,
+            calendarMonth: artistSlice.calendarMonth,
+        }),
+        shallowEqual
     );
+
     const days = useMemo(() => makeDay({ year, month }), [year, month]);
 
     const openModal = useCallback(
