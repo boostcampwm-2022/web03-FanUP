@@ -153,7 +153,7 @@ export class FanUPService {
         message: message,
       });
 
-      if (storeResult.success === false) {
+      if (storeResult.success === false && this.socketRoom[room]['chat']) {
         const socketChat: SocketChat = {
           nickname,
           isArtist,
