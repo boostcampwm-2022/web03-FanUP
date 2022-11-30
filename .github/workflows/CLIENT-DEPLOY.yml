@@ -18,9 +18,9 @@ on:
     types:
       - closed
 
-defaults:
-  run:
-    working-directory: "./client"
+# defaults:
+#   run:
+#     working-directory: "./client"
 
 jobs:
   build:
@@ -33,5 +33,7 @@ jobs:
           username: ${{ secrets.CLIENT_USERNAME }} # root
           password: ${{ secrets.CLIENT_PASSWORD }} # ssh 접속용 password
           port: ${{ secrets.CLIENT_PORT }} # ssh 접속용 port
-          script: |
-            sh ${{ secrets.CLIENT_DEPLOY_FILE }}
+          run: |
+            ls
+            pwd
+            git pull origin dev
