@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { ReducerType } from '@store/rootReducer';
-import { FanUpStore } from '@/types/fanUp';
 import ParticipantsList from '@organisms/participantsList';
 import RoomList from '@/components/UI/organisms/RoomList';
 import ChatContainer from '@/components/UI/organisms/ChatContainer';
@@ -35,7 +34,7 @@ const FeatureContent: { [key: string]: JSX.Element } = {
 };
 
 const FeatureBox = () => {
-    const { mode } = useSelector<ReducerType, FanUpStore>((state) => state.fanUpSlice);
+    const mode = useSelector<ReducerType, number>(({ fanUpSlice }) => fanUpSlice.mode);
 
     return (
         <FeatureBoxWrapper>

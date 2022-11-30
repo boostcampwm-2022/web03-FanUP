@@ -5,10 +5,11 @@ import theme from '@/style/theme';
 import { useToggle } from '@/hooks/useToggle';
 import { useSelector } from 'react-redux';
 import { ReducerType } from '@/store/rootReducer';
-import { UserStore } from '@/types/user';
 
 const CameraBtn = () => {
-    const { myStream } = useSelector<ReducerType, UserStore>((state) => state.userSlice);
+    const myStream = useSelector<ReducerType, MediaStream | null>(
+        ({ userSlice }) => userSlice.myStream
+    );
     const [cameraOn, _, toggleCamera] = useToggle(true);
 
     const onClickCamera = useCallback(() => {

@@ -1,33 +1,16 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 
+import { socket, SOCKET_EVENTS, connectSocket } from '@/socket';
 import InputForm from '@molecules/InputForm';
 import ChatList from '@molecules/ChatList';
 
 export interface ChatMessage {
+    date: number;
     isArtist: boolean;
     nickname: string;
-    content: string;
+    message: string;
 }
-
-const dummyChatData: ChatMessage[] = [
-    { nickname: '장원영', isArtist: true, content: '안녕하세요 ㅎㅎ' },
-    { nickname: '성은', isArtist: false, content: '예쁘다~' },
-    {
-        nickname: '진성',
-        isArtist: false,
-        content:
-            'Custom IntegrationDevelop a fully customizable live audio-video app for any platform within a few hours.',
-    },
-    { nickname: '장원영', isArtist: true, content: '안녕하세요 ㅎㅎ' },
-    { nickname: '성은', isArtist: false, content: '예쁘다~' },
-    { nickname: '장원영', isArtist: true, content: '안녕하세요 ㅎㅎ' },
-    { nickname: '성은', isArtist: false, content: '예쁘다~' },
-    { nickname: '장원영', isArtist: true, content: '안녕하세요 ㅎㅎ' },
-    { nickname: '성은', isArtist: false, content: '예쁘다~' },
-    { nickname: '장원영', isArtist: true, content: '안녕하세요 ㅎㅎ' },
-    { nickname: '성은', isArtist: false, content: '예쁘다~' },
-];
 
 const StyledChatContainer = styled.div`
     position: relative;
@@ -35,12 +18,43 @@ const StyledChatContainer = styled.div`
 `;
 
 const ChatContainer: FC = () => {
-    const [chatData, setChatData] = useState<ChatMessage[]>(dummyChatData);
+    const [room, setRoom] = useState<string>('1');
+    const [message, setMessage] = useState('');
+    const [chatData, setChatData] = useState<ChatMessage[]>([]);
+
+    useEffect(() => {
+        socket?.emit(SOCKET_EVENTS.requestChat, { room: room });
+        socket?.on(SOCKET_EVENTS.responseChat, (data) => setChatData(() => [...data.result]));
+        socket?.on(SOCKET_EVENTS.receiveMessage, (data) => setChatData((curr) => [...curr, data]));
+
+        socket?.emit(SOCKET_EVENTS.requestParticipantUser, { room: room });
+        socket?.on(SOCKET_EVENTS.responseParticipantUser, (data) => console.log(data));
+    }, []);
+
+    const handleSubmit = useCallback(
+        (e: React.FormEvent<HTMLButtonElement>) => {
+            e.preventDefault();
+            console.log('메시지 전송');
+
+            // TODO : 값 가져오기
+            const data = {
+                email: 'seongeuniii@naver.com',
+                nickname: '원영',
+                room: '1',
+                isArtist: false,
+                message: message,
+            };
+
+            socket?.emit(SOCKET_EVENTS.sendMessage, data);
+            setMessage(() => '');
+        },
+        [message]
+    );
 
     return (
         <StyledChatContainer data-testid="chatContainer">
             <ChatList chatData={chatData} />
-            <InputForm />
+            <InputForm handleSubmit={handleSubmit} message={message} setMessage={setMessage} />
         </StyledChatContainer>
     );
 };

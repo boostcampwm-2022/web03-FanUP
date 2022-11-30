@@ -1,35 +1,45 @@
-import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { FanupService } from '../service/fanup.service';
-import { CreateFanupDto } from '../dto/create-fanup.dto';
-import { UpdateFanupDto } from '../dto/update-fanup.dto';
+import {
+  LoggingInterceptor,
+  TransformInterceptor,
+} from '../../../common/interceptor';
+import { CreateTimeDto, UpdateTimeDto } from '../dto';
+import { SetResponse } from 'src/common/decorator';
+import { ResMessage, ResStatusCode } from 'src/common/constants';
+import { AllRPCExceptionFilter } from 'src/common/filter';
 
+@UseFilters(new AllRPCExceptionFilter())
+@UseInterceptors(LoggingInterceptor, TransformInterceptor)
 @Controller()
 export class FanupController {
   constructor(private readonly fanupService: FanupService) {}
 
-  @MessagePattern('createFanup')
-  create(@Payload() createFanupDto: CreateFanupDto) {
-    return this.fanupService.create(createFanupDto);
+  @SetResponse(ResMessage.CREATE_FANUP, ResStatusCode.CREATED)
+  @MessagePattern('createFanUP')
+  async create(data: CreateTimeDto) {
+    return await this.fanupService.create(data.start_time, data.end_time);
   }
 
-  @MessagePattern('findAllFanup')
-  findAll() {
-    return this.fanupService.findAll();
+  @SetResponse(ResMessage.UPDATE_FANUP, ResStatusCode.OK)
+  @MessagePattern('updateFanUP')
+  async update(data: UpdateTimeDto) {
+    return await this.fanupService.update(data.room_id, {
+      start_time: data.start_time,
+      end_time: data.end_time,
+    });
   }
 
-  @MessagePattern('findOneFanup')
-  findOne(@Payload() id: number) {
-    return this.fanupService.findOne(id);
+  @SetResponse(ResMessage.GET_ALL_FANUP_BY_TICKET, ResStatusCode.OK)
+  @MessagePattern('findAllByTicketId')
+  async findAllByTicketId(data: { ticket_id: number }) {
+    return await this.fanupService.findAllByTicketId(data.ticket_id);
   }
 
-  @MessagePattern('updateFanup')
-  update(@Payload() updateFanupDto: UpdateFanupDto) {
-    return this.fanupService.update(updateFanupDto.id, updateFanupDto);
-  }
-
-  @MessagePattern('removeFanup')
-  remove(@Payload() id: number) {
-    return this.fanupService.remove(id);
+  @SetResponse(ResMessage.FANUP_EXIST, ResStatusCode.OK)
+  @MessagePattern('isFanUPExist')
+  async isExist(data: { room_id: string }) {
+    return await this.fanupService.isExist(data.room_id);
   }
 }

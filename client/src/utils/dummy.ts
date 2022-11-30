@@ -1,3 +1,5 @@
+import { IAritst } from '@/types/artist';
+
 function addDays(date: Date, days: number) {
     const clone = new Date(date);
     clone.setDate(date.getDate() + days);
@@ -37,5 +39,21 @@ export const dummyTickets = [
         fanUpDate: addDays(now, idx + 3),
         fanUpTime: '11:11',
         ticketId: idx + 1,
+    };
+});
+
+export const DummyMyArtists: IAritst[] = Array.from({ length: 10 }, (_, idx) => {
+    return {
+        artist_id: idx + 1,
+        profile_url: `/dummyBackgroundThumbnail1.png`,
+        name: `testArtist${idx + 1}`,
+    };
+});
+
+export const DummyAllArtists: IAritst[] = Array.from({ length: 30 }, (_, idx) => {
+    return {
+        artist_id: idx + 11,
+        profile_url: `/dummyBackgroundThumbnail1.png`,
+        name: `testArtist${idx + 11}`,
     };
 });

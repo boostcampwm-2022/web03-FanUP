@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { FileBadRequestException } from 'src/common/exception/file-bad-request.exception';
+import { FileBadRequestException } from '../../../common/exception';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateFileDto } from '../dto';
 
