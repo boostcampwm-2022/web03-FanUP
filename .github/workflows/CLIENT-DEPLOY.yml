@@ -37,7 +37,8 @@ jobs:
             cd web03-FanUP/client
             ls
             git pull origin dev
-            npm install -g yarn
+            sudo su
+            ls
             yarn
             yarn run build
             sudo service nginx restart
