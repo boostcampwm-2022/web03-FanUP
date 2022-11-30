@@ -4,7 +4,6 @@ import FeatureBox from '@/components/UI/organisms/FeatureBox';
 import VideoList from '@/components/UI/organisms/VideoList';
 import { useMyStream } from '@/hooks/useMyStream';
 import usePreventLeave from '@/hooks/usePreventLeave';
-import { useSocket } from '@/hooks/useSocket';
 import { useWebRTC } from '@/hooks/useWebRTC';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
