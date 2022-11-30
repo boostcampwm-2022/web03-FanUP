@@ -1,7 +1,6 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { socialLogin } from '@/utils/OAuth';
 import Button from '@atoms/Button';
 
 const StyledOAuthContainer = styled.div`
@@ -16,13 +15,40 @@ const StyledOAuthContainer = styled.div`
     gap: 20px;
 `;
 
-const OAuthContainer: FC = () => {
-    const OAuthCategory = {
-        naver: { title: 'NAVER', backgroundColor: '#0eb817', color: '#FFFFFF' },
-        google: { title: 'Google', backgroundColor: '#FFFFFF', color: '#000000' },
-        kakao: { title: 'Kakao', backgroundColor: '#F7E600', color: '#FFFFFF' },
-        facebook: { title: 'Facebook', backgroundColor: '#445DD0', color: '#FFFFFF' },
+export interface domain {
+    [key: string]: {
+        title: string;
+        url: string;
+        backgroundColor: string;
+        color: string;
     };
+}
+
+export const OAuthCategory: domain = {
+    naver: { title: 'NAVER', url: ``, backgroundColor: '#0eb817', color: '#FFFFFF' },
+    google: {
+        title: 'Google',
+        url: `http://api.fanup.live:4001/auth/google`,
+        backgroundColor: '#FFFFFF',
+        color: '#000000',
+    },
+    kakao: {
+        title: 'Kakao',
+        url: `http://api.fanup.live:4001/auth/kakao`,
+        backgroundColor: '#F7E600',
+        color: '#FFFFFF',
+    },
+    facebook: { title: 'Facebook', url: ``, backgroundColor: '#445DD0', color: '#FFFFFF' },
+};
+
+const OAuthContainer: FC = () => {
+    const socialLogin = useCallback((domain: string): void => {
+        if (!OAuthCategory[domain].url) {
+            alert('준비중입니다.');
+            return;
+        }
+        (window as Window).location = OAuthCategory[domain].url;
+    }, []);
 
     return (
         <StyledOAuthContainer>
