@@ -15,7 +15,12 @@ const urls = [
     'stun:stun4.l.google.com:19302',
 ];
 
-const useFanUP = () => {
+const useFanUP = (): [
+    any[],
+    React.MutableRefObject<{
+        [key: string]: RTCPeerConnection;
+    }>
+] => {
     const roomName = '슈붕';
     const [users, setUsers] = useState<any[]>([]);
     const peerConnections = useRef<{ [key: string]: RTCPeerConnection }>({});
