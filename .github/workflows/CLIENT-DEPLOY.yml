@@ -34,4 +34,5 @@ jobs:
           password: ${{ secrets.CLIENT_PASSWORD }} # ssh 접속용 password
           port: ${{ secrets.CLIENT_PORT }} # ssh 접속용 port
           script: |
+            cd client
             sh deploy.sh
