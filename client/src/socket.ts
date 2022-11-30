@@ -1,13 +1,28 @@
 import { io, Socket } from 'socket.io-client';
 
 enum SOCKET_EVENTS {
-    joinRoom = 'join-chat-room',
+    joinRoom = 'join_room',
+    successJoinRoom = 'welcome',
+    failJoinRoom = 'cannot-join',
     sendMessage = 'send-message',
+    failSendMessage = 'cannot-send-message',
     receiveMessage = 'receive-message',
+    requestParticipantUser = 'request-participant-user',
+    responseParticipantUser = 'response-participant-user',
+    cannotGetParticipantList = 'cannot-get-participant-list',
+    requestChat = 'request-chat',
+    responseChat = 'response-chat',
+    cannotGetAllChat = 'cannot-get-all-chat',
+    disconnect = 'disconnect',
+    leave = 'leave',
+    offer = 'offer',
+    answer = 'answer',
+    ice = 'ice',
+    welcome = 'welcome',
 }
 
 let socket: Socket | null = null;
-const ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/socket/chat`;
+const ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/socket/fanup`;
 
 const connectSocket = () => {
     socket = io(ENDPOINT);
@@ -17,27 +32,4 @@ const connectSocket = () => {
     });
 };
 
-const joinRoom = ({ roomName, email }: any) => {
-    socket?.emit(SOCKET_EVENTS.joinRoom, { roomName, email }, (error: Error) => {
-        if (error) {
-            alert(error);
-        }
-    });
-
-    socket?.on('welcome', (data) => {
-        console.log('welcome!', data);
-    });
-};
-
-const sendMessage = ({ roomName, email, message }: any) => {
-    const data = {
-        email: email,
-        roomName: roomName,
-        isArtist: false,
-        message: message,
-    };
-
-    socket?.emit(SOCKET_EVENTS.sendMessage, data);
-};
-
-export { socket, SOCKET_EVENTS, connectSocket, joinRoom, sendMessage };
+export { socket, SOCKET_EVENTS, connectSocket };
