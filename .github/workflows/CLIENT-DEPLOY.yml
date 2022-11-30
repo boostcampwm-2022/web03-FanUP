@@ -7,20 +7,18 @@ on:
     branches:
       - main
       - dev
-      - test
   pull_request:
     paths:
       - "client/**"
     branches:
       - main
       - dev
-      - test
     types:
       - closed
 
-defaults:
-  run:
-    working-directory: "./client"
+# defaults:
+#   run:
+#     working-directory: "./client"
 
 jobs:
   build:
@@ -34,5 +32,8 @@ jobs:
           password: ${{ secrets.CLIENT_PASSWORD }} # ssh 접속용 password
           port: ${{ secrets.CLIENT_PORT }} # ssh 접속용 port
           script: |
-            cd client
-            sh deploy.sh
+            cd web03-FanUP/client
+            git pull origin dev
+            yarn
+            yarn run build
+            sudo service nginx restart
