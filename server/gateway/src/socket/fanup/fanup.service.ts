@@ -29,6 +29,11 @@ export class FanUPService {
     }, // room_info
   };
 
+  // 소켓 아이디는 새로 연결이 될때마다 변경이 된다.
+  entireSocketId: object = {
+    email: 'socketid', // 형식
+  };
+
   handleDisconnect(server: Server, socket: Socket) {
     const socketId = socket.id;
 
@@ -111,13 +116,16 @@ export class FanUPService {
     nickname,
   }: JoinSocketRoom) {
     socket.join(room);
+    this.entireSocketId[email] = socket.id;
 
     if (this.roomExist(room)) {
-      this.socketRoom[room].participant.push({
-        email,
-        nickname,
-        socketId: socket.id,
-      });
+      if (!this.participantExist(room, email)) {
+        this.socketRoom[room].participant.push({
+          email,
+          nickname,
+          socketId: socket.id,
+        });
+      }
     } else {
       this.socketRoom[room] = {
         participant: [{ email, nickname, socketId: socket.id }],
@@ -146,6 +154,15 @@ export class FanUPService {
       : false;
 
     return isRoomExist && isParticipantExist && isChatExist;
+  }
+
+  participantExist(room: string, email: string) {
+    if (this.roomExist(room)) {
+      return this.socketRoom[room].participant.find(
+        (value) => value.email === email,
+      );
+    }
+    return false;
   }
 
   // =========== 채팅 및 참여자 ===========
