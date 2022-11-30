@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.CLIENT_USERNAME }} # root
           password: ${{ secrets.CLIENT_PASSWORD }} # ssh 접속용 password
           port: ${{ secrets.CLIENT_PORT }} # ssh 접속용 port
-          run: |
+          script: |
             ls
             pwd
-            git pull origin dev
+            git pull origin main
