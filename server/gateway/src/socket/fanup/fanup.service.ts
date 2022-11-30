@@ -112,7 +112,7 @@ export class FanUPService {
   }: JoinSocketRoom) {
     socket.join(room);
 
-    if (this.socketRoom[room]) {
+    if (this.socketRoom[room]['participant']) {
       this.socketRoom[room].participant.push({
         email,
         nickname,
