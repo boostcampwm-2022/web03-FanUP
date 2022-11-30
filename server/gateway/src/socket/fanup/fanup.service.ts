@@ -33,9 +33,15 @@ export class FanUPService {
     const socketId = socket.id;
 
     // 해당 소켓 아이디가 참가하고 있는 방
-    const targetRoom = Object.keys(this.socketRoom).find((key) =>
-      this.socketRoom[key].includes(socketId),
-    );
+    const targetRoom = Object.keys(this.socketRoom)
+      .map((key) => {
+        return this.socketRoom[key].participant.map((element) => {
+          if (element.socketId === socketId) {
+            return key;
+          }
+        });
+      })
+      .at(0);
 
     // 해당 소켓 아이디를 가지고 있는 참가자 제거
     if (this.socketRoom[targetRoom]) {
