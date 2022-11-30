@@ -7,12 +7,14 @@ on:
     branches:
       - main
       - dev
+      - test
   pull_request:
     paths:
       - "client/**"
     branches:
       - main
       - dev
+      - test
     types:
       - closed
 
@@ -24,12 +26,12 @@ jobs:
   build:
     runs-on: ubuntu-18.04
     steps:
-      - name : SSH-deploy
-        uses: appleboy/ssh-action@master 
-        with: 
-            host: ${{ secrets.CLIENT_HOST }} # ssh 접속용 ip
-            username: ${{ secrets.CLIENT_USERNAME }} # root
-            password: ${{ secrets.CLIENT_PASSWORD }} # ssh 접속용 password
-            port: ${{ secrets.CLIENT_PORT }} # ssh 접속용 port
-            script: |
-              sh deploy.sh
+      - name: SSH-deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.CLIENT_HOST }} # ssh 접속용 ip
+          username: ${{ secrets.CLIENT_USERNAME }} # root
+          password: ${{ secrets.CLIENT_PASSWORD }} # ssh 접속용 password
+          port: ${{ secrets.CLIENT_PORT }} # ssh 접속용 port
+          script: |
+            sh deploy.sh
