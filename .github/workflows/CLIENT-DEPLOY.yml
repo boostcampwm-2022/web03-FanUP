@@ -37,7 +37,7 @@ jobs:
             cd web03-FanUP/client
             ls
             git pull origin dev
-            sudo su
+            sudo ln -s /root/.nvm/versions/node/v16.13.2/bin/yarn /usr/local/bin/yarn
             ls
             yarn
             yarn run build

@@ -7,7 +7,7 @@ import GlobalStyle from '@style/GlobalStyle';
 import { FanUP, Home, Login, NotFound, AuthCallback, Tickets, Ticket } from './Routes';
 
 function App() {
-    console.log('github actions tesT ');
+    console.log('github actions t esT ');
     return (
         <ThemeProvider theme={theme}>
             <GlobalStyle />
