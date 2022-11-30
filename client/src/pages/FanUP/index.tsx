@@ -4,11 +4,11 @@ import FeatureBox from '@/components/UI/organisms/FeatureBox';
 import VideoList from '@/components/UI/organisms/VideoList';
 import { useMyStream } from '@/hooks/useMyStream';
 import usePreventLeave from '@/hooks/usePreventLeave';
-import { useWebRTC } from '@/hooks/useWebRTC';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useCheckFanUp } from './useCheckFanUp';
+import useFanUP from '@/hooks/useFanUP';
 
 const FanUpWrapper = styled.div`
     display: flex;
@@ -29,7 +29,7 @@ const FanUpRightSection = styled.div`
 const FanUP = () => {
     useMyStream();
     const { isLoading } = useCheckFanUp();
-    const [userStream, peerConnections] = useWebRTC();
+    const [userStream, peerConnections] = useFanUP();
     usePreventLeave();
 
     if (isLoading) return <div>...loading</div>;
