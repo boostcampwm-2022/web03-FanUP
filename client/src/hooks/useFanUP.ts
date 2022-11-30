@@ -21,7 +21,6 @@ const useFanUP = (): [
         [key: string]: RTCPeerConnection;
     }>
 ] => {
-    const roomName = '슈붕';
     const [users, setUsers] = useState<any[]>([]);
     const peerConnections = useRef<{ [key: string]: RTCPeerConnection }>({});
     const { myStream } = useSelector<ReducerType, UserStore>((state) => state.userSlice);
@@ -40,7 +39,7 @@ const useFanUP = (): [
         }
     };
 
-    const welcomeCallback = async (socketID: string) => {
+    const welcomeCallback = async ({ email, nickname, socketID }: any) => {
         const pc = createPeerConnection(socketID);
         if (!pc) return;
         const offer = await pc.createOffer();
@@ -56,7 +55,7 @@ const useFanUP = (): [
         const answer = await pc.createAnswer();
         pc.setLocalDescription(answer);
         peerConnections.current[socketID] = pc;
-        socket?.emit('answer', answer, socketID);
+        socket?.emit(SOCKET_EVENTS.answer, answer, socketID);
     };
 
     const answerCallback = async (answer: RTCSessionDescriptionInit, socketID: string) => {
@@ -68,7 +67,7 @@ const useFanUP = (): [
     };
 
     const handleIce = (data: any, socketID: string) => {
-        socket?.emit('ice', data.candidate, socketID);
+        socket?.emit(SOCKET_EVENTS.ice, data.candidate, socketID);
     };
 
     const handleAddStream = (data: any, socketID: string) => {
@@ -76,7 +75,6 @@ const useFanUP = (): [
     };
 
     const leaveCallback = (socketID: string) => {
-        console.log('leaveCallback');
         peerConnections.current[socketID].close();
         delete peerConnections.current[socketID];
         setUsers((prev) => prev.filter((data) => data.socketID !== socketID));
@@ -97,11 +95,11 @@ const useFanUP = (): [
     };
 
     useEffect(() => {
-        if (!myStream) return;
+        // if (!myStream) return;
         if (Object.keys(peerConnections.current).length !== 0) return;
 
         connectSocket();
-        socket?.emit(SOCKET_EVENTS.joinRoom, { roomName: '슈붕', email: 'seongeun' });
+        socket?.emit(SOCKET_EVENTS.joinRoom, { room: '1', email: '성은' });
         socket?.on(SOCKET_EVENTS.welcome, welcomeCallback);
         socket?.on(SOCKET_EVENTS.offer, offerCallback);
         socket?.on(SOCKET_EVENTS.answer, answerCallback);
