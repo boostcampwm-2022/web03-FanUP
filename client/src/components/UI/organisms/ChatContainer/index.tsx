@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { socket, SOCKET_EVENTS, connectSocket, joinRoom, sendMessage } from '@/socket';
+import { socket, SOCKET_EVENTS, connectSocket } from '@/socket';
 import InputForm from '@molecules/InputForm';
 import ChatList from '@molecules/ChatList';
 
@@ -49,7 +49,6 @@ const ChatContainer: FC = () => {
     useEffect(() => {
         connectSocket();
         // TODO : 값 가져오기
-        joinRoom({ roomName: '슈붕', email: 'seongeun' });
         socket?.on(SOCKET_EVENTS.receiveMessage, (data: any) => {
             setChatData((current) => [...current, data]);
         });
