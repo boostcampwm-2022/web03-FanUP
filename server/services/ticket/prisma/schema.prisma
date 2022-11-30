@@ -25,7 +25,7 @@ model Ticket {
   artistId  Int
   salesTime DateTime
   startTime DateTime
-  status    Status  @default(CLOSED)
+  status    Status  @default(OPEN)
   totalAmount Int @default(0)
   numberTeam Int  @default(1)
   timeTeam  Int
