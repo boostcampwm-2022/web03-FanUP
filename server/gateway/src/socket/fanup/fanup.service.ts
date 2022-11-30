@@ -112,7 +112,7 @@ export class FanUPService {
   }: JoinSocketRoom) {
     socket.join(room);
 
-    if (this.socketRoom[room]['participant']) {
+    if (this.roomExist(room)) {
       this.socketRoom[room].participant.push({
         email,
         nickname,
@@ -126,6 +126,26 @@ export class FanUPService {
     }
 
     server.to(room).emit('welcome', { email, nickname, socketID: socket.id });
+  }
+
+  roomExist(room) {
+    const isRoomExist = Object.keys(this.socketRoom).find(
+      (key) => key === room,
+    );
+
+    const isParticipantExist = isRoomExist
+      ? this.socketRoom[room].participant
+        ? true
+        : false
+      : false;
+
+    const isChatExist = isRoomExist
+      ? this.socketRoom[room].chat
+        ? true
+        : false
+      : false;
+
+    return isRoomExist && isParticipantExist && isChatExist;
   }
 
   // =========== 채팅 및 참여자 ===========
@@ -153,7 +173,7 @@ export class FanUPService {
         message: message,
       });
 
-      if (storeResult.success === false && this.socketRoom[room]['chat']) {
+      if (storeResult.success === false && this.roomExist(room)) {
         const socketChat: SocketChat = {
           nickname,
           isArtist,
