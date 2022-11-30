@@ -40,7 +40,7 @@ export class TicketController {
   }
 
   @MessagePattern({ cmd: 'updateTicket' })
-  updateTicket() {
-    return this.ticketService.update();
+  updateTicket(@Payload() data) {
+    return this.ticketService.update(data.ticketId, data.updateTicketDto);
   }
 }

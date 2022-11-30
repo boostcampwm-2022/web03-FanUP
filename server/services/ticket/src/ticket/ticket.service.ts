@@ -3,6 +3,7 @@ import { Ticket } from '@prisma/client';
 
 import { PrismaService } from 'src/provider/prisma/prisma.service';
 import CreateTicketDto from './dto/create-ticket.dto';
+import UpdateTicketDto from './dto/update-ticket.dto';
 
 @Injectable()
 export class TicketService {
@@ -30,7 +31,15 @@ export class TicketService {
     return this.prisma.ticket.delete({ where: { id: ticketId } });
   }
 
-  async update(updateTicketDto: UpdateTicket) {}
+  async update(
+    ticketId: number,
+    updateTicketDto: UpdateTicketDto,
+  ): Promise<Ticket> {
+    return this.prisma.ticket.update({
+      where: { id: ticketId },
+      data: updateTicketDto,
+    });
+  }
 
   async findAllByUserId() {}
 }
