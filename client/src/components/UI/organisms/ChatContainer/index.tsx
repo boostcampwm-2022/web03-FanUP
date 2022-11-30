@@ -59,7 +59,14 @@ const ChatContainer: FC = () => {
         (e: React.FormEvent<HTMLButtonElement>) => {
             e.preventDefault();
             // TODO : 값 가져오기
-            sendMessage({ roomName: '슈붕', email: 'seongeun', message: message });
+            const data = {
+                email: '성은',
+                roomName: '슈붕',
+                isArtist: false,
+                message: message,
+            };
+
+            socket?.emit(SOCKET_EVENTS.sendMessage, data);
             setMessage(() => '');
         },
         [message]
