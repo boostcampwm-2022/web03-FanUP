@@ -10,10 +10,10 @@ async function bootstrap() {
   const microserviceTCP = app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
     options: {
-      host: '0.0.0.0',
       port: 3001,
     },
   });
+  app.enableCors();
   await app.startAllMicroservices();
   await app.listen(4001);
   console.log(`Auth service is running on port: ${await app.getUrl()}`);
