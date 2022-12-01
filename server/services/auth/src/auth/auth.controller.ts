@@ -5,13 +5,17 @@ import {
   Post,
   Req,
   Res,
+  UseFilters,
   UseGuards,
 } from '@nestjs/common';
 import { Ctx, MessagePattern, Payload } from '@nestjs/microservices';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
+
+import { AllRPCExceptionFilter } from 'src/common/exception/filter/rpc-exception.filter';
 import { AuthService } from './auth.service';
 
+// @UseFilters(new AllRPCExceptionFilter())
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
