@@ -1,8 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
-import { addMinutes, getDate, minusMinutes } from 'src/common/util';
-import { FanupService } from 'src/domain/fanup/service/fanup.service';
+import { addMinutes, getDate, minusMinutes } from '../../common/util';
+import { FanupService } from '../../domain/fanup/service/fanup.service';
+import { io } from 'socket.io-client';
 
 @Injectable()
 export class BasicTask {
@@ -23,8 +24,12 @@ export class BasicTask {
 
   addTask(name: string, date: Date) {
     const job = new CronJob(date, async () => {
-      this.logger.log('fanup create');
-      await this.fanUPTask();
+      try {
+        this.logger.log('fanup create');
+        await this.fanUPTask();
+      } catch (err) {
+        console.log(err);
+      }
     });
     this.schedulerRegistry.addCronJob(name, job);
     job.start();
@@ -59,52 +64,13 @@ export class BasicTask {
           minute: 52,
         },
       },
-      {
-        ticketId: 2,
-        meetingStartTime: {
-          year: 2022,
-          month: 11,
-          day: 30,
-          hour: 1,
-          minute: 52,
-        },
-      },
-      {
-        ticketId: 3,
-        meetingStartTime: {
-          year: 2022,
-          month: 11,
-          day: 30,
-          hour: 1,
-          minute: 53,
-        },
-      },
-      {
-        ticketId: 4,
-        meetingStartTime: {
-          year: 2022,
-          month: 11,
-          day: 30,
-          hour: 1,
-          minute: 54,
-        },
-      },
-      {
-        ticketId: 5,
-        meetingStartTime: {
-          year: 2022,
-          month: 11,
-          day: 30,
-          hour: 1,
-          minute: 55,
-        },
-      },
     ];
 
     tickets.forEach((ticket) => {
       const { year, month, day } = ticket.meetingStartTime;
       const name = `${year}-${month}-${day}-${ticket.ticketId}`;
-      const date: Date = minusMinutes(getDate(ticket.meetingStartTime), 30);
+      const date = addMinutes(new Date(), 0.1);
+      // const date: Date = minusMinutes(getDate(ticket.meetingStartTime), 30);
       this.logger.log(date);
       this.addTask(name, date);
     });
@@ -119,9 +85,9 @@ export class BasicTask {
       timePerTeam: 10,
       meetingStartTime: {
         year: 2022,
-        month: 11,
-        day: 30,
-        hour: 1,
+        month: 12,
+        day: 2,
+        hour: 0,
         minute: 55,
       },
     };
@@ -131,13 +97,24 @@ export class BasicTask {
       ticket.ticketAmount,
       ticket.maxNum,
     );
+    try {
+      const socket = io('http://localhost:3000/socket/notification');
 
-    Array.from({ length: roomAmount }, (_, i) => i).forEach((element) => {
-      const startTime = addMinutes(date, element * ticket.timePerTeam);
-      const endTime = addMinutes(startTime, ticket.timePerTeam);
-      const fanUP = this.fanupService.create(startTime, endTime);
+      Array.from({ length: roomAmount }, (_, i) => i).forEach(
+        async (element) => {
+          const startTime = addMinutes(date, element * ticket.timePerTeam);
+          const endTime = addMinutes(startTime, ticket.timePerTeam);
+          const fanUP = await this.fanupService.create(startTime, endTime);
+          const room_id = fanUP.room_id;
 
-      // TODO Ticket Module에서 room_id가 비어있는 user-ticket을 불러와 방 업데이트
-    });
+          // user-ticket을 가져와서 분배
+          socket.emit('send-room-notification', { room_id, email: 'test' });
+
+          // TODO Ticket Module에서 room_id가 비어있는 user-ticket을 불러와 방 업데이트
+        },
+      );
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
