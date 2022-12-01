@@ -2,8 +2,8 @@ import { Inject } from '@nestjs/common';
 import { ClientTCP } from '@nestjs/microservices';
 import { catchError, lastValueFrom, of } from 'rxjs';
 import * as FormData from 'form-data';
-import { MICRO_SERVICES } from '../constants/microservices';
-import { CustomRes } from '../common/types';
+import { MICRO_SERVICES } from '../../common/constants/microservices';
+import { CustomRes } from '../../common/types';
 
 export class CoreService {
   constructor(

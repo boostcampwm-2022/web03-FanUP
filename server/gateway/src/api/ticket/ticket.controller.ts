@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
-import { MICRO_SERVICES } from '../constants/microservices';
+import { MICRO_SERVICES } from '../../common/constants/microservices';
 import CreateTicketDto from './dto/createTicket.dto';
 
 @Controller('ticket')

@@ -11,7 +11,7 @@ import {
   SocketChat,
   ValidateUser,
 } from '../../common/types';
-import { MICRO_SERVICES } from '../../constants/microservices';
+import { MICRO_SERVICES } from '../../common/constants/microservices';
 
 export class FanUPService {
   constructor(

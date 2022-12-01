@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
-import { MICRO_SERVICES } from '../constants/microservices';
+import { MICRO_SERVICES } from '../../common/constants/microservices';
 
 @Injectable()
 export class AuthService {
