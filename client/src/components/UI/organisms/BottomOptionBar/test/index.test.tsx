@@ -9,6 +9,7 @@ import BottomOptionBar from '..';
 describe('<BottomOptionBar />', () => {
     beforeEach(() => {
         MOCK_FN.useParams({ fanUpId: '10' });
+        MOCK_FN.setImmediate();
     });
     it('rendering test', async () => {
         renderWithContext(<BottomOptionBar />);

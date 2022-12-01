@@ -4,7 +4,7 @@ import ArtistCard from '@molecules/artistCard';
 import { IAritst } from '@/types/artist';
 
 const ArtistsWrapper = styled.div`
-    width: 50%;
+    width: 100%;
 `;
 
 const Title = styled.h1`
@@ -16,7 +16,7 @@ const Title = styled.h1`
 const ArtistListWrapper = styled.div`
     display: grid;
     width: 100%;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     margin-bottom: 40px;
 `;

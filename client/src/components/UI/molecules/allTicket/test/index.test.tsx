@@ -11,27 +11,25 @@ describe('<AllTicket />', () => {
         MOCK_FN.useNaviagte(mockNavigate);
     });
     const ticket = {
-        ticketingDate: new Date(),
-        ticketingTime: '11:11',
+        startTime: new Date(),
         description: 'testDescription',
-        artistName: 'testArtist',
+        title: 'testTitle',
+        name: 'testArtist',
         price: 1,
-        ticketId: 1,
+        id: 1,
         userCount: 5,
-        fanUpDate: new Date(),
-        fanUpTime: '11:!1',
+        salesTime: new Date(),
+        profileUrl: '',
     };
     it('rendering test', () => {
         renderWithContext(<AllTicket ticket={ticket} />);
-        expect(screen.getByText(dateForm(ticket.ticketingDate))).toBeInTheDocument();
-        expect(screen.getByText(ticket.ticketingTime)).toBeInTheDocument();
-        expect(screen.getByText(ticket.artistName)).toBeInTheDocument();
-        expect(screen.getByText(ticket.description)).toBeInTheDocument();
+        expect(screen.getByText(ticket.name)).toBeInTheDocument();
+        expect(screen.getByText(ticket.title)).toBeInTheDocument();
     });
     it('interaction test', () => {
         renderWithContext(<AllTicket ticket={ticket} />);
         const todayTicket = screen.getByTestId('allTicket');
         userEvent.click(todayTicket);
-        expect(mockNavigate).toBeCalledWith(`/ticket/${ticket.ticketId}`);
+        expect(mockNavigate).toBeCalledWith(`/ticket/${ticket.id}`);
     });
 });
