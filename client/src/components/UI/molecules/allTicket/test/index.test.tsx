@@ -23,10 +23,8 @@ describe('<AllTicket />', () => {
     };
     it('rendering test', () => {
         renderWithContext(<AllTicket ticket={ticket} />);
-        // expect(screen.getByText(dateForm(ticket.ticketingDate))).toBeInTheDocument();
-        // expect(screen.getByText(ticket.ticketingTime)).toBeInTheDocument();
         expect(screen.getByText(ticket.name)).toBeInTheDocument();
-        expect(screen.getByText(ticket.description)).toBeInTheDocument();
+        expect(screen.getByText(ticket.title)).toBeInTheDocument();
     });
     it('interaction test', () => {
         renderWithContext(<AllTicket ticket={ticket} />);

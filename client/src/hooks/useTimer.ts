@@ -34,7 +34,6 @@ export const useTimer = (targetDate: Date | null) => {
     };
 
     useEffect(() => {
-        console.log(targetDate);
         if (!targetDate) return;
         timer();
         interval.current = setInterval(() => {
