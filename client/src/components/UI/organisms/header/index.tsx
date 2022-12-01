@@ -22,7 +22,7 @@ const HeaderRoot = styled.header`
 `;
 const HeaderLeft = styled.div`
     display: flex;
-    gap: 64px;
+    gap: 10px;
     align-items: center;
     div {
         display: flex;
@@ -52,7 +52,7 @@ const Header = () => {
         alert('alarmCallback');
     }, []);
     const clickUser = useCallback(() => {
-        alert('userCallback');
+        navigate('/login');
     }, []);
 
     const gotoPage = useCallback(
@@ -74,9 +74,10 @@ const Header = () => {
     return (
         <HeaderRoot>
             <HeaderLeft>
-                <Logo />
+                <button onClick={gotoPage('/')}>
+                    <Logo />
+                </button>
                 <div>
-                    <button onClick={gotoPage('/')}>홈</button>
                     {isArtist ? (
                         <button onClick={gotoPage('/schedule')}>스케쥴</button>
                     ) : (

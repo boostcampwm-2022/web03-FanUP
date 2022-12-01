@@ -41,7 +41,6 @@
         "format-write": "npx prettier --write ./src",
         "format": "npx prettier --check ./src"
     },
-    "proxy": "https://api.fanup.live",
     "eslintConfig": {
         "extends": [
             "react-app",

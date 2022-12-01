@@ -56,8 +56,8 @@ const TicketingDate = styled.div`
     }
 `;
 
-const TicketDescription = styled.span`
-    font-size: 15px;
+const TicketTitle = styled.h5`
+    font-size: 20px;
     padding-left: 10px;
     border-left: 4px solid black;
 `;
@@ -76,14 +76,10 @@ const TicketingBtn = styled.div`
 `;
 
 const DetailTicket = () => {
-    const params = useParams();
-    const { data, isLoading } = useGetDetailTicketQuery(String(params.ticketId));
+    const { ticketId } = useParams();
+    const { data: ticket, isLoading } = useGetDetailTicketQuery(String(ticketId));
 
-    const ticket = useMemo(
-        () => dummyTickets.find(({ ticketId }) => ticketId === Number(params.ticketId)),
-        []
-    );
-    const { hour, min, sec, timeEnd } = useTimer(ticket?.ticketingDate as Date);
+    const { hour, min, sec, timeEnd } = useTimer(ticket?.salesTime || null);
 
     const ticketing = useCallback(() => {
         if (!timeEnd) return alert('아직 티켓팅 시간이 되지 않았습니다.');
@@ -99,17 +95,15 @@ const DetailTicket = () => {
             <TicketContents>
                 <TicketingDate>
                     <strong>Ticketing</strong>
-                    <span>{dateForm(ticket!.ticketingDate)} </span>
-                    <span>{ticket?.ticketingTime}</span>
+                    <span>{dateForm(ticket!.salesTime)} </span>
                 </TicketingDate>
-                <h2>{ticket?.artistName}</h2>
-                <TicketDescription>{ticket?.description}</TicketDescription>
+                <h2>{ticket?.name || 'testArtist'}</h2>
+                <TicketTitle>{ticket?.title}</TicketTitle>
                 <FanUpDate>
                     <span>일시</span>
-                    <span>{dateForm(ticket!.fanUpDate)}</span>
-                    <span>{ticket?.fanUpTime}</span>
+                    <span>{dateForm(ticket!.startTime)}</span>
                 </FanUpDate>
-                <span>참가자 {ticket?.userCount}명</span>
+                <span>참가자 {ticket!.totalAmount}명</span>
                 <TicketingBtn>
                     <Button
                         onClick={ticketing}
