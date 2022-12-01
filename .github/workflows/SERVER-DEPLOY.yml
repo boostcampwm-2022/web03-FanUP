@@ -94,7 +94,7 @@ jobs:
             cd ./fanup/server
             docker rm -f $(docker ps -aq) && docker image rm -f $(docker image ls -q)
             docker-compose pull
-            docker run --env-file /root/fanup/server/auth/.env -p 3001:3001 -p 4001:4001 -d jinsungguri/fanup-auth:latest
-            docker run --env-file /root/fanup/server/core/.env -p 3002:3002 -p 4002:4002 -d jinsungguri/fanup-core:latest
-            docker run --env-file /root/fanup/server/ticket/.env -p 3003:3003 -d jinsungguri/fanup-ticket:latest
-            docker run -p 3000:3000 -d jinsungguri/fanup-gateway:latest
+            docker run --env-file /root/fanup/server/auth/.env -p 3001:3001 -p 4001:4001 --network fanup --name fanup-auth -d jinsungguri/fanup-auth:latest
+            docker run --env-file /root/fanup/server/core/.env -p 3002:3002 -p 4002:4002 --network fanup --name fanup-core -d jinsungguri/fanup-core:latest
+            docker run --env-file /root/fanup/server/ticket/.env -p 3003:3003 --network fanup --name fanup-ticket -d jinsungguri/fanup-ticket:latest
+            docker run -p 3000:3000 --network fanup --name fanup-gateway -d jinsungguri/fanup-gateway:latest

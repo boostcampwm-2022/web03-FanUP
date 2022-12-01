@@ -40,7 +40,7 @@ interface Props {
     onClose: () => void;
 }
 
-const Modal = ({ children, open, onClose }: Props) => {
+const Modal = ({ children, onClose, open }: Props) => {
     return (
         <>
             {open && (

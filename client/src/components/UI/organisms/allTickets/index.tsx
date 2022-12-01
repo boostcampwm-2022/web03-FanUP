@@ -2,6 +2,7 @@ import { dummyTickets } from '@utils/dummy';
 import React from 'react';
 import AllTicket from '@molecules/allTicket';
 import styled from 'styled-components';
+import { useGetAllTicketsQuery } from '@/services/ticket';
 
 const AllTicketsWrapper = styled.div`
     display: flex;
@@ -13,6 +14,12 @@ const AllTicketsWrapper = styled.div`
 `;
 
 const AllTickets = () => {
+    const { data: allTickets, isLoading } = useGetAllTicketsQuery();
+
+    console.log(allTickets);
+
+    if (isLoading) return <></>;
+
     return (
         <AllTicketsWrapper>
             {dummyTickets.map((ticket, idx) => (

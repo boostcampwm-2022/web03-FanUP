@@ -44,6 +44,7 @@ const DateContent = styled.div`
 
 const CalendarBody = () => {
     const dispatch = useDispatch();
+
     const { calendarYear: year, calendarMonth: month } = useSelector<ReducerType, CalendarData>(
         ({ artistSlice }) => ({
             calendarYear: artistSlice.calendarYear,

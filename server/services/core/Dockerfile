@@ -5,3 +5,5 @@ RUN npm install
 ENV NODE_ENV development
 RUN npm run build
 CMD ["node", "dist/main"]
+EXPOSE 3002
+EXPOSE 4002
