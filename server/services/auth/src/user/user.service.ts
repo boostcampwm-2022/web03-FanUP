@@ -25,7 +25,7 @@ export class UserService {
   }
 
   findOneByProviderInfo(provider: string, providerId: string) {
-    const user = this.prisma.user.findFirstOrThrow({
+    const user = this.prisma.user.findFirst({
       where: { provider, providerId },
     });
     return user;

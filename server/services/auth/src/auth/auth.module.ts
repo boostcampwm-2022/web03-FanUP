@@ -3,13 +3,13 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { HttpModule } from '@nestjs/axios';
 
-import { JwtStrategy } from '../auth/strategies/jwt.strategy';
-import { JwtRefreshStrategy } from '../auth/strategies/refresh.strategy';
+import { JwtStrategy } from '../common/strategies/jwt.strategy';
+import { JwtRefreshStrategy } from '../common/strategies/refresh.strategy';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { GoogleStrategy } from './strategies/google.strategy';
-import { KakaoStrategy } from './strategies/kakao.strategy';
+import { GoogleStrategy } from '../common/strategies/google.strategy';
+import { KakaoStrategy } from '../common/strategies/kakao.strategy';
 import { UserService } from 'src/user/user.service';
 
 @Module({
