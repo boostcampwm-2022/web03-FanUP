@@ -15,7 +15,7 @@ export class TicketController {
   }
 
   @MessagePattern({ cmd: 'createTicket' })
-  async createTicket(@Payload() createTicketDto: any) {
+  async createTicket(@Payload() createTicketDto: CreateTicketDto) {
     return this.ticketService.create(createTicketDto);
   }
 
