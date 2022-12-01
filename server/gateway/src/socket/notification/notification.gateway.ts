@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -17,6 +18,8 @@ import { Server, Socket } from 'socket.io';
   },
 })
 class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
+  private logger: Logger = new Logger(NotificationGateway.name);
+
   @WebSocketServer()
   server: Server;
 
@@ -29,6 +32,8 @@ class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
     try {
       const { email } = data;
       this.notification[email] = socket.id;
+      socket.join(email);
+      this.logger.log('join-notification: ' + socket.id);
     } catch (err) {
       this.server
         .to(socket.id)
@@ -38,6 +43,7 @@ class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('get-notification')
   getNotification(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+    this.logger.log('get-notification: ' + socket.id);
     const test = {
       result: [
         {
@@ -59,11 +65,14 @@ class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('send-room-notification')
   roomNotification(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+    const { room_id, email } = data;
+    this.logger.log(`send-room-notification: ${email}`);
+
     const test = {
-      room: '12345',
+      room: room_id,
       message: 'BTS 방이 생성되었어요 BTS가 기다리는 곳으로 오세요',
     };
-    socket.emit('receive-room-notification', test);
+    this.server.to(email).emit('receive-room-notification', test);
   }
 
   // 소켓 연결이 생성되면
