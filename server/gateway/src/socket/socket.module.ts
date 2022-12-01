@@ -4,6 +4,7 @@ import { MICRO_SERVICES } from '../common/constants/microservices';
 import { CoreModule } from '../api/core/core.module';
 import { FanUPGateway } from './fanup/fanup.gateway';
 import { FanUPService } from './fanup/fanup.service';
+import { NotificationGateway } from './notification/notification.gateway';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { FanUPService } from './fanup/fanup.service';
       },
     ]),
   ],
-  providers: [FanUPGateway, FanUPService],
+  providers: [FanUPGateway, FanUPService, NotificationGateway],
   exports: [FanUPService],
 })
 export class SocketModule {}
