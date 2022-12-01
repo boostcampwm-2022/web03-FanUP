@@ -10,6 +10,18 @@ export interface Ticket {
     fanUpTime: string;
 }
 
+export interface TicketSubmitData {
+    title: string;
+    content: string;
+    salesTime: Date;
+    startTime: Date;
+    totalAmount: number;
+    numberTeam: number;
+    timeTeam: nunber;
+    price: number;
+    [key: string]: string | Date | number;
+}
+
 interface ITicket {
     ticket_id: number;
     name: string;

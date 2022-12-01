@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import CalendarHeader from '@molecules/calendarHeader';
-import CalendarBody from '../../molecules/calendarBody';
-import ScheduleFanUpModal from '../../molecules/scheduleFanUpModal';
+import CalendarBody from '@molecules/calendarBody';
+import ScheduleFanUpModal from '@molecules/scheduleFanUpModal';
 
 const CalendarWrapper = styled.div`
     width: 60vw;
