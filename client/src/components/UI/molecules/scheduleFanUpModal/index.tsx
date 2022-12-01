@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import { closeScheduleModal, initializeSelectedDay } from '@/store/artist';
 import Modal from '@/components/hoc/modal';
 import { ReducerType } from '@store/rootReducer';
-import { ArtistStore } from '@/types/artist';
+import { dateDiff } from '@utils/dateDiff';
 import CloseIcon from '@icons/CloseIcon';
 import { ERR_MESSAGE } from './constants';
 import Fish from '@icons/Fish';
+import { useSubmitTicketMutation } from '@/services/ticket';
+import { TicketSubmitData } from '@/types/ticket';
 
 const ModalHeader = styled.div`
     display: flex;
@@ -124,28 +126,25 @@ const ContentFourth = styled.div`
 
 const ScheduleFanUpModal = () => {
     const dispatch = useDispatch();
+    const [submitMutation] = useSubmitTicketMutation();
     const selectedDay = useSelector<
         ReducerType,
         null | { year: number; month: number; day: number }
     >(({ artistSlice }) => artistSlice.selectedDay);
 
+    const openScheduleModal = useSelector<ReducerType, boolean>(
+        ({ artistSlice }) => artistSlice.openSchduleModal
+    );
+
     const titleRef = useRef<HTMLInputElement>(null);
-    const descriptionRef = useRef<HTMLTextAreaElement>(null);
+    const contentRef = useRef<HTMLTextAreaElement>(null);
     const teamNumberRef = useRef<HTMLInputElement>(null);
-    const personCountRef = useRef<HTMLInputElement>(null);
-    const timeRef = useRef<HTMLInputElement>(null);
+    const numberteamRef = useRef<HTMLInputElement>(null);
+    const timeTeamRef = useRef<HTMLInputElement>(null);
     const priceRef = useRef<HTMLInputElement>(null);
 
-    const [fanUpDay, setFanUpDay] = useState<string>(
-        selectedDay ? `${selectedDay.year}-${selectedDay.month}-${selectedDay.day}` : ''
-    );
-    const [fanUpTime, setFanUpTime] = useState<string>('');
-    const [ticketingDay, setTicketingDay] = useState<string>('');
-    const [ticketingOpenTime, setTicketingOpenTime] = useState<string>('');
-
-    const { openSchduleModal } = useSelector<ReducerType, ArtistStore>(
-        (state) => state.artistSlice
-    );
+    const [startTime, setStartTime] = useState<string>('');
+    const [salesTime, setSalesTime] = useState<string>('');
 
     const onClose = useCallback(() => {
         if (!window.confirm('FanUP 작성을 취소하시겠어요?')) return;
@@ -161,12 +160,12 @@ const ScheduleFanUpModal = () => {
             },
             {
                 label: '팀당 인원',
-                ref: personCountRef,
+                ref: numberteamRef,
                 unit: <span>명</span>,
             },
             {
                 label: '팀당 시간',
-                ref: timeRef,
+                ref: timeTeamRef,
                 unit: <span>분</span>,
             },
             {
@@ -183,6 +182,8 @@ const ScheduleFanUpModal = () => {
             e: React.ChangeEvent<HTMLInputElement>,
             setState: React.Dispatch<React.SetStateAction<string>>
         ) => {
+            const [diff] = dateDiff(new Date(e.target.value), new Date());
+            if (diff < 0) return alert('이미 지나간 시간을 그리워하지마세요');
             setState(e.target.value);
         },
         []
@@ -190,32 +191,48 @@ const ScheduleFanUpModal = () => {
 
     const validation = useCallback(() => {
         if (!titleRef.current?.value) return ERR_MESSAGE.title;
-        if (!descriptionRef.current?.value) return ERR_MESSAGE.description;
-        if (!fanUpDay) return ERR_MESSAGE.fanUpDay;
-        if (!fanUpTime) return ERR_MESSAGE.fanUpDay;
-        if (!ticketingDay) return ERR_MESSAGE.ticketingDay;
-        if (!ticketingOpenTime) return ERR_MESSAGE.ticketingOpenTime;
-        if (!teamNumberRef.current?.value) return ERR_MESSAGE.teamNumber;
-        if (!personCountRef.current?.value) return ERR_MESSAGE.personCount;
-        if (!timeRef.current?.value) return ERR_MESSAGE.time;
-        if (!priceRef.current?.value) return ERR_MESSAGE.price;
+        if (!contentRef.current?.value) return ERR_MESSAGE.content;
+        if (!startTime) return ERR_MESSAGE.startTime;
+        if (!salesTime) return ERR_MESSAGE.salesTime;
+        if (!teamNumberRef.current?.value || teamNumberRef.current?.value === '0')
+            return ERR_MESSAGE.teamNumber;
+        if (!numberteamRef.current?.value || numberteamRef.current?.value === '0')
+            return ERR_MESSAGE.numberTeam;
+        if (!timeTeamRef.current?.value || timeTeamRef.current?.value === '0')
+            return ERR_MESSAGE.timeTeam;
+        if (!priceRef.current?.value || priceRef.current?.value === '0') return ERR_MESSAGE.price;
         return null;
-    }, [fanUpTime, fanUpDay, ticketingDay, ticketingOpenTime]);
+    }, [startTime, salesTime]);
 
-    const submit = useCallback(() => {
+    const submit = useCallback(async () => {
         const errMessage = validation();
         if (errMessage) return alert(errMessage);
-        console.log('submit');
-    }, [fanUpTime, fanUpDay, ticketingDay, ticketingOpenTime]);
+
+        const reqData = {
+            title: String(titleRef.current?.value),
+            content: String(contentRef.current?.value),
+            salesTime: new Date(salesTime),
+            startTime: new Date(startTime),
+            totalAmount:
+                Number(teamNumberRef.current?.value) * Number(numberteamRef.current?.value),
+            numberTeam: Number(numberteamRef.current?.value),
+            timeTeam: Number(timeTeamRef.current?.value),
+            price: Number(priceRef.current?.value),
+        };
+        await submitMutation(reqData);
+        dispatch(closeScheduleModal());
+    }, [startTime, salesTime]);
 
     useEffect(() => {
-        return () => {
-            dispatch(initializeSelectedDay());
-        };
-    }, []);
+        if (!openScheduleModal) dispatch(initializeSelectedDay());
+        else {
+            if (selectedDay)
+                setStartTime(`${selectedDay.year}-${selectedDay.month}-${selectedDay.day}T14:00`);
+        }
+    }, [openScheduleModal, selectedDay]);
 
     return (
-        <Modal open={openSchduleModal} onClose={onClose}>
+        <Modal onClose={onClose} open={openScheduleModal}>
             <div data-testid="scheduleFanUpModal">
                 <ModalHeader>
                     <h1>Schedule FanUP</h1>
@@ -230,48 +247,27 @@ const ScheduleFanUpModal = () => {
                     </ContentItem>
                     <ContentItem>
                         <label>설명</label>
-                        <textarea
-                            ref={descriptionRef}
-                            rows={4}
-                            placeholder="제목을 입력해주세요."
-                        />
+                        <textarea ref={contentRef} rows={4} placeholder="제목을 입력해주세요." />
                     </ContentItem>
                     <ContentHalf>
                         <ContentItem>
                             <label>FanUP 날짜</label>
                             <input
-                                value={fanUpDay}
-                                type="date"
-                                onChange={(e) => onChangeDay(e, setFanUpDay)}
+                                value={startTime}
+                                type="datetime-local"
+                                onChange={(e) => onChangeDay(e, setStartTime)}
                             />
                         </ContentItem>
-                        <ContentItem>
-                            <label>FanUP 시간</label>
-                            <input
-                                value={fanUpTime}
-                                type="time"
-                                onChange={(e) => onChangeDay(e, setFanUpTime)}
-                            />
-                        </ContentItem>
-                    </ContentHalf>
-                    <ContentHalf>
                         <ContentItem>
                             <label>티켓팅 오픈 날짜</label>
                             <input
-                                value={ticketingDay}
-                                type="date"
-                                onChange={(e) => onChangeDay(e, setTicketingDay)}
-                            />
-                        </ContentItem>
-                        <ContentItem>
-                            <label>티켓팅 오픈 시간</label>
-                            <input
-                                value={ticketingOpenTime}
-                                type="time"
-                                onChange={(e) => onChangeDay(e, setTicketingOpenTime)}
+                                value={salesTime}
+                                type="datetime-local"
+                                onChange={(e) => onChangeDay(e, setSalesTime)}
                             />
                         </ContentItem>
                     </ContentHalf>
+                    <ContentHalf></ContentHalf>
                     <ContentFourth>
                         {FouthContent.map(({ label, ref, unit }) => (
                             <ContentItem key={label}>

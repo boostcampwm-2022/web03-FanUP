@@ -63,7 +63,6 @@ const TodayTickets = () => {
         slidesToShow: 4,
         slidesToScroll: 3,
     };
-    console.log(dummyTickets);
     return (
         <TodayTicketsWrapper>
             <Slider

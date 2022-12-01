@@ -1,1 +1,1 @@
-export const SERVER_URL = 'http://localhost:3065';
+export const SERVER_URL = 'https://api.fanup.live';

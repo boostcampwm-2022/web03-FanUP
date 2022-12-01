@@ -16,10 +16,6 @@ on:
     types:
       - closed
 
-# defaults:
-#   run:
-#     working-directory: "./client"
-
 jobs:
   build:
     runs-on: ubuntu-18.04

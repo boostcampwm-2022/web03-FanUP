@@ -1,9 +1,9 @@
+import React, { useCallback, useMemo, useRef } from 'react';
+import { useTimer } from '@hooks/useTimer';
+import { useGetDetailTicketQuery } from '@services/ticket';
 import theme from '@/style/theme';
-import { dateDiff } from '@/utils/dateDiff';
-import { dateForm } from '@/utils/dateForm';
-import { dummyTickets } from '@/utils/dummy';
-import { IsTimeOver } from '@/utils/isTimeOver';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { dateForm } from '@utils/dateForm';
+import { dummyTickets } from '@utils/dummy';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../../atoms/Button';
@@ -75,55 +75,22 @@ const TicketingBtn = styled.div`
     justify-content: flex-end;
 `;
 
-const padNumber = (num: number, length: number) => {
-    return String(num).padStart(length, '0');
-};
-
-let now = new Date();
-
-const ONE_SECOND = 1000;
-
 const DetailTicket = () => {
     const params = useParams();
-
-    const interval = useRef<NodeJS.Timer | null>(null);
-    const [timeEnd, setTimeEnd] = useState(false);
-    const [hour, setHour] = useState('');
-    const [min, setMin] = useState('');
-    const [sec, setSec] = useState('');
+    const { data, isLoading } = useGetDetailTicketQuery(String(params.ticketId));
 
     const ticket = useMemo(
         () => dummyTickets.find(({ ticketId }) => ticketId === Number(params.ticketId)),
         []
     );
+    const { hour, min, sec, timeEnd } = useTimer(ticket?.ticketingDate as Date);
 
     const ticketing = useCallback(() => {
         if (!timeEnd) return alert('아직 티켓팅 시간이 되지 않았습니다.');
         alert('ticketing');
     }, [timeEnd]);
 
-    const timer = () => {
-        now = new Date();
-        const [diffHours, diffMin, diffSec] = dateDiff(ticket!.ticketingDate, now);
-        if (IsTimeOver(diffHours, diffMin, diffSec)) {
-            if (interval.current) clearTimeout(interval?.current);
-            setTimeEnd(true);
-            return;
-        }
-        setHour(padNumber(diffHours, 2));
-        setMin(padNumber(diffMin, 2));
-        setSec(padNumber(diffSec, 2));
-    };
-
-    useEffect(() => {
-        timer();
-        interval.current = setInterval(() => {
-            timer();
-        }, ONE_SECOND);
-        return () => {
-            if (interval.current) clearInterval(interval.current);
-        };
-    }, []);
+    if (isLoading) return <></>;
 
     return (
         <DetailTicketWrapper>
