@@ -10,9 +10,4 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
-
-  @MessagePattern({ cmd: 'getTicketHello' })
-  getTicketHello(): string {
-    return this.appService.getTicketHello();
-  }
 }

@@ -11,7 +11,7 @@ import {
   SocketChat,
   ValidateUser,
 } from '../../common/types';
-import { MICRO_SERVICES } from '../../constants/microservices';
+import { MICRO_SERVICES } from '../../common/constants/microservices';
 
 export class FanUPService {
   constructor(
@@ -29,13 +29,27 @@ export class FanUPService {
     }, // room_info
   };
 
+  // 소켓 아이디는 새로 연결이 될때마다 변경이 된다.
+  entireSocketId: object = {
+    email: 'socketid', // 형식
+  };
+
   handleDisconnect(server: Server, socket: Socket) {
     const socketId = socket.id;
 
     // 해당 소켓 아이디가 참가하고 있는 방
-    const targetRoom = Object.keys(this.socketRoom).find((key) =>
-      this.socketRoom[key].includes(socketId),
-    );
+    const targetRoom = Object.keys(this.socketRoom)
+      .map((key) => {
+        if (this.socketRoom[key].participant) {
+          return this.socketRoom[key].participant.map((element) => {
+            if (element.socketId === socketId) {
+              return key;
+            }
+          });
+        }
+        return '';
+      })
+      .at(0);
 
     // 해당 소켓 아이디를 가지고 있는 참가자 제거
     if (this.socketRoom[targetRoom]) {
@@ -105,13 +119,16 @@ export class FanUPService {
     nickname,
   }: JoinSocketRoom) {
     socket.join(room);
+    this.entireSocketId[email] = socket.id;
 
-    if (this.socketRoom[room]) {
-      this.socketRoom[room].participant.push({
-        email,
-        nickname,
-        socketId: socket.id,
-      });
+    if (this.roomExist(room)) {
+      if (!this.participantExist(room, email)) {
+        this.socketRoom[room].participant.push({
+          email,
+          nickname,
+          socketId: socket.id,
+        });
+      }
     } else {
       this.socketRoom[room] = {
         participant: [{ email, nickname, socketId: socket.id }],
@@ -120,6 +137,35 @@ export class FanUPService {
     }
 
     server.to(room).emit('welcome', { email, nickname, socketID: socket.id });
+  }
+
+  roomExist(room) {
+    const isRoomExist = Object.keys(this.socketRoom).find(
+      (key) => key === room,
+    );
+
+    const isParticipantExist = isRoomExist
+      ? this.socketRoom[room].participant
+        ? true
+        : false
+      : false;
+
+    const isChatExist = isRoomExist
+      ? this.socketRoom[room].chat
+        ? true
+        : false
+      : false;
+
+    return isRoomExist && isParticipantExist && isChatExist;
+  }
+
+  participantExist(room: string, email: string) {
+    if (this.roomExist(room)) {
+      return this.socketRoom[room].participant.find(
+        (value) => value.email === email,
+      );
+    }
+    return false;
   }
 
   // =========== 채팅 및 참여자 ===========
@@ -147,7 +193,7 @@ export class FanUPService {
         message: message,
       });
 
-      if (storeResult.success === false) {
+      if (storeResult.success === false && this.roomExist(room)) {
         const socketChat: SocketChat = {
           nickname,
           isArtist,

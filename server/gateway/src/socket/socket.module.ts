@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { MICRO_SERVICES } from '../constants/microservices';
-import { CoreModule } from '../core/core.module';
+import { MICRO_SERVICES } from '../common/constants/microservices';
+import { CoreModule } from '../api/core/core.module';
 import { FanUPGateway } from './fanup/fanup.gateway';
 import { FanUPService } from './fanup/fanup.service';
 
