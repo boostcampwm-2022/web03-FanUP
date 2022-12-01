@@ -40,11 +40,14 @@ export class FanUPService {
     // 해당 소켓 아이디가 참가하고 있는 방
     const targetRoom = Object.keys(this.socketRoom)
       .map((key) => {
-        return this.socketRoom[key].participant.map((element) => {
-          if (element.socketId === socketId) {
-            return key;
-          }
-        });
+        if (this.socketRoom[key].participant) {
+          return this.socketRoom[key].participant.map((element) => {
+            if (element.socketId === socketId) {
+              return key;
+            }
+          });
+        }
+        return '';
       })
       .at(0);
 

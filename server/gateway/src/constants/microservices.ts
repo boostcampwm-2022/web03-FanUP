@@ -2,17 +2,17 @@ const environment = process.env.NODE_ENV || 'development';
 const MICRO_SERVICES = {
   AUTH: {
     NAME: 'AUTH_SERVICE',
-    HOST: environment === 'development' ? 'localhost' : 'localhost', // todo: 배포시에는 서버의 IP로 변경
+    HOST: environment === 'development' ? 'host.docker.internal' : 'localhost', // todo: 배포시에는 서버의 IP로 변경
     PORT: 3001,
   },
   CORE: {
     NAME: 'CORE_SERVICE',
-    HOST: environment === 'development' ? 'localhost' : 'localhost',
+    HOST: environment === 'development' ? 'host.docker.internal' : 'localhost',
     PORT: 3002,
   },
   TICKET: {
     NAME: 'TICKET_SERVICE',
-    HOST: environment === 'development' ? 'localhost' : 'localhost',
+    HOST: environment === 'development' ? 'host.docker.internal' : 'localhost',
     PORT: 3003,
   },
 };
