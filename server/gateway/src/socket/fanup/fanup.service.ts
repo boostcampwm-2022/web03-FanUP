@@ -193,7 +193,7 @@ export class FanUPService {
         message: message,
       });
 
-      if (storeResult.success === false && this.roomExist(room)) {
+      if (storeResult.success && this.roomExist(room)) {
         const socketChat: SocketChat = {
           nickname,
           isArtist,
