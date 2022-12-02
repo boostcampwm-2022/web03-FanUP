@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import { ReducerType } from '@store/rootReducer';
 import ParticipantsList from '@organisms/participantsList';
-import RoomList from '@/components/UI/organisms/RoomList';
-import ChatContainer from '@/components/UI/organisms/ChatContainer';
+import RoomList from '@organisms/RoomList';
+import ChatContainer from '@organisms/ChatContainer';
 import FeatureModeSelector from '@atoms/FeatureModeSelector';
 
 const FeatureBoxWrapper = styled.div`
@@ -23,9 +23,9 @@ const FeatureContentWrapper = styled.div`
     height: 100%;
 `;
 
-const ROOMLIST_MODE = -1;
-const PARTICIPANTS_MODE = 0;
-const CHAT_MODE = 1;
+const ROOMLIST_MODE = '-1';
+const PARTICIPANTS_MODE = '0';
+const CHAT_MODE = '1';
 
 const FeatureContent: { [key: string]: JSX.Element } = {
     '-1': <RoomList />,
