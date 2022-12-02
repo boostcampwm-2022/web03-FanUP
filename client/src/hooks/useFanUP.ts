@@ -123,6 +123,10 @@ const useFanUP = (): [
             peerConnections.current[key].close();
         });
         peerConnections.current = {};
+        myStream?.getTracks().forEach((track) => {
+            track.stop();
+        });
+        console.log('ddd');
         dispatch(initializeMyStream());
         socket?.disconnect();
     };

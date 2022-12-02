@@ -15,6 +15,7 @@ const AllTicketWrapper = styled.div`
     box-shadow: 2px 2px 4px rgb(0 0 0 / 16%);
     border-radius: 14px;
     padding: 15px 10px;
+    padding-right: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -46,6 +47,7 @@ const TicketLeft = styled.div`
         border-right: 1px solid ${({ theme }) => theme.DARK_GRAY};
     }
     span {
+        color: ${({ theme }) => theme.DARK_GRAY};
         font-size: 15px;
         overflow: hidden;
         white-space: nowrap;
@@ -65,6 +67,7 @@ const Price = styled.div`
     font-size: 15px;
     gap: 5px;
     border-right: 1px solid ${({ theme }) => theme.DARK_GRAY};
+
     strong {
         font-weight: 700;
     }
@@ -74,8 +77,16 @@ const Time = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
+    div {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
     strong {
         font-weight: 700;
+    }
+    span {
+        color: ${({ theme }) => theme.DARK_GRAY};
     }
 `;
 
@@ -98,8 +109,6 @@ const AllTicket = ({ ticket }: Props) => {
                 ) : (
                     <DefaultImg width="150px" height="150px" borderRadius="8px" />
                 )}
-
-                {/* <img src="/dummyBackgroundThumbnail2.png" alt="thumbnail" /> */}
                 <h3>{ticket?.name || 'testArtist'}</h3>
                 <span>{ticket.title}</span>
             </TicketLeft>
@@ -109,12 +118,12 @@ const AllTicket = ({ ticket }: Props) => {
                     <strong>10</strong>
                 </Price>
                 <Time>
-                    <span>
-                        <strong>팬미팅 시간</strong> {dateForm(ticket.startTime)}
-                    </span>
-                    <span>
-                        <strong>티켓 판매 시간</strong> {dateForm(ticket.salesTime)}
-                    </span>
+                    <div>
+                        <strong>팬미팅 시간</strong> <span>{dateForm(ticket.startTime)}</span>
+                    </div>
+                    <div>
+                        <strong>티켓 판매 시간</strong> <span>{dateForm(ticket.salesTime)}</span>
+                    </div>
                 </Time>
             </TicketRight>
         </AllTicketWrapper>
