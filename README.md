@@ -9,3 +9,21 @@
 |<img src="https://avatars.githubusercontent.com/u/88070657?v=4" width="180" height="180" />|<img src="https://avatars.githubusercontent.com/u/55318896?v=4" width="180" height="180" />|<img src="https://avatars.githubusercontent.com/u/78716842?v=4" width="180" height="180" />|<img src="https://avatars.githubusercontent.com/u/11497528?v=4" width="180" height="180" />|
 |[@Seongeuniii](https://github.com/Seongeuniii)|[@CEOJINSUNG](https://github.com/CEOJINSUNG)|[@BY-juun](https://github.com/BY-juun)|[@Sophoca](https://github.com/Sophoca)|
 |개자이너 + 디발자 만능러| 기획 및 아이디어 뱅크 팀장| 프론트엔드 톰과 제리 중 톰 같은 코더 | 작명가인 그는 결코 빼지 않는다.. |
+
+### 붕어빵들 한줄 소개
+
+[J039_김성은](https://github.com/Seongeuniii)
+
+* 
+
+[J058_김진성](https://github.com/CEOJINSUNG)
+
+* 
+
+[J109_안병준](https://github.com/BY-juun)
+
+* 
+
+[J218_홍성빈](https://github.com/Sophoca)
+
+* 
