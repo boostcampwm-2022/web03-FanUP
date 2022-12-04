@@ -193,7 +193,7 @@ export class FanUPService {
         message: message,
       });
 
-      if (storeResult.success === false && this.roomExist(room)) {
+      if (this.roomExist(room)) {
         const socketChat: SocketChat = {
           nickname,
           isArtist,
@@ -201,7 +201,12 @@ export class FanUPService {
           date: Date.now(),
         };
 
-        this.socketRoom[room].chat.push(socketChat);
+        if (this.socketRoom[room].chat) {
+          this.socketRoom[room].chat.push(socketChat);
+        } else {
+          this.socketRoom[room].chat = [socketChat];
+        }
+
         server.to(room).emit('receive-message', socketChat);
       } else {
         server.to(socket.id).emit('cannot-send-message', { ...storeResult });

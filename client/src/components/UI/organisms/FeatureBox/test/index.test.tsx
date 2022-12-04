@@ -1,11 +1,15 @@
 /**
  * @jest-environment jsdom
  */
+import { MOCK_FN } from '@/utils/test/mockFn';
 import { renderWithContext } from '@/utils/test/renderWithContext';
 import { fireEvent, screen } from '@testing-library/react';
 import FeatureBox from '..';
 
 describe('<FeatureBox/>', () => {
+    beforeEach(() => {
+        MOCK_FN.scrollIntoView();
+    });
     it('rendering test', () => {
         renderWithContext(<FeatureBox />);
         expect(screen.getByTestId('clockIcon')).toBeInTheDocument();

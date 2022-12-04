@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import TicketBarCode from '@atoms/TicketBarCode';
 import Fish from '@icons/Fish';
+import DefaultImg from '@atoms/defaultImg';
 
 const TodayTicketWrapper = styled.div`
     cursor: pointer;
@@ -48,12 +49,19 @@ const LeftContent = styled.div`
     }
 `;
 
+const Time = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+`;
+
 const Price = styled.div`
     background: ${({ theme }) => theme.MEDIUM_GRAY};
     border-radius: 6px;
     padding: 5px 10px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     font-size: 15px;
     gap: 5px;
 `;
@@ -82,24 +90,21 @@ const TodayTicket = ({ ticket }: Props) => {
             <TicketBarCode width="20px" height="220px" />
             <Contents>
                 <LeftContent>
-                    <div>
-                        <div>
-                            <h2>OPEN</h2>
-                        </div>
-                        <div>
-                            <span>{dateForm(ticket.ticketingDate)}</span>
-                        </div>
-                        <div>
-                            <span>{ticket.ticketingTime}</span>
-                        </div>
-                    </div>
+                    <Time>
+                        <h2>티켓팅</h2>
+                        <span>{dateForm(ticket.ticketingDate)}</span>
+                    </Time>
+                    <Time>
+                        <h2>FanUP</h2>
+                        <span>{dateForm(ticket.ticketingDate)}</span>
+                    </Time>
                     <Price>
                         <Fish /> <span>x </span>
                         <strong>{ticket.price}</strong>
                     </Price>
                 </LeftContent>
                 <RightContent>
-                    <img src="/dummyBackgroundThumbnail2.png" alt="thumbnail" />
+                    <DefaultImg width="160px" height="100px" borderRadius="8px" />
                     <span>
                         <strong>{ticket.artistName}</strong>
                     </span>

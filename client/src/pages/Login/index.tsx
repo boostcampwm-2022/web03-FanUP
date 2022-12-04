@@ -21,10 +21,15 @@ const StyledWelcome = styled.div`
     flex-direction: column;
 
     span {
-        font-size: 48px;
+        font-size: 35px;
         font-weight: bold;
         color: white;
         margin-bottom: 16px;
+    }
+
+    img {
+        width: 500px;
+        height: 400px;
     }
 `;
 
