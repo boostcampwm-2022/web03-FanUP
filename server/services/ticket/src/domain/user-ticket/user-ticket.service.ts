@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserTicket } from '@prisma/client';
+import { ResStatusCode } from 'src/common/constants/res-status-code';
+import { CustomRpcException } from 'src/common/exception/custom-rpc.exception';
 
 import { PrismaService } from 'src/provider/prisma/prisma.service';
 import CreateUserTicketDto from './dto/create-user-ticket.dto';
@@ -9,8 +11,8 @@ export class UserTicketService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createUserTicketDto: CreateUserTicketDto): Promise<UserTicket> {
-    console.log('createUserTicketDto', createUserTicketDto);
     return await this.prisma.$transaction(async (tx) => {
+      // todo: check if user has already bought this ticket
       const { totalAmount } = await tx.ticket.findUnique({
         where: { id: createUserTicketDto.ticketId },
         select: { totalAmount: true },
@@ -23,7 +25,10 @@ export class UserTicketService {
       });
 
       if (count >= totalAmount) {
-        throw new Error('Ticket already purchased');
+        throw new CustomRpcException(
+          'All tickets are sold out',
+          ResStatusCode.FORBIDDEN,
+        );
       }
 
       const userTicket = await tx.userTicket.create({

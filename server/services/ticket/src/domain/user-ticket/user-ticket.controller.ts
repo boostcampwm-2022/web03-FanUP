@@ -1,16 +1,17 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UserTicket } from '@prisma/client';
+import { AllRPCExceptionFilter } from 'src/common/filter/rpc-exception.filter';
 import CreateUserTicketDto from './dto/create-user-ticket.dto';
 import { UserTicketService } from './user-ticket.service';
 
+@UseFilters(AllRPCExceptionFilter)
 @Controller()
 export class UserTicketController {
   constructor(private readonly userTicketService: UserTicketService) {}
 
   @MessagePattern({ cmd: 'createUserTicket' })
   async createTicket(@Payload() createUserTicketDto: CreateUserTicketDto) {
-    console.log(createUserTicketDto);
     return this.userTicketService.create(createUserTicketDto);
   }
 
@@ -24,7 +25,7 @@ export class UserTicketController {
     return this.userTicketService.find(userTicketId);
   }
 
-  @MessagePattern({ cmd: 'getAllTicket' })
+  @MessagePattern({ cmd: 'getAllUserTicket' })
   getAllTicket(): Promise<UserTicket[]> {
     return this.userTicketService.findAll();
   }
