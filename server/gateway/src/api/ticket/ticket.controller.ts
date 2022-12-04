@@ -47,4 +47,16 @@ export class TicketController {
       { ...body, artistId: 1 }, // todo: artistId는 추후에 토큰에서 가져오도록 수정
     );
   }
+
+  @Post('/:ticketId/user')
+  async createUserTicket(
+    @Req() req,
+    @Param('ticketId', new ParseIntPipe()) ticketId: number,
+  ) {
+    console.log('test', ticketId, process.env.NODE_ENV);
+    return this.ticketClient.send(
+      { cmd: 'createUserTicket' },
+      { ticketId, userId: 1 }, // todo: userId는 추후에 토큰에서 가져오도록 수정
+    );
+  }
 }
