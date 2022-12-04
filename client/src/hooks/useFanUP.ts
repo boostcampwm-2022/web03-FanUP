@@ -102,7 +102,7 @@ const useFanUP = (): [
         // if (!myStream) return;
         if (Object.keys(peerConnections.current).length !== 0) return;
 
-        connectSocket();
+        connectSocket('fanup');
         socket?.emit(SOCKET_EVENTS.joinRoom, { room: '1', email: '성은' });
         socket?.on(SOCKET_EVENTS.welcome, welcomeCallback);
         socket?.on(SOCKET_EVENTS.offer, offerCallback);
