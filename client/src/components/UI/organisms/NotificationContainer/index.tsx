@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { socket, SOCKET_EVENTS, connectSocket, SOCKET_FEATURE } from '@/socket';
+import CloseIcon from '@icons/CloseIcon';
+import Button from '@atoms/Button';
 
 const StyledNotificationContainer = styled.div`
     &::before {
@@ -28,15 +29,17 @@ const StyledNotificationContainer = styled.div`
     border-radius: 0.5rem;
     box-sizing: border-box;
     box-shadow: 0 5px 20px rgb(0 0 0 / 8%);
+`;
 
-    h3 {
-        text-transform: uppercase;
-        font-size: 75%;
-        font-weight: 700;
-        color: #84929f;
-        padding: 1rem;
-    }
+const StyledHeader = styled.h3`
+    text-transform: uppercase;
+    font-size: 75%;
+    font-weight: 700;
+    color: #84929f;
+    padding: 1rem;
+`;
 
+const StyledContent = styled.div`
     i {
         color: #b5c4d2;
         font-size: 140%;
@@ -51,7 +54,8 @@ const StyledNotificationContainer = styled.div`
     }
 
     em {
-        margin-right: 2rem;
+        width: 3em;
+        margin-right: 1rem;
         font-weight: 700;
         font-size: 115%;
         color: #b5c4d2;
@@ -90,40 +94,48 @@ const StyledNotificationContainer = styled.div`
     }
 `;
 
-const StyledNotificationItem = styled(React.Fragment)``;
-
-const NotificationItem = () => {
+const NotificationItem = ({ id }: any) => {
     return (
-        <StyledNotificationItem>
-            <input className="checkbox" type="checkbox" id="size_5" value="small" checked />
-            <label className="notification" htmlFor="size_5">
-                <em>1</em> blog post <a href="">comment(s)</a> need approval.
-                <i className="material-icons dp48 right">clear</i>
+        <>
+            <input
+                className="checkbox"
+                type="checkbox"
+                id={id}
+                value="small"
+                checked
+                onChange={() => console.log('check')}
+            />
+            <label className="notification new" htmlFor={id}>
+                <em>오늘</em> 팬업 티켓팅 성공
+                <i className="right">
+                    <CloseIcon />
+                </i>
             </label>
-        </StyledNotificationItem>
+            <input
+                className="checkbox"
+                type="checkbox"
+                id={id}
+                value="small"
+                checked
+                onChange={() => console.log('check')}
+            />
+            <label className="notification" htmlFor={id}>
+                <em>3일전</em> 팬업 티켓팅 성공
+                <i className="right">
+                    <CloseIcon />
+                </i>
+            </label>
+        </>
     );
 };
 
 const NotificationContainer = () => {
-    useEffect(() => {
-        connectSocket(SOCKET_FEATURE.notification);
-    }, []);
-
     return (
         <StyledNotificationContainer>
-            <h3>Notifications</h3>
-
-            <input className="checkbox" type="checkbox" id="size_1" value="small" checked />
-            <label className="notification new" htmlFor="size_1">
-                <em>1</em> new <a href="">guest account(s)</a> have been created.
-                <i className="material-icons dp48 right">clear</i>
-            </label>
-
-            <input className="checkbox" type="checkbox" id="size_5" value="small" checked />
-            <label className="notification" htmlFor="size_5">
-                <em>1</em> blog post <a href="">comment(s)</a> need approval.
-                <i className="material-icons dp48 right">clear</i>
-            </label>
+            <StyledHeader>Notifications</StyledHeader>
+            <StyledContent>
+                <NotificationItem />
+            </StyledContent>
         </StyledNotificationContainer>
     );
 };
