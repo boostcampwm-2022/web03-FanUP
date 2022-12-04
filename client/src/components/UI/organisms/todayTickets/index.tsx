@@ -14,6 +14,7 @@ const TodayTicketsWrapper = styled.div`
     margin-bottom: 40px;
     padding-left: 20px;
     padding-right: 20px;
+    width: 1150px;
 `;
 
 const HandleButton = styled.button<{ left?: string; right?: string }>`
@@ -60,10 +61,9 @@ const TodayTickets = () => {
         autoplay: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 4,
-        slidesToScroll: 3,
+        slidesToShow: 3,
+        slidesToScroll: 2,
     };
-    console.log(dummyTickets);
     return (
         <TodayTicketsWrapper>
             <Slider
@@ -79,7 +79,7 @@ const TodayTickets = () => {
             <HandleButton left="0px" onClick={handlePrevCarousel}>
                 <PrevBtnIcon stroke="#9E57FF" />
             </HandleButton>
-            <HandleButton right="5px" onClick={handleNextCarousel}>
+            <HandleButton right="10px" onClick={handleNextCarousel}>
                 <NextBtnIcon stroke="#9E57FF" />
             </HandleButton>
         </TodayTicketsWrapper>

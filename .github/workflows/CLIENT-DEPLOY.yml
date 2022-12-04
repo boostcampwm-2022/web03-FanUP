@@ -1,12 +1,6 @@
 name: CLIENT-DEPLOY
 
 on:
-  push:
-    paths:
-      - "client/**"
-    branches:
-      - main
-      - dev
   pull_request:
     paths:
       - "client/**"
@@ -15,10 +9,6 @@ on:
       - dev
     types:
       - closed
-
-# defaults:
-#   run:
-#     working-directory: "./client"
 
 jobs:
   build:

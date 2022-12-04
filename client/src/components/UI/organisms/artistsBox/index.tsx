@@ -13,6 +13,7 @@ const ArtistsWrapper = styled.div`
 
 const ArtistsListWrapper = styled.div`
     display: flex;
+    flex-direction: column;
     gap: 20px;
 `;
 
@@ -37,13 +38,5 @@ const ArtistsBox = () => {
         </ArtistsWrapper>
     );
 };
-
-const dummyArtistList = Array.from({ length: 14 }, (_, idx) => {
-    return {
-        artistName: 'IZ*ONE',
-        backgroundThumbnail: `/dummyBackgroundThumbnail${(idx % 2) + 1}.png`,
-        logo: '/dummyArtistLogo.png',
-    };
-});
 
 export default ArtistsBox;

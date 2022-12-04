@@ -31,4 +31,10 @@ export const MOCK_FN = {
         });
         window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
     },
+    scrollIntoView: () => {
+        window.HTMLElement.prototype.scrollIntoView = jest.fn();
+    },
+    setImmediate: (fn?: any) => {
+        window.setImmediate = fn;
+    },
 };

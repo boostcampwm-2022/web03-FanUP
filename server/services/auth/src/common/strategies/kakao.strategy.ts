@@ -20,10 +20,9 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     profile: Profile,
   ): UserDto {
     const { provider, id, displayName, _json } = profile;
-
     return {
       provider: provider,
-      providerId: id,
+      providerId: String(id),
       nickname: displayName,
       email: _json.kakao_account.email,
     };

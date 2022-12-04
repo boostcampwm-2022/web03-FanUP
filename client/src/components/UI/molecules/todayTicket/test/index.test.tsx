@@ -23,8 +23,6 @@ describe('<TodayTicket />', () => {
     };
     it('rendering test', () => {
         renderWithContext(<TodayTicket ticket={ticket} />);
-        expect(screen.getByText(dateForm(ticket.ticketingDate))).toBeInTheDocument();
-        expect(screen.getByText(ticket.ticketingTime)).toBeInTheDocument();
         expect(screen.getByText(ticket.artistName)).toBeInTheDocument();
         expect(screen.getByText(ticket.description)).toBeInTheDocument();
     });

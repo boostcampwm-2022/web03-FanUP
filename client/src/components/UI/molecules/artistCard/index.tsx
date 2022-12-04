@@ -2,6 +2,7 @@ import { IAritst } from '@/types/artist';
 import React, { useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import LazyImg from '@atoms/LazyImg';
+import DefaultImg from '../../atoms/defaultImg';
 
 const ArtistCardWrapper = styled.div`
     cursor: pointer;
@@ -34,13 +35,6 @@ const ArtistCardWrapper = styled.div`
     }
 `;
 
-const BackgroundThumbNail = styled.img`
-    width: 100%;
-    backface-visibility: hidden;
-    image-rendering: -webkit-optimize-contrast;
-    margin-bottom: 20px;
-`;
-
 const Logo = styled.div`
     position: absolute;
     display: flex;
@@ -51,7 +45,7 @@ const Logo = styled.div`
     background: white;
     border-radius: 100%;
     left: 50%;
-    bottom: 5%;
+    bottom: 10%;
     transform: translate(-50%, -50%);
     img {
         border-radius: 100%;
@@ -68,7 +62,11 @@ interface Props {
 const ArtistCard = ({ artist }: Props) => {
     return (
         <ArtistCardWrapper>
-            <LazyImg src={artist.profile_url} alt="background" width="100%" height="100%" />
+            {artist.profile_url ? (
+                <LazyImg src={artist.profile_url} alt="background" width="100%" height="100%" />
+            ) : (
+                <DefaultImg width="100%" height="100%" borderRadius="8px" />
+            )}
             <span>{artist.name}</span>
             <Logo>
                 <img src={'/dummyArtistLogo.png'} alt="logo" />

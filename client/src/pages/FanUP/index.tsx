@@ -5,10 +5,10 @@ import VideoList from '@/components/UI/organisms/VideoList';
 import { useMyStream } from '@/hooks/useMyStream';
 import usePreventLeave from '@/hooks/usePreventLeave';
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useCheckFanUp } from './useCheckFanUp';
 import useFanUP from '@/hooks/useFanUP';
+import { socket } from '@/socket';
 
 const FanUpWrapper = styled.div`
     display: flex;
@@ -31,6 +31,14 @@ const FanUP = () => {
     const { isLoading } = useCheckFanUp();
     const [userStream, peerConnections] = useFanUP();
     usePreventLeave();
+
+    useEffect(() => {
+        console.log('1234567');
+        return () => {
+            console.log('123123123123');
+            socket?.disconnect();
+        };
+    }, []);
 
     if (isLoading) return <div>...loading</div>;
 

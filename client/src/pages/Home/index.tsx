@@ -5,7 +5,8 @@ import Header from '@/components/UI/organisms/header';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import LazyImg from '@/components/UI/atoms/LazyImg';
+import LazyImg from '@atoms/LazyImg';
+import useSearchParams from '@hooks/useSearchParams';
 
 const BannerWrapper = styled.div`
     background: black;
@@ -32,12 +33,14 @@ const UserContentsWrapper = styled.div`
 `;
 
 const Home = () => {
-    const [isArtist, setIsArtist] = useState(false);
+    const { isArtist } = useSearchParams();
+
+    //const [isArtist, setIsArtist] = useState(false);
 
     return (
         <>
             <Header />
-            {isArtist ? (
+            {isArtist === '1' ? (
                 <ArtistCalendarWrapper>
                     <Calendar />
                 </ArtistCalendarWrapper>

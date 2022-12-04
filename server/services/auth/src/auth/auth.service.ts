@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
+import { LoginFailException } from 'src/common/exception/rpc/login-fail.exception';
 
 import { UserDto } from 'src/user/dto/user.dto';
 import { UserService } from 'src/user/user.service';
@@ -40,7 +41,16 @@ export class AuthService {
     );
   }
 
-  async login(req: Request, res: Response): Promise<any> {
+  async validate(token: string): Promise<any> {
+    try {
+      const decoded = this.jwtService.verify(token);
+      return decoded;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async login(req: Request, res: Response): Promise<void> {
     const loginUser = new UserDto(req.user);
 
     let user = null;
@@ -49,8 +59,11 @@ export class AuthService {
         loginUser.provider,
         loginUser.providerId,
       );
-    } catch (e) {
-      user = await this.userService.create(loginUser);
+      if (!user) {
+        user = await this.userService.create(loginUser);
+      }
+    } catch (error) {
+      throw error;
     }
 
     res.cookie('accessToken', await this.getAccessToken(user.id));

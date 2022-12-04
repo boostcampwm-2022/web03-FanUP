@@ -1,9 +1,9 @@
+import React, { useCallback, useMemo, useRef } from 'react';
+import { useTimer } from '@hooks/useTimer';
+import { useGetDetailTicketQuery } from '@services/ticket';
 import theme from '@/style/theme';
-import { dateDiff } from '@/utils/dateDiff';
-import { dateForm } from '@/utils/dateForm';
-import { dummyTickets } from '@/utils/dummy';
-import { IsTimeOver } from '@/utils/isTimeOver';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { dateForm } from '@utils/dateForm';
+import { dummyTickets } from '@utils/dummy';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../../atoms/Button';
@@ -56,8 +56,8 @@ const TicketingDate = styled.div`
     }
 `;
 
-const TicketDescription = styled.span`
-    font-size: 15px;
+const TicketTitle = styled.h5`
+    font-size: 20px;
     padding-left: 10px;
     border-left: 4px solid black;
 `;
@@ -75,55 +75,18 @@ const TicketingBtn = styled.div`
     justify-content: flex-end;
 `;
 
-const padNumber = (num: number, length: number) => {
-    return String(num).padStart(length, '0');
-};
-
-let now = new Date();
-
-const ONE_SECOND = 1000;
-
 const DetailTicket = () => {
-    const params = useParams();
+    const { ticketId } = useParams();
+    const { data: ticket, isLoading } = useGetDetailTicketQuery(String(ticketId));
 
-    const interval = useRef<NodeJS.Timer | null>(null);
-    const [timeEnd, setTimeEnd] = useState(false);
-    const [hour, setHour] = useState('');
-    const [min, setMin] = useState('');
-    const [sec, setSec] = useState('');
-
-    const ticket = useMemo(
-        () => dummyTickets.find(({ ticketId }) => ticketId === Number(params.ticketId)),
-        []
-    );
+    const { hour, min, sec, timeEnd } = useTimer(ticket?.salesTime || null);
 
     const ticketing = useCallback(() => {
         if (!timeEnd) return alert('아직 티켓팅 시간이 되지 않았습니다.');
         alert('ticketing');
     }, [timeEnd]);
 
-    const timer = () => {
-        now = new Date();
-        const [diffHours, diffMin, diffSec] = dateDiff(ticket!.ticketingDate, now);
-        if (IsTimeOver(diffHours, diffMin, diffSec)) {
-            if (interval.current) clearTimeout(interval?.current);
-            setTimeEnd(true);
-            return;
-        }
-        setHour(padNumber(diffHours, 2));
-        setMin(padNumber(diffMin, 2));
-        setSec(padNumber(diffSec, 2));
-    };
-
-    useEffect(() => {
-        timer();
-        interval.current = setInterval(() => {
-            timer();
-        }, ONE_SECOND);
-        return () => {
-            if (interval.current) clearInterval(interval.current);
-        };
-    }, []);
+    if (isLoading) return <></>;
 
     return (
         <DetailTicketWrapper>
@@ -132,17 +95,15 @@ const DetailTicket = () => {
             <TicketContents>
                 <TicketingDate>
                     <strong>Ticketing</strong>
-                    <span>{dateForm(ticket!.ticketingDate)} </span>
-                    <span>{ticket?.ticketingTime}</span>
+                    <span>{dateForm(ticket!.salesTime)} </span>
                 </TicketingDate>
-                <h2>{ticket?.artistName}</h2>
-                <TicketDescription>{ticket?.description}</TicketDescription>
+                <h2>{ticket?.name || 'testArtist'}</h2>
+                <TicketTitle>{ticket?.title}</TicketTitle>
                 <FanUpDate>
                     <span>일시</span>
-                    <span>{dateForm(ticket!.fanUpDate)}</span>
-                    <span>{ticket?.fanUpTime}</span>
+                    <span>{dateForm(ticket!.startTime)}</span>
                 </FanUpDate>
-                <span>참가자 {ticket?.userCount}명</span>
+                <span>참가자 {ticket!.totalAmount}명</span>
                 <TicketingBtn>
                     <Button
                         onClick={ticketing}

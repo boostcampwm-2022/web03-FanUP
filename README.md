@@ -1,11 +1,60 @@
-# web03-FanUP
+# 💌 FanUP 💌
 
-## 팀 소개 👨‍👨‍👧‍👧
+<div align="center">   
+    <img src = "https://user-images.githubusercontent.com/78716842/205433708-f0c3db29-7ece-43da-85f3-d0162c4e49a3.jpg" width = "500">
+    <h3> 💌 No Fan, No Artist 💌</h3>
+</div>
 
-### 슈크림 붕어빵 <img src="https://emoji.slack-edge.com/T03V2A4FCLA/%25EB%25B6%2595%25EC%2596%25B4%25EB%25B9%25B5/a505ebde7fbe37ec.png" width="22" height="22" />
+## 💁‍♀️ 배포 주소
 
-|J039_김성은|J058_김진성|J109_안병준|J218_홍성빈|
-|-|-|-|-|
-|<img src="https://avatars.githubusercontent.com/u/88070657?v=4" width="180" height="180" />|<img src="https://avatars.githubusercontent.com/u/55318896?v=4" width="180" height="180" />|<img src="https://avatars.githubusercontent.com/u/78716842?v=4" width="180" height="180" />|<img src="https://avatars.githubusercontent.com/u/11497528?v=4" width="180" height="180" />|
-|[@Seongeuniii](https://github.com/Seongeuniii)|[@CEOJINSUNG](https://github.com/CEOJINSUNG)|[@BY-juun](https://github.com/BY-juun)|[@Sophoca](https://github.com/Sophoca)|
-|개자이너 + 디발자 만능러| 기획 및 아이디어 뱅크 팀장| 프론트엔드 톰과 제리 중 톰 같은 코더 | 작명가인 그는 결코 빼지 않는다.. |
+> [https://fanup.live/](https://fanup.live/)
+
+<br/>
+
+
+## 💌 프로젝트 소개
+```
+폭발적으로 증가하는 한류 팬덤과 KPOP 산업으로 늘어난 팬들에 비해 이들을 지속시킬 부족한 팬 소통 수단이 부족했습니다.
+FanUP은 아티스트와 팬들이 하양적 소통 방식에서 벗어나 소통을 할 수 있도록 비대면 팬미팅 서비스를 제공합니다.
+```
+
+<br/>
+
+
+### 👉 메인 기능
+<img src = "https://user-images.githubusercontent.com/78716842/205433756-3c0d1567-241d-4ecf-945a-4933cdd779e8.png" width = "1000">. 
+1. 팬들은 먼저 소셜 로그인을 진행합니다.  
+2. 아티스트는 팬들과 만나기 위하여 티켓을 열게 됩니다.  
+3. 팬들은 아티스트 팬미팅 참가를 위하여 티켓을 구매하게 됩니다.   
+4. 티켓 구매에 성공한 팬들은 성공에 대한 알림을 수신 받게 됩니다.  
+5. 알림을 통하여 얻은 방 정보를 통해 팬미팅 30분 전 팬 대기방에 들어갈 수 있게 됩니다.  
+6. 아티스트와 팬은 팬미팅을 진행할 수 있고 해당 과정에서 팬은 미팅 과정을 녹화할 수 있게 됩니다.  
+7. 팬미팅이 종료됩니다.  
+ 
+<br/>
+
+
+### 📂 프로젝트 관련 문서
+
+```
+깃허브 외부에 있는 FanUP 관련 문서들의 목록과 링크입니다!
+
+깃허브 위키에도 많은 내용들이 적혀있으니 많이 구경해주세요😁
+✅ https://github.com/boostcampwm-2022/web03-FanUP/wiki
+```
+
+[⚙️ 설계 및 개발 고민](https://www.notion.so/e1069837e28f4f0cbc6d75aa19d27b96?v=eb29d65c56bf4570a97706d976c1b07a)
+
+[🌒 프로젝트 백로그](https://www.notion.so/5d3961e68a994a579d7d24d5be08e50f?v=ac72aec7c9a44f6bb56945c2714ef95e)
+
+[⚾️ API 명세서](https://www.notion.so/API-65bb429b46ea412a88f03ae3c7e0ab87)
+
+[🚋 데모데이 소개 자료](https://www.notion.so/9cd9e93c572244bd8d8525770bda913c?v=7e01a116756d433eb2c75dbfeb8ccae6)  
+
+<br/>
+
+
+### 🛠 기술 키워드
+```
+FanUP에서 사용된 기술과 관련된 키워드입니다.
+```
