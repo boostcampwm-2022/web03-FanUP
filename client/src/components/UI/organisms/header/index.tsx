@@ -1,10 +1,12 @@
-import AlarmIcon from '@icons/AlarmIcon';
-import Logo from '@/components/icons/Logo';
-import SearchIcon from '@/components/icons/SearchIcon';
-import UserIcon from '@icons/UserIcon';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
+import AlarmIcon from '@icons/AlarmIcon';
+import Logo from '@icons/Logo';
+import SearchIcon from '@icons/SearchIcon';
+import UserIcon from '@icons/UserIcon';
+import NotificationContainer from '@organisms/NotificationContainer';
 
 const HeaderRoot = styled.header`
     height: 75px;
@@ -90,6 +92,7 @@ const Header = () => {
                         {icon}
                     </button>
                 ))}
+                <NotificationContainer />
             </HeaderRight>
         </HeaderRoot>
     );
