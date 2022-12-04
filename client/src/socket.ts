@@ -19,17 +19,28 @@ enum SOCKET_EVENTS {
     answer = 'answer',
     ice = 'ice',
     welcome = 'welcome',
+    joinNotification = 'join-notification',
+    joinSuccess = 'join-success',
+    joinFail = 'join-fail',
+    sendRoomNotification = 'send-room-notification',
+    receiveRoomNotification = 'receive-room-notification',
+}
+
+enum SOCKET_FEATURE {
+    fanup = 'fanup',
+    notification = 'notification',
 }
 
 let socket: Socket | null = null;
-const ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/socket/fanup`;
+const ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/socket/`;
 
-const connectSocket = () => {
-    socket = io(ENDPOINT);
+const connectSocket = (feature: string) => {
+    if (socket) return;
+    socket = io(ENDPOINT + feature);
 
     socket.on('connect', () => {
         console.log('socket connected : ', socket?.id);
     });
 };
 
-export { socket, SOCKET_EVENTS, connectSocket };
+export { socket, SOCKET_EVENTS, SOCKET_FEATURE, connectSocket };
