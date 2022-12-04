@@ -1,7 +1,8 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { socket, SOCKET_EVENTS, connectSocket, SOCKET_FEATURE } from '@/socket';
 import AlarmIcon from '@icons/AlarmIcon';
 import Logo from '@icons/Logo';
 import SearchIcon from '@icons/SearchIcon';
@@ -45,6 +46,10 @@ const Header = () => {
     //TODO: 서버와 통신을 통해 Artist 여부 확인
     const [isArtist, setIsArtist] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        connectSocket(SOCKET_FEATURE.notification);
+    }, []);
 
     //TODO: 이 부분 로직이 복잡해지면, 따로 컴포넌트로 각각 분리
     const clickSearch = useCallback(() => {
