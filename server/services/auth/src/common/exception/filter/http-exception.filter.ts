@@ -1,35 +1,31 @@
-// HTTP로 호출한 요소에 대하여 서비스 내부 비즈니스 로직에서 발생한 에러를 잡아주는 요소
 import {
-  ArgumentsHost,
-  Catch,
   ExceptionFilter,
+  Catch,
+  ArgumentsHost,
   HttpException,
-  InternalServerErrorException,
-  Logger,
+  HttpStatus,
 } from '@nestjs/common';
+import { HttpArgumentsHost } from '@nestjs/common/interfaces';
 import { Request, Response } from 'express';
 
-@Catch()
+@Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
-  private logger: Logger = new Logger('HTTP');
-
   catch(exception: HttpException, host: ArgumentsHost) {
-    const ctx = host.switchToHttp();
-    const res = ctx.getResponse<Response>();
-    const req = ctx.getRequest<Request>();
+    const ctx: HttpArgumentsHost = host.switchToHttp();
+    const res: Response = ctx.getResponse<Response>();
+    const req: Request = ctx.getRequest<Request>();
+    const status: HttpStatus = exception.getStatus();
 
-    if (!(exception instanceof HttpException)) {
-      exception = new InternalServerErrorException();
+    if (status === HttpStatus.BAD_REQUEST) {
+      const res: any = exception.getResponse();
+
+      return { status, error: res.message };
     }
 
-    const response = (exception as HttpException).getResponse();
-    const log = {
-      timestamp: new Date(),
-      url: req.url,
-      response,
-    };
-
-    this.logger.log(log);
-    res.status(exception.getStatus()).json(response);
+    res.status(status).json({
+      statusCode: status,
+      timestamp: new Date().toISOString(),
+      path: req.url,
+    });
   }
 }
