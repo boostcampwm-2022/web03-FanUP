@@ -78,9 +78,10 @@ export class BasicTask {
 
   async fanUPTask() {
     // TODO Ticket Module에서 판매된 수량과 최대 인원, 팀당 시간을 불러오는 로직
+    this.logger.log('FanUP 스케줄 실행');
     const ticket = {
       ticketId: 5,
-      ticketAmount: 100,
+      ticketAmount: 5,
       maxNum: 5,
       timePerTeam: 10,
       meetingStartTime: {
@@ -108,7 +109,11 @@ export class BasicTask {
           const room_id = fanUP.room_id;
 
           // user-ticket을 가져와서 분배
-          socket.emit('send-room-notification', { room_id, email: 'test' });
+          socket.emit('send-room-notification', {
+            room_id,
+            email: 'test',
+            message: 'BTS 방이 생성되었어요 BTS가 기다리는 곳으로 오세요',
+          });
 
           // TODO Ticket Module에서 room_id가 비어있는 user-ticket을 불러와 방 업데이트
         },
