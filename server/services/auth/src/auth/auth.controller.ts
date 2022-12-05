@@ -1,21 +1,11 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-  UseFilters,
-  UseGuards,
-} from '@nestjs/common';
-import { Ctx, MessagePattern, Payload } from '@nestjs/microservices';
-import { AuthGuard } from '@nestjs/passport';
-import { Request, Response } from 'express';
-
+import { Controller, Get, UseFilters } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AllRPCExceptionFilter } from 'src/common/exception/filter/rpc-exception.filter';
-import { AuthService } from './auth.service';
 
-// @UseFilters(new AllRPCExceptionFilter())
+import { AuthService } from './auth.service';
+import LoginDto from './dto/request-login.dto';
+
+@UseFilters(new AllRPCExceptionFilter())
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -26,33 +16,8 @@ export class AuthController {
     return this.authService.getAuthHello();
   }
 
-  @Get('google')
-  @UseGuards(AuthGuard('google'))
-  async googleAuth(): Promise<void> {
-    // redirect google login page
-  }
-
-  @Get('google/callback')
-  @UseGuards(AuthGuard('google'))
-  async googleAuthCallback(
-    @Req() req: Request,
-    @Res() res: Response,
-  ): Promise<void> {
-    this.authService.login(req, res);
-  }
-
-  @Get('kakao')
-  @UseGuards(AuthGuard('kakao'))
-  async kakaoAuth(): Promise<void> {
-    // redirect kakao login page
-  }
-
-  @Get('kakao/callback')
-  @UseGuards(AuthGuard('kakao'))
-  async kakaoAuthCallback(
-    @Req() req: Request,
-    @Res() res: Response,
-  ): Promise<void> {
-    this.authService.login(req, res);
+  @MessagePattern({ cmd: 'login' })
+  async login(@Payload() loginDto: LoginDto): Promise<any> {
+    return this.authService.login(loginDto);
   }
 }
