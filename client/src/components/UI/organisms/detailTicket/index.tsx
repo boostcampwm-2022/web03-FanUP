@@ -1,12 +1,13 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTimer } from '@hooks/useTimer';
-import { useGetDetailTicketQuery } from '@services/ticket';
+import { useGetDetailTicketQuery, useTicketingMutation } from '@/services/ticket.service';
 import theme from '@/style/theme';
 import { dateForm } from '@utils/dateForm';
 import { dummyTickets } from '@utils/dummy';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import Button from '../../atoms/Button';
+import Button from '@atoms/Button';
+import Loading from '@atoms/Loading';
 
 const DetailTicketWrapper = styled.div`
     width: 50vw;
@@ -77,14 +78,21 @@ const TicketingBtn = styled.div`
 
 const DetailTicket = () => {
     const { ticketId } = useParams();
+    const navigate = useNavigate();
+    const [ticketLoading, setTicketLoading] = useState(false);
     const { data: ticket, isLoading } = useGetDetailTicketQuery(String(ticketId));
-
+    const [ticketingMutation] = useTicketingMutation();
     const { hour, min, sec, timeEnd } = useTimer(ticket?.salesTime || null);
 
-    const ticketing = useCallback(() => {
+    const ticketing = async () => {
         if (!timeEnd) return alert('아직 티켓팅 시간이 되지 않았습니다.');
-        alert('ticketing');
-    }, [timeEnd]);
+        setTicketLoading(true);
+        const { data: response } = (await ticketingMutation(ticketId as string)) as { data: any };
+        setTimeout(() => {
+            if (response?.status === 403) return navigate('/ticketing/failure');
+            else navigate('/ticketing/success');
+        }, 2000);
+    };
 
     if (isLoading) return <></>;
 
@@ -116,6 +124,7 @@ const DetailTicket = () => {
                     />
                 </TicketingBtn>
             </TicketContents>
+            {ticketLoading && <Loading />}
         </DetailTicketWrapper>
     );
 };

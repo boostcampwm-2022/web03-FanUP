@@ -8,7 +8,7 @@ import { dateDiff } from '@utils/dateDiff';
 import CloseIcon from '@icons/CloseIcon';
 import { ERR_MESSAGE } from './constants';
 import Fish from '@icons/Fish';
-import { useSubmitTicketMutation } from '@/services/ticket';
+import { useSubmitTicketMutation } from '@/services/ticket.service';
 import { TicketSubmitData } from '@/types/ticket';
 
 const ModalHeader = styled.div`

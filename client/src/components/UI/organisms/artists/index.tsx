@@ -16,7 +16,8 @@ const Title = styled.h1`
 const ArtistListWrapper = styled.div`
     display: grid;
     width: 100%;
-    grid-template-columns: repeat(4, 1fr);
+    /* grid-template-columns: repeat(6, 1fr); */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
     margin-bottom: 40px;
 `;

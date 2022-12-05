@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 import Button from '@atoms/Button';
@@ -26,20 +26,16 @@ const InputFormWrapper = styled.form`
 `;
 
 const InputForm = ({ message, setMessage, handleSubmit }: any) => {
-    const handleInput = (e: any) => {
+    const handleInput = useCallback((e: any) => {
         setMessage(e.target.value);
-    };
+    }, []);
 
     return (
         <InputFormWrapper>
-            <input
-                placeholder="메시지를 입력하세요"
-                onChange={(e) => handleInput(e)}
-                value={message}
-            />
+            <input placeholder="메시지를 입력하세요" onChange={handleInput} value={message} />
             <Button
                 content={<SendIcon />}
-                onClick={(e) => handleSubmit(e)}
+                onClick={handleSubmit}
                 width="25px"
                 height="25px"
                 backgroundColor={theme.DARK_GRAY}

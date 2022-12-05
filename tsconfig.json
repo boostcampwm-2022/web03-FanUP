@@ -24,6 +24,8 @@
       "@/*": ["client/src/*"],
       "@icons/*": ["client/src/components/icons/*"],
       "@hoc/*": ["client/src/components/hoc/*"],
+      "@hooks/*": ["client/src/hooks/*"],
+      "@services/*": ["client/src/services/*"],
       "@atoms/*": ["client/src/components/UI/atoms/*"],
       "@molecules/*": ["client/src/components/UI/molecules/*"],
       "@organisms/*": ["client/src/components/UI/organisms/*"],

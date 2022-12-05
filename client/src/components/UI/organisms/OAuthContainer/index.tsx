@@ -1,11 +1,14 @@
 import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
-
-import Button from '@atoms/Button';
 import NaverIcon from '@/components/icons/Naver';
 import GoogleIcon from '@/components/icons/Google';
 import KakaoIcon from '@/components/icons/Kakao';
 import FaceBookIcon from '@/components/icons/FaceBook';
+import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
+import KakaoLogin from 'react-kakao-login';
+import { useSubmitAccessTokenMutation } from '@/services/user.service';
+import { useNavigate } from 'react-router-dom';
+import { useLogin } from '@/hooks/useLogin';
 
 const StyledOAuthContainer = styled.div`
     width: 520px;
@@ -17,6 +20,16 @@ const StyledOAuthContainer = styled.div`
     align-items: center;
     justify-content: center;
     gap: 20px;
+    button {
+        cursor: pointer;
+        width: 80% !important;
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        height: 64px !important;
+        span {
+            margin-left: 0px;
+        }
+    }
 `;
 
 const OAuthButton = styled.button<{ backgroundColor: string; color: string }>`
@@ -33,7 +46,7 @@ const OAuthButton = styled.button<{ backgroundColor: string; color: string }>`
     align-items: center;
     cursor: pointer;
     span {
-        margin-left: 10px;
+        margin-left: 5px !important;
     }
 `;
 
@@ -55,20 +68,6 @@ const OAuthCategory: domain = {
         color: '#FFFFFF',
         icon: <NaverIcon />,
     },
-    google: {
-        title: 'Google',
-        backgroundColor: '#FFFFFF',
-        url: `http://api.fanup.live:4001/auth/google`,
-        color: '#000000',
-        icon: <GoogleIcon />,
-    },
-    kakao: {
-        title: 'Kakao',
-        backgroundColor: '#F7E600',
-        url: `http://api.fanup.live:4001/auth/kakao`,
-        color: '#FFFFFF',
-        icon: <KakaoIcon />,
-    },
     facebook: {
         title: 'Facebook',
         backgroundColor: '#445DD0',
@@ -79,27 +78,61 @@ const OAuthCategory: domain = {
 };
 
 const OAuthContainer: FC = () => {
-    const socialLogin = useCallback(
-        (domain: string) => () => {
-            if (!OAuthCategory[domain].url) return alert('준비중입니다.');
-            (window as Window).location = OAuthCategory[domain].url;
-        },
-        []
-    );
-
     return (
         <StyledOAuthContainer>
-            {Object.entries(OAuthCategory).map(([key, value]) => (
+            <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENTID as string}>
+                <GoogleLoginButton />
+            </GoogleOAuthProvider>
+            <KaKaoLoginButton />
+            {Object.keys(OAuthCategory).map((key) => (
                 <OAuthButton
-                    onClick={socialLogin(key)}
-                    key={key}
-                    backgroundColor={value.backgroundColor}
-                    color={value.color}
+                    key={OAuthCategory[key].title}
+                    backgroundColor={OAuthCategory[key].backgroundColor}
+                    color={OAuthCategory[key].color}
+                    onClick={() => alert('해당 서비스는 준비 중입니다.')}
                 >
-                    {value.icon} <span>{value.title}</span>
+                    {OAuthCategory[key].icon}
+                    <span>{OAuthCategory[key].title}</span>
                 </OAuthButton>
             ))}
         </StyledOAuthContainer>
+    );
+};
+
+const GoogleLoginButton = () => {
+    const login = useLogin();
+
+    const googleLogin = useGoogleLogin({
+        onSuccess: async ({ access_token: accessToken }) => {
+            await login({ accessToken, provider: 'google' });
+        },
+    });
+
+    return (
+        <OAuthButton onClick={() => googleLogin()} backgroundColor="white" color="black">
+            <GoogleIcon /> <span>Google</span>
+        </OAuthButton>
+    );
+};
+
+const KaKaoLoginButton = () => {
+    const login = useLogin();
+
+    const KaKaoLoginSuccess = useCallback(async (accessToken: string) => {
+        await login({ accessToken, provider: 'kakao' });
+    }, []);
+
+    return (
+        <KakaoLogin
+            token={process.env.REACT_APP_KAKAO_ID as string}
+            onSuccess={({ response }) => KaKaoLoginSuccess(response.access_token)}
+            onFail={() => alert('카카오 로그인 실패')}
+            onLogout={() => console.log('로그아웃')}
+        >
+            <>
+                <KakaoIcon /> <span>KaKao</span>
+            </>
+        </KakaoLogin>
     );
 };
 
