@@ -1,6 +1,11 @@
 name: CLIENT-DEPLOY
 
 on:
+  push:
+    paths:
+      - "client/**"
+    branches:
+      - dev
   pull_request:
     paths:
       - "client/**"
@@ -22,7 +27,7 @@ jobs:
           port: ${{ secrets.CLIENT_PORT }} # ssh 접속용 port
           script: |
             cd web03-FanUP/client
-            git pull origin main
+            git pull origin dev
             yarn
             yarn run build
             sudo service nginx restart
