@@ -6,8 +6,9 @@ import KakaoIcon from '@/components/icons/Kakao';
 import FaceBookIcon from '@/components/icons/FaceBook';
 import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
 import KakaoLogin from 'react-kakao-login';
-import { useSubmitAccessTokenMutation } from '@/services/user';
+import { useSubmitAccessTokenMutation } from '@/services/user.service';
 import { useNavigate } from 'react-router-dom';
+import { useLogin } from '@/hooks/useLogin';
 
 const StyledOAuthContainer = styled.div`
     width: 520px;
@@ -79,7 +80,7 @@ const OAuthCategory: domain = {
 const OAuthContainer: FC = () => {
     return (
         <StyledOAuthContainer>
-            <GoogleOAuthProvider clientId="469714351066-4m6rgiackka9ssie99d6hatiucbqctjm.apps.googleusercontent.com">
+            <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENTID as string}>
                 <GoogleLoginButton />
             </GoogleOAuthProvider>
             <KaKaoLoginButton />
@@ -88,6 +89,7 @@ const OAuthContainer: FC = () => {
                     key={OAuthCategory[key].title}
                     backgroundColor={OAuthCategory[key].backgroundColor}
                     color={OAuthCategory[key].color}
+                    onClick={() => alert('해당 서비스는 준비 중입니다.')}
                 >
                     {OAuthCategory[key].icon}
                     <span>{OAuthCategory[key].title}</span>
@@ -98,13 +100,11 @@ const OAuthContainer: FC = () => {
 };
 
 const GoogleLoginButton = () => {
-    const [mutate] = useSubmitAccessTokenMutation();
-    const navigate = useNavigate();
+    const login = useLogin();
 
     const googleLogin = useGoogleLogin({
         onSuccess: async ({ access_token: accessToken }) => {
-            await mutate({ accessToken, provider: 'google' });
-            navigate('/');
+            await login({ accessToken, provider: 'google' });
         },
     });
 
@@ -116,17 +116,15 @@ const GoogleLoginButton = () => {
 };
 
 const KaKaoLoginButton = () => {
-    const [mutate] = useSubmitAccessTokenMutation();
-    const navigate = useNavigate();
+    const login = useLogin();
 
     const KaKaoLoginSuccess = useCallback(async (accessToken: string) => {
-        await mutate({ accessToken, provider: 'kakao' });
-        navigate('/');
+        await login({ accessToken, provider: 'kakao' });
     }, []);
 
     return (
         <KakaoLogin
-            token={'a17505265150166f5db498508262e5f3'}
+            token={process.env.REACT_APP_KAKAO_ID as string}
             onSuccess={({ response }) => KaKaoLoginSuccess(response.access_token)}
             onFail={() => alert('카카오 로그인 실패')}
             onLogout={() => console.log('로그아웃')}

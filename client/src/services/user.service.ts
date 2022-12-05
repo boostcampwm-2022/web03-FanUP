@@ -1,9 +1,10 @@
 import 'whatwg-fetch';
 import { SERVER_URL } from '@/utils/serverUrl';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { IUser } from '@/types/user';
 import { IAritst } from '@/types/artist';
 import { MyTicket } from '@/types/ticket';
+import { customFetchBaseQuery } from './_baseQuery';
 
 interface ArtistID {
     artist_id: number;
@@ -16,11 +17,11 @@ interface ILoginReqData {
 
 export const userApi = createApi({
     reducerPath: 'userApi',
-    baseQuery: fetchBaseQuery({ baseUrl: SERVER_URL }),
+    baseQuery: customFetchBaseQuery,
     tagTypes: ['User', 'SubScribedArtist', 'MyTicket'],
     endpoints: (build) => ({
         getUser: build.query<IUser, void>({
-            query: () => '/user',
+            query: () => '/user/info',
             providesTags: ['User'],
         }),
         submitAccessToken: build.mutation({

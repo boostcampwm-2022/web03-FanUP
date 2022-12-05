@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 const TicketDetailWrapper = styled.div`
     padding: 40px 0;
+    height: calc(100vh - 75px);
     background: ${({ theme }) => theme.LIGHT_GRAY};
 `;
 

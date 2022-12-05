@@ -52,7 +52,6 @@ const useFanUP = (): [
         const offer = await pc.createOffer();
         pc.setLocalDescription(offer);
         peerConnections.current[socketID] = pc;
-
         socket?.emit(SOCKET_EVENTS.offer, { offer, email: myEmail, targetSocketID: socketID });
     };
 
