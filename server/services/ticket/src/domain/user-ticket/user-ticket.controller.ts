@@ -16,7 +16,10 @@ export class UserTicketController {
   }
 
   @MessagePattern({ cmd: 'getAllUserTicketByUserId' })
-  getAllUserTicketByUserId(@Payload() userId: number): Promise<UserTicket[]> {
+  getAllUserTicketByUserId(
+    @Payload('userId') userId: number,
+  ): Promise<UserTicket[]> {
+    console.log(userId);
     return this.userTicketService.findAllByUserId(userId);
   }
 
