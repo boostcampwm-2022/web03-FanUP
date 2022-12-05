@@ -41,6 +41,7 @@ FanUP은 아티스트와 팬들이 하양적 소통 방식에서 벗어나 소�
 
 깃허브 위키에도 많은 내용들이 적혀있으니 많이 구경해주세요😁
 ✅ https://github.com/boostcampwm-2022/web03-FanUP/wiki
+✅ [슈크림 붕어빵 노션 구경하러가기](https://thorn-tiara-c85.notion.site/FanUP-60195efd659e4c14ad0b2a435015aa52)
 ```
 
 [⚙️ 설계 및 개발 고민](https://www.notion.so/e1069837e28f4f0cbc6d75aa19d27b96?v=eb29d65c56bf4570a97706d976c1b07a)
