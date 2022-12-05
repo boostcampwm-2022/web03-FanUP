@@ -9,6 +9,11 @@ interface ArtistID {
     artist_id: number;
 }
 
+interface ILoginReqData {
+    provider: string;
+    accessToken: string;
+}
+
 export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({ baseUrl: SERVER_URL }),
@@ -17,6 +22,14 @@ export const userApi = createApi({
         getUser: build.query<IUser, void>({
             query: () => '/user',
             providesTags: ['User'],
+        }),
+        submitAccessToken: build.mutation({
+            query: (reqData: ILoginReqData) => ({
+                url: '/login',
+                method: 'POST',
+                body: reqData,
+            }),
+            invalidatesTags: ['User'],
         }),
         getSubScribedArtist: build.query<IAritst[], void>({
             query: () => '/user/artist',
@@ -51,4 +64,5 @@ export const {
     useSubscribeArtistMutation,
     useUnSubscribeArtistMutation,
     useGetMyTicketsQuery,
+    useSubmitAccessTokenMutation,
 } = userApi;
