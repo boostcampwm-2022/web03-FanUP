@@ -6,7 +6,6 @@ on:
       - "client/**"
     branches:
       - main
-      - dev
     types:
       - closed
 
