@@ -10,8 +10,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  FAN
+  ARTIST
+}
 model User {
   id          Int     @default(autoincrement()) @id
+  role        Role    @default(FAN)
   providerId  String
   provider    String
   email       String?
