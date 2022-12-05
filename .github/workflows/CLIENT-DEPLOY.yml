@@ -22,7 +22,7 @@ jobs:
           port: ${{ secrets.CLIENT_PORT }} # ssh 접속용 port
           script: |
             cd web03-FanUP/client
-            git pull origin dev
+            git pull origin main
             yarn
             yarn run build
             sudo service nginx restart
