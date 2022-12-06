@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PrismaService } from 'src/provider/prisma/prisma.service';
 import { MICRO_SERVICES } from '../../common/constants';
+import { NotificationController } from './controller/notification.controller';
 import { NotificationService } from './service/notification.service';
 
 @Module({
@@ -17,6 +18,7 @@ import { NotificationService } from './service/notification.service';
       },
     ]),
   ],
+  controllers: [NotificationController],
   providers: [NotificationService, PrismaService],
 })
 export class NotificationModule {}
