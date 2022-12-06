@@ -4,7 +4,6 @@ import {
   NotificationNotFoundException,
 } from '../../../common/exception';
 import { CreateNotificationDto } from '../dto/create-notification.dto';
-import { UpdateNotificationDto } from '../dto/update-notification.dto';
 
 @Injectable()
 export class NotificationService {
@@ -25,14 +24,18 @@ export class NotificationService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} notification`;
+    try {
+      return `This action returns a #${id} notification`;
+    } catch (err) {
+      throw new NotificationNotFoundException();
+    }
   }
 
-  update(id: number, updateNotificationDto: UpdateNotificationDto) {
-    return `This action updates a #${id} notification`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} notification`;
+  updateRead(id: number) {
+    try {
+      return `해당 알림을 읽었습니다.`;
+    } catch (err) {
+      throw new NotificationNotFoundException();
+    }
   }
 }

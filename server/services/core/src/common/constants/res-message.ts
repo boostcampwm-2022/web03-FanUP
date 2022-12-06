@@ -24,7 +24,7 @@ const ResMessage = {
 
   // 알림 관련
   NOTIFICATION_BAD_REQUEST: '잘못된 형식으로 알림이 생성되었습니다.',
-  NOTIFICATION_NOT_FOUND: '해당 유저의 알림을 찾을 수 없습니다.',
+  NOTIFICATION_NOT_FOUND: '해당 아이디의 알림을 찾을 수 없습니다.',
 };
 
 export { ResMessage };
