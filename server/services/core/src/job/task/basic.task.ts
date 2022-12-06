@@ -1,12 +1,17 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
-import { addMinutes, getDate, minusMinutes } from '../../common/util';
+import {
+  addMinutes,
+  compareTodayByDate,
+  getDate,
+  minusMinutes,
+} from '../../common/util';
 import { FanupService } from '../../domain/fanup/service/fanup.service';
 import { io } from 'socket.io-client';
 import { MICRO_SERVICES } from '../../common/constants';
 import { ClientTCP } from '@nestjs/microservices';
-import { randomUUID } from 'crypto';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class BasicTask {
@@ -22,13 +27,10 @@ export class BasicTask {
   ) {}
 
   // 매일 밤 12시에 잡을 등록하는 크론
-  @Cron('0 0/30 * * * *', { name: 'registerTask' })
-  registerTask() {
+  @Cron('0/10 * * * * *', { name: 'registerTask' })
+  async registerTask() {
     this.logger.log('매일 밤 12시에 실행되는 크론잡');
-    // this.addFanUPTask();
-    // console.log()
-    const date = new Date('2022-12-02T09:32:54.115Z');
-    console.log(date.getFullYear(), date.getMonth() + 1, date.getDay());
+    await this.addFanUPTask();
   }
 
   addTask(name: string, date: Date) {
@@ -36,8 +38,6 @@ export class BasicTask {
       try {
         this.logger.log('fanup create');
         await this.fanUPTask();
-        // const data = this.ticketClient.send({ cmd: 'getAllTicket' }, {});
-        // console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -61,39 +61,37 @@ export class BasicTask {
     this.cronJobName = this.cronJobName.filter((jobName) => jobName !== name);
   }
 
-  addFanUPTask() {
+  async addFanUPTask() {
     // TODO 티켓 정보를 가져오기
     // [MOCK] 티켓에서 당일 팬미팅 시작하는 요소의 ticket_id와 판매수량 정보를 가져옴
-    const tickets = [
-      {
-        id: 19,
-        title: '마클',
-        content: '테스트',
-        createdAt: '2022-12-02T09:32:54.115Z',
-        updatedAt: '2022-12-02T09:32:54.115Z',
-        artistId: 1,
-        salesTime: '2022-12-07T08:10:00.000Z',
-        startTime: '2022-12-14T05:00:00.000Z',
-        status: 'OPEN',
-        totalAmount: 50,
-        numberTeam: 5,
-        timeTeam: 10,
-        price: 100,
-      },
-    ];
+    this.logger.log('getAllTicket');
+    const tickets: any[] = await lastValueFrom(
+      this.ticketClient.send({ cmd: 'getAllTicket' }, {}),
+    );
 
-    tickets.forEach((ticket) => {
-      const startDate = new Date(ticket.startTime);
-      const name = `${ticket.startTime}-${ticket.id}-${ticket.artistId}`;
-      // const date = addMinutes(new Date(), 0.1);
-      const date: Date = minusMinutes(startDate, 30);
-      this.logger.log(date);
-      // this.addTask(name, date);
-    });
+    tickets
+      .filter((ticket) => {
+        const { status, startTime } = ticket;
+        if (status == 'OPEN' && compareTodayByDate(new Date(startTime))) {
+          return true;
+        }
+        return false;
+      })
+      .forEach((ticket) => {
+        const startDate = new Date(ticket.startTime);
+        const name = `${ticket.startTime}-${ticket.id}-${ticket.artistId}`;
+        // const date = addMinutes(new Date(), 0.1);
+        const date: Date = minusMinutes(startDate, 30);
+        this.logger.log(date);
+        this.addTask(name, date);
+      });
   }
 
+  // 팬미팅 시작 30분 전 실행되는 크론잡
   async fanUPTask() {
     // TODO Ticket Module에서 판매된 수량과 최대 인원, 팀당 시간을 불러오는 로직
+    // 1. 해당 티켓의 판매 수량을 알아야되서 해당 티켓을 산 사람의 리스트 findUserTicketByTicketId
+    // 2. 당일 날 열리는 팬미팅 방 : status와 날짜로 필터링
     this.logger.log('FanUP 스케줄 실행');
     const ticket = {
       ticketId: 5,
@@ -130,7 +128,8 @@ export class BasicTask {
           socket.emit('send-room-notification', {
             room_id,
             email: 'test',
-            message: 'BTS 방이 생성되었어요 BTS가 기다리는 곳으로 오세요',
+            message:
+              '아티스트 방이 생성되었어요 아티스트가 기다리는 곳으로 오세요',
           });
 
           // TODO Ticket Module에서 room_id가 비어있는 user-ticket을 불러와 방 업데이트

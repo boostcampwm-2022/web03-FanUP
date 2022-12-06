@@ -25,6 +25,14 @@ export function isToday({ year, month, day }: BasicDate) {
   return isYear && isMonth && isDay;
 }
 
+export function compareTodayByDate(date: Date) {
+  const today = new Date();
+  const isYear = date.getFullYear() === today.getFullYear();
+  const isMonth = date.getMonth() === today.getMonth();
+  const isDay = date.getDay() === today.getDay();
+  return isYear && isMonth && isDay;
+}
+
 export function getDate({ year, month, day, hour, minute }) {
   return new Date(year, month - 1, day, hour, minute, 0);
 }
