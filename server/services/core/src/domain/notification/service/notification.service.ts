@@ -1,15 +1,27 @@
 import { Injectable } from '@nestjs/common';
+import {
+  NotificationCreateException,
+  NotificationNotFoundException,
+} from '../../../common/exception';
 import { CreateNotificationDto } from '../dto/create-notification.dto';
 import { UpdateNotificationDto } from '../dto/update-notification.dto';
 
 @Injectable()
 export class NotificationService {
   create(createNotificationDto: CreateNotificationDto) {
-    return 'This action adds a new notification';
+    try {
+      return 'This action adds a new notification';
+    } catch (err) {
+      throw new NotificationCreateException();
+    }
   }
 
-  findAll() {
-    return `This action returns all notification`;
+  findByUserId(userId: number) {
+    try {
+      return `This action returns all notification`;
+    } catch (err) {
+      throw new NotificationNotFoundException();
+    }
   }
 
   findOne(id: number) {
