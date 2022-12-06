@@ -5,6 +5,7 @@ import { CoreModule } from '../api/core/core.module';
 import { FanUPGateway } from './fanup/fanup.gateway';
 import { FanUPService } from './fanup/fanup.service';
 import { NotificationGateway } from './notification/notification.gateway';
+import { NotificationService } from './notification/notification.service';
 
 @Module({
   imports: [
@@ -28,7 +29,12 @@ import { NotificationGateway } from './notification/notification.gateway';
       },
     ]),
   ],
-  providers: [FanUPGateway, FanUPService, NotificationGateway],
-  exports: [FanUPService],
+  providers: [
+    FanUPGateway,
+    FanUPService,
+    NotificationGateway,
+    NotificationService,
+  ],
+  exports: [FanUPService, NotificationService],
 })
 export class SocketModule {}

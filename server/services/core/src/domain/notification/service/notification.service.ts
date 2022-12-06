@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
 import {
   NotificationCreateException,
@@ -9,6 +9,8 @@ import { CreateNotificationDto } from '../dto/create-notification.dto';
 
 @Injectable()
 export class NotificationService {
+  private logger: Logger = new Logger(NotificationService.name);
+
   constructor(private prisma: PrismaService) {}
 
   async create(createNotificationDto: CreateNotificationDto) {
@@ -29,6 +31,7 @@ export class NotificationService {
   // 읽지 않은 알림 소식 가져오기
   async findByUserId(userId: number) {
     try {
+      this.logger.log(`findByUserId: ${userId}`);
       return await this.prisma.notification.findMany({
         where: {
           user_id: userId,
@@ -36,24 +39,28 @@ export class NotificationService {
         },
       });
     } catch (err) {
+      this.logger.log(`findByUserId: ${err}`);
       throw new NotificationNotFoundException();
     }
   }
 
   async findOne(id: number) {
     try {
+      this.logger.log(`findOne: ${id}`);
       return await this.prisma.notification.findFirst({
         where: {
           user_id: id,
         },
       });
     } catch (err) {
+      this.logger.log(`findOne: ${err}`);
       throw new NotificationNotFoundException();
     }
   }
 
   async updateRead(id: number) {
     try {
+      this.logger.log(`updateRead: ${id}`);
       return await this.prisma.notification.updateMany({
         where: {
           user_id: id,
@@ -63,6 +70,7 @@ export class NotificationService {
         },
       });
     } catch (err) {
+      this.logger.log(`updateRead: ${err}`);
       throw new NotificationUpdateException();
     }
   }
