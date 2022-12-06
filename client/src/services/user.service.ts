@@ -21,7 +21,7 @@ export const userApi = createApi({
     tagTypes: ['User', 'SubScribedArtist', 'MyTicket'],
     endpoints: (build) => ({
         getUser: build.query<IUser, void>({
-            query: () => '/user/info',
+            query: () => '/auth/me',
             providesTags: ['User'],
         }),
         submitAccessToken: build.mutation({
