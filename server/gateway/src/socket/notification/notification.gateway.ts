@@ -9,6 +9,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { NotificationService } from './notification.service';
 
 @WebSocketGateway({
   namespace: '/socket/notification',
@@ -19,6 +20,8 @@ import { Server, Socket } from 'socket.io';
 })
 class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private logger: Logger = new Logger(NotificationGateway.name);
+
+  constructor(private readonly notificationService: NotificationService) {}
 
   @WebSocketServer()
   server: Server;
@@ -42,25 +45,29 @@ class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('get-notification')
-  getNotification(@ConnectedSocket() socket: Socket, @MessageBody() data) {
-    this.logger.log('get-notification: ' + socket.id);
-    const test = {
-      result: [
-        {
-          room: '12345',
-          message: 'BTS 방이 생성되었어요',
-          read: true,
-          date: Date.now(),
-        },
-        {
-          room: '123',
-          message: '아이즈원이 기다리고 있어요',
-          read: false,
-          date: Date.now(),
-        },
-      ],
-    };
-    this.server.emit('set-notification', test);
+  async getNotification(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() data,
+  ) {
+    const { userId } = data;
+    await this.notificationService.findNotificationByUserID({
+      userId,
+      socket,
+      server: this.server,
+    });
+  }
+
+  @SubscribeMessage('update-notification')
+  async updateNotification(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() data,
+  ) {
+    const { id } = data;
+    await this.notificationService.updateNotification({
+      id,
+      socket,
+      server: this.server,
+    });
   }
 
   @SubscribeMessage('send-room-notification')
