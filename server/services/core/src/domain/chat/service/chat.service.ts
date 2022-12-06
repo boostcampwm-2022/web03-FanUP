@@ -23,6 +23,7 @@ export class ChatService {
         },
       });
     } catch (err) {
+      console.log(err);
       throw new ChatCreateFailException();
     }
   }
@@ -48,6 +49,14 @@ export class ChatService {
       return chatList;
     } catch (err) {
       return err;
+    }
+  }
+
+  async findAllChat() {
+    try {
+      return await this.prisma.chat.findMany();
+    } catch (err) {
+      console.log(err);
     }
   }
 }

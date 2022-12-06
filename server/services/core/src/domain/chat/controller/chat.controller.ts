@@ -1,4 +1,11 @@
-import { Controller, Get, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseInterceptors,
+  CacheInterceptor,
+} from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   LoggingInterceptor,
@@ -9,14 +16,20 @@ import { SetResponse } from '../../../common/decorator';
 import { ResMessage, ResStatusCode } from '../../../common/constants';
 import { CreateChatDto } from '../dto';
 
-@UseInterceptors(LoggingInterceptor, TransformInterceptor)
+// @UseInterceptors(LoggingInterceptor, TransformInterceptor)
 @Controller('/chat')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
-  @Get()
-  get() {
-    return 'this is chat service';
+  @UseInterceptors(CacheInterceptor)
+  @Get('get')
+  async get() {
+    return await this.chatService.findAllChat();
+  }
+
+  @Post('post')
+  async createChat(@Body() createChatDto: CreateChatDto) {
+    return await this.chatService.createChat(createChatDto);
   }
 
   @SetResponse(ResMessage.CREATE_CHAT, ResStatusCode.CREATED)
