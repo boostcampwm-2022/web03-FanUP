@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -8,6 +9,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { NotificationService } from './notification.service';
 
 @WebSocketGateway({
   namespace: '/socket/notification',
@@ -17,6 +19,10 @@ import { Server, Socket } from 'socket.io';
   },
 })
 class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
+  private logger: Logger = new Logger(NotificationGateway.name);
+
+  constructor(private readonly notificationService: NotificationService) {}
+
   @WebSocketServer()
   server: Server;
 
@@ -29,6 +35,8 @@ class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
     try {
       const { email } = data;
       this.notification[email] = socket.id;
+      socket.join(email);
+      this.logger.log('join-notification: ' + socket.id);
     } catch (err) {
       this.server
         .to(socket.id)
@@ -37,33 +45,42 @@ class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('get-notification')
-  getNotification(@ConnectedSocket() socket: Socket, @MessageBody() data) {
-    const test = {
-      result: [
-        {
-          room: '12345',
-          message: 'BTS 방이 생성되었어요',
-          read: true,
-          date: Date.now(),
-        },
-        {
-          room: '123',
-          message: '아이즈원이 기다리고 있어요',
-          read: false,
-          date: Date.now(),
-        },
-      ],
-    };
-    this.server.emit('set-notification', test);
+  async getNotification(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() data,
+  ) {
+    const { userId } = data;
+    await this.notificationService.findNotificationByUserID({
+      userId,
+      socket,
+      server: this.server,
+    });
+  }
+
+  @SubscribeMessage('update-notification')
+  async updateNotification(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() data,
+  ) {
+    const { id } = data;
+    await this.notificationService.updateNotification({
+      id,
+      socket,
+      server: this.server,
+    });
   }
 
   @SubscribeMessage('send-room-notification')
   roomNotification(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+    const { room_id, email, message } = data;
+    this.logger.log(`send-room-notification: ${email}`);
+
+    const targetEmail = email || 'test';
     const test = {
-      room: '12345',
-      message: 'BTS 방이 생성되었어요 BTS가 기다리는 곳으로 오세요',
+      room: '1' || room_id,
+      message: 'BTS 방이 생성되었어요 BTS가 기다리는 곳으로 오세요' || message,
     };
-    socket.emit('receive-room-notification', test);
+    this.server.to(targetEmail).emit('receive-room-notification', test);
   }
 
   // 소켓 연결이 생성되면

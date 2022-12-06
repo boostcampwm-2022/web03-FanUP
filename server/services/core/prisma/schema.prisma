@@ -39,3 +39,12 @@ model FileEntity {
   name String?
   mimeType String?
 }
+
+model Notification {
+  id Int @id @default(autoincrement())
+  user_id Int?
+  message String?
+  read Boolean?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}

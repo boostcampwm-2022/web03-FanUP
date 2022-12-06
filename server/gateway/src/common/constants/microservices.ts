@@ -1,4 +1,4 @@
-const environment = process.env.NODE_ENV || 'production';
+const environment = process.env.NODE_ENV || 'development';
 const MICRO_SERVICES = {
   AUTH: {
     NAME: 'AUTH_SERVICE',
@@ -7,12 +7,12 @@ const MICRO_SERVICES = {
   },
   CORE: {
     NAME: 'CORE_SERVICE',
-    HOST: environment === 'production' ? 'fanup-core' : 'localhost',
+    HOST: environment === 'production' ? 'fanup-core' : '0.0.0.0',
     PORT: 3002,
   },
   TICKET: {
     NAME: 'TICKET_SERVICE',
-    HOST: environment === 'production' ? 'fanup-ticket' : 'localhost',
+    HOST: environment === 'production' ? 'fanup-ticket' : '0.0.0.0',
     PORT: 3003,
   },
 };

@@ -217,7 +217,8 @@ export class FanUPService {
   async getAllChat(room: string, server: Server, socket: Socket) {
     const checkRoom = await this.validateRoom(room);
 
-    if (checkRoom.validate === false) {
+    if (checkRoom.validate) {
+      socket.join(room);
       server.to(room).emit('response-chat', {
         result: this.socketRoom[room].chat,
       });
@@ -229,7 +230,8 @@ export class FanUPService {
   async getParticipantList(room: string, server: Server, socket: Socket) {
     const checkRoom = await this.validateRoom(room);
 
-    if (checkRoom.validate === false) {
+    if (checkRoom.validate) {
+      socket.join(room);
       server.to(room).emit('response-participant-user', {
         result: this.socketRoom[room].participant,
       });
