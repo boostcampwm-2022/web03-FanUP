@@ -1,41 +1,69 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../../../provider/prisma/prisma.service';
 import {
   NotificationCreateException,
   NotificationNotFoundException,
+  NotificationUpdateException,
 } from '../../../common/exception';
 import { CreateNotificationDto } from '../dto/create-notification.dto';
 
 @Injectable()
 export class NotificationService {
-  create(createNotificationDto: CreateNotificationDto) {
+  constructor(private prisma: PrismaService) {}
+
+  async create(createNotificationDto: CreateNotificationDto) {
     try {
-      return 'This action adds a new notification';
+      const { user_id, message, read } = createNotificationDto;
+      return await this.prisma.notification.create({
+        data: {
+          user_id,
+          message,
+          read,
+        },
+      });
     } catch (err) {
       throw new NotificationCreateException();
     }
   }
 
-  findByUserId(userId: number) {
+  // 읽지 않은 알림 소식 가져오기
+  async findByUserId(userId: number) {
     try {
-      return `This action returns all notification`;
+      return await this.prisma.notification.findMany({
+        where: {
+          user_id: userId,
+          read: false,
+        },
+      });
     } catch (err) {
       throw new NotificationNotFoundException();
     }
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     try {
-      return `This action returns a #${id} notification`;
+      return await this.prisma.notification.findFirst({
+        where: {
+          user_id: id,
+        },
+      });
     } catch (err) {
       throw new NotificationNotFoundException();
     }
   }
 
-  updateRead(id: number) {
+  async updateRead(id: number) {
     try {
-      return `해당 알림을 읽었습니다.`;
+      return await this.prisma.notification.updateMany({
+        where: {
+          user_id: id,
+        },
+        data: {
+          read: true,
+        },
+      });
     } catch (err) {
-      throw new NotificationNotFoundException();
+      throw new NotificationUpdateException();
     }
   }
 }

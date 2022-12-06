@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { PrismaService } from 'src/provider/prisma/prisma.service';
 import { MICRO_SERVICES } from '../../common/constants';
 import { NotificationService } from './service/notification.service';
 
@@ -16,6 +17,6 @@ import { NotificationService } from './service/notification.service';
       },
     ]),
   ],
-  providers: [NotificationService],
+  providers: [NotificationService, PrismaService],
 })
 export class NotificationModule {}

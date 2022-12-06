@@ -1,9 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
 import { addMinutes, getDate, minusMinutes } from '../../common/util';
 import { FanupService } from '../../domain/fanup/service/fanup.service';
 import { io } from 'socket.io-client';
+import { MICRO_SERVICES } from '../../common/constants';
+import { ClientTCP } from '@nestjs/microservices';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class BasicTask {
@@ -13,13 +16,19 @@ export class BasicTask {
   constructor(
     private schedulerRegistry: SchedulerRegistry,
     private readonly fanupService: FanupService,
+
+    @Inject(MICRO_SERVICES.TICKET.NAME)
+    private ticketClient: ClientTCP,
   ) {}
 
   // 매일 밤 12시에 잡을 등록하는 크론
-  @Cron('0 0 0 * * *', { name: 'registerTask' })
+  @Cron('0 0/30 * * * *', { name: 'registerTask' })
   registerTask() {
     this.logger.log('매일 밤 12시에 실행되는 크론잡');
-    this.addFanUPTask();
+    // this.addFanUPTask();
+    // console.log()
+    const date = new Date('2022-12-02T09:32:54.115Z');
+    console.log(date.getFullYear(), date.getMonth() + 1, date.getDay());
   }
 
   addTask(name: string, date: Date) {
@@ -27,6 +36,8 @@ export class BasicTask {
       try {
         this.logger.log('fanup create');
         await this.fanUPTask();
+        // const data = this.ticketClient.send({ cmd: 'getAllTicket' }, {});
+        // console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -55,24 +66,29 @@ export class BasicTask {
     // [MOCK] 티켓에서 당일 팬미팅 시작하는 요소의 ticket_id와 판매수량 정보를 가져옴
     const tickets = [
       {
-        ticketId: 1,
-        meetingStartTime: {
-          year: 2022,
-          month: 11,
-          day: 30,
-          hour: 1,
-          minute: 52,
-        },
+        id: 19,
+        title: '마클',
+        content: '테스트',
+        createdAt: '2022-12-02T09:32:54.115Z',
+        updatedAt: '2022-12-02T09:32:54.115Z',
+        artistId: 1,
+        salesTime: '2022-12-07T08:10:00.000Z',
+        startTime: '2022-12-14T05:00:00.000Z',
+        status: 'OPEN',
+        totalAmount: 50,
+        numberTeam: 5,
+        timeTeam: 10,
+        price: 100,
       },
     ];
 
     tickets.forEach((ticket) => {
-      const { year, month, day } = ticket.meetingStartTime;
-      const name = `${year}-${month}-${day}-${ticket.ticketId}`;
-      const date = addMinutes(new Date(), 0.1);
-      // const date: Date = minusMinutes(getDate(ticket.meetingStartTime), 30);
+      const startDate = new Date(ticket.startTime);
+      const name = `${ticket.startTime}-${ticket.id}-${ticket.artistId}`;
+      // const date = addMinutes(new Date(), 0.1);
+      const date: Date = minusMinutes(startDate, 30);
       this.logger.log(date);
-      this.addTask(name, date);
+      // this.addTask(name, date);
     });
   }
 
@@ -99,7 +115,9 @@ export class BasicTask {
       ticket.maxNum,
     );
     try {
-      const socket = io('http://localhost:3000/socket/notification');
+      const gateway =
+        process.env.NODE_ENV === 'production' ? 'fanup-gateway' : 'localhost';
+      const socket = io(`http://${gateway}:3000/socket/notification`);
 
       Array.from({ length: roomAmount }, (_, i) => i).forEach(
         async (element) => {

@@ -23,8 +23,9 @@ const ResMessage = {
   FILE_BAD_REQUEST: '보낸 파일이 존재하지 않습니다.',
 
   // 알림 관련
-  NOTIFICATION_BAD_REQUEST: '잘못된 형식으로 알림이 생성되었습니다.',
+  NOTIFICATION_BAD_REQUEST: '잘못된 형식의 아이디가 들어왔습니다.',
   NOTIFICATION_NOT_FOUND: '해당 아이디의 알림을 찾을 수 없습니다.',
+  NOTIFICATION_UPDATE_FAIL: '해당 알림 업데이트에 실패하였습니다.',
 };
 
 export { ResMessage };
