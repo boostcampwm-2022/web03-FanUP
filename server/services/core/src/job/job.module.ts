@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ScheduleModule } from '@nestjs/schedule';
+import { NotificationService } from '../domain/notification/service/notification.service';
 import { MICRO_SERVICES } from '../common/constants';
 import { FanupService } from '../domain/fanup/service/fanup.service';
 import { PrismaService } from '../provider/prisma/prisma.service';
@@ -20,6 +21,6 @@ import { BasicTask } from './task/basic.task';
       },
     ]),
   ],
-  providers: [BasicTask, FanupService, PrismaService],
+  providers: [BasicTask, FanupService, PrismaService, NotificationService],
 })
 export class JobModule {}

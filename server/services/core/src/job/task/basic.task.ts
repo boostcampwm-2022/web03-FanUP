@@ -12,6 +12,7 @@ import { io } from 'socket.io-client';
 import { MICRO_SERVICES } from '../../common/constants';
 import { ClientTCP } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
+import { NotificationService } from '../../domain/notification/service/notification.service';
 
 @Injectable()
 export class BasicTask {
@@ -21,6 +22,7 @@ export class BasicTask {
   constructor(
     private schedulerRegistry: SchedulerRegistry,
     private readonly fanupService: FanupService,
+    private readonly notificationService: NotificationService,
 
     @Inject(MICRO_SERVICES.TICKET.NAME)
     private ticketClient: ClientTCP,
@@ -127,12 +129,17 @@ export class BasicTask {
           // user-ticket을 가져와서 분배
           socket.emit('send-room-notification', {
             room_id,
+            startTime,
+            endTime,
             email: 'test',
             message:
               '아티스트 방이 생성되었어요 아티스트가 기다리는 곳으로 오세요',
           });
 
           // TODO Ticket Module에서 room_id가 비어있는 user-ticket을 불러와 방 업데이트
+
+          // 알림 객체를 생성
+          // await this.notificationService.create({user_id, message})
         },
       );
     } catch (err) {
