@@ -33,9 +33,7 @@ const FanUP = () => {
     usePreventLeave();
 
     useEffect(() => {
-        console.log('1234567');
         return () => {
-            console.log('123123123123');
             socket?.disconnect();
         };
     }, []);

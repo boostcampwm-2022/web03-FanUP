@@ -1,10 +1,10 @@
-import { artistApi } from '@/services/artist';
-import { userApi } from '@/services/user';
+import { artistApi } from '@/services/artist.service';
+import { userApi } from '@/services/user.service';
 import { combineReducers } from '@reduxjs/toolkit';
 import artistSlice from './artist';
 import userSlice from './user';
 import fanUpSlice from './fanUp';
-import { ticketApi } from '@/services/ticket';
+import { ticketApi } from '@/services/ticket.service';
 
 const reducer = combineReducers({
     artistSlice,

@@ -1,12 +1,16 @@
 name: CLIENT-DEPLOY
 
 on:
+  push:
+    paths:
+      - "client/**"
+    branches:
+      - dev
   pull_request:
     paths:
       - "client/**"
     branches:
       - main
-      - dev
     types:
       - closed
 
