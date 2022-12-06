@@ -1,11 +1,11 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { APP_PIPE } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TicketModule } from './ticket/ticket.module';
+import { TicketModule } from './domain/ticket/ticket.module';
+import { UserTicketModule } from './domain/user-ticket/user-ticket.module';
 
 @Module({
-  imports: [TicketModule],
+  imports: [TicketModule, UserTicketModule],
   controllers: [AppController],
   providers: [AppService],
 })

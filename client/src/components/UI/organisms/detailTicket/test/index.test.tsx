@@ -7,8 +7,8 @@ describe('<DetailTicket />', () => {
     beforeEach(() => {
         MOCK_FN.useParams({ ticketId: '1' });
     });
-    it('rendering test', () => {
+    it('rendering test', async () => {
         renderWithContext(<DetailTicket />);
-        expect(screen.getByText('Ticketing')).toBeInTheDocument();
+        expect(await screen.findByText('Ticketing')).toBeInTheDocument();
     });
 });

@@ -1,12 +1,13 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTimer } from '@hooks/useTimer';
-import { useGetDetailTicketQuery } from '@services/ticket';
+import { useGetDetailTicketQuery, useTicketingMutation } from '@/services/ticket.service';
 import theme from '@/style/theme';
 import { dateForm } from '@utils/dateForm';
 import { dummyTickets } from '@utils/dummy';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import Button from '../../atoms/Button';
+import Button from '@atoms/Button';
+import Loading from '@atoms/Loading';
 
 const DetailTicketWrapper = styled.div`
     width: 50vw;
@@ -56,8 +57,8 @@ const TicketingDate = styled.div`
     }
 `;
 
-const TicketDescription = styled.span`
-    font-size: 15px;
+const TicketTitle = styled.h5`
+    font-size: 20px;
     padding-left: 10px;
     border-left: 4px solid black;
 `;
@@ -76,19 +77,22 @@ const TicketingBtn = styled.div`
 `;
 
 const DetailTicket = () => {
-    const params = useParams();
-    const { data, isLoading } = useGetDetailTicketQuery(String(params.ticketId));
+    const { ticketId } = useParams();
+    const navigate = useNavigate();
+    const [ticketLoading, setTicketLoading] = useState(false);
+    const { data: ticket, isLoading } = useGetDetailTicketQuery(String(ticketId));
+    const [ticketingMutation] = useTicketingMutation();
+    const { hour, min, sec, timeEnd } = useTimer(ticket?.salesTime || null);
 
-    const ticket = useMemo(
-        () => dummyTickets.find(({ ticketId }) => ticketId === Number(params.ticketId)),
-        []
-    );
-    const { hour, min, sec, timeEnd } = useTimer(ticket?.ticketingDate as Date);
-
-    const ticketing = useCallback(() => {
+    const ticketing = async () => {
         if (!timeEnd) return alert('아직 티켓팅 시간이 되지 않았습니다.');
-        alert('ticketing');
-    }, [timeEnd]);
+        setTicketLoading(true);
+        const { data: response } = (await ticketingMutation(ticketId as string)) as { data: any };
+        setTimeout(() => {
+            if (response?.status === 403) return navigate('/ticketing/failure');
+            else navigate('/ticketing/success');
+        }, 2000);
+    };
 
     if (isLoading) return <></>;
 
@@ -99,17 +103,15 @@ const DetailTicket = () => {
             <TicketContents>
                 <TicketingDate>
                     <strong>Ticketing</strong>
-                    <span>{dateForm(ticket!.ticketingDate)} </span>
-                    <span>{ticket?.ticketingTime}</span>
+                    <span>{dateForm(ticket!.salesTime)} </span>
                 </TicketingDate>
-                <h2>{ticket?.artistName}</h2>
-                <TicketDescription>{ticket?.description}</TicketDescription>
+                <h2>{ticket?.name || 'testArtist'}</h2>
+                <TicketTitle>{ticket?.title}</TicketTitle>
                 <FanUpDate>
                     <span>일시</span>
-                    <span>{dateForm(ticket!.fanUpDate)}</span>
-                    <span>{ticket?.fanUpTime}</span>
+                    <span>{dateForm(ticket!.startTime)}</span>
                 </FanUpDate>
-                <span>참가자 {ticket?.userCount}명</span>
+                <span>참가자 {ticket!.totalAmount}명</span>
                 <TicketingBtn>
                     <Button
                         onClick={ticketing}
@@ -122,6 +124,7 @@ const DetailTicket = () => {
                     />
                 </TicketingBtn>
             </TicketContents>
+            {ticketLoading && <Loading />}
         </DetailTicketWrapper>
     );
 };

@@ -5,14 +5,12 @@ on:
     paths:
       - "client/**"
     branches:
-      - main
       - dev
   pull_request:
     paths:
       - "client/**"
     branches:
       - main
-      - dev
     types:
       - closed
 

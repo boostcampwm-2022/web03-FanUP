@@ -23,22 +23,22 @@ export interface TicketSubmitData {
 }
 
 interface ITicket {
-    ticket_id: number;
+    id: number;
     name: string;
     title: string;
-    profile_url: string;
-    start_time: Date;
+    profileUrl: string;
+    startTime: Date;
 }
 
 interface MyTicket extends ITicket {}
 export interface TicketSales extends ITicket {
-    sales_time: Date;
+    salesTime: Date;
     price: number;
 }
 
 export interface TicketDetail extends ITicket {
     description: string;
-    sales_time: Date;
+    salesTime: Date;
     price: number;
-    total_amount: number;
+    totalAmount: number;
 }

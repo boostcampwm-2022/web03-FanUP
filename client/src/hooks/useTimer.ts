@@ -8,7 +8,7 @@ const padNumber = (num: number, length: number) => {
     return String(num).padStart(length, '0');
 };
 
-export const useTimer = (targetDate: Date) => {
+export const useTimer = (targetDate: Date | null) => {
     const interval = useRef<NodeJS.Timer | null>(null);
     const [time, setTime] = useState({
         hour: '',
@@ -16,7 +16,9 @@ export const useTimer = (targetDate: Date) => {
         sec: '',
     });
     const [timeEnd, setTimeEnd] = useState(false);
+
     const timer = () => {
+        if (!targetDate) return;
         const now = new Date();
         const [diffHours, diffMin, diffSec] = dateDiff(targetDate, now);
         if (IsTimeOver(diffHours, diffMin, diffSec)) {
@@ -32,6 +34,7 @@ export const useTimer = (targetDate: Date) => {
     };
 
     useEffect(() => {
+        if (!targetDate) return;
         timer();
         interval.current = setInterval(() => {
             timer();
@@ -39,7 +42,7 @@ export const useTimer = (targetDate: Date) => {
         return () => {
             if (interval.current) clearInterval(interval.current);
         };
-    }, []);
+    }, [targetDate]);
 
     return { hour: time.hour, min: time.min, sec: time.sec, timeEnd };
 };

@@ -5,6 +5,7 @@ import UserIcon from '@icons/UserIcon';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useGetUserQuery } from '@/services/user.service';
 
 const HeaderRoot = styled.header`
     height: 75px;
@@ -22,7 +23,7 @@ const HeaderRoot = styled.header`
 `;
 const HeaderLeft = styled.div`
     display: flex;
-    gap: 64px;
+    gap: 10px;
     align-items: center;
     div {
         display: flex;
@@ -40,6 +41,7 @@ const HeaderRight = styled.div`
 `;
 
 const Header = () => {
+    const { data: UserData, isLoading, isError } = useGetUserQuery();
     //TODO: 서버와 통신을 통해 Artist 여부 확인
     const [isArtist, setIsArtist] = useState(false);
     const navigate = useNavigate();
@@ -52,8 +54,9 @@ const Header = () => {
         alert('alarmCallback');
     }, []);
     const clickUser = useCallback(() => {
-        alert('userCallback');
-    }, []);
+        if (!UserData) navigate('/login');
+        else alert('로그인이 완료되었어요');
+    }, [UserData]);
 
     const gotoPage = useCallback(
         (url: string) => () => {
@@ -74,9 +77,10 @@ const Header = () => {
     return (
         <HeaderRoot>
             <HeaderLeft>
-                <Logo />
+                <button onClick={gotoPage('/')}>
+                    <Logo />
+                </button>
                 <div>
-                    <button onClick={gotoPage('/')}>홈</button>
                     {isArtist ? (
                         <button onClick={gotoPage('/schedule')}>스케쥴</button>
                     ) : (

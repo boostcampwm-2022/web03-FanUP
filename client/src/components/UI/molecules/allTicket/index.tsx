@@ -1,11 +1,11 @@
 import { dateForm } from '@utils/dateForm';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import Button from '@atoms/Button';
-import theme from '@style/theme';
-import { Ticket } from '@/types/ticket';
+import { TicketSales } from '@/types/ticket';
 import { useNavigate } from 'react-router-dom';
 import Fish from '@icons/Fish';
+import LazyImg from '@atoms/LazyImg';
+import DefaultImg from '@atoms/defaultImg';
 
 const AllTicketWrapper = styled.div`
     cursor: pointer;
@@ -15,6 +15,7 @@ const AllTicketWrapper = styled.div`
     box-shadow: 2px 2px 4px rgb(0 0 0 / 16%);
     border-radius: 14px;
     padding: 15px 10px;
+    padding-right: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -34,24 +35,20 @@ const TicketLeft = styled.div`
     align-items: center;
     gap: 15px;
     img {
-        width: 150px;
-        height: 75px;
         border-radius: 8px;
     }
     h3 {
         padding: 5px 20px 5px 0;
-        //padding-right: 20px;
         font-size: 20px;
         font-weight: 700;
-        width: 150px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
         border-right: 1px solid ${({ theme }) => theme.DARK_GRAY};
     }
     span {
+        color: ${({ theme }) => theme.DARK_GRAY};
         font-size: 15px;
-        width: 150px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -70,6 +67,7 @@ const Price = styled.div`
     font-size: 15px;
     gap: 5px;
     border-right: 1px solid ${({ theme }) => theme.DARK_GRAY};
+
     strong {
         font-weight: 700;
     }
@@ -77,27 +75,42 @@ const Price = styled.div`
 
 const Time = styled.div`
     display: flex;
-    gap: 5px;
-    font-weight: 700;
+    flex-direction: column;
+    gap: 10px;
+    div {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+    strong {
+        font-weight: 700;
+    }
+    span {
+        color: ${({ theme }) => theme.DARK_GRAY};
+    }
 `;
 
 interface Props {
-    ticket: Ticket;
+    ticket: TicketSales;
 }
 
 const AllTicket = ({ ticket }: Props) => {
     const navigate = useNavigate();
 
     const gotoTicket = useCallback(() => {
-        navigate(`/ticket/${ticket.ticketId}`);
+        navigate(`/ticket/${ticket.id}`);
     }, [navigate, ticket]);
 
     return (
         <AllTicketWrapper data-testid="allTicket" onClick={gotoTicket}>
             <TicketLeft>
-                <img src="/dummyBackgroundThumbnail2.png" alt="thumbnail" />
-                <h3>{ticket.artistName}</h3>
-                <span>{ticket.description}</span>
+                {ticket.profileUrl ? (
+                    <LazyImg src={ticket.profileUrl} alt="thumbnail" width="150px" height="100px" />
+                ) : (
+                    <DefaultImg width="150px" height="150px" borderRadius="8px" />
+                )}
+                <h3>{ticket?.name || 'testArtist'}</h3>
+                <span>{ticket.title}</span>
             </TicketLeft>
             <TicketRight>
                 <Price>
@@ -105,18 +118,13 @@ const AllTicket = ({ ticket }: Props) => {
                     <strong>10</strong>
                 </Price>
                 <Time>
-                    <span>{dateForm(ticket.ticketingDate)}</span>
-                    <span>{ticket.ticketingTime}</span>
+                    <div>
+                        <strong>팬미팅 시간</strong> <span>{dateForm(ticket.startTime)}</span>
+                    </div>
+                    <div>
+                        <strong>티켓 판매 시간</strong> <span>{dateForm(ticket.salesTime)}</span>
+                    </div>
                 </Time>
-                <Button
-                    padding="10px 20px"
-                    borderRadius="8px"
-                    fontSize="15px"
-                    color="white"
-                    backgroundColor={theme.PRIMARY}
-                    content="함께하기"
-                    onClick={gotoTicket}
-                />
             </TicketRight>
         </AllTicketWrapper>
     );

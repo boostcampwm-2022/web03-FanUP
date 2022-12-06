@@ -2,13 +2,13 @@ import { dummyTickets } from '@utils/dummy';
 import React from 'react';
 import AllTicket from '@molecules/allTicket';
 import styled from 'styled-components';
-import { useGetAllTicketsQuery } from '@/services/ticket';
+import { useGetAllTicketsQuery } from '@/services/ticket.service';
 
 const AllTicketsWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding-right: 25vw;
+    padding-right: 50px;
     margin-bottom: 40px;
     padding-left: 3px;
 `;
@@ -16,14 +16,12 @@ const AllTicketsWrapper = styled.div`
 const AllTickets = () => {
     const { data: allTickets, isLoading } = useGetAllTicketsQuery();
 
-    console.log(allTickets);
-
     if (isLoading) return <></>;
 
     return (
         <AllTicketsWrapper>
-            {dummyTickets.map((ticket, idx) => (
-                <AllTicket ticket={ticket} key={ticket.artistName + ticket.description} />
+            {allTickets?.map((ticket, idx) => (
+                <AllTicket ticket={ticket} key={idx + ticket.title} />
             ))}
         </AllTicketsWrapper>
     );

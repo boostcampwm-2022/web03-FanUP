@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { socket, SOCKET_EVENTS, connectSocket } from '@/socket';
 import InputForm from '@molecules/InputForm';
 import ChatList from '@molecules/ChatList';
+import { MyEmail, MyNickName } from '@/utils/generateRandomString';
 
 export interface ChatMessage {
     date: number;
@@ -36,17 +37,18 @@ const ChatContainer: FC = () => {
             e.preventDefault();
             console.log('메시지 전송');
 
+            // MyEmail, MyNickName은 랜덤스트링 생성기로 생성한 랜덤한 문자열 값임.
             // TODO : 값 가져오기
             const data = {
-                email: 'seongeuniii@naver.com',
-                nickname: '원영',
+                email: MyEmail,
+                nickname: MyNickName,
                 room: '1',
                 isArtist: false,
                 message: message,
             };
 
             socket?.emit(SOCKET_EVENTS.sendMessage, data);
-            setMessage(() => '');
+            setMessage('');
         },
         [message]
     );

@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { initializeMyStream } from '@store/user';
-import { UserStore } from '@/types/user';
 import { ReducerType } from '@store/rootReducer';
 
 import { socket, SOCKET_EVENTS, connectSocket } from '@/socket';
+import { MyEmail } from '@utils/generateRandomString';
 
 const urls = [
     'stun:stun.l.google.com:19302',
@@ -23,6 +23,7 @@ const useFanUP = (): [
 ] => {
     const [users, setUsers] = useState<any[]>([]);
     const peerConnections = useRef<{ [key: string]: RTCPeerConnection }>({});
+    const myEmail = useMemo(() => MyEmail, []);
 
     const myStream = useSelector<ReducerType, MediaStream | null>(
         ({ userSlice }) => userSlice.myStream
@@ -44,47 +45,73 @@ const useFanUP = (): [
     };
 
     const welcomeCallback = async ({ email, nickname, socketID }: any) => {
+        //내가 보낸 welcome이 나에게 왔을 때,
+        if (socket?.id === socketID) return;
         const pc = createPeerConnection(socketID);
         if (!pc) return;
         const offer = await pc.createOffer();
         pc.setLocalDescription(offer);
         peerConnections.current[socketID] = pc;
-        socket?.emit(SOCKET_EVENTS.offer, offer, socketID);
+        socket?.emit(SOCKET_EVENTS.offer, { offer, email: myEmail, targetSocketID: socketID });
     };
 
-    const offerCallback = async (offer: RTCSessionDescriptionInit, socketID: string) => {
+    const offerCallback = async ({
+        offer,
+        socketID,
+        email,
+    }: {
+        offer: RTCSessionDescriptionInit;
+        socketID: string;
+        email: string;
+    }) => {
         const pc = createPeerConnection(socketID);
         if (!pc) return;
         pc.setRemoteDescription(offer);
         const answer = await pc.createAnswer();
         pc.setLocalDescription(answer);
         peerConnections.current[socketID] = pc;
-        socket?.emit(SOCKET_EVENTS.answer, answer, socketID);
+        socket?.emit(SOCKET_EVENTS.answer, { answer, email: myEmail, targetSocketID: socketID });
     };
 
-    const answerCallback = async (answer: RTCSessionDescriptionInit, socketID: string) => {
+    const answerCallback = async ({
+        email,
+        answer,
+        socketID,
+    }: {
+        email: string;
+        answer: RTCSessionDescriptionInit;
+        socketID: string;
+    }) => {
         peerConnections.current[socketID].setRemoteDescription(answer);
     };
 
-    const iceCallback = (ice: RTCIceCandidateInit, socketID: string) => {
+    const iceCallback = ({
+        email,
+        ice,
+        socketID,
+    }: {
+        email: string;
+        ice: RTCIceCandidateInit;
+        socketID: string;
+    }) => {
         peerConnections.current[socketID]?.addIceCandidate(ice);
     };
 
-    const handleIce = (data: any, socketID: string) => {
-        socket?.emit(SOCKET_EVENTS.ice, data.candidate, socketID);
+    const handleIce = (data: RTCPeerConnectionIceEvent, targetSocketID: string) => {
+        socket?.emit(SOCKET_EVENTS.ice, { ice: data.candidate, email: myEmail, targetSocketID });
     };
 
     const handleAddStream = (data: any, socketID: string) => {
         setUsers((prev) => [...prev, { stream: data.stream, socketID }]);
     };
 
-    const leaveCallback = (socketID: string) => {
-        peerConnections.current[socketID].close();
-        delete peerConnections.current[socketID];
-        setUsers((prev) => prev.filter((data) => data.socketID !== socketID));
+    const leaveCallback = ({ socketId }: { socketId: string }) => {
+        peerConnections.current[socketId].close();
+        delete peerConnections.current[socketId];
+        setUsers((prev) => prev.filter((data) => data.socketID !== socketId));
     };
 
-    const unMount = () => {
+    const unMount = (e?: BeforeUnloadEvent) => {
         setUsers([]);
         socket?.off(SOCKET_EVENTS.welcome, welcomeCallback);
         socket?.off(SOCKET_EVENTS.offer, offerCallback);
@@ -95,11 +122,16 @@ const useFanUP = (): [
             peerConnections.current[key].close();
         });
         peerConnections.current = {};
+        myStream?.getTracks().forEach((track) => {
+            track.stop();
+        });
+        console.log('ddd');
         dispatch(initializeMyStream());
+        socket?.disconnect();
     };
 
     useEffect(() => {
-        // if (!myStream) return;
+        if (!myStream) return;
         if (Object.keys(peerConnections.current).length !== 0) return;
 
         connectSocket();
@@ -118,7 +150,7 @@ const useFanUP = (): [
     useEffect(() => {
         window.addEventListener('beforeunload', unMount);
         return () => {
-            window.removeEventListener('unload', unMount);
+            window.removeEventListener('beforeunload', unMount);
         };
     }, []);
 

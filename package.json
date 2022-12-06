@@ -54,7 +54,9 @@
       "^@pages/(.*)$": "<rootDir>/client/src/pages/$1",
       "^@style/(.*)$": "<rootDir>/client/src/style/$1",
       "^@store/(.*)$": "<rootDir>/client/src/store/$1",
-      "^@utils/(.*)$": "<rootDir>/client/src/utils/$1"
+      "^@utils/(.*)$": "<rootDir>/client/src/utils/$1",
+      "^@hooks/(.*)$": "<rootDir>/client/src/hooks/$1",
+      "^@services/(.*)$": "<rootDir>/client/src/services/$1"
     },
     "testEnvironment": "jsdom",
     "coveragePathIgnorePatterns": [
