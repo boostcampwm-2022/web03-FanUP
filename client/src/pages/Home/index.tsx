@@ -2,20 +2,24 @@ import ArtistsBox from '@organisms/artistsBox';
 import Calendar from '@organisms/calendar';
 import Schedules from '@organisms/schedules';
 import Header from '@/components/UI/organisms/header';
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import styled from 'styled-components';
-import LazyImg from '@atoms/LazyImg';
 import useSearchParams from '@hooks/useSearchParams';
+import SubLogo from '@/components/icons/SubLogo';
 
 const BannerWrapper = styled.div`
-    background: black;
+    background: linear-gradient(to right, #9e57ff, #7ed0fa);
     width: 100%;
+    height: 300px;
     padding: 32px;
     display: flex;
+    gap: 25px;
     justify-content: center;
-    img {
-        margin: 0 auto;
+    align-items: center;
+    h1 {
+        font-size: 75px;
+        color: white;
+        font-weight: 700;
     }
 `;
 
@@ -47,7 +51,8 @@ const Home = () => {
             ) : (
                 <>
                     <BannerWrapper>
-                        <LazyImg src="/banner.png" alt="banner" width="620px" height="237px" />
+                        <SubLogo />
+                        <h1>No Fan, No Artist</h1>
                     </BannerWrapper>
                     <UserContentsWrapper>
                         <Schedules />

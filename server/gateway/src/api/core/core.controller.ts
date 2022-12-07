@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { CoreService } from './core.service';
+import { Request } from 'express';
 
 @Controller('core')
 export class CoreController {

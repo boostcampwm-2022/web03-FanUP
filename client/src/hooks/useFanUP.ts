@@ -24,6 +24,7 @@ const useFanUP = (): [
     const [users, setUsers] = useState<any[]>([]);
     const peerConnections = useRef<{ [key: string]: RTCPeerConnection }>({});
     const myEmail = useMemo(() => MyEmail, []);
+    connectSocket();
 
     const myStream = useSelector<ReducerType, MediaStream | null>(
         ({ userSlice }) => userSlice.myStream
@@ -106,6 +107,7 @@ const useFanUP = (): [
     };
 
     const leaveCallback = ({ socketId }: { socketId: string }) => {
+        console.log('leave');
         peerConnections.current[socketId].close();
         delete peerConnections.current[socketId];
         setUsers((prev) => prev.filter((data) => data.socketID !== socketId));
@@ -123,10 +125,11 @@ const useFanUP = (): [
         });
         peerConnections.current = {};
         myStream?.getTracks().forEach((track) => {
+            console.log('stop');
             track.stop();
         });
-        console.log('ddd');
         dispatch(initializeMyStream());
+        console.log(socket);
         socket?.disconnect();
     };
 
@@ -134,8 +137,8 @@ const useFanUP = (): [
         if (!myStream) return;
         if (Object.keys(peerConnections.current).length !== 0) return;
 
-        connectSocket();
-        socket?.emit(SOCKET_EVENTS.joinRoom, { room: '1', email: '성은' });
+        console.log('socket : ', socket);
+        socket?.emit(SOCKET_EVENTS.joinRoom, { room: '1', email: myEmail });
         socket?.on(SOCKET_EVENTS.welcome, welcomeCallback);
         socket?.on(SOCKET_EVENTS.offer, offerCallback);
         socket?.on(SOCKET_EVENTS.answer, answerCallback);
@@ -145,14 +148,14 @@ const useFanUP = (): [
         return () => {
             unMount();
         };
-    }, [myStream]);
+    }, [myStream, socket]);
 
     useEffect(() => {
         window.addEventListener('beforeunload', unMount);
         return () => {
             window.removeEventListener('beforeunload', unMount);
         };
-    }, []);
+    }, [socket]);
 
     return [users, peerConnections];
 };
