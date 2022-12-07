@@ -9,5 +9,6 @@ declare module 'styled-components' {
         MEDIUM_GRAY: string;
         LIGHT_GRAY: string;
         PINK: string;
+        LIGHT_SKY: string;
     }
 }

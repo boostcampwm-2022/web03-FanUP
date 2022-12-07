@@ -26,7 +26,7 @@ export const userApi = createApi({
         }),
         submitAccessToken: build.mutation({
             query: (reqData: ILoginReqData) => ({
-                url: '/login',
+                url: '/auth/login',
                 method: 'POST',
                 body: reqData,
             }),
