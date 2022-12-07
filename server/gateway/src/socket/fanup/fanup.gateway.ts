@@ -31,7 +31,6 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() socket: Socket,
     @MessageBody() data: ValidateUser,
   ) {
-    console.log('join_room');
     this.fanUPService.joinRoom({ server: this.server, socket, ...data });
   }
 

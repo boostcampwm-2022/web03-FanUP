@@ -96,6 +96,7 @@ export class FanUPService {
   }
 
   async joinRoom({ server, socket, email, room }: JoinRoom) {
+    this.logger.log('join Room');
     const checkRoom = await this.validateRoom(room);
     const checkUser = await this.validateUser({ room, email });
 
