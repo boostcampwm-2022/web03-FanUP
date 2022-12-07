@@ -1,5 +1,6 @@
 import { Controller, Get, UseFilters } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { User } from '@prisma/client';
 import { AllRPCExceptionFilter } from 'src/common/exception/filter/rpc-exception.filter';
 
 import { AuthService } from './auth.service';
@@ -19,5 +20,10 @@ export class AuthController {
   @MessagePattern({ cmd: 'login' })
   async login(@Payload() loginDto: LoginDto): Promise<any> {
     return this.authService.login(loginDto);
+  }
+
+  @MessagePattern({ cmd: 'getUserInfo' })
+  async getUserInfo(@Payload() userId: number): Promise<User> {
+    return this.authService.getUserInfo(userId);
   }
 }

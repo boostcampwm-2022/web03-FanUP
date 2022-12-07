@@ -1,12 +1,11 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
 import { firstValueFrom, map } from 'rxjs';
-import { PrismaService } from 'src/prisma/prisma.service';
 
-import { UserDto } from 'src/user/dto/user.dto';
 import { UserService } from 'src/user/user.service';
 import RequestLoginDto from './dto/request-login.dto';
+import { JwtService } from './jwt.service';
 
 interface UserInfo {
   providerId: string;
@@ -26,47 +25,32 @@ export class AuthService {
   constructor(
     private readonly httpService: HttpService,
     private readonly userService: UserService,
-    private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService,
   ) {}
 
-  getAuthHello(): string {
+  public getAuthHello(): string {
     return 'Auth server is running!';
   }
 
-  async getAccessToken(userId: number): Promise<string> {
-    return this.jwtService.sign({ userId });
+  public async getUserInfo(userId: number): Promise<User> {
+    return this.userService.findOne(userId);
   }
 
-  async getRefreshToken(userId: number): Promise<string> {
-    return this.jwtService.sign(
-      { userId },
-      { secret: '1234refresh', expiresIn: '1w' }, // TODO: env 처리
-    );
-  }
-
-  async validate(token: string): Promise<any> {
-    try {
-      const decoded = this.jwtService.verify(token);
-      return decoded;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  async login(loginDto: RequestLoginDto): Promise<LoginResponse> {
+  public async login(loginDto: RequestLoginDto): Promise<LoginResponse> {
     const { provider, accessToken } = loginDto;
 
     // get user info from provider
     let userInfo: UserInfo;
-    if (provider === 'google') {
-      userInfo = await this.getGoogleProfile(accessToken);
-    } else if (provider === 'kakao') {
-      userInfo = await this.getKakaoProfile(accessToken);
-    } else {
+    try {
+      if (provider === 'google') {
+        userInfo = await this.getGoogleProfile(accessToken);
+      } else if (provider === 'kakao') {
+        userInfo = await this.getKakaoProfile(accessToken);
+      } else throw new Error();
+    } catch (err) {
       return {
         status: HttpStatus.BAD_REQUEST,
-        error: ['Invalid provider'],
+        error: ['Bad Request'],
         data: null,
       };
     }
@@ -84,14 +68,14 @@ export class AuthService {
       status: HttpStatus.OK,
       error: null,
       data: {
-        accessToken: await this.getAccessToken(user.id),
-        refreshToken: await this.getRefreshToken(user.id),
+        accessToken: this.jwtService.generateToken(user),
+        refreshToken: this.jwtService.generateRefreshToken(user),
         profile: user,
       },
     };
   }
 
-  async getGoogleProfile(accessToken: string): Promise<UserInfo> {
+  private async getGoogleProfile(accessToken: string): Promise<UserInfo> {
     const { sub, name, email, picture } = await firstValueFrom(
       this.httpService
         .get('https://www.googleapis.com/oauth2/v3/userinfo', {
@@ -114,7 +98,7 @@ export class AuthService {
     };
   }
 
-  async getKakaoProfile(accessToken: string): Promise<UserInfo> {
+  private async getKakaoProfile(accessToken: string): Promise<UserInfo> {
     const { id, properties, kakao_account } = await firstValueFrom(
       this.httpService
         .get('https://kapi.kakao.com/v2/user/me', {

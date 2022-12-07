@@ -18,12 +18,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     if (status === HttpStatus.BAD_REQUEST) {
       const res: any = exception.getResponse();
-
       return { status, error: res.message };
     }
 
     res.status(status).json({
-      statusCode: status,
+      status,
       timestamp: new Date().toISOString(),
       path: req.url,
     });
