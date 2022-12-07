@@ -6,6 +6,9 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useGetUserQuery } from '@/services/user.service';
+import ExitIcon from '@icons/ExitIcon';
+import theme from '@/style/theme';
+import LogOutBtn from '../../atoms/LogOutBtn';
 
 const HeaderRoot = styled.header`
     height: 75px;
@@ -62,9 +65,11 @@ const Header = () => {
     const clickSearch = useCallback(() => {
         alert('searchCallback');
     }, []);
+
     const clickAlarm = useCallback(() => {
         alert('alarmCallback');
     }, []);
+
     const clickUser = useCallback(() => {
         if (!UserData) navigate('/login');
         else alert('로그인이 완료되었어요');
@@ -81,7 +86,6 @@ const Header = () => {
         () => [
             { key: 'search', icon: <SearchIcon />, onClick: clickSearch },
             { key: 'alarm', icon: <AlarmIcon />, onClick: clickAlarm },
-            { key: 'user', icon: <UserIcon />, onClick: clickUser },
         ],
         []
     );
@@ -111,6 +115,13 @@ const Header = () => {
                         {icon}
                     </button>
                 ))}
+                {UserData ? (
+                    <LogOutBtn />
+                ) : (
+                    <button data-testid="user" onClick={clickUser}>
+                        <UserIcon />
+                    </button>
+                )}
             </HeaderRight>
         </HeaderRoot>
     );

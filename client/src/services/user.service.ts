@@ -67,3 +67,5 @@ export const {
     useGetMyTicketsQuery,
     useSubmitAccessTokenMutation,
 } = userApi;
+
+export const { resetApiState: resetUserService } = userApi.util;
