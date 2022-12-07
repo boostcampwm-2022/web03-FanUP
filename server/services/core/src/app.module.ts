@@ -8,6 +8,7 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { FileModule } from './provider/file/file.module';
 import { ConfigModule } from '@nestjs/config';
 import { JobModule } from './job/job.module';
+import { NotificationModule } from './domain/notification/notification.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { JobModule } from './job/job.module';
       isGlobal: true,
     }),
     JobModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

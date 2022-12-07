@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid';
 
 export class CreateFanupDto implements Prisma.FanUpCreateInput {
   constructor(start_time: Date, end_time: Date) {
+    this.ticket_id = 1;
     this.room_id = uuid();
     this.start_time = start_time;
     this.end_time = end_time;
