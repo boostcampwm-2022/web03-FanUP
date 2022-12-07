@@ -30,13 +30,13 @@ const FanUP = () => {
     useMyStream();
     const { isLoading } = useCheckFanUp();
     const [userStream, peerConnections] = useFanUP();
-    usePreventLeave();
+    //usePreventLeave();
 
-    useEffect(() => {
-        return () => {
-            socket?.disconnect();
-        };
-    }, []);
+    // useEffect(() => {
+    //     return () => {
+    //         socket?.disconnect();
+    //     };
+    // }, []);
 
     if (isLoading) return <div>...loading</div>;
 

@@ -22,10 +22,11 @@ enum SOCKET_EVENTS {
 }
 
 let socket: Socket | null = null;
-const ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/socket/fanup`;
+// const ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/socket/fanup`;
+const ENDPOINT = `http://localhost:3000/socket/fanup`;
 
 const connectSocket = () => {
-    socket = io(ENDPOINT);
+    if (!socket) socket = io(ENDPOINT);
 
     socket.on('connect', () => {
         console.log('socket connected : ', socket?.id);

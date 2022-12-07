@@ -36,7 +36,7 @@
     },
     "scripts": {
         "dev": "REACT_APP_SERVER=MOCK yarn run start",
-        "start": "react-app-rewired start",
+        "start": "PORT=3003 react-app-rewired start",
         "build": "react-app-rewired build",
         "test": "react-app-rewired test",
         "eject": "react-scripts eject",

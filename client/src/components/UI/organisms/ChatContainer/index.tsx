@@ -23,14 +23,14 @@ const ChatContainer: FC = () => {
     const [message, setMessage] = useState('');
     const [chatData, setChatData] = useState<ChatMessage[]>([]);
 
-    useEffect(() => {
-        socket?.emit(SOCKET_EVENTS.requestChat, { room: room });
-        socket?.on(SOCKET_EVENTS.responseChat, (data) => setChatData(() => [...data.result]));
-        socket?.on(SOCKET_EVENTS.receiveMessage, (data) => setChatData((curr) => [...curr, data]));
+    // useEffect(() => {
+    //     socket?.emit(SOCKET_EVENTS.requestChat, { room: room });
+    //     socket?.on(SOCKET_EVENTS.responseChat, (data) => setChatData(() => [...data.result]));
+    //     socket?.on(SOCKET_EVENTS.receiveMessage, (data) => setChatData((curr) => [...curr, data]));
 
-        socket?.emit(SOCKET_EVENTS.requestParticipantUser, { room: room });
-        socket?.on(SOCKET_EVENTS.responseParticipantUser, (data) => console.log(data));
-    }, []);
+    //     socket?.emit(SOCKET_EVENTS.requestParticipantUser, { room: room });
+    //     socket?.on(SOCKET_EVENTS.responseParticipantUser, (data) => console.log(data));
+    // }, []);
 
     const handleSubmit = useCallback(
         (e: React.FormEvent<HTMLButtonElement>) => {

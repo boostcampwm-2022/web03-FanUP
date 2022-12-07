@@ -13,6 +13,11 @@ import {
 } from '../../common/types';
 import { MICRO_SERVICES } from '../../common/constants/microservices';
 
+interface IParticipant {
+  email: string;
+  nickname: string;
+  socketId: string;
+}
 export class FanUPService {
   constructor(
     @Inject(MICRO_SERVICES.CORE.NAME)
@@ -38,24 +43,21 @@ export class FanUPService {
     const socketId = socket.id;
 
     // 해당 소켓 아이디가 참가하고 있는 방
-    const targetRoom = Object.keys(this.socketRoom)
-      .map((key) => {
-        if (this.socketRoom[key].participant) {
-          return this.socketRoom[key].participant.map((element) => {
-            if (element.socketId === socketId) {
-              return key;
-            }
-          });
-        }
-        return '';
-      })
-      .at(0);
+    const targetRoom = Object.keys(this.socketRoom).filter((key) => {
+      const { participant } = this.socketRoom[key];
+      for (const p of participant) {
+        if (p.socketId === socketId) return true;
+      }
+      return false;
+    })[0];
 
     // 해당 소켓 아이디를 가지고 있는 참가자 제거
     if (this.socketRoom[targetRoom]) {
-      this.socketRoom[targetRoom] = this.socketRoom[
+      this.socketRoom[targetRoom].participant = this.socketRoom[
         targetRoom
-      ].participant.filter((element) => element.socketId !== socketId);
+      ].participant.filter(
+        (element: IParticipant) => element.socketId !== socketId,
+      );
     }
 
     server.to(targetRoom).emit('leave', { socketId });
@@ -122,13 +124,13 @@ export class FanUPService {
     this.entireSocketId[email] = socket.id;
 
     if (this.roomExist(room)) {
-      if (!this.participantExist(room, email)) {
-        this.socketRoom[room].participant.push({
-          email,
-          nickname,
-          socketId: socket.id,
-        });
-      }
+      if (this.participantExist(room, email)) return;
+
+      this.socketRoom[room].participant.push({
+        email,
+        nickname,
+        socketId: socket.id,
+      });
     } else {
       this.socketRoom[room] = {
         participant: [{ email, nickname, socketId: socket.id }],
@@ -160,12 +162,9 @@ export class FanUPService {
   }
 
   participantExist(room: string, email: string) {
-    if (this.roomExist(room)) {
-      return this.socketRoom[room].participant.find(
-        (value) => value.email === email,
-      );
-    }
-    return false;
+    return this.socketRoom[room].participant.find(
+      (value) => value.email === email,
+    );
   }
 
   // =========== 채팅 및 참여자 ===========
