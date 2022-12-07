@@ -8,6 +8,7 @@ const theme: DefaultTheme = {
     MEDIUM_GRAY: '#D2D2D2',
     LIGHT_GRAY: '#F5F5F5',
     PINK: '#FF6666',
+    LIGHT_SKY: '#7ed0fa',
 };
 
 export default theme;

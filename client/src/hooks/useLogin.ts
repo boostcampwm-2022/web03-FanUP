@@ -19,8 +19,10 @@ export const useLogin = () => {
 
         if (data.error) return alert(data.error);
 
-        localStorage.setItem('token', data.accessToken);
-        dispatch(setToken(data.accessToken));
+        const response = data.data;
+
+        localStorage.setItem('token', response.accessToken);
+        dispatch(setToken(response.accessToken));
         navigate('/');
     }, []);
 

@@ -38,10 +38,22 @@ const HeaderLeft = styled.div`
 const HeaderRight = styled.div`
     display: flex;
     gap: 20px;
+    align-items: center;
+    font-weight: 700;
+
+    strong {
+        background: linear-gradient(to right, #9e57ff, #7ed0fa);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        //color: ${({ theme }) => theme.LIGHT_SKY};
+        //color: white;
+        display: inline-block;
+    }
 `;
 
 const Header = () => {
-    const { data: UserData, isLoading, isError } = useGetUserQuery();
+    const { data: UserData } = useGetUserQuery();
     //TODO: 서버와 통신을 통해 Artist 여부 확인
     const [isArtist, setIsArtist] = useState(false);
     const navigate = useNavigate();
@@ -89,6 +101,11 @@ const Header = () => {
                 </div>
             </HeaderLeft>
             <HeaderRight>
+                {UserData && (
+                    <span>
+                        안녕하세요 <strong>{UserData.nickname}</strong> 님
+                    </span>
+                )}
                 {icons.map(({ key, icon, onClick }) => (
                     <button data-testid={key} key={key} onClick={onClick}>
                         {icon}
