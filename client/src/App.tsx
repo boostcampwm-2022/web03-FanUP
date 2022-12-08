@@ -14,6 +14,7 @@ import {
     Ticket,
     TicketingSuccess,
     TicketingFailure,
+    Schedule,
 } from './Routes';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
                     <Route path="/ticket/:ticketId" element={<Ticket />} />
                     <Route path="/ticketing/success" element={<TicketingSuccess />} />
                     <Route path="/ticketing/failure" element={<TicketingFailure />} />
+                    <Route path="/schedule" element={<Schedule />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </Suspense>

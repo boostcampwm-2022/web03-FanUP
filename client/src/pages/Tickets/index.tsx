@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Schedules from '@organisms/schedules';
+import MyFeatureBox from '@organisms/MyFeatureBox';
 import Header from '@organisms/header';
 import TodayTickets from '@organisms/todayTickets';
 import AllTickets from '@/components/UI/organisms/allTickets';
@@ -25,7 +25,7 @@ const Tickets = () => {
         <>
             <Header />
             <ContentsWrapper>
-                <Schedules />
+                <MyFeatureBox />
                 <TicketsWrapper>
                     <h1>오늘 마감</h1>
                     <TodayTickets />

@@ -1,6 +1,5 @@
 import ExitIcon from '@icons/ExitIcon';
 import React, { memo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ExitBtnWrapper = styled.button`
@@ -8,9 +7,9 @@ const ExitBtnWrapper = styled.button`
 `;
 
 const ExitBtn = () => {
-    const navigate = useNavigate();
     const exit = useCallback(() => {
-        navigate('/');
+        if (!window.confirm('나가시겠습니까?')) return;
+        window.location.replace('/');
     }, []);
     return (
         <ExitBtnWrapper data-testid="exitBtn" onClick={exit}>
