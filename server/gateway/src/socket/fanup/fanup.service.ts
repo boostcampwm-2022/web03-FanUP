@@ -82,9 +82,10 @@ export class FanUPService {
     const isUserExist: any = await this.authService.getUserInfo(userId);
 
     this.logger.log(`validate-user: `, isUserExist);
+    console.log(isUserExist);
     return {
-      validate: isUserExist.nickname ? true : false,
-      nickname: isUserExist.nickname ? isUserExist.nickname : '',
+      validate: isUserExist.nickname.length >= 0 ? true : false,
+      nickname: isUserExist.nickname.length >= 0 ? isUserExist.nickname : '',
       userId,
       room,
     };

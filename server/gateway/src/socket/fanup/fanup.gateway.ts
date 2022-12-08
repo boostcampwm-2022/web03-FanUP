@@ -36,10 +36,10 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('offer')
   offer(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
-    const { userId, offer, targetSocketID } = data;
+    const { userId, nickname, offer, targetSocketID } = data;
     this.server
       .to(targetSocketID)
-      .emit('offer', { userId, offer, socketID: socket.id });
+      .emit('offer', { userId, nickname, offer, socketID: socket.id });
   }
 
   @SubscribeMessage('answer')
