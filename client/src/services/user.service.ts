@@ -26,7 +26,7 @@ export const userApi = createApi({
         }),
         submitAccessToken: build.mutation({
             query: (reqData: ILoginReqData) => ({
-                url: '/login',
+                url: '/auth/login',
                 method: 'POST',
                 body: reqData,
             }),
@@ -67,3 +67,5 @@ export const {
     useGetMyTicketsQuery,
     useSubmitAccessTokenMutation,
 } = userApi;
+
+export const { resetApiState: resetUserService } = userApi.util;

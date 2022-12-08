@@ -5,7 +5,7 @@ import { initializeMyStream } from '@store/user';
 import { ReducerType } from '@store/rootReducer';
 
 import { socket, SOCKET_EVENTS, connectSocket } from '@/socket';
-import { MyEmail } from '@utils/generateRandomString';
+import { useGetUserQuery } from '@/services/user.service';
 
 const urls = [
     'stun:stun.l.google.com:19302',
@@ -23,7 +23,9 @@ const useFanUP = (): [
 ] => {
     const [users, setUsers] = useState<any[]>([]);
     const peerConnections = useRef<{ [key: string]: RTCPeerConnection }>({});
-    const myEmail = useMemo(() => MyEmail, []);
+    const { data: UserData, isLoading: loginLoading } = useGetUserQuery();
+
+    connectSocket();
 
     const myStream = useSelector<ReducerType, MediaStream | null>(
         ({ userSlice }) => userSlice.myStream
@@ -52,7 +54,11 @@ const useFanUP = (): [
         const offer = await pc.createOffer();
         pc.setLocalDescription(offer);
         peerConnections.current[socketID] = pc;
-        socket?.emit(SOCKET_EVENTS.offer, { offer, email: myEmail, targetSocketID: socketID });
+        socket?.emit(SOCKET_EVENTS.offer, {
+            offer,
+            email: UserData?.email,
+            targetSocketID: socketID,
+        });
     };
 
     const offerCallback = async ({
@@ -70,7 +76,11 @@ const useFanUP = (): [
         const answer = await pc.createAnswer();
         pc.setLocalDescription(answer);
         peerConnections.current[socketID] = pc;
-        socket?.emit(SOCKET_EVENTS.answer, { answer, email: myEmail, targetSocketID: socketID });
+        socket?.emit(SOCKET_EVENTS.answer, {
+            answer,
+            email: UserData?.email,
+            targetSocketID: socketID,
+        });
     };
 
     const answerCallback = async ({
@@ -98,7 +108,11 @@ const useFanUP = (): [
     };
 
     const handleIce = (data: RTCPeerConnectionIceEvent, targetSocketID: string) => {
-        socket?.emit(SOCKET_EVENTS.ice, { ice: data.candidate, email: myEmail, targetSocketID });
+        socket?.emit(SOCKET_EVENTS.ice, {
+            ice: data.candidate,
+            email: UserData?.email,
+            targetSocketID,
+        });
     };
 
     const handleAddStream = (data: any, socketID: string) => {
@@ -106,6 +120,7 @@ const useFanUP = (): [
     };
 
     const leaveCallback = ({ socketId }: { socketId: string }) => {
+        console.log('leave');
         peerConnections.current[socketId].close();
         delete peerConnections.current[socketId];
         setUsers((prev) => prev.filter((data) => data.socketID !== socketId));
@@ -123,19 +138,21 @@ const useFanUP = (): [
         });
         peerConnections.current = {};
         myStream?.getTracks().forEach((track) => {
+            console.log('stop');
             track.stop();
         });
-        console.log('ddd');
         dispatch(initializeMyStream());
+        console.log(socket);
         socket?.disconnect();
     };
 
     useEffect(() => {
+        if (loginLoading) return;
         if (!myStream) return;
         if (Object.keys(peerConnections.current).length !== 0) return;
 
-        connectSocket();
-        socket?.emit(SOCKET_EVENTS.joinRoom, { room: '1', email: '성은' });
+        console.log('socket : ', socket);
+        socket?.emit(SOCKET_EVENTS.joinRoom, { room: '1', email: UserData?.email });
         socket?.on(SOCKET_EVENTS.welcome, welcomeCallback);
         socket?.on(SOCKET_EVENTS.offer, offerCallback);
         socket?.on(SOCKET_EVENTS.answer, answerCallback);
@@ -145,14 +162,15 @@ const useFanUP = (): [
         return () => {
             unMount();
         };
-    }, [myStream]);
+    }, [myStream, socket, loginLoading]);
 
     useEffect(() => {
+        if (loginLoading) return;
         window.addEventListener('beforeunload', unMount);
         return () => {
             window.removeEventListener('beforeunload', unMount);
         };
-    }, []);
+    }, [socket, loginLoading]);
 
     return [users, peerConnections];
 };

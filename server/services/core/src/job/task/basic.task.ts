@@ -29,7 +29,7 @@ export class BasicTask {
   ) {}
 
   // 매일 밤 12시에 잡을 등록하는 크론
-  @Cron('0/10 * * * * *', { name: 'registerTask' })
+  @Cron('0 0/30 * * * *', { name: 'registerTask' })
   async registerTask() {
     this.logger.log('매일 밤 12시에 실행되는 크론잡');
     await this.addFanUPTask();

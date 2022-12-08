@@ -10,10 +10,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  FAN
+  ARTIST
+}
 model User {
   id          Int     @default(autoincrement()) @id
+  role        Role    @default(FAN)
   providerId  String
   provider    String
   email       String?
   nickname    String?
+  artist      Artist? @relation(fields: [artistId], references: [id])
+  artistId    Int?    @unique
+}
+
+model Artist {
+  id          Int     @default(autoincrement()) @id
+  name        String
+  profileUrl  String?
+  user        User?
 }

@@ -34,7 +34,7 @@ export const userSlice = createSlice({
         setArtistListViewMode(state, action: PayloadAction<number>) {
             state.artistListViewMode = action.payload;
         },
-        setToken(state, action: PayloadAction<number>) {
+        setToken(state, action: PayloadAction<number | null>) {
             state.token = action.payload;
         },
     },

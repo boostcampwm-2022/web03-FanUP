@@ -7,8 +7,10 @@ export class RedisIoAdapter extends IoAdapter {
   private adapterConstructor: ReturnType<typeof createAdapter>;
 
   async connectToRedis(): Promise<void> {
+    const url =
+      process.env.NODE_ENV === 'production' ? 'fanup-redis' : 'localhost';
     const pubClient = createClient({
-      url: 'redis://localhost:6379',
+      url: `redis://${url}:6379`,
     });
     const subClient = pubClient.duplicate();
 
