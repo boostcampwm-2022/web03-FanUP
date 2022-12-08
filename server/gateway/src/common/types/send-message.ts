@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io';
 
 interface SendMessage {
-  email: string;
+  userId: number;
   nickname: string;
   room: string;
   isArtist: boolean;

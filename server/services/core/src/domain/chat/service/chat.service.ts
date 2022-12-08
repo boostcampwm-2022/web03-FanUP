@@ -13,16 +13,12 @@ export class ChatService {
   async createChat(createChatDto: CreateChatDto) {
     // TODO 해당 채팅방의 존재 여부를 확인하는 로직이 필요
     try {
+      console.log(createChatDto);
       return await this.prisma.chat.create({
         data: createChatDto,
-        select: {
-          fanup_id: true,
-          email: true,
-          is_artist: true,
-          message: true,
-        },
       });
     } catch (err) {
+      console.log(err);
       throw new ChatCreateFailException();
     }
   }
@@ -35,7 +31,7 @@ export class ChatService {
         where: { fanup_id },
         select: {
           fanup_id: true,
-          email: true,
+          userId: true,
           is_artist: true,
           message: true,
           created_at: true,

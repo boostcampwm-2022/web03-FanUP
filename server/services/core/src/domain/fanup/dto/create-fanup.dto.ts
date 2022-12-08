@@ -3,15 +3,17 @@ import { IsDate, IsOptional, IsUUID } from 'class-validator';
 import { v4 as uuid } from 'uuid';
 
 export class CreateFanupDto implements Prisma.FanUpCreateInput {
-  constructor(start_time: Date, end_time: Date) {
+  constructor(start_time: Date, end_time: Date, artist_id: number) {
     this.ticket_id = 1;
     this.room_id = uuid();
+    this.artist_id = artist_id;
     this.start_time = start_time;
     this.end_time = end_time;
     this.status = FanUPStatus.WAITING;
   }
 
   ticket_id: number;
+  artist_id: number;
 
   @IsOptional()
   @IsUUID('all')

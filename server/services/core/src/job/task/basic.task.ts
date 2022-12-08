@@ -123,7 +123,12 @@ export class BasicTask {
         async (element) => {
           const startTime = addMinutes(date, element * ticket.timePerTeam);
           const endTime = addMinutes(startTime, ticket.timePerTeam);
-          const fanUP = await this.fanupService.create(startTime, endTime);
+          const artist_id = 1;
+          const fanUP = await this.fanupService.create({
+            start_time: startTime,
+            end_time: endTime,
+            artist_id,
+          });
           const room_id = fanUP.room_id;
 
           // user-ticket을 가져와서 분배
