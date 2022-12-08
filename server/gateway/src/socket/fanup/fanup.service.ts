@@ -220,9 +220,11 @@ export class FanUPService {
 
     if (checkRoom.validate) {
       socket.join(room);
-      server.to(room).emit('response-chat', {
-        result: this.socketRoom[room].chat,
-      });
+      if (this.socketRoom[room]) {
+        server.to(room).emit('response-chat', {
+          result: this.socketRoom[room].chat,
+        });
+      }
     } else {
       server.to(socket.id).emit('cannot-get-all-chat', { result: null });
     }
