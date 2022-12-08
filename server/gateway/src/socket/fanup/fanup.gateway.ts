@@ -36,26 +36,26 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('offer')
   offer(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
-    const { email, offer, targetSocketID } = data;
+    const { userId, nickname, offer, targetSocketID } = data;
     this.server
       .to(targetSocketID)
-      .emit('offer', { email, offer, socketID: socket.id });
+      .emit('offer', { userId, nickname, offer, socketID: socket.id });
   }
 
   @SubscribeMessage('answer')
   answer(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
-    const { email, answer, targetSocketID } = data;
+    const { userId, answer, targetSocketID } = data;
     this.server
       .to(targetSocketID)
-      .emit('answer', { email, answer, socketID: socket.id });
+      .emit('answer', { userId, answer, socketID: socket.id });
   }
 
   @SubscribeMessage('ice')
   ice(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
-    const { email, ice, targetSocketID } = data;
+    const { userId, ice, targetSocketID } = data;
     this.server
       .to(targetSocketID)
-      .emit('ice', { email, ice, socketID: socket.id });
+      .emit('ice', { userId, ice, socketID: socket.id });
   }
 
   // =========== 채팅 및 참여자 ===========

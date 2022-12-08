@@ -5,8 +5,7 @@ export class ChatDto {
   @Expose({ name: 'fanupId' })
   fanup_id: string;
 
-  @IsEmail()
-  email: string;
+  userId: number;
 
   @Expose({ name: 'isArtist' })
   is_artist: boolean;

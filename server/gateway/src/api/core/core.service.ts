@@ -21,7 +21,7 @@ export class CoreService {
   async getAllChatMessage() {
     return this.apiClient
       .send('findChatByFanUPId', {})
-      .pipe(catchError((val) => of({ error: val.message })));
+      .pipe(catchError((err) => of(err)));
   }
 
   uploadSingleFile(file) {
@@ -48,5 +48,17 @@ export class CoreService {
         return res;
       },
     );
+  }
+
+  async getAllFanUP() {
+    return await this.apiClient
+      .send('getAllFanUP', {})
+      .pipe(catchError((err) => of(err)));
+  }
+
+  async createFanUP(data) {
+    return await this.apiClient
+      .send('createFanUP', data)
+      .pipe(catchError((err) => of(err)));
   }
 }

@@ -1,6 +1,6 @@
 interface ValidateUser {
   room: string;
-  email: string;
+  userId: number;
 }
 
 export { ValidateUser };

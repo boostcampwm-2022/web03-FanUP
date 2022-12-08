@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   Post,
@@ -10,6 +11,7 @@ import {
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { CoreService } from './core.service';
 import { Request } from 'express';
+import { CreateFanUPDto } from '../../common/types/create-fanup';
 
 @Controller('core')
 export class CoreController {
@@ -35,5 +37,20 @@ export class CoreController {
   @UseInterceptors(FilesInterceptor('files'))
   async uploadMultipleFile(@Req() request: Request, @UploadedFiles() files) {
     return this.coreService.uploadMultipleFile(files);
+  }
+
+  @Get('/fanup')
+  async getAllFanUP() {
+    return await this.coreService.getAllFanUP();
+  }
+
+  @Post('/fanup')
+  async createFanUP(@Body() data: CreateFanUPDto) {
+    const { startTime, endTime, artistId } = data;
+    return await this.coreService.createFanUP({
+      start_time: startTime,
+      end_time: endTime,
+      artist_id: artistId,
+    });
   }
 }
