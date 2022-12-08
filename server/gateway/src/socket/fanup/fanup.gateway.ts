@@ -1,3 +1,4 @@
+import { UseGuards } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -8,6 +9,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { JwtAuthGuard } from '../../api/auth/auth.guard';
 import { ValidateUser } from '../../common/types';
 import { FanUPService } from './fanup.service';
 
@@ -78,7 +80,9 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   // 소켓 연결이 생성되면
-  handleConnection(@ConnectedSocket() socket: Socket): void {}
+  async handleConnection(@ConnectedSocket() socket: Socket) {
+    await this.fanUPService.handleConnect(socket);
+  }
 
   // 소켓 연결이 끊기면 실행
   handleDisconnect(@ConnectedSocket() socket: Socket) {

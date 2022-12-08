@@ -1,10 +1,10 @@
 import { FanUpStore } from '@/types/fanUp';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const CHAT_MODE = 1;
+const PARTICIPANTS_MODE = 0;
 
 const initialState: FanUpStore = {
-    mode: CHAT_MODE,
+    mode: PARTICIPANTS_MODE,
 };
 
 export const fanUpSlice = createSlice({

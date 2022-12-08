@@ -9,7 +9,6 @@ import {
   JoinSocketRoom,
   SendMessage,
   SocketChat,
-  User,
   ValidateUser,
 } from '../../common/types';
 import { MICRO_SERVICES } from '../../common/constants/microservices';
@@ -24,6 +23,8 @@ export class FanUPService {
   constructor(
     @Inject(MICRO_SERVICES.CORE.NAME)
     private readonly coreTCP: ClientTCP,
+    @Inject(MICRO_SERVICES.AUTH.NAME)
+    private readonly authTCP: ClientTCP,
     private readonly authService: AuthService,
   ) {}
 
@@ -41,6 +42,24 @@ export class FanUPService {
   entireSocketId: object = {
     userId: 'socketid', // 형식
   };
+
+  async handleConnect(socket: Socket) {
+    try {
+      const token = socket.handshake.headers.authorization.split(' ')[1];
+      const user = await lastValueFrom(
+        this.authTCP
+          .send({ cmd: 'verifyUser' }, { token })
+          .pipe(catchError((err) => of(err))),
+      );
+      this.logger.log('check-user', user, token);
+      if (!user.id) {
+        socket.disconnect();
+      }
+    } catch (err) {
+      console.log(err);
+      socket.disconnect();
+    }
+  }
 
   handleDisconnect(server: Server, socket: Socket) {
     const socketId = socket.id;
@@ -79,18 +98,22 @@ export class FanUPService {
   }
 
   async validateUser({ room, userId }: ValidateUser) {
-    const isUserExist: any = await lastValueFrom(
-      this.authService.getUserInfo(userId),
-    );
+    try {
+      const isUserExist: any = await lastValueFrom(
+        this.authService.getUserInfo(userId),
+      );
 
-    this.logger.log(`validate-user: `, isUserExist);
-    console.log(isUserExist);
-    return {
-      validate: isUserExist.nickname.length >= 0 ? true : false,
-      nickname: isUserExist.nickname.length >= 0 ? isUserExist.nickname : '',
-      userId,
-      room,
-    };
+      this.logger.log(`validate-user: `, isUserExist);
+      console.log(isUserExist);
+      return {
+        validate: isUserExist.nickname.length >= 0 ? true : false,
+        nickname: isUserExist.nickname.length >= 0 ? isUserExist.nickname : '',
+        userId,
+        room,
+      };
+    } catch (err) {
+      return err;
+    }
   }
 
   async joinRoom({ server, socket, userId, room }: JoinRoom) {
@@ -220,9 +243,11 @@ export class FanUPService {
 
     if (checkRoom.validate) {
       socket.join(room);
-      server.to(room).emit('response-chat', {
-        result: this.socketRoom[room].chat,
-      });
+      if (this.socketRoom[room]) {
+        server.to(room).emit('response-chat', {
+          result: this.socketRoom[room].chat,
+        });
+      }
     } else {
       server.to(socket.id).emit('cannot-get-all-chat', { result: null });
     }

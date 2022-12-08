@@ -1,8 +1,9 @@
 /**
  * @jest-environment jsdom
  */
-import { MOCK_FN } from '@/utils/test/mockFn';
-import { renderWithContext } from '@/utils/test/renderWithContext';
+import React from 'react';
+import { MOCK_FN } from '@utils/test/mockFn';
+import { renderWithContext } from '@utils/test/renderWithContext';
 import Home from '@pages/Home';
 import { screen } from '@testing-library/react';
 
@@ -12,6 +13,6 @@ describe('<Home />', () => {
     });
     it('rendering test', () => {
         renderWithContext(<Home />);
-        expect(screen.getByAltText('banner')).toBeInTheDocument();
+        expect(screen.getByText('No Fan, No Artist')).toBeInTheDocument();
     });
 });
