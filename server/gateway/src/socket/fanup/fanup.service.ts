@@ -166,7 +166,6 @@ export class FanUPService {
   // =========== 채팅 및 참여자 ===========
 
   async storeMessage(data: CreateChat) {
-    console.log(data);
     const result = await lastValueFrom(
       this.coreTCP
         .send('createChat', data)
@@ -179,7 +178,7 @@ export class FanUPService {
   }
 
   async sendMessage(data: SendMessage) {
-    this.logger.log(`send-message: ${data}`);
+    this.logger.log(`send-message`);
     const { userId, nickname, room, isArtist, message, socket, server } = data;
     const checkRoom = await this.validateRoom(room);
 

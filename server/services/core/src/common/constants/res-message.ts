@@ -16,6 +16,7 @@ const ResMessage = {
   GET_ALL_FANUP_BY_TICKET: '해당 티켓에 대한 팬미팅 정보를 모두 가져왔습니다.',
   FANUP_EXIST: '해당 방이 존재하고 있습니다.',
   GET_ALL_FANUP: '모든 팬업 방을 가져왔습니다.',
+  FIND_FANUP_BY_ARTIST_ID: "해당 "
 
   FANUP_NOT_FOUND: '해당 팬미팅 방이 존재하지 않습니다.',
   FANUP_UPDATE_FAIL: '팬미팅 정보를 업데이트하는데 실패하였습니다.',

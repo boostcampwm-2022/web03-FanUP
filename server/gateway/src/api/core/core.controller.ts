@@ -11,6 +11,7 @@ import {
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { CoreService } from './core.service';
 import { Request } from 'express';
+import { CreateFanUPDto } from '../../common/types/create-fanup';
 
 @Controller('core')
 export class CoreController {
@@ -44,7 +45,12 @@ export class CoreController {
   }
 
   @Post('/fanup')
-  async createFanUP(@Body() data) {
-    return await this.coreService.createFanUP(data);
+  async createFanUP(@Body() data: CreateFanUPDto) {
+    const { startTime, endTime, artistId } = data;
+    return await this.coreService.createFanUP({
+      start_time: startTime,
+      end_time: endTime,
+      artist_id: artistId,
+    });
   }
 }

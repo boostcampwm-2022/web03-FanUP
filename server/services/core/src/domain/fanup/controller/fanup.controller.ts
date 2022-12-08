@@ -19,7 +19,7 @@ export class FanupController {
   @SetResponse(ResMessage.CREATE_FANUP, ResStatusCode.CREATED)
   @MessagePattern('createFanUP')
   async create(data: CreateTimeDto) {
-    return await this.fanupService.create(data.start_time, data.end_time);
+    return await this.fanupService.create(data);
   }
 
   @SetResponse(ResMessage.UPDATE_FANUP, ResStatusCode.OK)
