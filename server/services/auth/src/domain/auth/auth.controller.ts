@@ -1,12 +1,10 @@
 import { Controller, Get, UseFilters } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { User } from '@prisma/client';
-import { AllRPCExceptionFilter } from 'src/common/exception/filter/rpc-exception.filter';
 
 import { AuthService } from './auth.service';
 import LoginDto from './dto/request-login.dto';
 
-@UseFilters(new AllRPCExceptionFilter())
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

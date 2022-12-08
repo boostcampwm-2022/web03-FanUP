@@ -3,8 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { HttpModule } from '@nestjs/axios';
 
-import { JwtStrategy } from './strategy/jwt.strategy';
-import { JwtRefreshStrategy } from './strategy/refresh.strategy';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -25,13 +23,6 @@ import { JwtService } from './jwt.service';
     HttpModule,
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    PrismaService,
-    UserService,
-    JwtService,
-    // JwtStrategy,
-    // JwtRefreshStrategy,
-  ],
+  providers: [AuthService, PrismaService, UserService, JwtService],
 })
 export class AuthModule {}
