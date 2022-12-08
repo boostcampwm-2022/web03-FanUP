@@ -2,13 +2,13 @@ import AlarmIcon from '@icons/AlarmIcon';
 import Logo from '@/components/icons/Logo';
 import SearchIcon from '@/components/icons/SearchIcon';
 import UserIcon from '@icons/UserIcon';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useGetUserQuery } from '@/services/user.service';
-import ExitIcon from '@icons/ExitIcon';
-import theme from '@/style/theme';
-import LogOutBtn from '../../atoms/LogOutBtn';
+import { useGetUserQuery } from '@services/user.service';
+import LogOutBtn from '@atoms/LogOutBtn';
+import { useModal } from '@/hooks/useModal';
+import NicknameEditModal from '../../molecules/NicknameEditModal';
 
 const HeaderRoot = styled.header`
     height: 75px;
@@ -30,10 +30,14 @@ const HeaderLeft = styled.div`
     align-items: center;
     div {
         display: flex;
-        gap: 25px;
+        gap: 10px;
         button {
+            padding: 10px 15px;
             font-weight: 700;
             font-size: 16px;
+            &:hover {
+                background: ${({ theme }) => theme.LIGHT_GRAY};
+            }
         }
     }
 `;
@@ -55,11 +59,18 @@ const HeaderRight = styled.div`
     }
 `;
 
+const HelloUserButton = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+`;
+
 const Header = () => {
     const { data: UserData } = useGetUserQuery();
-    //TODO: 서버와 통신을 통해 Artist 여부 확인
-    const [isArtist, setIsArtist] = useState(false);
     const navigate = useNavigate();
+    const [open, setOpen, openNicknameModal, closeNicknameModal] = useModal();
 
     //TODO: 이 부분 로직이 복잡해지면, 따로 컴포넌트로 각각 분리
     const clickSearch = useCallback(() => {
@@ -97,18 +108,18 @@ const Header = () => {
                     <Logo />
                 </button>
                 <div>
-                    {isArtist ? (
-                        <button onClick={gotoPage('/schedule')}>스케쥴</button>
-                    ) : (
-                        <button onClick={gotoPage('/tickets')}>티켓팅</button>
-                    )}
+                    <button onClick={gotoPage('/tickets')}>티켓팅</button>
+                    {UserData && <button onClick={gotoPage('/schedule')}>티켓생성</button>}
                 </div>
             </HeaderLeft>
             <HeaderRight>
                 {UserData && (
-                    <span>
-                        안녕하세요 <strong>{UserData.nickname}</strong> 님
-                    </span>
+                    <>
+                        <HelloUserButton onClick={openNicknameModal}>
+                            안녕하세요 <strong>{UserData.nickname}</strong> 님
+                        </HelloUserButton>
+                        {open && <NicknameEditModal open={open} onClose={closeNicknameModal} />}
+                    </>
                 )}
                 {icons.map(({ key, icon, onClick }) => (
                     <button data-testid={key} key={key} onClick={onClick}>

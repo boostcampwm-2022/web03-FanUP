@@ -47,6 +47,12 @@ const gridTemplate: { [key: string]: { gridTemplateColumns: string; gridTemplate
     '3': { gridTemplateColumns: 'repeat(2,1fr)', gridTemplateRows: 'repeat(2,50%)' },
     '4': { gridTemplateColumns: 'repeat(3,1fr)', gridTemplateRows: 'repeat(2,50%)' },
     '5': { gridTemplateColumns: 'repeat(3,1fr)', gridTemplateRows: 'repeat(2,50%)' },
+    '6': { gridTemplateColumns: 'repeat(4,1fr)', gridTemplateRows: 'repeat(2,50%)' },
+    '7': { gridTemplateColumns: 'repeat(4,1fr)', gridTemplateRows: 'repeat(2,50%)' },
+    '8': { gridTemplateColumns: 'repeat(4,1fr)', gridTemplateRows: 'repeat(3,50%)' },
+    '9': { gridTemplateColumns: 'repeat(4,1fr)', gridTemplateRows: 'repeat(3,50%)' },
+    '10': { gridTemplateColumns: 'repeat(4,1fr)', gridTemplateRows: 'repeat(3,50%)' },
+    '11': { gridTemplateColumns: 'repeat(4,1fr)', gridTemplateRows: 'repeat(3,50%)' },
 };
 
 export default VideoList;

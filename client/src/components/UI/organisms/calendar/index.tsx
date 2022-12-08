@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CalendarHeader from '@molecules/calendarHeader';
 import CalendarBody from '@molecules/calendarBody';
 import ScheduleFanUpModal from '@molecules/scheduleFanUpModal';
+import { useGetUserQuery } from '@/services/user.service';
 
 const CalendarWrapper = styled.div`
     width: 60vw;
@@ -18,9 +19,11 @@ const CalendarWrapper = styled.div`
 `;
 
 const Calendar = () => {
+    const { data: userData, isLoading } = useGetUserQuery();
+    if (isLoading) return <></>;
     return (
         <CalendarWrapper>
-            <h1 data-testid="title">LILHUDDY님의 일정</h1>
+            <h1 data-testid="title">{userData?.nickname}님의 일정</h1>
             <CalendarHeader />
             <CalendarBody />
             <ScheduleFanUpModal />

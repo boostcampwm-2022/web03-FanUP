@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { renderWithContext } from '@utils/test/renderWithContext';
-import Schedules from '@organisms/schedules';
+import Schedules from '@/components/UI/organisms/MyFeatureBox';
 import { screen } from '@testing-library/react';
 import { MOCK_FN } from '@/utils/test/mockFn';
 
