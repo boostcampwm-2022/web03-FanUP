@@ -48,7 +48,7 @@ export class FanUPService {
       const token = socket.handshake.headers.authorization.split(' ')[1];
       const user = await lastValueFrom(
         this.authTCP
-          .send({ cmd: 'verifyUser' }, token)
+          .send({ cmd: 'verifyUser' }, { token })
           .pipe(catchError((err) => of(err))),
       );
       this.logger.log('check-user', user, token);

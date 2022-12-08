@@ -38,6 +38,7 @@ export class AuthService {
 
   public async verifyUser(token: string) {
     const payload: any = this.jwtService.verify(token);
+    console.log(payload);
     return await this.userService.findOne(payload.id);
   }
 
