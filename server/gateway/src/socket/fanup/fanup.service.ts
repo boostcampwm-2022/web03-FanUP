@@ -79,18 +79,22 @@ export class FanUPService {
   }
 
   async validateUser({ room, userId }: ValidateUser) {
-    const isUserExist: any = await lastValueFrom(
-      this.authService.getUserInfo(userId),
-    );
+    try {
+      const isUserExist: any = await lastValueFrom(
+        this.authService.getUserInfo(userId),
+      );
 
-    this.logger.log(`validate-user: `, isUserExist);
-    console.log(isUserExist);
-    return {
-      validate: isUserExist.nickname.length >= 0 ? true : false,
-      nickname: isUserExist.nickname.length >= 0 ? isUserExist.nickname : '',
-      userId,
-      room,
-    };
+      this.logger.log(`validate-user: `, isUserExist);
+      console.log(isUserExist);
+      return {
+        validate: isUserExist.nickname.length >= 0 ? true : false,
+        nickname: isUserExist.nickname.length >= 0 ? isUserExist.nickname : '',
+        userId,
+        room,
+      };
+    } catch (err) {
+      return err;
+    }
   }
 
   async joinRoom({ server, socket, userId, room }: JoinRoom) {
