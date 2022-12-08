@@ -9,7 +9,6 @@ import {
   JoinSocketRoom,
   SendMessage,
   SocketChat,
-  User,
   ValidateUser,
 } from '../../common/types';
 import { MICRO_SERVICES } from '../../common/constants/microservices';
@@ -24,6 +23,8 @@ export class FanUPService {
   constructor(
     @Inject(MICRO_SERVICES.CORE.NAME)
     private readonly coreTCP: ClientTCP,
+    @Inject(MICRO_SERVICES.AUTH.NAME)
+    private readonly authTCP: ClientTCP,
     private readonly authService: AuthService,
   ) {}
 
@@ -41,6 +42,24 @@ export class FanUPService {
   entireSocketId: object = {
     userId: 'socketid', // 형식
   };
+
+  async handleConnect(socket: Socket) {
+    try {
+      const token = socket.handshake.headers.authorization.split(' ')[1];
+      const user = await lastValueFrom(
+        this.authTCP
+          .send({ cmd: 'verifyUser' }, token)
+          .pipe(catchError((err) => of(err))),
+      );
+      this.logger.log('check-user', user, token);
+      if (!user) {
+        socket.disconnect();
+      }
+    } catch (err) {
+      console.log(err);
+      socket.disconnect();
+    }
+  }
 
   handleDisconnect(server: Server, socket: Socket) {
     const socketId = socket.id;
