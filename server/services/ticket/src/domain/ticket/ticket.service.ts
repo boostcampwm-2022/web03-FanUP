@@ -24,7 +24,18 @@ export class TicketService {
   }
 
   async findAll(): Promise<Ticket[]> {
-    return this.prisma.ticket.findMany({});
+    const now = new Date(Date.now()).toISOString();
+
+    return this.prisma.ticket.findMany({
+      orderBy: {
+        startTime: 'desc',
+      },
+      where: {
+        startTime: {
+          gte: now,
+        },
+      },
+    });
   }
 
   async delete(ticketId: number): Promise<Ticket> {
