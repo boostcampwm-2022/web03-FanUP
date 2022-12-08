@@ -79,13 +79,12 @@ export class FanUPService {
   }
 
   async validateUser({ room, userId }: ValidateUser) {
-    const tempUser = { nickname: '팬업', email: 'jinsung1048@gmail.com' };
     const isUserExist: any = await this.authService.getUserInfo(userId);
 
     this.logger.log(`validate-user: `, isUserExist);
     return {
       validate: isUserExist.nickname ? true : false,
-      nickname: isUserExist.nickname ? tempUser.nickname : '',
+      nickname: isUserExist.nickname ? isUserExist.nickname : '',
       userId,
       room,
     };
