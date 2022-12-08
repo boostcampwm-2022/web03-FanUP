@@ -5,16 +5,15 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
-import { IRpcException } from '../IRpcException';
+import { ICustomRpcException } from '../custom-rpc-exception';
 
 @Catch()
 export class AllGlobalExceptionsFilter implements ExceptionFilter {
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
-  catch(exception: IRpcException, host: ArgumentsHost): void {
+  catch(exception: ICustomRpcException, host: ArgumentsHost): void {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
-    console.log(exception);
 
     const httpStatus = exception.status
       ? exception.status

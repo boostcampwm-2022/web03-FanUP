@@ -1,4 +1,4 @@
-export interface IRpcException {
+export interface ICustomRpcException {
   message: string;
   status: number;
 }

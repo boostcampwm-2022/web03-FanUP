@@ -6,7 +6,10 @@ import { CustomRpcException } from '../custom-rpc-exception';
 export default class CustomRpcExceptionFilter
   implements RpcExceptionFilter<CustomRpcException>
 {
-  catch(exception: CustomRpcException, host: ArgumentsHost): Observable<any> {
+  catch(
+    exception: CustomRpcException,
+    host: ArgumentsHost,
+  ): Observable<CustomRpcException> {
     return throwError(() => exception);
   }
 }
