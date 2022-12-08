@@ -79,7 +79,9 @@ export class FanUPService {
   }
 
   async validateUser({ room, userId }: ValidateUser) {
-    const isUserExist: any = await this.authService.getUserInfo(userId);
+    const isUserExist: any = await lastValueFrom(
+      this.authService.getUserInfo(userId),
+    );
 
     this.logger.log(`validate-user: `, isUserExist);
     console.log(isUserExist);
