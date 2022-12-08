@@ -36,6 +36,11 @@ export class AuthService {
     return this.userService.findOne(userId);
   }
 
+  public async verifyUser(token: string) {
+    const payload: any = this.jwtService.verify(token);
+    return await this.userService.findOne(payload.id);
+  }
+
   public async login(loginDto: RequestLoginDto): Promise<LoginResponse> {
     const { provider, accessToken } = loginDto;
 

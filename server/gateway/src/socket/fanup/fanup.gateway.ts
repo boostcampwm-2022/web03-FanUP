@@ -28,7 +28,6 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   // =========== WebRTC ===========
 
-  // @UseGuards(JwtAuthGuard)
   @SubscribeMessage('join_room')
   async joinRoom(
     @ConnectedSocket() socket: Socket,
@@ -37,7 +36,6 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.fanUPService.joinRoom({ server: this.server, socket, ...data });
   }
 
-  // @UseGuards(JwtAuthGuard)
   @SubscribeMessage('offer')
   offer(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
     const { userId, nickname, offer, targetSocketID } = data;
@@ -46,7 +44,6 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
       .emit('offer', { userId, nickname, offer, socketID: socket.id });
   }
 
-  // @UseGuards(JwtAuthGuard)
   @SubscribeMessage('answer')
   answer(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
     const { userId, answer, targetSocketID } = data;
@@ -55,7 +52,6 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
       .emit('answer', { userId, answer, socketID: socket.id });
   }
 
-  // @UseGuards(JwtAuthGuard)
   @SubscribeMessage('ice')
   ice(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
     const { userId, ice, targetSocketID } = data;
@@ -66,20 +62,17 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   // =========== 채팅 및 참여자 ===========
 
-  // @UseGuards(JwtAuthGuard)
   @SubscribeMessage('send-message')
   sendMessage(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
     this.fanUPService.sendMessage({ ...data, socket, server: this.server });
   }
 
-  // @UseGuards(JwtAuthGuard)
   @SubscribeMessage('request-chat')
   getAllChat(@ConnectedSocket() socket: Socket, @MessageBody() data) {
     const { room } = data;
     this.fanUPService.getAllChat(room, this.server, socket);
   }
 
-  // @UseGuards(JwtAuthGuard)
   @SubscribeMessage('request-participant-user')
   getParticipantUser(@ConnectedSocket() socket: Socket, @MessageBody() data) {
     const { room } = data;
@@ -87,7 +80,9 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   // 소켓 연결이 생성되면
-  handleConnection(@ConnectedSocket() socket: Socket): void {}
+  async handleConnection(@ConnectedSocket() socket: Socket) {
+    await this.fanUPService.handleConnect(socket);
+  }
 
   // 소켓 연결이 끊기면 실행
   handleDisconnect(@ConnectedSocket() socket: Socket) {

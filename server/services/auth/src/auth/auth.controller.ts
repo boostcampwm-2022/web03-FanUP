@@ -5,6 +5,7 @@ import { AllRPCExceptionFilter } from 'src/common/exception/filter/rpc-exception
 
 import { AuthService } from './auth.service';
 import LoginDto from './dto/request-login.dto';
+import { JwtService } from './jwt.service';
 
 @UseFilters(new AllRPCExceptionFilter())
 @Controller('auth')
@@ -25,5 +26,10 @@ export class AuthController {
   @MessagePattern({ cmd: 'getUserInfo' })
   async getUserInfo(@Payload() userId: number): Promise<User> {
     return this.authService.getUserInfo(userId);
+  }
+
+  @MessagePattern({ cmd: 'verifyUser' })
+  async verifyUser(@Payload() token: string) {
+    return await this.authService.verifyUser(token);
   }
 }
