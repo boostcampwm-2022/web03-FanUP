@@ -3,7 +3,7 @@ import { Server, Socket } from 'socket.io';
 interface JoinRoom {
   server: Server;
   socket: Socket;
-  email: string;
+  userId: number;
   room: string;
 }
 

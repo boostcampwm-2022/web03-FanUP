@@ -8,3 +8,4 @@ export { CreateChat } from './create-chat';
 export { SocketChat } from './socket-chat';
 export { FindNotification } from './find-notification';
 export { UpdateNotification } from './update-notification';
+export { User } from './user';

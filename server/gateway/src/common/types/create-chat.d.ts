@@ -1,6 +1,6 @@
 interface CreateChat {
   fanup_id: string;
-  email: string;
+  userId: number;
   is_artist: boolean;
   message: string;
 }

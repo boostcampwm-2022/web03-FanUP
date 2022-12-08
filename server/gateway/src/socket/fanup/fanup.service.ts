@@ -9,9 +9,11 @@ import {
   JoinSocketRoom,
   SendMessage,
   SocketChat,
+  User,
   ValidateUser,
 } from '../../common/types';
 import { MICRO_SERVICES } from '../../common/constants/microservices';
+import { AuthService } from '../../api/auth/auth.service';
 
 interface IParticipant {
   email: string;
@@ -22,6 +24,7 @@ export class FanUPService {
   constructor(
     @Inject(MICRO_SERVICES.CORE.NAME)
     private readonly coreTCP: ClientTCP,
+    private readonly authService: AuthService,
   ) {}
 
   private readonly logger = new Logger(AppService.name);
@@ -36,7 +39,7 @@ export class FanUPService {
 
   // 소켓 아이디는 새로 연결이 될때마다 변경이 된다.
   entireSocketId: object = {
-    email: 'socketid', // 형식
+    userId: 'socketid', // 형식
   };
 
   handleDisconnect(server: Server, socket: Socket) {
@@ -71,41 +74,33 @@ export class FanUPService {
         .send('isFanUPExist', { room_id: room })
         .pipe(catchError((err) => of({ ...err }))),
     );
+    this.logger.log(`validate-room: `, result);
     return { ...result, validate: result.data ? true : false };
   }
 
-  async validateUser({ room, email }: ValidateUser) {
-    // TODO 다른 모듈과 연결하여 로직 작성
-    // [MOCK] Auth에서 받아온 정보
+  async validateUser({ room, userId }: ValidateUser) {
     const tempUser = { nickname: '팬업', email: 'jinsung1048@gmail.com' };
+    const isUserExist: any = await this.authService.getUserInfo(userId);
 
-    // [MOCK] 유저가 참가할 수 있는 Ticket 에서 받아온 정보
-    const tempUserTicket = [{ roomId: '1' }, { roomId: '2' }, { roomId: '3' }];
-
-    const validate =
-      tempUserTicket.filter((element) => element.roomId === room).length > 0
-        ? true
-        : false;
-
+    this.logger.log(`validate-user: `, isUserExist);
     return {
-      validate,
-      nickname: validate ? tempUser.nickname : '',
-      email,
+      validate: isUserExist.nickname ? true : false,
+      nickname: isUserExist.nickname ? tempUser.nickname : '',
+      userId,
       room,
     };
   }
 
-  async joinRoom({ server, socket, email, room }: JoinRoom) {
-    this.logger.log('join Room');
+  async joinRoom({ server, socket, userId, room }: JoinRoom) {
     const checkRoom = await this.validateRoom(room);
-    const checkUser = await this.validateUser({ room, email });
+    const checkUser = await this.validateUser({ room, userId });
 
-    // checkRoom.validate && 생략
-    if (checkUser.validate) {
+    this.logger.log(`join Room`, checkRoom, checkUser);
+    if (checkRoom.validate && checkUser.validate) {
       this.joinSocketRoom({
         server,
         socket,
-        email,
+        userId,
         room,
         nickname: checkUser.nickname,
       });
@@ -117,29 +112,29 @@ export class FanUPService {
   async joinSocketRoom({
     server,
     socket,
-    email,
+    userId,
     room,
     nickname,
   }: JoinSocketRoom) {
     socket.join(room);
-    this.entireSocketId[email] = socket.id;
+    this.entireSocketId[userId] = socket.id;
 
     if (this.roomExist(room)) {
-      if (this.participantExist(room, email)) return;
+      if (this.participantExist(room, userId)) return;
 
       this.socketRoom[room].participant.push({
-        email,
+        userId,
         nickname,
         socketId: socket.id,
       });
     } else {
       this.socketRoom[room] = {
-        participant: [{ email, nickname, socketId: socket.id }],
+        participant: [{ userId, nickname, socketId: socket.id }],
         chat: [],
       };
     }
 
-    server.to(room).emit('welcome', { email, nickname, socketID: socket.id });
+    server.to(room).emit('welcome', { userId, nickname, socketID: socket.id });
   }
 
   roomExist(room) {
@@ -162,33 +157,38 @@ export class FanUPService {
     return isRoomExist && isParticipantExist && isChatExist;
   }
 
-  participantExist(room: string, email: string) {
+  participantExist(room: string, userId: number) {
     return this.socketRoom[room].participant.find(
-      (value) => value.email === email,
+      (value) => value.userId === userId,
     );
   }
 
   // =========== 채팅 및 참여자 ===========
 
   async storeMessage(data: CreateChat) {
+    console.log(data);
     const result = await lastValueFrom(
       this.coreTCP
         .send('createChat', data)
-        .pipe(catchError((err) => of({ ...err, status: 403 }))),
+        .pipe(catchError((err) => of({ ...err }))),
     );
+    this.logger.log(`store-message: `, result);
     return result['status'] >= 400
       ? { ...result, data: null, success: false }
       : { ...result, success: true };
   }
 
   async sendMessage(data: SendMessage) {
-    const { email, nickname, room, isArtist, message, socket, server } = data;
+    this.logger.log(`send-message: ${data}`);
+    const { userId, nickname, room, isArtist, message, socket, server } = data;
     const checkRoom = await this.validateRoom(room);
 
-    if (checkRoom.validate === false) {
+    if (checkRoom.validate) {
+      socket.join(room);
+
       const storeResult = await this.storeMessage({
         fanup_id: room,
-        email,
+        userId,
         is_artist: isArtist,
         message: message,
       });
@@ -228,6 +228,7 @@ export class FanUPService {
   }
 
   async getParticipantList(room: string, server: Server, socket: Socket) {
+    this.logger.log(`get-participant-list`);
     const checkRoom = await this.validateRoom(room);
 
     if (checkRoom.validate) {

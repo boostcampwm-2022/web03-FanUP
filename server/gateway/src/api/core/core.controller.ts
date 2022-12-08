@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   Post,
@@ -35,5 +36,15 @@ export class CoreController {
   @UseInterceptors(FilesInterceptor('files'))
   async uploadMultipleFile(@Req() request: Request, @UploadedFiles() files) {
     return this.coreService.uploadMultipleFile(files);
+  }
+
+  @Get('/fanup')
+  async getAllFanUP() {
+    return await this.coreService.getAllFanUP();
+  }
+
+  @Post('/fanup')
+  async createFanUP(@Body() data) {
+    return await this.coreService.createFanUP(data);
   }
 }

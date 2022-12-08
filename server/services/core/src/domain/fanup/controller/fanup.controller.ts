@@ -42,4 +42,10 @@ export class FanupController {
   async isExist(data: { room_id: string }) {
     return await this.fanupService.isExist(data.room_id);
   }
+
+  @SetResponse(ResMessage.GET_ALL_FANUP, ResStatusCode.OK)
+  @MessagePattern('getAllFanUP')
+  async getAllFanUP() {
+    return await this.fanupService.getAllFanUP();
+  }
 }

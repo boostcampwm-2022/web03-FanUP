@@ -102,7 +102,7 @@ export class FanupService {
   }
 
   async isExist(room_id: string) {
-    const fanUp = await this.prisma.fanUp.findUnique({
+    const fanUp = await this.prisma.fanUp.findFirst({
       where: {
         room_id,
       },
@@ -112,6 +112,15 @@ export class FanupService {
       return true;
     }
     throw new FanUPNotFoundException();
+  }
+
+  async getAllFanUP() {
+    try {
+      return await this.prisma.fanUp.findMany();
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
   }
 
   /**
