@@ -2,9 +2,11 @@ import { useGetUserQuery } from '@/services/user.service';
 import { setMyStream } from '@/store/user';
 import { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 export function useMyStream() {
     const dispatch = useDispatch();
+    const { fanUpId } = useParams();
     const { isLoading: loginCheckLoading } = useGetUserQuery();
     const getMedia = useCallback(async () => {
         try {
@@ -16,9 +18,9 @@ export function useMyStream() {
         } catch (err) {
             console.log(err);
         }
-    }, [loginCheckLoading]);
+    }, []);
 
     useEffect(() => {
-        if (!loginCheckLoading) getMedia();
-    }, [loginCheckLoading]);
+        if (fanUpId) getMedia();
+    }, [fanUpId]);
 }

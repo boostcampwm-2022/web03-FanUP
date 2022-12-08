@@ -23,13 +23,20 @@ enum SOCKET_EVENTS {
 
 let socket: Socket | null = null;
 const ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/socket/fanup`;
+//const ENDPOINT = `http://localhost:3000/socket/fanup`;
 
 const connectSocket = () => {
-    if (!socket) socket = io(ENDPOINT);
-
-    socket.on('connect', () => {
-        console.log('socket connected : ', socket?.id);
-    });
+    console.log(`${localStorage.getItem('token')}`);
+    if (!socket)
+        socket = io(ENDPOINT, {
+            extraHeaders: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+        });
 };
 
-export { socket, SOCKET_EVENTS, connectSocket };
+const initializeSocket = () => {
+    socket = null;
+};
+
+export { socket, SOCKET_EVENTS, connectSocket, initializeSocket };

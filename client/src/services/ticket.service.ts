@@ -40,7 +40,10 @@ export const ticketApi = createApi({
                     body: { ticketId },
                 };
             },
-            invalidatesTags: ['TodayTicket', 'Ticket'],
+            invalidatesTags: (result, error, ticketId) => {
+                if (result?.status === 403) return [];
+                else return ['TodayTicket', 'Ticket'];
+            },
         }),
     }),
 });
