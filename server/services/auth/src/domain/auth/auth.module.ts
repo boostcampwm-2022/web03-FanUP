@@ -5,10 +5,10 @@ import { HttpModule } from '@nestjs/axios';
 
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { JwtRefreshStrategy } from './strategy/refresh.strategy';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/domain/user/user.service';
 import { JwtService } from './jwt.service';
 
 @Module({
