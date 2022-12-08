@@ -1,7 +1,6 @@
 /**
  * @jest-environment jsdom
  */
-import React from 'React';
 import { renderWithContext } from '@/utils/test/renderWithContext';
 import { screen } from '@testing-library/react';
 import FanUP from '../index';
@@ -16,6 +15,7 @@ describe('<FanUp />', () => {
         MOCK_FN.scrollIntoView();
     });
     it('rendering test', async () => {
+        // eslint-disable-next-line react/react-in-jsx-scope
         await act(async () => renderWithContext(<FanUP />));
     });
 });

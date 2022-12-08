@@ -91,9 +91,9 @@ const Schedules = () => {
 };
 
 const dummyMyTickets = [
-    { title: '내가 구매한 티켓1번!', date: new Date(), thumbNail: '' },
-    { title: '내가 구매한 티켓2번!', date: new Date('2022.12.21'), thumbNail: '' },
-    { title: '내가 구매한 티켓3번!', date: new Date('2022.12.25'), thumbNail: '' },
+    { title: '부스트캠프 수료식', date: new Date(), thumbNail: '' },
+    { title: '엔믹스 1주년❤️', date: new Date('2022.12.21'), thumbNail: '' },
+    { title: '뉴진스 1주년❤️', date: new Date('2022.12.25'), thumbNail: '' },
 ];
 
 const dummySchedules = [

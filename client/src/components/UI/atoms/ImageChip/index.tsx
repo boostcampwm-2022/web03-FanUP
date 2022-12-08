@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import DefaultImg from '@atoms/defaultImg';
 
 const ImageChipWrapper = styled.div<{ width: string; height: string }>`
     width: ${({ width }) => width};
@@ -10,15 +11,7 @@ const ImageChipWrapper = styled.div<{ width: string; height: string }>`
         border-radius: 6px;
     }
     div {
-        width: 100%;
-        height: 100%;
-        border-radius: 6px;
-        background: ${({ theme }) => theme.PRIMARY};
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
+        font-size: 12px !important;
     }
 `;
 
@@ -31,7 +24,11 @@ interface Props {
 const ImageChip = ({ src, width, height }: Props) => {
     return (
         <ImageChipWrapper data-testid="imageChip" width={width} height={height}>
-            {src ? <img src={src} alt="thumbnail" /> : <div>FanUP</div>}
+            {src ? (
+                <img src={src} alt="thumbnail" />
+            ) : (
+                <DefaultImg width={width} height={height} borderRadius="8px" />
+            )}
         </ImageChipWrapper>
     );
 };

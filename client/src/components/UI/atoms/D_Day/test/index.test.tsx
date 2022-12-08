@@ -9,6 +9,7 @@ import { renderWithContext } from '@/utils/test/renderWithContext';
 describe('<DDay />', () => {
     const date = new Date();
     it('rendering test', () => {
+        // eslint-disable-next-line react/react-in-jsx-scope
         renderWithContext(<DDay date={date} />);
         expect(screen.getByText(get_D_Day(date))).toBeInTheDocument();
     });
