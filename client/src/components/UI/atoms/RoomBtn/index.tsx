@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
 const RoomBtnWrapper = styled.button`
@@ -16,12 +16,19 @@ const RoomBtnWrapper = styled.button`
     }
 `;
 
-interface Props {
-    roomName: string;
+interface IProps {
+    room: {
+        id: number;
+        room_id: string;
+    };
 }
 
-const RoomBtn = ({ roomName }: Props) => {
-    return <RoomBtnWrapper>{roomName}</RoomBtnWrapper>;
+const RoomBtn = ({ room }: IProps) => {
+    const { id, room_id } = room;
+    const gotoOtherRoom = useCallback(() => {
+        window.location.replace(`/fanup/${room_id}`);
+    }, [room_id]);
+    return <RoomBtnWrapper onClick={gotoOtherRoom}>{`13:${room.id}0`}</RoomBtnWrapper>;
 };
 
 export default RoomBtn;

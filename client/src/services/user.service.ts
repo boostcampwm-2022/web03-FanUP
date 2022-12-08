@@ -1,5 +1,4 @@
 import 'whatwg-fetch';
-import { SERVER_URL } from '@/utils/serverUrl';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { IUser } from '@/types/user';
 import { IAritst } from '@/types/artist';

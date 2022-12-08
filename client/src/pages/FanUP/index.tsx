@@ -30,20 +30,18 @@ const FanUpRightSection = styled.div`
 const FanUP = () => {
     useMyStream();
     const { isLoading } = useCheckFanUp();
-    const [userStream, peerConnections] = useFanUP();
+    const [users, peerConnections] = useFanUP();
     const loginCheckLoading = useCheckLogin();
-
     if (isLoading || loginCheckLoading) return <Loading />;
-
     return (
         <>
             <Header />
             <FanUpWrapper>
                 <FanUpRightSection>
-                    <VideoList userStream={userStream} />
+                    <VideoList userStream={users} />
                     <BottomOptionBar peerConnections={peerConnections} />
                 </FanUpRightSection>
-                <FeatureBox />
+                <FeatureBox users={users} />
             </FanUpWrapper>
         </>
     );
