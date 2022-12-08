@@ -52,7 +52,7 @@ export class FanUPService {
           .pipe(catchError((err) => of(err))),
       );
       this.logger.log('check-user', user, token);
-      if (!user) {
+      if (!user.id) {
         socket.disconnect();
       }
     } catch (err) {
