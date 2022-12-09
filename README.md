@@ -1,7 +1,7 @@
 # 💌 FanUP 💌
 
 <div align="center">   
-    <img src = "https://user-images.githubusercontent.com/78716842/205433708-f0c3db29-7ece-43da-85f3-d0162c4e49a3.jpg" width = "500">
+    <img src = "https://user-images.githubusercontent.com/78716842/206626024-8a6f083b-b6e1-4026-a7b6-5482597106ce.png" width = "500">
     <h3> 💌 No Fan, No Artist 💌</h3>
 </div>
 
