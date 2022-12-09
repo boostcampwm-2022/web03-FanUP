@@ -12,7 +12,14 @@ export const artistApi = createApi({
             query: () => '/artist',
             providesTags: ['Artist'],
         }),
+        submitArtistInfo: build.mutation({
+            query: (reqData: any) => ({
+                url: '/artist',
+                method: 'POST',
+                body: reqData,
+            }),
+        }),
     }),
 });
 
-export const { useGetArtistQuery } = artistApi;
+export const { useGetArtistQuery, useSubmitArtistInfoMutation } = artistApi;

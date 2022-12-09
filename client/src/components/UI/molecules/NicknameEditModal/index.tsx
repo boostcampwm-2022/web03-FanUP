@@ -35,7 +35,7 @@ const ModalContent = styled.form`
     button {
         font-size: 15px;
         border: none;
-        background: ${({ theme }) => theme.PRIMARY};
+        background: ${({ theme }) => theme.PRIMARY} !important;
         color: white;
         border-radius: 8px;
         height: 50px;

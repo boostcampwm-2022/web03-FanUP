@@ -15,6 +15,7 @@ import {
     TicketingSuccess,
     TicketingFailure,
     Schedule,
+    Artist,
 } from './Routes';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                     <Route path="/ticketing/success" element={<TicketingSuccess />} />
                     <Route path="/ticketing/failure" element={<TicketingFailure />} />
                     <Route path="/schedule" element={<Schedule />} />
+                    <Route path="/artist" element={<Artist />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </Suspense>
