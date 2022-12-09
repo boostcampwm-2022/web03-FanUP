@@ -110,6 +110,15 @@ const Header = () => {
                 <div>
                     <button onClick={gotoPage('/tickets')}>티켓팅</button>
                     {UserData && <button onClick={gotoPage('/schedule')}>티켓생성</button>}
+                    {UserData?.role === 'ARTIST' && (
+                        <button onClick={gotoPage('/artist')}>
+                            {UserData?.artistId ? (
+                                <span>마이페이지</span>
+                            ) : (
+                                <span>아티스트 정보 등록</span>
+                            )}
+                        </button>
+                    )}
                 </div>
             </HeaderLeft>
             <HeaderRight>
