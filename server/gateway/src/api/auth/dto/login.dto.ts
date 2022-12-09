@@ -1,11 +1,9 @@
 import { IsString } from 'class-validator';
 
-class LoginDto {
+export default class LoginDto {
   @IsString()
   provider: string;
 
   @IsString()
   accessToken: string;
 }
-
-export default LoginDto;
