@@ -13,6 +13,15 @@ export class UserService {
     });
   }
 
+  updateProfileUrl(id: number, profileUrl: string): Promise<User> {
+    return this.prisma.user.update({
+      where: { id },
+      data: {
+        profileUrl,
+      },
+    });
+  }
+
   findAll(): Promise<User[]> {
     return this.prisma.user.findMany();
   }
