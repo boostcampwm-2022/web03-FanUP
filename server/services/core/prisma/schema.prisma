@@ -36,6 +36,7 @@ model Chat {
 
 model FileEntity {
   id Int @id @default(autoincrement())
+  userId Int?
   link String @unique
   name String?
   mimeType String?
