@@ -8,8 +8,9 @@ import { dateDiff } from '@utils/dateDiff';
 import CloseIcon from '@icons/CloseIcon';
 import { ERR_MESSAGE } from './constants';
 import Fish from '@icons/Fish';
-import { useSubmitTicketMutation } from '@/services/ticket';
+import { useSubmitTicketMutation } from '@/services/ticket.service';
 import { TicketSubmitData } from '@/types/ticket';
+import { addZero } from '@utils/addZero';
 
 const ModalHeader = styled.div`
     display: flex;
@@ -227,7 +228,11 @@ const ScheduleFanUpModal = () => {
         if (!openScheduleModal) dispatch(initializeSelectedDay());
         else {
             if (selectedDay)
-                setStartTime(`${selectedDay.year}-${selectedDay.month}-${selectedDay.day}T14:00`);
+                setStartTime(
+                    `${selectedDay.year}-${addZero(selectedDay.month)}-${addZero(
+                        selectedDay.day
+                    )}T14:00`
+                );
         }
     }, [openScheduleModal, selectedDay]);
 

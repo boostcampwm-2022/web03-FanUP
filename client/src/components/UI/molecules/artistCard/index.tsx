@@ -1,8 +1,8 @@
 import { IAritst } from '@/types/artist';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import LazyImg from '@atoms/LazyImg';
-import DefaultImg from '../../atoms/defaultImg';
+import DefaultImg from '@atoms/defaultImg';
 
 const ArtistCardWrapper = styled.div`
     cursor: pointer;
@@ -45,7 +45,7 @@ const Logo = styled.div`
     background: white;
     border-radius: 100%;
     left: 50%;
-    bottom: 10%;
+    bottom: 1.5rem;
     transform: translate(-50%, -50%);
     img {
         border-radius: 100%;

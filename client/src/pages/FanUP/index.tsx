@@ -7,8 +7,9 @@ import usePreventLeave from '@/hooks/usePreventLeave';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useCheckFanUp } from './useCheckFanUp';
-import useFanUP from '@/hooks/useFanUP';
-import { socket } from '@/socket';
+import useFanUP from '@hooks/useFanUP';
+import { useCheckLogin } from '@hooks/useCheckLogin';
+import Loading from '@atoms/Loading';
 
 const FanUpWrapper = styled.div`
     display: flex;
@@ -29,28 +30,18 @@ const FanUpRightSection = styled.div`
 const FanUP = () => {
     useMyStream();
     const { isLoading } = useCheckFanUp();
-    const [userStream, peerConnections] = useFanUP();
-    usePreventLeave();
-
-    useEffect(() => {
-        console.log('1234567');
-        return () => {
-            console.log('123123123123');
-            socket?.disconnect();
-        };
-    }, []);
-
-    if (isLoading) return <div>...loading</div>;
-
+    const [users, peerConnections] = useFanUP();
+    const loginCheckLoading = useCheckLogin();
+    if (isLoading || loginCheckLoading) return <Loading />;
     return (
         <>
             <Header />
             <FanUpWrapper>
                 <FanUpRightSection>
-                    <VideoList userStream={userStream} />
+                    <VideoList userStream={users} />
                     <BottomOptionBar peerConnections={peerConnections} />
                 </FanUpRightSection>
-                <FeatureBox />
+                <FeatureBox users={users} />
             </FanUpWrapper>
         </>
     );

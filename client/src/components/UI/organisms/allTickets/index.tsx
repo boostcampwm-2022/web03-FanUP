@@ -2,7 +2,7 @@ import { dummyTickets } from '@utils/dummy';
 import React from 'react';
 import AllTicket from '@molecules/allTicket';
 import styled from 'styled-components';
-import { useGetAllTicketsQuery } from '@/services/ticket';
+import { useGetAllTicketsQuery } from '@/services/ticket.service';
 
 const AllTicketsWrapper = styled.div`
     display: flex;

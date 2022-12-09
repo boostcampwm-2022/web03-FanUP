@@ -11,7 +11,7 @@ const Default = styled.div<IProps>`
     width: ${({ width }) => width};
     height: ${({ height }) => height};
     border-radius: ${({ borderRadius }) => borderRadius};
-    background: ${({ theme }) => theme.PRIMARY};
+    background: linear-gradient(to right, #9e57ff, #7ed0fa);
     color: white;
     font-weight: 700;
     display: flex;

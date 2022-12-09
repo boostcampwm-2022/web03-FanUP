@@ -1,6 +1,10 @@
-import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import React, { useCallback, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useGetUserQuery } from '@services/user.service';
+import LogOutBtn from '@atoms/LogOutBtn';
+import { useModal } from '@/hooks/useModal';
+import NicknameEditModal from '../../molecules/NicknameEditModal';
 
 import { socket, SOCKET_EVENTS, connectSocket, SOCKET_FEATURE } from '@/socket';
 import AlarmIcon from '@icons/AlarmIcon';
@@ -29,10 +33,14 @@ const HeaderLeft = styled.div`
     align-items: center;
     div {
         display: flex;
-        gap: 25px;
+        gap: 10px;
         button {
+            padding: 10px 15px;
             font-weight: 700;
             font-size: 16px;
+            &:hover {
+                background: ${({ theme }) => theme.LIGHT_GRAY};
+            }
         }
     }
 `;
@@ -40,12 +48,32 @@ const HeaderLeft = styled.div`
 const HeaderRight = styled.div`
     display: flex;
     gap: 20px;
+    align-items: center;
+    font-weight: 700;
+
+    strong {
+        background: linear-gradient(to right, #9e57ff, #7ed0fa);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        //color: ${({ theme }) => theme.LIGHT_SKY};
+        //color: white;
+        display: inline-block;
+    }
+`;
+
+const HelloUserButton = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
 `;
 
 const Header = () => {
-    //TODO: 서버와 통신을 통해 Artist 여부 확인
-    const [isArtist, setIsArtist] = useState(false);
+    const { data: UserData } = useGetUserQuery();
     const navigate = useNavigate();
+    const [open, setOpen, openNicknameModal, closeNicknameModal] = useModal();
 
     useEffect(() => {
         connectSocket(SOCKET_FEATURE.notification);
@@ -55,12 +83,15 @@ const Header = () => {
     const clickSearch = useCallback(() => {
         alert('searchCallback');
     }, []);
+
     const clickAlarm = useCallback(() => {
         alert('alarmCallback');
     }, []);
+
     const clickUser = useCallback(() => {
-        navigate('/login');
-    }, []);
+        if (!UserData) navigate('/login');
+        else alert('로그인이 완료되었어요');
+    }, [UserData]);
 
     const gotoPage = useCallback(
         (url: string) => () => {
@@ -73,7 +104,6 @@ const Header = () => {
         () => [
             { key: 'search', icon: <SearchIcon />, onClick: clickSearch },
             { key: 'alarm', icon: <AlarmIcon />, onClick: clickAlarm },
-            { key: 'user', icon: <UserIcon />, onClick: clickUser },
         ],
         []
     );
@@ -85,20 +115,32 @@ const Header = () => {
                     <Logo />
                 </button>
                 <div>
-                    {isArtist ? (
-                        <button onClick={gotoPage('/schedule')}>스케쥴</button>
-                    ) : (
-                        <button onClick={gotoPage('/tickets')}>티켓팅</button>
-                    )}
+                    <button onClick={gotoPage('/tickets')}>티켓팅</button>
+                    {UserData && <button onClick={gotoPage('/schedule')}>티켓생성</button>}
                 </div>
             </HeaderLeft>
             <HeaderRight>
+                {UserData && (
+                    <>
+                        <HelloUserButton onClick={openNicknameModal}>
+                            안녕하세요 <strong>{UserData.nickname}</strong> 님
+                        </HelloUserButton>
+                        {open && <NicknameEditModal open={open} onClose={closeNicknameModal} />}
+                    </>
+                )}
                 {icons.map(({ key, icon, onClick }) => (
                     <button data-testid={key} key={key} onClick={onClick}>
                         {icon}
                     </button>
                 ))}
                 <NotificationContainer />
+                {UserData ? (
+                    <LogOutBtn />
+                ) : (
+                    <button data-testid="user" onClick={clickUser}>
+                        <UserIcon />
+                    </button>
+                )}
             </HeaderRight>
         </HeaderRoot>
     );

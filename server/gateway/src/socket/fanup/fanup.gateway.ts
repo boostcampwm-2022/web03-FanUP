@@ -1,3 +1,4 @@
+import { UseGuards } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -8,6 +9,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { JwtAuthGuard } from '../../api/auth/auth.guard';
 import { ValidateUser } from '../../common/types';
 import { FanUPService } from './fanup.service';
 
@@ -36,26 +38,26 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('offer')
   offer(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
-    const { email, offer, targetSocketID } = data;
+    const { userId, nickname, offer, targetSocketID } = data;
     this.server
       .to(targetSocketID)
-      .emit('offer', { email, offer, socketID: socket.id });
+      .emit('offer', { userId, nickname, offer, socketID: socket.id });
   }
 
   @SubscribeMessage('answer')
   answer(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
-    const { email, answer, targetSocketID } = data;
+    const { userId, answer, targetSocketID } = data;
     this.server
       .to(targetSocketID)
-      .emit('answer', { email, answer, socketID: socket.id });
+      .emit('answer', { userId, answer, socketID: socket.id });
   }
 
   @SubscribeMessage('ice')
   ice(@ConnectedSocket() socket: Socket, @MessageBody() data): void {
-    const { email, ice, targetSocketID } = data;
+    const { userId, ice, targetSocketID } = data;
     this.server
       .to(targetSocketID)
-      .emit('ice', { email, ice, socketID: socket.id });
+      .emit('ice', { userId, ice, socketID: socket.id });
   }
 
   // =========== 채팅 및 참여자 ===========
@@ -78,7 +80,9 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   // 소켓 연결이 생성되면
-  handleConnection(@ConnectedSocket() socket: Socket): void {}
+  async handleConnection(@ConnectedSocket() socket: Socket) {
+    await this.fanUPService.handleConnect(socket);
+  }
 
   // 소켓 연결이 끊기면 실행
   handleDisconnect(@ConnectedSocket() socket: Socket) {

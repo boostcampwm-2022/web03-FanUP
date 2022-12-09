@@ -16,6 +16,7 @@ enum FanUPStatus {
 model FanUp {
   id Int @id @default(autoincrement())
   ticket_id Int
+  artist_id Int?
   room_id String @unique
   start_time DateTime
   end_time DateTime
@@ -27,7 +28,7 @@ model FanUp {
 model Chat {
     id Int @id @default(autoincrement())
     fanup_id String
-    email String
+    userId Int?
     is_artist Boolean
     message String
     created_at DateTime @default(now())
@@ -38,4 +39,13 @@ model FileEntity {
   link String @unique
   name String?
   mimeType String?
+}
+
+model Notification {
+  id Int @id @default(autoincrement())
+  user_id Int?
+  message String?
+  read Boolean?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }

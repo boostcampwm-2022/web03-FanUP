@@ -1,10 +1,11 @@
-import { artistApi } from '@/services/artist';
-import { userApi } from '@/services/user';
+import { artistApi } from '@/services/artist.service';
+import { userApi } from '@/services/user.service';
 import { combineReducers } from '@reduxjs/toolkit';
 import artistSlice from './artist';
 import userSlice from './user';
 import fanUpSlice from './fanUp';
-import { ticketApi } from '@/services/ticket';
+import { ticketApi } from '@/services/ticket.service';
+import { fanupApi } from '@/services/fanup.service';
 
 const reducer = combineReducers({
     artistSlice,
@@ -13,6 +14,7 @@ const reducer = combineReducers({
     [artistApi.reducerPath]: artistApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [ticketApi.reducerPath]: ticketApi.reducer,
+    [fanupApi.reducerPath]: fanupApi.reducer,
 });
 
 export type ReducerType = ReturnType<typeof reducer>;

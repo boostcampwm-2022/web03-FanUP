@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
+import { TICKET_CONFIG } from './common/constants/config';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -8,8 +9,8 @@ async function bootstrap() {
     {
       transport: Transport.TCP,
       options: {
-        host: '0.0.0.0',
-        port: 3003,
+        host: TICKET_CONFIG.HOST,
+        port: TICKET_CONFIG.PORT,
       },
     },
   );

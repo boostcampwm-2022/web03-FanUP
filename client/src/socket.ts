@@ -35,12 +35,17 @@ let socket: Socket | null = null;
 const ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/socket/`;
 
 const connectSocket = (feature: string) => {
-    if (socket) return;
-    socket = io(ENDPOINT + feature);
-
-    socket.on('connect', () => {
-        console.log('socket connected : ', socket?.id);
-    });
+    console.log(`${localStorage.getItem('token')}`);
+    if (!socket)
+        socket = io(ENDPOINT + feature, {
+            extraHeaders: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+        });
 };
 
-export { socket, SOCKET_EVENTS, SOCKET_FEATURE, connectSocket };
+const initializeSocket = () => {
+    socket = null;
+};
+
+export { socket, SOCKET_EVENTS, SOCKET_FEATURE, connectSocket, initializeSocket };

@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import { ReducerType } from '@store/rootReducer';
 import ParticipantsList from '@organisms/participantsList';
-import RoomList from '@/components/UI/organisms/RoomList';
-import ChatContainer from '@/components/UI/organisms/ChatContainer';
+import RoomList from '@organisms/RoomList';
+import ChatContainer from '@organisms/ChatContainer';
 import FeatureModeSelector from '@atoms/FeatureModeSelector';
 
 const FeatureBoxWrapper = styled.div`
@@ -27,19 +27,21 @@ const ROOMLIST_MODE = -1;
 const PARTICIPANTS_MODE = 0;
 const CHAT_MODE = 1;
 
-const FeatureContent: { [key: string]: JSX.Element } = {
-    '-1': <RoomList />,
-    '0': <ParticipantsList />,
-    '1': <ChatContainer />,
-};
+interface IProps {
+    users: { nickname: string }[];
+}
 
-const FeatureBox = () => {
+const FeatureBox = ({ users }: IProps) => {
     const mode = useSelector<ReducerType, number>(({ fanUpSlice }) => fanUpSlice.mode);
 
     return (
         <FeatureBoxWrapper>
             <FeatureModeSelector />
-            <FeatureContentWrapper>{FeatureContent[String(mode)]}</FeatureContentWrapper>
+            <FeatureContentWrapper>
+                {mode === ROOMLIST_MODE && <RoomList />}
+                {mode === PARTICIPANTS_MODE && <ParticipantsList users={users} />}
+                {mode === CHAT_MODE && <ChatContainer />}
+            </FeatureContentWrapper>
         </FeatureBoxWrapper>
     );
 };

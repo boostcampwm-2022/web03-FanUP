@@ -1,5 +1,5 @@
 import ExitIcon from '@icons/ExitIcon';
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import styled from 'styled-components';
 
 const ExitBtnWrapper = styled.button`
@@ -7,9 +7,13 @@ const ExitBtnWrapper = styled.button`
 `;
 
 const ExitBtn = () => {
+    const exit = useCallback(() => {
+        if (!window.confirm('나가시겠습니까?')) return;
+        window.location.replace('/');
+    }, []);
     return (
-        <ExitBtnWrapper data-testid="exitBtn">
-            <ExitIcon />
+        <ExitBtnWrapper data-testid="exitBtn" onClick={exit}>
+            <ExitIcon fill="white" />
         </ExitBtnWrapper>
     );
 };

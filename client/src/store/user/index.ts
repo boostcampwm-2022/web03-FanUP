@@ -9,6 +9,7 @@ export const initialState: UserStore = {
     accessToken: null,
     expiredDate: null,
     myStream: null,
+    token: null,
     artistListViewMode: 전체,
 };
 
@@ -16,10 +17,6 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        testAction(state, action: PayloadAction<{ id: string }>) {
-            const { id } = action.payload;
-            state.id = id;
-        },
         login(state, action: PayloadAction<{ id: string }>) {
             const { id } = action.payload;
             state.id = id;
@@ -37,10 +34,13 @@ export const userSlice = createSlice({
         setArtistListViewMode(state, action: PayloadAction<number>) {
             state.artistListViewMode = action.payload;
         },
+        setToken(state, action: PayloadAction<number | null>) {
+            state.token = action.payload;
+        },
     },
 });
 
-export const { testAction, login, logout, setMyStream, initializeMyStream, setArtistListViewMode } =
+export const { setToken, login, logout, setMyStream, initializeMyStream, setArtistListViewMode } =
     userSlice.actions;
 
 export default userSlice.reducer;
