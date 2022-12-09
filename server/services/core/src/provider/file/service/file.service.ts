@@ -7,14 +7,18 @@ import { CreateFileDto } from '../dto';
 export class FileService {
   constructor(private prisma: PrismaService) {}
 
-  async uploadSingleFile(file: Array<Express.MulterS3.File>) {
+  async uploadSingleFile(file: Array<Express.MulterS3.File>, userId: string) {
     try {
       const uploadFile = this.fileToEntity(file[0]);
+      uploadFile.userId = parseInt(userId);
       if (!uploadFile) {
         throw new FileBadRequestException();
       }
-      return await this.prisma.fileEntity.create({ data: uploadFile });
+      const data = await this.prisma.fileEntity.create({ data: uploadFile });
+      console.log(data);
+      return data;
     } catch (err) {
+      console.log(err);
       return err;
     }
   }
