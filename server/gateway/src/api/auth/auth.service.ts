@@ -28,4 +28,8 @@ export class AuthService {
     console.log('createArtist', createArtistDto);
     return this.authClient.send({ cmd: 'createArtist' }, createArtistDto);
   }
+
+  public getAllArtist() {
+    return this.authClient.send({ cmd: 'getAllArtist' }, {});
+  }
 }

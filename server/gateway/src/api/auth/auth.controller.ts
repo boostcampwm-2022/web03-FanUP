@@ -42,4 +42,9 @@ export class AuthController {
       ...body,
     });
   }
+
+  @Get('/artist')
+  async getAllArtist() {
+    return this.authService.getAllArtist();
+  }
 }
