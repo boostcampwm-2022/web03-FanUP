@@ -10,7 +10,7 @@ import {
 import { AllGlobalExceptionsFilter } from 'src/common/exception/filter/global-exception.filter';
 import { JwtAuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
-import CreateArtistDto from './dto/create-artist.dto';
+// import CreateArtistDto from './dto/create-artist.dto';
 import LoginDto from './dto/login.dto';
 
 @UseFilters(AllGlobalExceptionsFilter)
@@ -34,12 +34,12 @@ export class AuthController {
     return this.authService.getUserInfo(user.id);
   }
 
-  @Post('/artist')
-  @UseGuards(JwtAuthGuard)
-  async createArtist(@Req() { user }, @Body() body: CreateArtistDto) {
-    return this.authService.createArtist({
-      userId: user.id,
-      ...body,
-    });
-  }
+  // @Post('/artist')
+  // @UseGuards(JwtAuthGuard)
+  // async createArtist(@Req() { user }, @Body() body: CreateArtistDto) {
+  //   return this.authService.createArtist({
+  //     userId: user.id,
+  //     ...body,
+  //   });
+  // }
 }
