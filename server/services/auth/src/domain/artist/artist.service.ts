@@ -20,7 +20,7 @@ export class ArtistService {
     profileUrl,
   }: requestCreateArtistDto): Promise<any> {
     const user = await this.userService.findOne(userId);
-    console.log(user);
+
     if (user.role !== 'ARTIST') {
       throw new CustomRpcException(
         'User is not an artist',
@@ -43,6 +43,15 @@ export class ArtistService {
 
   findAll(): Promise<Artist[]> {
     return this.prisma.artist.findMany();
+  }
+
+  async findFavoritesByUserId(userId: number): Promise<Artist[]> {
+    const favorites = await this.prisma.favorite.findMany({
+      where: { userId },
+      include: { artist: true },
+    });
+
+    return favorites.map((favorite) => favorite.artist);
   }
 
   findOne(id: number): Promise<Artist> {

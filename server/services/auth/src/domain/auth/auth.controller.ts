@@ -6,11 +6,10 @@ import { AuthService } from './auth.service';
 import LoginDto from './dto/request-login.dto';
 import { JwtService } from './jwt.service';
 
-@Controller('auth')
+@Controller()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get()
   @MessagePattern({ cmd: 'getAuthHello' })
   getAuthHello(): string {
     return this.authService.getAuthHello();

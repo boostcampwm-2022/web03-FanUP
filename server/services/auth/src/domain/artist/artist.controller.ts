@@ -21,4 +21,9 @@ export class ArtistController {
   async getAllArtist(): Promise<Artist[]> {
     return this.artistService.findAll();
   }
+
+  @MessagePattern({ cmd: 'getFavoriteArtist' })
+  async getFavoriteArtist(@Payload() userId: number): Promise<Artist[]> {
+    return this.artistService.findFavoritesByUserId(userId);
+  }
 }

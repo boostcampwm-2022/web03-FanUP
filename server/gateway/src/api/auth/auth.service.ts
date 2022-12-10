@@ -32,6 +32,10 @@ export class AuthService {
     return this.authClient.send({ cmd: 'getAllArtist' }, {});
   }
 
+  public getFavoriteArtist(userId: number) {
+    return this.authClient.send({ cmd: 'getFavoriteArtist' }, userId);
+  }
+
   public createFavorite(createFavoriteDto) {
     console.log('createFavorite', createFavoriteDto);
     return this.authClient.send({ cmd: 'createFavorite' }, createFavoriteDto);

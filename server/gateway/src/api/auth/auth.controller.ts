@@ -51,39 +51,38 @@ export class AuthController {
     return this.authService.getAllArtist();
   }
 
-  @Post('/favorite')
-  @UseGuards(JwtAuthGuard)
-  async createFavorite(
-    @Req() { user },
-    @Body('artistId', ParseIntPipe) artistId: number,
-  ) {
-    return this.authService.createFavorite({
-      userId: user.id,
-      artistId,
-    });
+  @Get('/artist/favorite')
+  // @UseGuards(JwtAuthGuard)
+  async getFavoriteArtist(@Req() { user }) {
+    return this.authService.getFavoriteArtist(
+      // userId: user.id,
+      2,
+    );
   }
 
   @Post('/artist/:artistId/favorite')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async createFavoriteByArtistId(
     @Req() { user },
     @Param('artistId', ParseIntPipe) artistId: number,
   ) {
     console.log('asdf', user, artistId);
     return this.authService.createFavorite({
-      userId: user.id,
+      // userId: user.id,
+      userId: 2,
       artistId,
     });
   }
 
   @Delete('/artist/:artistId/favorite')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async deleteFavoriteByArtistId(
     @Req() { user },
     @Param('artistId', ParseIntPipe) artistId: number,
   ) {
     return this.authService.deleteFavorite({
-      userId: user.id,
+      // userId: user.id,
+      userId: 2,
       artistId,
     });
   }
