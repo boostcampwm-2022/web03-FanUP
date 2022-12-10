@@ -20,7 +20,6 @@ export class AuthService {
   }
 
   public getUserInfo(userId: number) {
-    console.log('getUserInfo', userId);
     return this.authClient.send({ cmd: 'getUserInfo' }, userId);
   }
 
@@ -31,5 +30,15 @@ export class AuthService {
 
   public getAllArtist() {
     return this.authClient.send({ cmd: 'getAllArtist' }, {});
+  }
+
+  public createFavorite(createFavoriteDto) {
+    console.log('createFavorite', createFavoriteDto);
+    return this.authClient.send({ cmd: 'createFavorite' }, createFavoriteDto);
+  }
+
+  public deleteFavorite(deleteFavoriteDto) {
+    console.log('deleteFavorite', deleteFavoriteDto);
+    return this.authClient.send({ cmd: 'deleteFavorite' }, deleteFavoriteDto);
   }
 }

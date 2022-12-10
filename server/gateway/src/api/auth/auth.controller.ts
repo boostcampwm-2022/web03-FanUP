@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
   Req,
   UseFilters,
@@ -46,5 +49,42 @@ export class AuthController {
   @Get('/artist')
   async getAllArtist() {
     return this.authService.getAllArtist();
+  }
+
+  @Post('/favorite')
+  @UseGuards(JwtAuthGuard)
+  async createFavorite(
+    @Req() { user },
+    @Body('artistId', ParseIntPipe) artistId: number,
+  ) {
+    return this.authService.createFavorite({
+      userId: user.id,
+      artistId,
+    });
+  }
+
+  @Post('/artist/:artistId/favorite')
+  @UseGuards(JwtAuthGuard)
+  async createFavoriteByArtistId(
+    @Req() { user },
+    @Param('artistId', ParseIntPipe) artistId: number,
+  ) {
+    console.log('asdf', user, artistId);
+    return this.authService.createFavorite({
+      userId: user.id,
+      artistId,
+    });
+  }
+
+  @Delete('/artist/:artistId/favorite')
+  @UseGuards(JwtAuthGuard)
+  async deleteFavoriteByArtistId(
+    @Req() { user },
+    @Param('artistId', ParseIntPipe) artistId: number,
+  ) {
+    return this.authService.deleteFavorite({
+      userId: user.id,
+      artistId,
+    });
   }
 }
