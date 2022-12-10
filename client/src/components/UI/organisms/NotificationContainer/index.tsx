@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import CloseIcon from '@icons/CloseIcon';
@@ -94,7 +94,54 @@ const StyledContent = styled.div`
     }
 `;
 
-const NotificationItem = ({ id }: any) => {
+// const NotificationItem = ({ id }: any) => {
+//     return (
+//         <>
+//             <input
+//                 className="checkbox"
+//                 type="checkbox"
+//                 id={id}
+//                 value="small"
+//                 checked
+//                 onChange={() => console.log('check')}
+//             />
+//             <label className="notification new" htmlFor={id}>
+//                 <em>오늘</em> 팬업 티켓팅 성공
+//                 <i className="right">
+//                     <CloseIcon />
+//                 </i>
+//             </label>
+//             <input
+//                 className="checkbox"
+//                 type="checkbox"
+//                 id={id}
+//                 value="small"
+//                 checked
+//                 onChange={() => console.log('check')}
+//             />
+//             <label className="notification" htmlFor={id}>
+//                 <em>3일전</em> 팬업 티켓팅 성공
+//                 <i className="right">
+//                     <CloseIcon />
+//                 </i>
+//             </label>
+//         </>
+//     );
+// };
+
+interface Notification {
+    roomId: string;
+    startTime: string;
+    endTime: string;
+    userId: number;
+    message: string;
+}
+
+interface NotificationItemProps {
+    newNotification: Notification;
+}
+
+const NotificationItem = ({ newNotification, id }: any) => {
     return (
         <>
             <input
@@ -103,24 +150,10 @@ const NotificationItem = ({ id }: any) => {
                 id={id}
                 value="small"
                 checked
-                onChange={() => console.log('check')}
+                onChange={() => console.log('알림 클릭')}
             />
             <label className="notification new" htmlFor={id}>
-                <em>오늘</em> 팬업 티켓팅 성공
-                <i className="right">
-                    <CloseIcon />
-                </i>
-            </label>
-            <input
-                className="checkbox"
-                type="checkbox"
-                id={id}
-                value="small"
-                checked
-                onChange={() => console.log('check')}
-            />
-            <label className="notification" htmlFor={id}>
-                <em>3일전</em> 팬업 티켓팅 성공
+                <em>오늘</em> {newNotification.message}
                 <i className="right">
                     <CloseIcon />
                 </i>
@@ -129,12 +162,29 @@ const NotificationItem = ({ id }: any) => {
     );
 };
 
-const NotificationContainer = () => {
+interface Notification {
+    roomId: string;
+    startTime: string;
+    endTime: string;
+    userId: number;
+    message: string;
+}
+
+interface Props {
+    newNotifications: Notification[];
+}
+
+const NotificationContainer: FC<Props> = ({ newNotifications }) => {
     return (
         <StyledNotificationContainer>
             <StyledHeader>Notifications</StyledHeader>
             <StyledContent>
-                <NotificationItem />
+                {newNotifications.map((newNotification) => (
+                    <NotificationItem
+                        key={newNotification.roomId}
+                        newNotification={newNotification}
+                    />
+                ))}
             </StyledContent>
         </StyledNotificationContainer>
     );
