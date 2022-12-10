@@ -37,4 +37,15 @@ export class UserTicketController {
   deleteTicket(@Payload() userTicketId: number) {
     return this.userTicketService.delete(userTicketId);
   }
+
+  @MessagePattern({ cmd: 'findManyByTicketId' })
+  findManyByTicketId(@Payload() ticketId: number) {
+    return this.userTicketService.findManyByTicketId(ticketId);
+  }
+
+  @MessagePattern({ cmd: 'updateFanUPIdById' })
+  updateFanUPIdById(@Payload() data) {
+    const { id, fanupId } = data;
+    return this.userTicketService.updateFanUPIdById(id, fanupId);
+  }
 }

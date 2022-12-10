@@ -14,7 +14,7 @@ export function dateToDict(date: Date) {
 
 export function getToday() {
   const today = new Date();
-  return `${today.getFullYear()}-${today.getMonth()}-${today.getDay()}`;
+  return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDay()}`;
 }
 
 export function isToday({ year, month, day }: BasicDate) {
