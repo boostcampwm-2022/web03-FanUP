@@ -112,7 +112,7 @@ const Header = () => {
     const [open, setOpen, openNicknameModal, closeNicknameModal] = useModal();
     const [notifications, setNofitifcations] = useState<any>([]);
     const [isOnNotificationMark, setIsOnNotificationMark] = useState<boolean>(false);
-    const [isOpenNotificationModal, setIsOpenNotificationModal] = useState<boolean>(false);
+    const [isOpenNotificationModal, setIsOpenNotificationModal] = useState<boolean>(true);
 
     useEffect(() => {
         setNofitifcations((curr: any) => [...curr, ...testData]);
@@ -136,7 +136,8 @@ const Header = () => {
     }, []);
 
     const clickAlarm = useCallback(() => {
-        alert('alarmCallback');
+        setIsOnNotificationMark(false);
+        setIsOpenNotificationModal((curr) => !curr);
     }, []);
 
     const clickUser = useCallback(() => {
@@ -178,7 +179,6 @@ const Header = () => {
                     {isOnNotificationMark && <StyledNewNotificationMark />}
                     <AlarmIcon />
                 </button>
-
                 {isOpenNotificationModal && <NotificationContainer notifications={notifications} />}
                 {UserData ? (
                     <LogOutBtn />

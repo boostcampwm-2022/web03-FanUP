@@ -22,7 +22,7 @@ const StyledNotificationContainer = styled.div`
     position: absolute;
     z-index: 999;
     top: 70px;
-    right: 6rem;
+    right: 3.5rem;
     width: 400px;
     font-weight: 300;
     background: white;
@@ -135,10 +135,6 @@ interface Notification {
     endTime: string;
     userId: number;
     message: string;
-}
-
-interface NotificationItemProps {
-    newNotification: Notification;
 }
 
 const NotificationItem = ({ notification, id }: any) => {
