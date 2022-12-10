@@ -3,6 +3,7 @@ export {
   dateToDict,
   getToday,
   isToday,
+  compareTodayByDate,
   getDate,
   addMinutes,
   minusMinutes,

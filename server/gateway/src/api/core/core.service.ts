@@ -4,6 +4,7 @@ import { catchError, lastValueFrom, of } from 'rxjs';
 import * as FormData from 'form-data';
 import { MICRO_SERVICES } from '../../common/constants/microservices';
 import { CustomRes } from '../../common/types';
+import fetch from 'node-fetch';
 
 export class CoreService {
   constructor(
@@ -21,19 +22,22 @@ export class CoreService {
   async getAllChatMessage() {
     return this.apiClient
       .send('findChatByFanUPId', {})
-      .pipe(catchError((val) => of({ error: val.message })));
+      .pipe(catchError((err) => of(err)));
   }
 
-  uploadSingleFile(file) {
+  async uploadSingleFile(file, userId) {
     const formData = new FormData();
     formData.append('file', file.buffer, { filename: file.originalname });
-    return formData.submit(
-      `http://${MICRO_SERVICES.CORE.HOST}:4002/file/single`,
-      function (err, res) {
-        if (err) return err;
-        return res;
+    formData.append('userId', userId);
+    return fetch(
+      `http://${MICRO_SERVICES.CORE.HOST}:4002/file/single?userId=${userId}`,
+      {
+        method: 'POST',
+        body: formData,
       },
-    );
+    ).then(function (res) {
+      return res.json();
+    });
   }
 
   uploadMultipleFile(files) {
@@ -48,5 +52,17 @@ export class CoreService {
         return res;
       },
     );
+  }
+
+  async getAllFanUP() {
+    return await this.apiClient
+      .send('getAllFanUP', {})
+      .pipe(catchError((err) => of(err)));
+  }
+
+  async createFanUP(data) {
+    return await this.apiClient
+      .send('createFanUP', data)
+      .pipe(catchError((err) => of(err)));
   }
 }

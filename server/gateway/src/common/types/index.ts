@@ -6,3 +6,6 @@ export { JoinSocketRoom } from './join-socket-room';
 export { SendMessage } from './send-message';
 export { CreateChat } from './create-chat';
 export { SocketChat } from './socket-chat';
+export { FindNotification } from './find-notification';
+export { UpdateNotification } from './update-notification';
+export { User } from './user';

@@ -5,8 +5,7 @@ export class CreateChatDto implements Prisma.ChatCreateInput {
   @IsUUID()
   fanup_id: string;
 
-  @IsEmail()
-  email: string;
+  userId: number;
 
   @IsBoolean()
   is_artist: boolean;

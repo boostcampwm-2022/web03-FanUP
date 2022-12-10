@@ -1,10 +1,10 @@
 import { ResMessage, ResStatusCode } from '../../constants/index';
 import { CustomRpcException } from '../custom-rpc.exception';
 
-export class LoginFailException extends CustomRpcException {
+export class NotificationUpdateException extends CustomRpcException {
   constructor(
-    message = ResMessage.CANNOT_LOGIN,
-    status = ResStatusCode.UNPROCESSABLE_ENTITY,
+    message = ResMessage.NOTIFICATION_UPDATE_FAIL,
+    status = ResStatusCode.BAD_REQUEST,
   ) {
     super({ message, status });
   }

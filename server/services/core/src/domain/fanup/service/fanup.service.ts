@@ -6,7 +6,7 @@ import {
   FanUPUpdateException,
 } from '../../../common/exception';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
-import { CreateFanupDto, UpdateFanupDto } from '../dto';
+import { CreateFanupDto, CreateTimeDto, UpdateFanupDto } from '../dto';
 
 @Injectable()
 export class FanupService {
@@ -35,8 +35,9 @@ export class FanupService {
     }
   }
 
-  async create(start_time: Date, end_time: Date) {
-    const createFanupDto = new CreateFanupDto(start_time, end_time);
+  async create(data: CreateTimeDto) {
+    const { start_time, end_time, artist_id } = data;
+    const createFanupDto = new CreateFanupDto(start_time, end_time, artist_id);
 
     return await this.prisma.fanUp.create({
       data: createFanupDto,
@@ -102,7 +103,7 @@ export class FanupService {
   }
 
   async isExist(room_id: string) {
-    const fanUp = await this.prisma.fanUp.findUnique({
+    const fanUp = await this.prisma.fanUp.findFirst({
       where: {
         room_id,
       },
@@ -112,6 +113,27 @@ export class FanupService {
       return true;
     }
     throw new FanUPNotFoundException();
+  }
+
+  async getAllFanUP() {
+    try {
+      return await this.prisma.fanUp.findMany();
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+
+  async findByArtistId(artistId: number) {
+    try {
+      return await this.prisma.fanUp.findMany({
+        where: {
+          artist_id: artistId,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   /**
