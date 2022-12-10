@@ -3,7 +3,6 @@ import { Cron } from '@nestjs/schedule';
 import {
   addMinutes,
   compareTodayByDate,
-  getDate,
   minusMinutes,
 } from '../../common/util';
 import { FanupService } from '../../domain/fanup/service/fanup.service';
@@ -13,6 +12,7 @@ import { ClientTCP } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { NotificationService } from '../../domain/notification/service/notification.service';
 import { JobService } from '../job.service';
+import { Ticket } from '../../common/type';
 
 @Injectable()
 export class FanUPNotificationTask {
@@ -36,6 +36,12 @@ export class FanUPNotificationTask {
     await this.addFanUPDynamicTask();
   }
 
+  // @Cron('0/10 * * * * *', { name: 'test' })
+  async test() {
+    const data = await this.getUserTicketByTicketId(19);
+    console.log(data);
+  }
+
   getYesterdayCron() {
     return this.cronJobName.filter((val) => {
       const date = val.split('-')[0];
@@ -43,17 +49,26 @@ export class FanUPNotificationTask {
     });
   }
 
-  async getTodayTicket() {
-    this.logger.log('getTodayTicket');
+  async getTodayFanUP() {
+    this.logger.log('getTodayFanUP');
     const tickets = await lastValueFrom(
       this.ticketClient.send({ cmd: 'findTicketByToday' }, {}),
     );
     return tickets.filter((val) => val.status === 'OPEN');
   }
 
+  // 티켓 내용 확인용 테스트 함수
+  async getAllTicket(): Promise<Ticket[]> {
+    this.logger.log('getAllTicket');
+    const tickets = await lastValueFrom(
+      this.ticketClient.send({ cmd: 'getAllTicket' }, {}),
+    );
+    return tickets.filter((val) => val.status === 'OPEN');
+  }
+
   async addFanUPDynamicTask() {
     this.logger.log('addFanUPTask');
-    const tickets = await this.getTodayTicket();
+    const tickets = await this.getTodayFanUP();
 
     tickets.forEach((ticket) => {
       const startDate = new Date(ticket.startTime);
@@ -61,70 +76,103 @@ export class FanUPNotificationTask {
       const date: Date = minusMinutes(startDate, 30);
 
       this.cronJobName.push(name);
-      this.jobService.addTask(name, date, async () => await this.fanUPTask());
+      this.jobService.addTask(
+        name,
+        date,
+        async () => await this.fanUPTask(ticket),
+      );
     });
   }
 
-  // 팬미팅 시작 30분 전 실행되는 크론잡
-  async fanUPTask() {
-    // TODO Ticket Module에서 판매된 수량과 최대 인원, 팀당 시간을 불러오는 로직
-    // 1. 해당 티켓의 판매 수량을 알아야되서 해당 티켓을 산 사람의 리스트 findUserTicketByTicketId
-    // 2. 당일 날 열리는 팬미팅 방 : status와 날짜로 필터링
-    this.logger.log('FanUP 스케줄 실행');
-    const ticket = {
-      ticketId: 5,
-      ticketAmount: 5,
-      maxNum: 5,
-      timePerTeam: 10,
-      meetingStartTime: {
-        year: 2022,
-        month: 12,
-        day: 2,
-        hour: 0,
-        minute: 55,
-      },
-    };
-
-    const date: Date = getDate(ticket.meetingStartTime);
-    const roomAmount = this.fanupService.calculateFanUP(
-      ticket.ticketAmount,
-      ticket.maxNum,
+  async getUserTicketByTicketId(ticketId: number) {
+    this.logger.log(`해당 티켓을 구매한 유저를 가져오기 - ${ticketId}`);
+    const userTickets = await lastValueFrom(
+      this.ticketClient.send({ cmd: 'findManyByTicketId' }, ticketId),
     );
+    return userTickets;
+  }
+
+  async createFanUP(startTime: Date, endTime: Date, artistId: number) {
+    this.logger.log('createFanUP');
+    const fanUP = await this.fanupService.create({
+      start_time: startTime,
+      end_time: endTime,
+      artist_id: artistId,
+    });
+    return { fanupId: fanUP.id, roomId: fanUP.room_id };
+  }
+
+  getFanUPTime(order: number, ticket: Ticket) {
+    this.logger.log('getFanUPTime');
+    const { startTime, timeTeam } = ticket;
+    const date: Date = new Date(startTime);
+    const start = addMinutes(date, order * timeTeam);
+    const end = addMinutes(start, timeTeam);
+    return [start, end];
+  }
+
+  async updateUserTicket(fanupId: number, userTicketId: number) {
+    this.logger.log('updateUserTicket');
+    await lastValueFrom(
+      this.ticketClient.send(
+        { cmd: 'updateFanUPIdById' },
+        { id: userTicketId, fanupId },
+      ),
+    );
+  }
+
+  async sendNotification(data) {
+    this.logger.log('sendNotification');
+    const env = process.env.NODE_ENV === 'production';
+    const gateway = env ? 'fanup-gateway' : 'localhost';
+
+    const socket = io(`http://${gateway}:3000/socket/notification`);
+    socket.emit('send-room-notification', { ...data });
+    socket.disconnect();
+  }
+
+  // 팬미팅 시작 30분 전 실행되는 크론잡
+  async fanUPTask(ticket: Ticket) {
+    this.logger.log('FanUP 스케줄 실행');
+
     try {
-      const gateway =
-        process.env.NODE_ENV === 'production' ? 'fanup-gateway' : 'localhost';
-      const socket = io(`http://${gateway}:3000/socket/notification`);
+      const { id, artistId, totalAmount, numberTeam }: Ticket = ticket;
+      const userTickets: any[] = await this.getUserTicketByTicketId(id);
 
-      Array.from({ length: roomAmount }, (_, i) => i).forEach(
-        async (element) => {
-          const startTime = addMinutes(date, element * ticket.timePerTeam);
-          const endTime = addMinutes(startTime, ticket.timePerTeam);
-          const artist_id = 1;
-          const fanUP = await this.fanupService.create({
-            start_time: startTime,
-            end_time: endTime,
-            artist_id,
-          });
-          const room_id = fanUP.room_id;
-
-          // user-ticket을 가져와서 분배
-          socket.emit('send-room-notification', {
-            room_id,
-            startTime,
-            endTime,
-            email: 'test',
-            message:
-              '아티스트 방이 생성되었어요 아티스트가 기다리는 곳으로 오세요',
-          });
-
-          // TODO Ticket Module에서 room_id가 비어있는 user-ticket을 불러와 방 업데이트
-
-          // 알림 객체를 생성
-          // await this.notificationService.create({user_id, message})
-        },
+      const roomAmount = this.fanupService.calculateFanUP(
+        totalAmount,
+        numberTeam,
       );
+
+      Array.from({ length: roomAmount }, (_, i) => i).forEach(async (order) => {
+        const [start, end] = this.getFanUPTime(order, ticket);
+        const { fanupId, roomId } = await this.createFanUP(
+          start,
+          end,
+          artistId,
+        );
+
+        const userInfo = userTickets.slice(order, numberTeam * (order + 1));
+        userInfo.forEach(async (info) => {
+          const message = '아티스트 방이 생성되었어요';
+
+          await this.updateUserTicket(fanupId, info.id);
+          await this.sendNotification({
+            roomId,
+            startTime: start,
+            endTime: end,
+            userId: info.userId,
+            message,
+          });
+          await this.notificationService.create({
+            user_id: info.userId,
+            message,
+            read: false,
+          });
+        });
+      });
     } catch (err) {
-      console.error(err);
+      console.log(err);
       return err;
     }
   }
