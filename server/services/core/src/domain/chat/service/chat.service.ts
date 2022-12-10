@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { FanupService } from '../../../domain/fanup/service/fanup.service';
 import {
   ChatCreateFailException,
   ChatNotFoundException,
@@ -8,17 +9,21 @@ import { ChatDto, CreateChatDto } from '../dto';
 
 @Injectable()
 export class ChatService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly fanupService: FanupService,
+  ) {}
 
   async createChat(createChatDto: CreateChatDto) {
     // TODO 해당 채팅방의 존재 여부를 확인하는 로직이 필요
     try {
-      console.log(createChatDto);
-      return await this.prisma.chat.create({
-        data: createChatDto,
-      });
+      const isFanUPExist = this.fanupService.isExist(createChatDto.fanup_id);
+      if (isFanUPExist) {
+        return await this.prisma.chat.create({
+          data: createChatDto,
+        });
+      }
     } catch (err) {
-      console.log(err);
       throw new ChatCreateFailException();
     }
   }

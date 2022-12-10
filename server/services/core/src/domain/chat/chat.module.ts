@@ -3,6 +3,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ChatService } from './service/chat.service';
 import { ChatController } from './controller/chat.controller';
 import { PrismaService } from '../../provider/prisma/prisma.service';
+import { FanupService } from '../fanup/service/fanup.service';
 
 @Module({
   imports: [CacheModule.register()],
@@ -11,6 +12,7 @@ import { PrismaService } from '../../provider/prisma/prisma.service';
     ChatService,
     Logger,
     PrismaService,
+    FanupService,
     {
       provide: APP_INTERCEPTOR,
       useClass: CacheInterceptor,
