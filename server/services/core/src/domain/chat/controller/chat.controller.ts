@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  UseInterceptors,
-  CacheInterceptor,
-} from '@nestjs/common';
+import { Controller, Get, UseFilters, UseInterceptors } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   LoggingInterceptor,
@@ -15,8 +8,10 @@ import { ChatService } from '../service/chat.service';
 import { SetResponse } from '../../../common/decorator';
 import { ResMessage, ResStatusCode } from '../../../common/constants';
 import { CreateChatDto } from '../dto';
+import { AllRPCExceptionFilter } from '../../../common/filter';
 
-// @UseInterceptors(LoggingInterceptor, TransformInterceptor)
+@UseFilters(new AllRPCExceptionFilter())
+@UseInterceptors(LoggingInterceptor, TransformInterceptor)
 @Controller('/chat')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
