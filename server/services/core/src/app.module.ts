@@ -9,6 +9,7 @@ import { FileModule } from './provider/file/file.module';
 import { ConfigModule } from '@nestjs/config';
 import { JobModule } from './job/job.module';
 import { NotificationModule } from './domain/notification/notification.module';
+import { RedisModule } from './provider/cache/redis.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { NotificationModule } from './domain/notification/notification.module';
     }),
     JobModule,
     NotificationModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],
