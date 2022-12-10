@@ -58,7 +58,6 @@ export class RedisService {
     try {
       this.logger.log(`updateArray: ${key}`, value);
       array.push(value);
-      this.logger.log(array);
       await this.cacheManager.set(key, JSON.stringify(array));
     } catch (err) {
       console.log(err);

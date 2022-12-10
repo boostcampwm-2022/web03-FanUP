@@ -25,13 +25,28 @@ export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
   @UseInterceptors(CacheInterceptor)
+  @SetResponse(ResMessage.GET_ALL_CHAT, ResStatusCode.OK)
   @Get('get')
   async get() {
     return await this.chatService.findAllChat();
   }
 
+  @UseInterceptors(CacheInterceptor)
+  @SetResponse(ResMessage.GET_ALL_CHAT, ResStatusCode.OK)
+  @Get('string')
+  async getFanUP() {
+    return await this.chatService.findChatByFanUPId('test');
+  }
+
+  @SetResponse(ResMessage.CREATE_CHAT, ResStatusCode.CREATED)
   @Post('post')
   async createChat(@Body() createChatDto: CreateChatDto) {
+    return await this.chatService.createChat(createChatDto);
+  }
+
+  @SetResponse(ResMessage.CREATE_CHAT, ResStatusCode.CREATED)
+  @Post('string')
+  async createTest(@Body() createChatDto: CreateChatDto) {
     return await this.chatService.createChat(createChatDto);
   }
 

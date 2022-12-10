@@ -4,6 +4,7 @@ import { ChatService } from './service/chat.service';
 import { ChatController } from './controller/chat.controller';
 import { PrismaService } from '../../provider/prisma/prisma.service';
 import { FanupService } from '../fanup/service/fanup.service';
+import { RedisService } from 'src/provider/cache/redis.service';
 
 @Module({
   imports: [CacheModule.register()],
@@ -17,6 +18,7 @@ import { FanupService } from '../fanup/service/fanup.service';
       provide: APP_INTERCEPTOR,
       useClass: CacheInterceptor,
     },
+    RedisService,
   ],
 })
 export class ChatModule {}
