@@ -60,4 +60,11 @@ export class UserTicketService {
   async findManyByTicketId(ticketId: number) {
     return this.prisma.userTicket.findMany({ where: { ticketId } });
   }
+
+  async updateFanUPIdById(id: number, fanupId: number) {
+    return await this.prisma.userTicket.update({
+      where: { id },
+      data: { fanupId },
+    });
+  }
 }
