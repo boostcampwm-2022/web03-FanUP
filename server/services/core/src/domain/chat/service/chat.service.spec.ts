@@ -44,7 +44,7 @@ describe('ChatService', () => {
     // given
     const createChatDto: CreateChatDto = {
       fanup_id: '1ad8e8ca-e748-4732-998a-439b0ebe9928',
-      email: 'jinsung1048@gmail.com',
+      userId: 1,
       is_artist: true,
       message: 'second',
     };
@@ -54,7 +54,7 @@ describe('ChatService', () => {
 
     // then
     expect(result.fanup_id).toBe(createChatDto.fanup_id);
-    expect(result.email).toBe(createChatDto.email);
+    expect(result.userId).toBe(createChatDto.userId);
     expect(result.is_artist).toBe(createChatDto.is_artist);
     expect(result.message).toBe(createChatDto.message);
   });
@@ -65,14 +65,14 @@ describe('ChatService', () => {
     const chatDto: ChatDto[] = [
       {
         fanup_id: '1ad8e8ca-e748-4732-998a-439b0ebe9928',
-        email: 'jinsung1048@gmail.com',
+        userId: 1,
         is_artist: true,
         message: 'hihi',
         created_at: new Date('2022-11-27T08:29:45.293Z'),
       },
       {
         fanup_id: '1ad8e8ca-e748-4732-998a-439b0ebe9928',
-        email: 'jinsung1048@gmail.com',
+        userId: 1,
         is_artist: true,
         message: 'second',
         created_at: new Date('2022-11-27T08:32:07.219Z'),
@@ -84,7 +84,7 @@ describe('ChatService', () => {
 
     // then
     expect(result[0].fanup_id).toBe(result[1].fanup_id);
-    expect(result[0].email).toBe(result[1].email);
+    expect(result[0].userId).toBe(result[1].userId);
     expect(result[0].is_artist).toBe(true);
   });
 
