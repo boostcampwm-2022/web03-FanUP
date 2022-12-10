@@ -43,4 +43,9 @@ export class TicketController {
   updateTicket(@Payload() data) {
     return this.ticketService.update(data.ticketId, data.updateTicketDto);
   }
+
+  @MessagePattern({ cmd: 'findTicketByToday' })
+  async findTicketByToday() {
+    return await this.ticketService.findTicketByToday();
+  }
 }
