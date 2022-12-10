@@ -13,7 +13,7 @@ interface UserInfo {
   provider: string;
   nickname: string;
   email: string | null;
-  picture: string | null;
+  profileUrl: string | null;
 }
 export interface LoginResponse {
   accessToken: string;
@@ -68,6 +68,11 @@ export class AuthService {
     );
     if (!user) {
       user = await this.userService.create(userInfo);
+    } else {
+      user = await this.userService.updateProfileUrl(
+        user.id,
+        userInfo.profileUrl,
+      );
     }
 
     return {
@@ -93,7 +98,7 @@ export class AuthService {
       provider: 'google',
       nickname: name,
       email,
-      picture,
+      profileUrl: picture,
     };
   }
 
@@ -112,7 +117,7 @@ export class AuthService {
       provider: 'kakao',
       nickname: properties.nickname,
       email: kakao_account.email,
-      picture: properties.profile_image,
+      profileUrl: properties.profile_image,
     };
   }
 }

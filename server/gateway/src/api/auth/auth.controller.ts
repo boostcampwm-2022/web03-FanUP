@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
   Req,
   UseFilters,
@@ -10,7 +13,7 @@ import {
 import { AllGlobalExceptionsFilter } from 'src/common/exception/filter/global-exception.filter';
 import { JwtAuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
-// import CreateArtistDto from './dto/create-artist.dto';
+import CreateArtistDto from './dto/create-artist.dto';
 import LoginDto from './dto/login.dto';
 
 @UseFilters(AllGlobalExceptionsFilter)
@@ -34,12 +37,48 @@ export class AuthController {
     return this.authService.getUserInfo(user.id);
   }
 
-  // @Post('/artist')
-  // @UseGuards(JwtAuthGuard)
-  // async createArtist(@Req() { user }, @Body() body: CreateArtistDto) {
-  //   return this.authService.createArtist({
-  //     userId: user.id,
-  //     ...body,
-  //   });
-  // }
+  @Post('/artist')
+  @UseGuards(JwtAuthGuard)
+  async createArtist(@Req() { user }, @Body() body: CreateArtistDto) {
+    return this.authService.createArtist({
+      userId: user.id,
+      ...body,
+    });
+  }
+
+  @Get('/artist')
+  async getAllArtist() {
+    return this.authService.getAllArtist();
+  }
+
+  @Get('/artist/favorite')
+  @UseGuards(JwtAuthGuard)
+  async getFavoriteArtist(@Req() { user }) {
+    return this.authService.getFavoriteArtist(user.id);
+  }
+
+  @Post('/artist/:artistId/favorite')
+  @UseGuards(JwtAuthGuard)
+  async createFavoriteByArtistId(
+    @Req() { user },
+    @Param('artistId', ParseIntPipe) artistId: number,
+  ) {
+    console.log('asdf', user, artistId);
+    return this.authService.createFavorite({
+      userId: user.id,
+      artistId,
+    });
+  }
+
+  @Delete('/artist/:artistId/favorite')
+  @UseGuards(JwtAuthGuard)
+  async deleteFavoriteByArtistId(
+    @Req() { user },
+    @Param('artistId', ParseIntPipe) artistId: number,
+  ) {
+    return this.authService.deleteFavorite({
+      userId: user.id,
+      artistId,
+    });
+  }
 }
