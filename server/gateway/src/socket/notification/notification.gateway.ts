@@ -27,15 +27,15 @@ class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
   server: Server;
 
   notification = {
-    email: '',
+    userId: '',
   };
 
   @SubscribeMessage('join-notification')
   joinNotification(@ConnectedSocket() socket: Socket, @MessageBody() data) {
     try {
-      const { email } = data;
-      this.notification[email] = socket.id;
-      socket.join(email);
+      const { userId } = data;
+      this.notification[userId] = socket.id;
+      socket.join(userId);
       this.logger.log('join-notification: ' + socket.id);
     } catch (err) {
       this.server
@@ -72,15 +72,15 @@ class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('send-room-notification')
   roomNotification(@ConnectedSocket() socket: Socket, @MessageBody() data) {
-    const { room_id, email, message } = data;
-    this.logger.log(`send-room-notification: ${email}`);
+    const { roomId, userId, message } = data;
+    this.logger.log(`send-room-notification: `, data);
 
-    const targetEmail = email || 'test';
+    // const targetEmail = email || 'test';
     const test = {
-      room: '1' || room_id,
+      room: '1' || roomId,
       message: 'BTS 방이 생성되었어요 BTS가 기다리는 곳으로 오세요' || message,
     };
-    this.server.to(targetEmail).emit('receive-room-notification', test);
+    this.server.to(userId).emit('receive-room-notification', data);
   }
 
   // 소켓 연결이 생성되면

@@ -7,7 +7,7 @@ import OAuthContainer from '@organisms/OAuthContainer';
 // interface Props {}
 
 const AppLayout = styled.div`
-    background-color: ${({ theme }) => theme.PRIMARY};
+    background: linear-gradient(to right, #9e57ff, #7ed0fa);
     width: 100vw;
     height: 100vh;
     display: flex;

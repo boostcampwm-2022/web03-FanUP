@@ -30,7 +30,9 @@ export class CoreController {
   @Post('file/single')
   @UseInterceptors(FileInterceptor('file'))
   async uploadSingleFile(@Req() request: Request, @UploadedFile() file) {
-    return this.coreService.uploadSingleFile(file);
+    const { userId } = request.query;
+    console.log(userId);
+    return await this.coreService.uploadSingleFile(file, userId);
   }
 
   @Post('file/multiple')

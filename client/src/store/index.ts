@@ -1,5 +1,6 @@
 import { artistApi } from '@/services/artist.service';
 import { fanupApi } from '@/services/fanup.service';
+import { fileApi } from '@/services/file.service';
 import { ticketApi } from '@/services/ticket.service';
 import { userApi } from '@/services/user.service';
 import { configureStore } from '@reduxjs/toolkit';
@@ -12,7 +13,8 @@ const store = configureStore({
             .concat(artistApi.middleware)
             .concat(userApi.middleware)
             .concat(ticketApi.middleware)
-            .concat(fanupApi.middleware),
+            .concat(fanupApi.middleware)
+            .concat(fileApi.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;

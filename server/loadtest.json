@@ -1,0 +1,38 @@
+{
+  "config": {
+    "target": "http://localhost:4002",
+    "phases": [
+      {
+        "duration": 60,
+        "arrivalRate": 30
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "flow": [
+        {
+          "get": {
+            "url": "/chat/get"
+          }
+        },
+        {
+          "post": {
+            "url": "/chat/post",
+            "json": {
+              "fanup_id": "689909c2-9709-48a3-b3bc-c127ba48252e",
+              "email": "jinsung1048@naver.com",
+              "is_artist": false,
+              "message": "너무 좋아요"
+            }
+          }
+        },
+        {
+          "get": {
+            "url": "/chat/get"
+          }
+        }
+      ]
+    }
+  ]
+}
