@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import CalendarPrevBtn from '@atoms/calendarPrevBtn';
 import CalendarNextBtn from '@atoms/calendarNextBtn';
+import { addZero } from '@utils/addZero';
 
 const CalendarHeaderWrapper = styled.div`
     width: 100%;
@@ -94,6 +95,5 @@ const CalendarHeader = () => {
         </CalendarHeaderWrapper>
     );
 };
-export const addZero = (month: number) => (month < 10 ? `0${month}` : `${month}`);
 
 export default CalendarHeader;

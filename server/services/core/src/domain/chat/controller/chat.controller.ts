@@ -29,7 +29,7 @@ export class ChatController {
 
   @SetResponse(ResMessage.CREATE_CHAT, ResStatusCode.CREATED)
   @MessagePattern('createChat')
-  async create(@Payload() createChatDto: CreateChatDto) {
+  async create(createChatDto: CreateChatDto) {
     return await this.chatService.createChat(createChatDto);
   }
 

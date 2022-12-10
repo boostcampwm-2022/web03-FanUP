@@ -35,6 +35,22 @@ export class BasicTask {
     await this.addFanUPTask();
   }
 
+  @Cron('0/10 * * * * *', { name: 'notification-test' })
+  async notificationTest() {
+    const gateway =
+      process.env.NODE_ENV === 'production' ? 'fanup-gateway' : 'localhost';
+    const socket = io(`http://${gateway}:3000/socket/notification`);
+
+    // user-ticket을 가져와서 분배
+    socket.emit('send-room-notification', {
+      roomId: 'random',
+      startTime: new Date(),
+      endTime: addMinutes(new Date(), 10),
+      userId: 1,
+      message: '아티스트 방이 생성되었어요 아티스트가 기다리는 곳으로 오세요',
+    });
+  }
+
   addTask(name: string, date: Date) {
     const job = new CronJob(date, async () => {
       try {
@@ -123,7 +139,12 @@ export class BasicTask {
         async (element) => {
           const startTime = addMinutes(date, element * ticket.timePerTeam);
           const endTime = addMinutes(startTime, ticket.timePerTeam);
-          const fanUP = await this.fanupService.create(startTime, endTime);
+          const artist_id = 1;
+          const fanUP = await this.fanupService.create({
+            start_time: startTime,
+            end_time: endTime,
+            artist_id,
+          });
           const room_id = fanUP.room_id;
 
           // user-ticket을 가져와서 분배

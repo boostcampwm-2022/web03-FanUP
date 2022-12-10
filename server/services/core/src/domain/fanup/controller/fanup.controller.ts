@@ -19,7 +19,7 @@ export class FanupController {
   @SetResponse(ResMessage.CREATE_FANUP, ResStatusCode.CREATED)
   @MessagePattern('createFanUP')
   async create(data: CreateTimeDto) {
-    return await this.fanupService.create(data.start_time, data.end_time);
+    return await this.fanupService.create(data);
   }
 
   @SetResponse(ResMessage.UPDATE_FANUP, ResStatusCode.OK)
@@ -41,5 +41,11 @@ export class FanupController {
   @MessagePattern('isFanUPExist')
   async isExist(data: { room_id: string }) {
     return await this.fanupService.isExist(data.room_id);
+  }
+
+  @SetResponse(ResMessage.GET_ALL_FANUP, ResStatusCode.OK)
+  @MessagePattern('getAllFanUP')
+  async getAllFanUP() {
+    return await this.fanupService.getAllFanUP();
   }
 }

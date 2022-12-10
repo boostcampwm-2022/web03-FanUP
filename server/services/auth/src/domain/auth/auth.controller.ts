@@ -1,12 +1,11 @@
 import { Controller, Get, UseFilters } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { User } from '@prisma/client';
-import { AllRPCExceptionFilter } from 'src/common/exception/filter/rpc-exception.filter';
 
 import { AuthService } from './auth.service';
 import LoginDto from './dto/request-login.dto';
+import { JwtService } from './jwt.service';
 
-@UseFilters(new AllRPCExceptionFilter())
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -25,5 +24,11 @@ export class AuthController {
   @MessagePattern({ cmd: 'getUserInfo' })
   async getUserInfo(@Payload() userId: number): Promise<User> {
     return this.authService.getUserInfo(userId);
+  }
+
+  @MessagePattern({ cmd: 'verifyUser' })
+  async verifyUser(@Payload() data) {
+    const { token } = data;
+    return await this.authService.verifyUser(token);
   }
 }

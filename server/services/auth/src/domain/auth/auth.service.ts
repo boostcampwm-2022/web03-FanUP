@@ -2,8 +2,9 @@ import { HttpService } from '@nestjs/axios';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { firstValueFrom, map } from 'rxjs';
+import { CustomRpcException } from 'src/common/exception/custom-rpc-exception';
 
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/domain/user/user.service';
 import RequestLoginDto from './dto/request-login.dto';
 import { JwtService } from './jwt.service';
 
@@ -12,12 +13,12 @@ interface UserInfo {
   provider: string;
   nickname: string;
   email: string | null;
-  // picture: string | null;
+  picture: string | null;
 }
 export interface LoginResponse {
-  status: number;
-  error: string[] | null;
-  data: any;
+  accessToken: string;
+  refreshToken: string;
+  profile: User;
 }
 
 @Injectable()
@@ -36,6 +37,12 @@ export class AuthService {
     return this.userService.findOne(userId);
   }
 
+  public async verifyUser(token: string) {
+    const payload: any = await this.jwtService.verify(token);
+    console.log(payload);
+    return await this.userService.findOne(payload.id);
+  }
+
   public async login(loginDto: RequestLoginDto): Promise<LoginResponse> {
     const { provider, accessToken } = loginDto;
 
@@ -48,11 +55,10 @@ export class AuthService {
         userInfo = await this.getKakaoProfile(accessToken);
       } else throw new Error();
     } catch (err) {
-      return {
-        status: HttpStatus.BAD_REQUEST,
-        error: ['Bad Request'],
-        data: null,
-      };
+      throw new CustomRpcException(
+        err.message ? 'Invalid AccessToken' : 'Invalid Provider',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     // check if user exists
@@ -65,13 +71,9 @@ export class AuthService {
     }
 
     return {
-      status: HttpStatus.OK,
-      error: null,
-      data: {
-        accessToken: this.jwtService.generateToken(user),
-        refreshToken: this.jwtService.generateRefreshToken(user),
-        profile: user,
-      },
+      accessToken: this.jwtService.generateToken(user),
+      refreshToken: this.jwtService.generateRefreshToken(user),
+      profile: user,
     };
   }
 
@@ -83,18 +85,15 @@ export class AuthService {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        .pipe(
-          map(async (response) => {
-            return response.data;
-          }),
-        ),
+        .pipe(map(async (response) => response.data)),
     );
+
     return {
       providerId: sub,
       provider: 'google',
       nickname: name,
       email,
-      // picture,
+      picture,
     };
   }
 
@@ -106,18 +105,14 @@ export class AuthService {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        .pipe(
-          map(async (response) => {
-            return response.data;
-          }),
-        ),
+        .pipe(map(async (response) => response.data)),
     );
     return {
       providerId: String(id),
       provider: 'kakao',
       nickname: properties.nickname,
       email: kakao_account.email,
-      // picture: properties.profile_image,
+      picture: properties.profile_image,
     };
   }
 }

@@ -14,27 +14,33 @@ import {
     Ticket,
     TicketingSuccess,
     TicketingFailure,
+    Schedule,
+    Artist,
 } from './Routes';
+import ErrorBoundary from '@hoc/errorBoundary';
 
 function App() {
-    console.log('github actions test!!!');
     return (
-        <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <Suspense fallback={<></>}>
-                <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/auth/:domain/callback" element={<AuthCallback />} />
-                    <Route path="/" element={<Home />} />
-                    <Route path="/fanup/:fanUpId" element={<FanUP />} />
-                    <Route path="/tickets" element={<Tickets />} />
-                    <Route path="/ticket/:ticketId" element={<Ticket />} />
-                    <Route path="/ticketing/success" element={<TicketingSuccess />} />
-                    <Route path="/ticketing/failure" element={<TicketingFailure />} />
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
-            </Suspense>
-        </ThemeProvider>
+        <ErrorBoundary>
+            <ThemeProvider theme={theme}>
+                <GlobalStyle />
+                <Suspense fallback={<></>}>
+                    <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/auth/:domain/callback" element={<AuthCallback />} />
+                        <Route path="/" element={<Home />} />
+                        <Route path="/fanup/:fanUpId" element={<FanUP />} />
+                        <Route path="/tickets" element={<Tickets />} />
+                        <Route path="/ticket/:ticketId" element={<Ticket />} />
+                        <Route path="/ticketing/success" element={<TicketingSuccess />} />
+                        <Route path="/ticketing/failure" element={<TicketingFailure />} />
+                        <Route path="/schedule" element={<Schedule />} />
+                        <Route path="/artist" element={<Artist />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </Suspense>
+            </ThemeProvider>
+        </ErrorBoundary>
     );
 }
 

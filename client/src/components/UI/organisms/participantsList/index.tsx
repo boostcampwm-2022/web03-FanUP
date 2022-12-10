@@ -1,4 +1,5 @@
 import Participants from '@/components/UI/atoms/Participants';
+import { useGetUserQuery } from '@/services/user.service';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -8,22 +9,28 @@ const ParticipantsListWrapper = styled.div`
     gap: 10px;
 `;
 
-export const dummyParticipantsList = [
-    { nickname: '안병준', isMute: false, isCameraOn: true },
-    { nickname: '김성은', isMute: true, isCameraOn: false },
-    { nickname: '김진성', isMute: true, isCameraOn: true },
-    { nickname: '홍성빈', isMute: false, isCameraOn: false },
-];
+interface IProps {
+    users: { nickname: string }[];
+}
 
-const ParticipantsList = () => {
+const ParticipantsList = ({ users }: IProps) => {
+    const { data: userData } = useGetUserQuery();
     return (
         <ParticipantsListWrapper data-testid="participantsList">
-            {dummyParticipantsList.map(({ nickname, isMute, isCameraOn }) => (
+            {userData && (
+                <Participants
+                    key={userData.id}
+                    nickname={userData.nickname}
+                    isMute={false}
+                    isCameraOn={false}
+                />
+            )}
+            {users?.map(({ nickname }) => (
                 <Participants
                     key={nickname}
                     nickname={nickname}
-                    isMute={isMute}
-                    isCameraOn={isCameraOn}
+                    isMute={false}
+                    isCameraOn={false}
                 />
             ))}
         </ParticipantsListWrapper>

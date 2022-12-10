@@ -1,10 +1,14 @@
 import {
+  Body,
   Controller,
+  Param,
   Post,
+  Req,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { Request } from 'express';
 import { S3Storage } from '../../../common/config';
 import { FileService } from '../service/file.service';
 
@@ -19,8 +23,13 @@ export class FileController {
       limits: { fileSize: 1048576 },
     }),
   )
-  async uploadSingleFile(@UploadedFiles() file: Array<Express.MulterS3.File>) {
-    return await this.fileService.uploadSingleFile(file);
+  async uploadSingleFile(
+    @Req() request: Request,
+    @UploadedFiles() file: Array<Express.MulterS3.File>,
+  ) {
+    const { userId } = request.query;
+    console.log(userId);
+    return await this.fileService.uploadSingleFile(file, userId as string);
   }
 
   @Post('multiple')

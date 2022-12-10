@@ -6,6 +6,7 @@ import { ReducerType } from '@store/rootReducer';
 
 import { socket, SOCKET_EVENTS, connectSocket } from '@/socket';
 import { useGetUserQuery } from '@/services/user.service';
+import { useParams } from 'react-router-dom';
 
 const urls = [
     'stun:stun.l.google.com:19302',
@@ -21,6 +22,7 @@ const useFanUP = (): [
         [key: string]: RTCPeerConnection;
     }>
 ] => {
+    const { fanUpId } = useParams();
     const [users, setUsers] = useState<any[]>([]);
     const peerConnections = useRef<{ [key: string]: RTCPeerConnection }>({});
     const { data: UserData, isLoading: loginLoading } = useGetUserQuery();
@@ -33,12 +35,12 @@ const useFanUP = (): [
 
     const dispatch = useDispatch();
 
-    const createPeerConnection = (socketID: string) => {
+    const createPeerConnection = (socketID: string, nickname: string) => {
         try {
             const pc = new RTCPeerConnection({ iceServers: [{ urls }] });
             myStream?.getTracks().forEach((track) => pc.addTrack(track, myStream));
-            pc.addEventListener('icecandidate', (e) => handleIce(e, socketID));
-            pc.addEventListener('addstream', (e) => handleAddStream(e, socketID));
+            pc.addEventListener('icecandidate', (e) => handleIce(e, socketID, nickname));
+            pc.addEventListener('addstream', (e) => handleAddStream(e, socketID, nickname));
             return pc;
         } catch (e) {
             console.error(e);
@@ -46,17 +48,18 @@ const useFanUP = (): [
         }
     };
 
-    const welcomeCallback = async ({ email, nickname, socketID }: any) => {
+    const welcomeCallback = async ({ userId, nickname, socketID }: any) => {
         //내가 보낸 welcome이 나에게 왔을 때,
         if (socket?.id === socketID) return;
-        const pc = createPeerConnection(socketID);
+        const pc = createPeerConnection(socketID, nickname);
         if (!pc) return;
         const offer = await pc.createOffer();
         pc.setLocalDescription(offer);
         peerConnections.current[socketID] = pc;
         socket?.emit(SOCKET_EVENTS.offer, {
             offer,
-            email: UserData?.email,
+            userId: UserData?.id,
+            nickname: UserData?.nickname,
             targetSocketID: socketID,
         });
     };
@@ -64,13 +67,15 @@ const useFanUP = (): [
     const offerCallback = async ({
         offer,
         socketID,
-        email,
+        userId,
+        nickname,
     }: {
         offer: RTCSessionDescriptionInit;
         socketID: string;
-        email: string;
+        userId: string;
+        nickname: string;
     }) => {
-        const pc = createPeerConnection(socketID);
+        const pc = createPeerConnection(socketID, nickname);
         if (!pc) return;
         pc.setRemoteDescription(offer);
         const answer = await pc.createAnswer();
@@ -78,17 +83,17 @@ const useFanUP = (): [
         peerConnections.current[socketID] = pc;
         socket?.emit(SOCKET_EVENTS.answer, {
             answer,
-            email: UserData?.email,
+            userId: UserData?.id,
             targetSocketID: socketID,
         });
     };
 
     const answerCallback = async ({
-        email,
+        userId,
         answer,
         socketID,
     }: {
-        email: string;
+        userId: string;
         answer: RTCSessionDescriptionInit;
         socketID: string;
     }) => {
@@ -96,37 +101,45 @@ const useFanUP = (): [
     };
 
     const iceCallback = ({
-        email,
+        userId,
         ice,
         socketID,
     }: {
-        email: string;
+        userId: string;
         ice: RTCIceCandidateInit;
         socketID: string;
     }) => {
         peerConnections.current[socketID]?.addIceCandidate(ice);
     };
 
-    const handleIce = (data: RTCPeerConnectionIceEvent, targetSocketID: string) => {
+    const handleIce = (
+        data: RTCPeerConnectionIceEvent,
+        targetSocketID: string,
+        nickname: string
+    ) => {
         socket?.emit(SOCKET_EVENTS.ice, {
             ice: data.candidate,
-            email: UserData?.email,
+            userId: UserData?.id,
+            nickname,
             targetSocketID,
         });
     };
 
-    const handleAddStream = (data: any, socketID: string) => {
-        setUsers((prev) => [...prev, { stream: data.stream, socketID }]);
+    const handleAddStream = (data: any, socketID: string, nickname: string) => {
+        setUsers((prev) => [...prev, { stream: data.stream, socketID, nickname }]);
     };
 
     const leaveCallback = ({ socketId }: { socketId: string }) => {
-        console.log('leave');
         peerConnections.current[socketId].close();
         delete peerConnections.current[socketId];
         setUsers((prev) => prev.filter((data) => data.socketID !== socketId));
     };
 
     const unMount = (e?: BeforeUnloadEvent) => {
+        if (loginLoading) return;
+        if (!myStream) return;
+        if (Object.keys(peerConnections.current).length !== 0) return;
+
         setUsers([]);
         socket?.off(SOCKET_EVENTS.welcome, welcomeCallback);
         socket?.off(SOCKET_EVENTS.offer, offerCallback);
@@ -138,11 +151,9 @@ const useFanUP = (): [
         });
         peerConnections.current = {};
         myStream?.getTracks().forEach((track) => {
-            console.log('stop');
             track.stop();
         });
         dispatch(initializeMyStream());
-        console.log(socket);
         socket?.disconnect();
     };
 
@@ -151,8 +162,11 @@ const useFanUP = (): [
         if (!myStream) return;
         if (Object.keys(peerConnections.current).length !== 0) return;
 
-        console.log('socket : ', socket);
-        socket?.emit(SOCKET_EVENTS.joinRoom, { room: '1', email: UserData?.email });
+        socket?.emit(SOCKET_EVENTS.joinRoom, {
+            room: fanUpId,
+            userId: UserData?.id,
+            nickname: UserData?.nickname,
+        });
         socket?.on(SOCKET_EVENTS.welcome, welcomeCallback);
         socket?.on(SOCKET_EVENTS.offer, offerCallback);
         socket?.on(SOCKET_EVENTS.answer, answerCallback);

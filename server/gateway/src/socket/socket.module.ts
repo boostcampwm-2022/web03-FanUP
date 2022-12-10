@@ -6,6 +6,7 @@ import { FanUPGateway } from './fanup/fanup.gateway';
 import { FanUPService } from './fanup/fanup.service';
 import { NotificationGateway } from './notification/notification.gateway';
 import { NotificationService } from './notification/notification.service';
+import { AuthService } from '../api/auth/auth.service';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { NotificationService } from './notification/notification.service';
     FanUPService,
     NotificationGateway,
     NotificationService,
+    AuthService,
   ],
   exports: [FanUPService, NotificationService],
 })

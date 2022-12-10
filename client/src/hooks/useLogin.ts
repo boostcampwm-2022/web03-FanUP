@@ -16,13 +16,10 @@ export const useLogin = () => {
 
     const login = useCallback(async ({ accessToken, provider }: ITokenData) => {
         const { data } = (await mutate({ accessToken, provider })) as { data: any };
-
         if (data.error) return alert(data.error);
 
-        const response = data.data;
-
-        localStorage.setItem('token', response.accessToken);
-        dispatch(setToken(response.accessToken));
+        localStorage.setItem('token', data.accessToken);
+        dispatch(setToken(data.accessToken));
         navigate('/');
     }, []);
 
