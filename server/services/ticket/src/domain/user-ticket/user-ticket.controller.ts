@@ -37,4 +37,9 @@ export class UserTicketController {
   deleteTicket(@Payload() userTicketId: number) {
     return this.userTicketService.delete(userTicketId);
   }
+
+  @MessagePattern({ cmd: 'findManyByTicketId' })
+  findManyByTicketId(@Payload() ticketId: number) {
+    return this.userTicketService.findManyByTicketId(ticketId);
+  }
 }
