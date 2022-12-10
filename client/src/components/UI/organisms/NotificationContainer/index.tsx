@@ -141,7 +141,7 @@ interface NotificationItemProps {
     newNotification: Notification;
 }
 
-const NotificationItem = ({ newNotification, id }: any) => {
+const NotificationItem = ({ notification, id }: any) => {
     return (
         <>
             <input
@@ -153,7 +153,7 @@ const NotificationItem = ({ newNotification, id }: any) => {
                 onChange={() => console.log('알림 클릭')}
             />
             <label className="notification new" htmlFor={id}>
-                <em>오늘</em> {newNotification.message}
+                <em>오늘</em> {notification.message}
                 <i className="right">
                     <CloseIcon />
                 </i>
@@ -171,19 +171,16 @@ interface Notification {
 }
 
 interface Props {
-    newNotifications: Notification[];
+    notifications: Notification[];
 }
 
-const NotificationContainer: FC<Props> = ({ newNotifications }) => {
+const NotificationContainer: FC<Props> = ({ notifications }) => {
     return (
         <StyledNotificationContainer>
             <StyledHeader>Notifications</StyledHeader>
             <StyledContent>
-                {newNotifications.map((newNotification) => (
-                    <NotificationItem
-                        key={newNotification.roomId}
-                        newNotification={newNotification}
-                    />
+                {notifications.map((notification) => (
+                    <NotificationItem key={notification.roomId} notification={notification} />
                 ))}
             </StyledContent>
         </StyledNotificationContainer>

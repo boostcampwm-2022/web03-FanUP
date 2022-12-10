@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useEffect } from 'react';
+import React, { useCallback, useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useGetUserQuery } from '@services/user.service';
@@ -70,19 +70,51 @@ const HelloUserButton = styled.button`
     font-weight: 700;
 `;
 
+const testData = [
+    {
+        roomId: '1',
+        startTime: '2022-12-10T06:26:00.002Z',
+        endTime: '2022-12-10T06:36:00.002Z',
+        userId: 1,
+        message: '상혁이 팬미팅 시작',
+    },
+    {
+        roomId: '2',
+        startTime: '2022-12-10T06:26:00.002Z',
+        endTime: '2022-12-10T06:36:00.002Z',
+        userId: 1,
+        message: '성은이 팬미팅 시작',
+    },
+];
+
+interface Notification {
+    roomId: string;
+    startTime: string;
+    endTime: string;
+    userId: number;
+    message: string;
+}
+
 const Header = () => {
     const { data: UserData } = useGetUserQuery();
     const navigate = useNavigate();
     const [open, setOpen, openNicknameModal, closeNicknameModal] = useModal();
+    const [notifications, setNofitifcations] = useState<any>([]);
 
-    // useEffect(() => {
-    //     connectSocket(SOCKET_FEATURE.notification);
-    //     if (!socket) return;
-    //     socket.emit(SOCKET_EVENTS.getNotification, { userId: 1 });
-    //     socket.emit(SOCKET_EVENTS.joinNotification, { userId: 1 });
-    //     socket.on(SOCKET_EVENTS.receiveRoomNotification, (data) => console.log('new: ', data));
-    //     socket.on(SOCKET_EVENTS.setNotification, (data) => console.log('check: ', data));
-    // }, []);
+    useEffect(() => {
+        setNofitifcations((curr: any) => [...curr, ...testData]);
+
+        connectSocket(SOCKET_FEATURE.notification);
+        if (!socket) return;
+        socket.emit(SOCKET_EVENTS.getNotification, { userId: 1 });
+        socket.emit(SOCKET_EVENTS.joinNotification, { userId: 1 });
+        socket.on(SOCKET_EVENTS.receiveRoomNotification, (data) => {
+            setNofitifcations((curr: any) => [...curr, data]);
+        });
+        socket.on(SOCKET_EVENTS.setNotification, (data: any) => {
+            setNofitifcations((curr: any) => [...curr, ...data.result.data]);
+        });
+    }, []);
 
     //TODO: 이 부분 로직이 복잡해지면, 따로 컴포넌트로 각각 분리
     const clickSearch = useCallback(() => {
@@ -113,23 +145,6 @@ const Header = () => {
         []
     );
 
-    const testData = [
-        {
-            roomId: '1',
-            startTime: '2022-12-10T06:26:00.002Z',
-            endTime: '2022-12-10T06:36:00.002Z',
-            userId: 1,
-            message: '상혁이 팬미팅 시작',
-        },
-        {
-            roomId: '2',
-            startTime: '2022-12-10T06:26:00.002Z',
-            endTime: '2022-12-10T06:36:00.002Z',
-            userId: 1,
-            message: '성은이 팬미팅 시작',
-        },
-    ];
-
     return (
         <HeaderRoot>
             <HeaderLeft>
@@ -155,7 +170,7 @@ const Header = () => {
                         {icon}
                     </button>
                 ))}
-                <NotificationContainer newNotifications={testData} />
+                <NotificationContainer notifications={notifications} />
                 {UserData ? (
                     <LogOutBtn />
                 ) : (
