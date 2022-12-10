@@ -24,6 +24,8 @@ enum SOCKET_EVENTS {
     joinFail = 'join-fail',
     sendRoomNotification = 'send-room-notification',
     receiveRoomNotification = 'receive-room-notification',
+    getNotification = 'get-notification',
+    setNotification = 'set-notification',
 }
 
 enum SOCKET_FEATURE {
@@ -35,13 +37,16 @@ let socket: Socket | null = null;
 const ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/socket/`;
 
 const connectSocket = (feature: string) => {
-    console.log(`${localStorage.getItem('token')}`);
-    if (!socket)
+    if (!socket) {
         socket = io(ENDPOINT + feature, {
             extraHeaders: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
         });
+        socket.on('connect', () => {
+            console.log('socket connected : ', socket?.id);
+        });
+    }
 };
 
 const initializeSocket = () => {
