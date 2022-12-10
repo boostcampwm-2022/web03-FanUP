@@ -42,7 +42,7 @@ export class RedisService {
   async setArray(key: string, value): Promise<void> {
     try {
       this.logger.log(`setArray: ${key}`, value);
-      const array = this.getArray(key);
+      const array = await this.getArray(key);
       if (array) {
         await this.updateArray(key, array, value);
       } else {
@@ -57,9 +57,9 @@ export class RedisService {
   async updateArray(key: string, array, value): Promise<void> {
     try {
       this.logger.log(`updateArray: ${key}`, value);
-      const jsonData = JSON.parse(array);
-      jsonData.push(value);
-      await this.cacheManager.set(key, JSON.stringify(jsonData));
+      array.push(value);
+      this.logger.log(array);
+      await this.cacheManager.set(key, JSON.stringify(array));
     } catch (err) {
       console.log(err);
       throw new Error(err.message);
