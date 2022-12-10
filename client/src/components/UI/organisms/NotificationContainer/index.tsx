@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import CloseIcon from '@icons/CloseIcon';
 import Button from '@atoms/Button';
+import { Notification } from '@organisms/header';
 
 const StyledNotificationContainer = styled.div`
     &::before {
@@ -129,14 +130,6 @@ const StyledContent = styled.div`
 //     );
 // };
 
-interface Notification {
-    roomId: string;
-    startTime: string;
-    endTime: string;
-    userId: number;
-    message: string;
-}
-
 const NotificationItem = ({ notification, id }: any) => {
     return (
         <>
@@ -157,14 +150,6 @@ const NotificationItem = ({ notification, id }: any) => {
         </>
     );
 };
-
-interface Notification {
-    roomId: string;
-    startTime: string;
-    endTime: string;
-    userId: number;
-    message: string;
-}
 
 interface Props {
     notifications: Notification[];

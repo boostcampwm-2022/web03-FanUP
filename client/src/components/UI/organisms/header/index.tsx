@@ -81,24 +81,7 @@ const StyledNewNotificationMark = styled.div`
     left: 90px;
 `;
 
-const testData = [
-    {
-        roomId: '1',
-        startTime: '2022-12-10T06:26:00.002Z',
-        endTime: '2022-12-10T06:36:00.002Z',
-        userId: 1,
-        message: '상혁이 팬미팅 시작',
-    },
-    {
-        roomId: '2',
-        startTime: '2022-12-10T06:26:00.002Z',
-        endTime: '2022-12-10T06:36:00.002Z',
-        userId: 1,
-        message: '성은이 팬미팅 시작',
-    },
-];
-
-interface Notification {
+export interface Notification {
     roomId: string;
     startTime: string;
     endTime: string;
@@ -112,11 +95,9 @@ const Header = () => {
     const [open, setOpen, openNicknameModal, closeNicknameModal] = useModal();
     const [notifications, setNofitifcations] = useState<any>([]);
     const [isOnNotificationMark, setIsOnNotificationMark] = useState<boolean>(false);
-    const [isOpenNotificationModal, setIsOpenNotificationModal] = useState<boolean>(true);
+    const [isOpenNotificationModal, setIsOpenNotificationModal] = useState<boolean>(false);
 
     useEffect(() => {
-        setNofitifcations((curr: any) => [...curr, ...testData]);
-
         connectSocket(SOCKET_FEATURE.notification);
         if (!socket) return;
         socket.emit(SOCKET_EVENTS.getNotification, { userId: 1 });
