@@ -37,9 +37,10 @@ model Artist {
 }
 
 model Favorite {
-  id          Int     @default(autoincrement()) @id
   user        User    @relation(fields: [userId], references: [id])
   userId      Int
   artist      Artist  @relation(fields: [artistId], references: [id])
   artistId    Int
+
+  @@unique([userId, artistId])
 }
