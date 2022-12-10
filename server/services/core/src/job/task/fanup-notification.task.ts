@@ -1,6 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { Cron, SchedulerRegistry } from '@nestjs/schedule';
-import { CronJob } from 'cron';
+import { Cron } from '@nestjs/schedule';
 import {
   addMinutes,
   compareTodayByDate,
@@ -13,14 +12,15 @@ import { MICRO_SERVICES } from '../../common/constants';
 import { ClientTCP } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { NotificationService } from '../../domain/notification/service/notification.service';
+import { JobService } from '../job.service';
 
 @Injectable()
-export class BasicTask {
-  private readonly logger = new Logger(BasicTask.name);
+export class FanUPNotificationTask {
+  private readonly logger = new Logger(FanUPNotificationTask.name);
   private cronJobName = [];
 
   constructor(
-    private schedulerRegistry: SchedulerRegistry,
+    private readonly jobService: JobService,
     private readonly fanupService: FanupService,
     private readonly notificationService: NotificationService,
 
@@ -28,81 +28,41 @@ export class BasicTask {
     private ticketClient: ClientTCP,
   ) {}
 
-  // 매일 밤 12시에 잡을 등록하는 크론
+  // 매일 밤 00시 30분에 잡을 등록하는 크론
   @Cron('0 0/30 * * * *', { name: 'registerTask' })
   async registerTask() {
-    this.logger.log('매일 밤 12시에 실행되는 크론잡');
-    await this.addFanUPTask();
+    this.logger.log('매일 밤 12시 30분에 실행되는 크론잡');
+    this.jobService.deleteAllTask(this.getYesterdayCron());
+    await this.addFanUPDynamicTask();
   }
 
-  @Cron('0/10 * * * * *', { name: 'notification-test' })
-  async notificationTest() {
-    const gateway =
-      process.env.NODE_ENV === 'production' ? 'fanup-gateway' : 'localhost';
-    const socket = io(`http://${gateway}:3000/socket/notification`);
-
-    // user-ticket을 가져와서 분배
-    socket.emit('send-room-notification', {
-      roomId: 'random',
-      startTime: new Date(),
-      endTime: addMinutes(new Date(), 10),
-      userId: 1,
-      message: '아티스트 방이 생성되었어요 아티스트가 기다리는 곳으로 오세요',
+  getYesterdayCron() {
+    return this.cronJobName.filter((val) => {
+      const date = val.split('-')[0];
+      return compareTodayByDate(date);
     });
   }
 
-  addTask(name: string, date: Date) {
-    const job = new CronJob(date, async () => {
-      try {
-        this.logger.log('fanup create');
-        await this.fanUPTask();
-      } catch (err) {
-        console.log(err);
-      }
-    });
-    this.schedulerRegistry.addCronJob(name, job);
-    job.start();
-
-    this.cronJobName.push(name);
-    this.logger.log(`job ${name} added!`);
-  }
-
-  stopTask(name: string) {
-    const job = this.schedulerRegistry.getCronJob(name);
-    job.stop();
-    this.logger.log(`job ${name} stopped`);
-  }
-
-  deleteTask(name: string) {
-    this.schedulerRegistry.deleteCronJob(name);
-    this.logger.log(`job ${name} deleted`);
-    this.cronJobName = this.cronJobName.filter((jobName) => jobName !== name);
-  }
-
-  async addFanUPTask() {
-    // TODO 티켓 정보를 가져오기
-    // [MOCK] 티켓에서 당일 팬미팅 시작하는 요소의 ticket_id와 판매수량 정보를 가져옴
-    this.logger.log('getAllTicket');
-    const tickets: any[] = await lastValueFrom(
-      this.ticketClient.send({ cmd: 'getAllTicket' }, {}),
+  async getTodayTicket() {
+    this.logger.log('getTodayTicket');
+    const tickets = await lastValueFrom(
+      this.ticketClient.send({ cmd: 'findTicketByToday' }, {}),
     );
+    return tickets.filter((val) => val.status === 'OPEN');
+  }
 
-    tickets
-      .filter((ticket) => {
-        const { status, startTime } = ticket;
-        if (status == 'OPEN' && compareTodayByDate(new Date(startTime))) {
-          return true;
-        }
-        return false;
-      })
-      .forEach((ticket) => {
-        const startDate = new Date(ticket.startTime);
-        const name = `${ticket.startTime}-${ticket.id}-${ticket.artistId}`;
-        // const date = addMinutes(new Date(), 0.1);
-        const date: Date = minusMinutes(startDate, 30);
-        this.logger.log(date);
-        this.addTask(name, date);
-      });
+  async addFanUPDynamicTask() {
+    this.logger.log('addFanUPTask');
+    const tickets = await this.getTodayTicket();
+
+    tickets.forEach((ticket) => {
+      const startDate = new Date(ticket.startTime);
+      const name = `${ticket.startTime}-${ticket.id}-${ticket.artistId}`;
+      const date: Date = minusMinutes(startDate, 30);
+
+      this.cronJobName.push(name);
+      this.jobService.addTask(name, date, async () => await this.fanUPTask());
+    });
   }
 
   // 팬미팅 시작 30분 전 실행되는 크론잡
