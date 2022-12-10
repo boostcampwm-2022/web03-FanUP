@@ -22,8 +22,10 @@ model User {
   provider    String
   email       String?
   nickname    String?
+  profileUrl  String?
   artist      Artist? @relation(fields: [artistId], references: [id])
   artistId    Int?    @unique
+  favorites   Favorite[]
 }
 
 model Artist {
@@ -31,4 +33,13 @@ model Artist {
   name        String
   profileUrl  String?
   user        User?
+  favorites   Favorite[]
+}
+
+model Favorite {
+  id          Int     @default(autoincrement()) @id
+  user        User    @relation(fields: [userId], references: [id])
+  userId      Int
+  artist      Artist  @relation(fields: [artistId], references: [id])
+  artistId    Int
 }
