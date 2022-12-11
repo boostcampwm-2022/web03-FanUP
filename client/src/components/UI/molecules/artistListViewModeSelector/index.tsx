@@ -21,9 +21,8 @@ const ModeButton = styled.button<{ isCurrentMode: boolean }>`
 `;
 
 export const mode = [
-    { text: '전체', value: 0 },
-    { text: '나의 아티스트', value: 1 },
-    { text: '아티스트 만나보기', value: 2 },
+    { text: '아티스트 만나보기', value: 1 },
+    { text: '나의 아티스트', value: 2 },
 ];
 
 const ArtistViewModeSelector = () => {

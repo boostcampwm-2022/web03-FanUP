@@ -1,7 +1,7 @@
 interface IAritst {
-    artist_id: number;
+    id: number;
     name: string;
-    profile_url: string;
+    profileUrl: string;
 }
 
 export interface CalendarData {

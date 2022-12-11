@@ -1,7 +1,7 @@
 import { UserStore } from '@/types/user';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const 전체 = 0;
+const 아티스트만나보기 = 1;
 
 export const initialState: UserStore = {
     id: null,
@@ -10,7 +10,7 @@ export const initialState: UserStore = {
     expiredDate: null,
     myStream: null,
     token: null,
-    artistListViewMode: 전체,
+    artistListViewMode: 아티스트만나보기,
 };
 
 export const userSlice = createSlice({

@@ -1,8 +1,9 @@
 import { IAritst } from '@/types/artist';
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import LazyImg from '@atoms/LazyImg';
 import DefaultImg from '@atoms/defaultImg';
+import SubscribeBtn from '@atoms/SubscribeBtn';
 
 const ArtistCardWrapper = styled.div`
     cursor: pointer;
@@ -32,25 +33,9 @@ const ArtistCardWrapper = styled.div`
         img {
             transform: scale(1.05);
         }
-    }
-`;
-
-const Logo = styled.div`
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: white;
-    border-radius: 100%;
-    left: 50%;
-    bottom: 1.5rem;
-    transform: translate(-50%, -50%);
-    img {
-        border-radius: 100%;
-        width: 85%;
-        height: 85%;
+        div {
+            transform: scale(1.05);
+        }
     }
 `;
 
@@ -60,17 +45,19 @@ interface Props {
 }
 
 const ArtistCard = ({ artist }: Props) => {
+    const gotoArtistPage = useCallback(() => {
+        alert('아티스트 개인 페이지는 준비중입니다 :(');
+    }, []);
+
     return (
-        <ArtistCardWrapper>
-            {artist.profile_url ? (
-                <LazyImg src={artist.profile_url} alt="background" width="100%" height="100%" />
+        <ArtistCardWrapper onClick={gotoArtistPage}>
+            {artist.profileUrl ? (
+                <LazyImg src={artist.profileUrl} alt="background" width="100%" height="100%" />
             ) : (
                 <DefaultImg width="100%" height="100%" borderRadius="8px" />
             )}
             <span>{artist.name}</span>
-            <Logo>
-                <img src={'/dummyArtistLogo.png'} alt="logo" />
-            </Logo>
+            <SubscribeBtn isSubscribe={false} artistId={artist.id} />
         </ArtistCardWrapper>
     );
 };
