@@ -10,7 +10,7 @@ async function bootstrap() {
     {
       transport: Transport.TCP,
       options: {
-        host: '0.0.0.0',
+        host: process.env.NODE_ENV === 'development' ? 'localhost' : '0.0.0.0',
         port: 3002,
       },
     },
