@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import CloseIcon from '@icons/CloseIcon';
-import Button from '@atoms/Button';
 import { Notification } from '@organisms/header';
 
 const StyledNotificationContainer = styled.div`
@@ -130,6 +129,7 @@ const StyledContent = styled.div`
 //     );
 // };
 
+// TODO : 컴포넌트 분리
 const NotificationItem = ({ notification, id }: any) => {
     return (
         <>
@@ -160,8 +160,8 @@ const NotificationContainer: FC<Props> = ({ notifications }) => {
         <StyledNotificationContainer>
             <StyledHeader>Notifications</StyledHeader>
             <StyledContent>
-                {notifications.map((notification) => (
-                    <NotificationItem key={notification.roomId} notification={notification} />
+                {notifications.map((notification, i) => (
+                    <NotificationItem key={i} notification={notification} />
                 ))}
             </StyledContent>
         </StyledNotificationContainer>
