@@ -1,3 +1,4 @@
+// TODO : 소켓 통일한 후 파일 삭제
 import { io, Socket } from 'socket.io-client';
 
 enum SOCKET_EVENTS {
