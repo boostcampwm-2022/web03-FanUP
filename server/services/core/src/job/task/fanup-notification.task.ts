@@ -128,7 +128,6 @@ export class FanUPNotificationTask {
 
     const socket = io(`http://${gateway}:3000/socket/notification`);
     socket.emit('send-room-notification', { ...data });
-    socket.disconnect();
   }
 
   // 팬미팅 시작 30분 전 실행되는 크론잡
