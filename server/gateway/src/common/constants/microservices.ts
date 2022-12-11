@@ -7,12 +7,12 @@ const MICRO_SERVICES = {
   },
   CORE: {
     NAME: 'CORE_SERVICE',
-    HOST: environment === 'production' ? 'fanup-core' : '0.0.0.0',
+    HOST: environment === 'production' ? 'fanup-core' : 'localhost',
     PORT: 3002,
   },
   TICKET: {
     NAME: 'TICKET_SERVICE',
-    HOST: environment === 'production' ? 'fanup-ticket' : '0.0.0.0',
+    HOST: environment === 'production' ? 'fanup-ticket' : 'localhost',
     PORT: 3003,
   },
 };

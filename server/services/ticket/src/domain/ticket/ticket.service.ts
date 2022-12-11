@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Ticket } from '@prisma/client';
+import { getToday, getTomorrow } from 'src/common/util/date';
 
 import { PrismaService } from 'src/provider/prisma/prisma.service';
 import CreateTicketDto from './dto/create-ticket.dto';
@@ -7,13 +9,17 @@ import UpdateTicketDto from './dto/update-ticket.dto';
 
 @Injectable()
 export class TicketService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private event: EventEmitter2,
+  ) {}
 
   getTicketHello(): string {
     return 'Ticket server is running!';
   }
 
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
+    this.event.emit('ticket.create', { ...createTicketDto });
     return this.prisma.ticket.create({
       data: createTicketDto,
     });
@@ -28,7 +34,7 @@ export class TicketService {
 
     return this.prisma.ticket.findMany({
       orderBy: {
-        startTime: 'desc',
+        startTime: 'asc',
       },
       where: {
         startTime: {
@@ -53,4 +59,11 @@ export class TicketService {
   }
 
   async findAllByUserId() {}
+
+  async findTicketByToday() {
+    const today = getToday();
+    const tomorrow = getTomorrow();
+    return await this.prisma
+      .$queryRaw`SELECT * FROM Ticket WHERE CAST(startTime as DATE) >= ${today} AND CAST(startTime as DATE) < ${tomorrow}`;
+  }
 }

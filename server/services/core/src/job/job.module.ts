@@ -5,7 +5,8 @@ import { NotificationService } from '../domain/notification/service/notification
 import { MICRO_SERVICES } from '../common/constants';
 import { FanupService } from '../domain/fanup/service/fanup.service';
 import { PrismaService } from '../provider/prisma/prisma.service';
-import { BasicTask } from './task/basic.task';
+import { JobService } from './job.service';
+import { FanUPNotificationTask } from './task/fanup-notification.task';
 
 @Module({
   imports: [
@@ -21,6 +22,12 @@ import { BasicTask } from './task/basic.task';
       },
     ]),
   ],
-  providers: [BasicTask, FanupService, PrismaService, NotificationService],
+  providers: [
+    FanUPNotificationTask,
+    FanupService,
+    PrismaService,
+    NotificationService,
+    JobService,
+  ],
 })
 export class JobModule {}
