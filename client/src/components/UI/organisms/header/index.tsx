@@ -1,17 +1,18 @@
 import React, { useCallback, useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useGetUserQuery } from '@services/user.service';
-import LogOutBtn from '@atoms/LogOutBtn';
-import { useModal } from '@/hooks/useModal';
-import NicknameEditModal from '../../molecules/NicknameEditModal';
 
-import { socket, SOCKET_EVENTS, connectSocket, SOCKET_FEATURE } from '@/socket';
+// TODO : testSocket -> socket 통일
+import { socket, SOCKET_EVENTS, connectSocket, SOCKET_FEATURE } from './testSocket';
+import { useGetUserQuery } from '@services/user.service';
+import { useModal } from '@hooks/useModal';
+import LogOutBtn from '@atoms/LogOutBtn';
+import NicknameEditModal from '@molecules/NicknameEditModal';
+import NotificationContainer from '@organisms/NotificationContainer';
 import AlarmIcon from '@icons/AlarmIcon';
 import Logo from '@icons/Logo';
 import SearchIcon from '@icons/SearchIcon';
 import UserIcon from '@icons/UserIcon';
-import NotificationContainer from '@organisms/NotificationContainer';
 
 const HeaderRoot = styled.header`
     height: 75px;
@@ -102,14 +103,20 @@ const Header = () => {
         if (!socket) return;
         socket.emit(SOCKET_EVENTS.getNotification, { userId: 1 });
         socket.emit(SOCKET_EVENTS.joinNotification, { userId: 1 });
-        socket.on(SOCKET_EVENTS.receiveRoomNotification, (data) => {
-            setIsOnNotificationMark(true);
-            setNofitifcations((curr: any) => [...curr, data]);
-        });
+        socket.on(SOCKET_EVENTS.receiveRoomNotification, (data) => receiveNewNotification(data));
         socket.on(SOCKET_EVENTS.setNotification, (data: any) => {
             setNofitifcations((curr: any) => [...curr, ...data.result.data]);
         });
     }, []);
+
+    // TODO : 모달 열려 있을 때도 빨간 불 들어옴.
+    const receiveNewNotification = useCallback(
+        (data: Notification) => {
+            if (!isOpenNotificationModal) setIsOnNotificationMark(true);
+            setNofitifcations((curr: Notification[]) => [...curr, data]);
+        },
+        [isOpenNotificationModal]
+    );
 
     //TODO: 이 부분 로직이 복잡해지면, 따로 컴포넌트로 각각 분리
     const clickSearch = useCallback(() => {
@@ -119,7 +126,7 @@ const Header = () => {
     const clickAlarm = useCallback(() => {
         setIsOnNotificationMark(false);
         setIsOpenNotificationModal((curr) => !curr);
-    }, []);
+    }, [isOpenNotificationModal]);
 
     const clickUser = useCallback(() => {
         if (!UserData) navigate('/login');
