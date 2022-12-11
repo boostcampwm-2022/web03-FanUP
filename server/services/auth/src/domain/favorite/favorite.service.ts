@@ -50,4 +50,15 @@ export class FavoriteService {
     }
     return `delete favorite: ${favoriteDto.artistId}`;
   }
+
+  async findUserIdByArtistId(artistId: number) {
+    return await this.prisma.favorite.findMany({
+      where: {
+        artistId,
+      },
+      select: {
+        userId: true,
+      },
+    });
+  }
 }
