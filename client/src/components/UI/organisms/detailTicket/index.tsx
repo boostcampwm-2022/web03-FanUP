@@ -8,6 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '@atoms/Button';
 import Loading from '@atoms/Loading';
+import DefaultImg from '../../atoms/defaultImg';
 
 const DetailTicketWrapper = styled.div`
     width: 50vw;
@@ -74,6 +75,11 @@ const TicketingBtn = styled.div`
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    &:hover {
+        button {
+            background: ${({ theme }) => theme.PRIMARY_DARK};
+        }
+    }
 `;
 
 const DetailTicket = () => {
@@ -94,12 +100,17 @@ const DetailTicket = () => {
         }, 2000);
     };
 
-    if (isLoading) return <></>;
+    if (isLoading) return <Loading />;
 
     return (
         <DetailTicketWrapper>
             <BarCode />
-            <BackgroundThumbnail src="/dummyBackgroundThumbnail2.png" alt="thumbnail" />
+            {ticket?.profileUrl ? (
+                <BackgroundThumbnail src={ticket?.profileUrl} alt="thumbnail" />
+            ) : (
+                <DefaultImg width="100%" height="350px" borderRadius="0" />
+            )}
+
             <TicketContents>
                 <TicketingDate>
                     <strong>Ticketing</strong>

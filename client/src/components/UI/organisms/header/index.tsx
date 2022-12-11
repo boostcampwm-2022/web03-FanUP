@@ -6,9 +6,7 @@ import React, { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useGetUserQuery } from '@services/user.service';
-import LogOutBtn from '@atoms/LogOutBtn';
-import { useModal } from '@/hooks/useModal';
-import NicknameEditModal from '../../molecules/NicknameEditModal';
+import HeaderUser from '../../molecules/HeaderUser';
 
 const HeaderRoot = styled.header`
     height: 75px;
@@ -59,18 +57,9 @@ const HeaderRight = styled.div`
     }
 `;
 
-const HelloUserButton = styled.button`
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 700;
-`;
-
 const Header = () => {
     const { data: UserData } = useGetUserQuery();
     const navigate = useNavigate();
-    const [open, setOpen, openNicknameModal, closeNicknameModal] = useModal();
 
     //TODO: 이 부분 로직이 복잡해지면, 따로 컴포넌트로 각각 분리
     const clickSearch = useCallback(() => {
@@ -122,26 +111,18 @@ const Header = () => {
                 </div>
             </HeaderLeft>
             <HeaderRight>
-                {UserData && (
-                    <>
-                        <HelloUserButton onClick={openNicknameModal}>
-                            안녕하세요 <strong>{UserData.nickname}</strong> 님
-                        </HelloUserButton>
-                        {open && <NicknameEditModal open={open} onClose={closeNicknameModal} />}
-                    </>
+                {UserData ? (
+                    <HeaderUser nickname={UserData.nickname} />
+                ) : (
+                    <button data-testid="user" onClick={clickUser}>
+                        <UserIcon />
+                    </button>
                 )}
                 {icons.map(({ key, icon, onClick }) => (
                     <button data-testid={key} key={key} onClick={onClick}>
                         {icon}
                     </button>
                 ))}
-                {UserData ? (
-                    <LogOutBtn />
-                ) : (
-                    <button data-testid="user" onClick={clickUser}>
-                        <UserIcon />
-                    </button>
-                )}
             </HeaderRight>
         </HeaderRoot>
     );

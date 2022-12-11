@@ -6,6 +6,6 @@ export function useToggle(
     const [open, setOpen] = useState(state || false);
     const toggle = useCallback(() => {
         setOpen((prev) => !prev);
-    }, []);
+    }, [open]);
     return [open, setOpen, toggle];
 }

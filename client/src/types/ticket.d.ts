@@ -30,6 +30,7 @@ interface ITicket {
     startTime: Date;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface MyTicket extends ITicket {}
 export interface TicketSales extends ITicket {
     salesTime: Date;
