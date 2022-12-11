@@ -81,6 +81,15 @@ class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
       message: 'BTS 방이 생성되었어요 BTS가 기다리는 곳으로 오세요' || message,
     };
     this.server.to(userId).emit('receive-room-notification', data);
+    socket.disconnect();
+  }
+
+  @SubscribeMessage('send-notification')
+  sendNotification(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+    const { userId } = data;
+    this.logger.log(`send-notification: `, data);
+    this.server.to(userId).emit('receive-notification', data);
+    socket.disconnect();
   }
 
   // 소켓 연결이 생성되면

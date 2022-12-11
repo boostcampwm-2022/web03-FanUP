@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Ticket } from '@prisma/client';
 import { getToday, getTomorrow } from 'src/common/util/date';
 
@@ -8,13 +9,17 @@ import UpdateTicketDto from './dto/update-ticket.dto';
 
 @Injectable()
 export class TicketService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private event: EventEmitter2,
+  ) {}
 
   getTicketHello(): string {
     return 'Ticket server is running!';
   }
 
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
+    this.event.emit('ticket.create', { ...createTicketDto });
     return this.prisma.ticket.create({
       data: createTicketDto,
     });

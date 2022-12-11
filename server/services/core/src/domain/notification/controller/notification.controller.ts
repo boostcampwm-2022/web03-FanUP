@@ -8,12 +8,22 @@ import {
   TransformInterceptor,
 } from 'src/common/interceptor';
 import { NotificationService } from '../service/notification.service';
+import { CreateNotification } from '../../../common/type';
 
 @UseFilters(new AllRPCExceptionFilter())
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
 @Controller()
 export class NotificationController {
   constructor(private readonly notification: NotificationService) {}
+
+  @SetResponse(ResMessage.CREATE_NOTIFICATION, ResStatusCode.CREATED)
+  @MessagePattern('createNotification')
+  async create(data: CreateNotification) {
+    return await this.notification.create({
+      ...data,
+      user_id: data.userId,
+    });
+  }
 
   @SetResponse(ResMessage.UPDATE_NOTIFICATION, ResStatusCode.ACCEPTED)
   @MessagePattern('updateNotification')

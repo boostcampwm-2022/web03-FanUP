@@ -17,4 +17,9 @@ export class FavoriteController {
   async deleteFavorite(@Payload() favoriteDto: FavoriteDto): Promise<string> {
     return this.favoriteService.delete(favoriteDto);
   }
+
+  @MessagePattern({ cmd: 'findUserIdByArtistId' })
+  async findUserIdByArtistId(@Payload() artistId: number) {
+    return this.favoriteService.findUserIdByArtistId(artistId);
+  }
 }
