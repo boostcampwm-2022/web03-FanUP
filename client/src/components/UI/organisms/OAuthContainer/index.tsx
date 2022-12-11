@@ -6,8 +6,6 @@ import KakaoIcon from '@/components/icons/Kakao';
 import FaceBookIcon from '@/components/icons/FaceBook';
 import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
 import KakaoLogin from 'react-kakao-login';
-import { useSubmitAccessTokenMutation } from '@/services/user.service';
-import { useNavigate } from 'react-router-dom';
 import { useLogin } from '@/hooks/useLogin';
 
 const StyledOAuthContainer = styled.div`

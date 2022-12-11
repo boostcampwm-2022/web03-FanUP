@@ -14,10 +14,10 @@ export class AllGlobalExceptionsFilter implements ExceptionFilter {
   catch(exception: ICustomRpcException, host: ArgumentsHost): void {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
-
-    const httpStatus = exception.status
-      ? exception.status
-      : HttpStatus.INTERNAL_SERVER_ERROR;
+    const httpStatus =
+      typeof exception.status === 'string'
+        ? HttpStatus.INTERNAL_SERVER_ERROR
+        : exception.status;
 
     const responseBody = {
       statusCode: httpStatus,

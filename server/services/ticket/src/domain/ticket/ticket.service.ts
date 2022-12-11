@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Ticket } from '@prisma/client';
+import { getToday, getTomorrow } from 'src/common/util/date';
 
 import { PrismaService } from 'src/provider/prisma/prisma.service';
 import CreateTicketDto from './dto/create-ticket.dto';
@@ -28,7 +29,7 @@ export class TicketService {
 
     return this.prisma.ticket.findMany({
       orderBy: {
-        startTime: 'desc',
+        startTime: 'asc',
       },
       where: {
         startTime: {
@@ -53,4 +54,11 @@ export class TicketService {
   }
 
   async findAllByUserId() {}
+
+  async findTicketByToday() {
+    const today = getToday();
+    const tomorrow = getTomorrow();
+    return await this.prisma
+      .$queryRaw`SELECT * FROM Ticket WHERE CAST(startTime as DATE) >= ${today} AND CAST(startTime as DATE) < ${tomorrow}`;
+  }
 }

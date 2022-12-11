@@ -10,3 +10,4 @@ export const NotFound = lazy(() => import('@pages/404'));
 export const TicketingSuccess = lazy(() => import('@pages/Ticketing/Success'));
 export const TicketingFailure = lazy(() => import('@pages/Ticketing/Failure'));
 export const Schedule = lazy(() => import('@pages/Schedule'));
+export const Artist = lazy(() => import('@pages/Artist'));
