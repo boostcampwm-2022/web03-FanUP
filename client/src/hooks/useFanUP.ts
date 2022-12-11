@@ -27,7 +27,7 @@ const useFanUP = (): [
     const peerConnections = useRef<{ [key: string]: RTCPeerConnection }>({});
     const { data: UserData, isLoading: loginLoading } = useGetUserQuery();
 
-    connectSocket();
+    connectSocket('fanup');
 
     const myStream = useSelector<ReducerType, MediaStream | null>(
         ({ userSlice }) => userSlice.myStream

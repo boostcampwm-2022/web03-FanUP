@@ -1,14 +1,18 @@
-import AlarmIcon from '@icons/AlarmIcon';
-import Logo from '@/components/icons/Logo';
-import SearchIcon from '@/components/icons/SearchIcon';
-import UserIcon from '@icons/UserIcon';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
+// TODO : testSocket -> socket 통일
+import { socket, SOCKET_EVENTS, connectSocket, SOCKET_FEATURE } from './testSocket';
 import { useGetUserQuery } from '@services/user.service';
+import { useModal } from '@hooks/useModal';
 import LogOutBtn from '@atoms/LogOutBtn';
-import { useModal } from '@/hooks/useModal';
-import NicknameEditModal from '../../molecules/NicknameEditModal';
+import NicknameEditModal from '@molecules/NicknameEditModal';
+import NotificationContainer from '@organisms/NotificationContainer';
+import AlarmIcon from '@icons/AlarmIcon';
+import Logo from '@icons/Logo';
+import SearchIcon from '@icons/SearchIcon';
+import UserIcon from '@icons/UserIcon';
 
 const HeaderRoot = styled.header`
     height: 75px;
@@ -47,6 +51,7 @@ const HeaderRight = styled.div`
     gap: 20px;
     align-items: center;
     font-weight: 700;
+    position: relative;
 
     strong {
         background: linear-gradient(to right, #9e57ff, #7ed0fa);
@@ -67,10 +72,51 @@ const HelloUserButton = styled.button`
     font-weight: 700;
 `;
 
+const StyledNewNotificationMark = styled.div`
+    background-color: red;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0px;
+    left: 90px;
+`;
+
+export interface Notification {
+    roomId: string;
+    startTime: string;
+    endTime: string;
+    userId: number;
+    message: string;
+}
+
 const Header = () => {
     const { data: UserData } = useGetUserQuery();
     const navigate = useNavigate();
     const [open, setOpen, openNicknameModal, closeNicknameModal] = useModal();
+    const [notifications, setNofitifcations] = useState<any>([]);
+    const [isOnNotificationMark, setIsOnNotificationMark] = useState<boolean>(false);
+    const [isOpenNotificationModal, setIsOpenNotificationModal] = useState<boolean>(false);
+
+    useEffect(() => {
+        connectSocket(SOCKET_FEATURE.notification);
+        if (!socket) return;
+        socket.emit(SOCKET_EVENTS.getNotification, { userId: 1 });
+        socket.emit(SOCKET_EVENTS.joinNotification, { userId: 1 });
+        socket.on(SOCKET_EVENTS.receiveRoomNotification, (data) => receiveNewNotification(data));
+        socket.on(SOCKET_EVENTS.setNotification, (data: any) => {
+            setNofitifcations((curr: any) => [...curr, ...data.result.data]);
+        });
+    }, []);
+
+    // TODO : 모달 열려 있을 때도 빨간 불 들어옴.
+    const receiveNewNotification = useCallback(
+        (data: Notification) => {
+            if (!isOpenNotificationModal) setIsOnNotificationMark(true);
+            setNofitifcations((curr: Notification[]) => [...curr, data]);
+        },
+        [isOpenNotificationModal]
+    );
 
     //TODO: 이 부분 로직이 복잡해지면, 따로 컴포넌트로 각각 분리
     const clickSearch = useCallback(() => {
@@ -78,8 +124,9 @@ const Header = () => {
     }, []);
 
     const clickAlarm = useCallback(() => {
-        alert('alarmCallback');
-    }, []);
+        setIsOnNotificationMark(false);
+        setIsOpenNotificationModal((curr) => !curr);
+    }, [isOpenNotificationModal]);
 
     const clickUser = useCallback(() => {
         if (!UserData) navigate('/login');
@@ -91,14 +138,6 @@ const Header = () => {
             return navigate(url);
         },
         [navigate]
-    );
-
-    const icons = useMemo(
-        () => [
-            { key: 'search', icon: <SearchIcon />, onClick: clickSearch },
-            { key: 'alarm', icon: <AlarmIcon />, onClick: clickAlarm },
-        ],
-        []
     );
 
     return (
@@ -130,11 +169,14 @@ const Header = () => {
                         {open && <NicknameEditModal open={open} onClose={closeNicknameModal} />}
                     </>
                 )}
-                {icons.map(({ key, icon, onClick }) => (
-                    <button data-testid={key} key={key} onClick={onClick}>
-                        {icon}
-                    </button>
-                ))}
+                <button data-testid="search" key="search" onClick={clickSearch}>
+                    {<SearchIcon />}
+                </button>
+                <button data-testid="alarm" key="alarm" onClick={clickAlarm}>
+                    {isOnNotificationMark && <StyledNewNotificationMark />}
+                    <AlarmIcon />
+                </button>
+                {isOpenNotificationModal && <NotificationContainer notifications={notifications} />}
                 {UserData ? (
                     <LogOutBtn />
                 ) : (

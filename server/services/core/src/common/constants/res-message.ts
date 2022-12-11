@@ -25,6 +25,7 @@ const ResMessage = {
   FILE_BAD_REQUEST: '보낸 파일이 존재하지 않습니다.',
 
   // 알림 관련
+  CREATE_NOTIFICATION: '알림 생성에 성공하였습니다.',
   UPDATE_NOTIFICATION: '알림을 읽음으로 처리하였습니다.',
   FIND_NOTIFICATION_BY_USER_ID: '해당 유저의 알림을 가져왔습니다.',
 

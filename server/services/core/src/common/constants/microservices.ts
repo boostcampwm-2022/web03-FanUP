@@ -2,12 +2,12 @@ const environment = process.env.NODE_ENV || 'production';
 const MICRO_SERVICES = {
   AUTH: {
     NAME: 'AUTH_SERVICE',
-    HOST: environment === 'production' ? 'fanup-auth' : '0.0.0.0',
+    HOST: environment === 'production' ? 'fanup-auth' : 'localhost',
     PORT: 3001,
   },
   TICKET: {
     NAME: 'TICKET_SERVICE',
-    HOST: process.env.NODE_ENV === 'production' ? 'fanup-ticket' : '0.0.0.0',
+    HOST: process.env.NODE_ENV === 'production' ? 'fanup-ticket' : 'localhost',
     PORT: 3003,
   },
 };

@@ -56,4 +56,15 @@ export class UserTicketService {
   async delete(userTicketId: number): Promise<UserTicket> {
     return this.prisma.userTicket.delete({ where: { id: userTicketId } });
   }
+
+  async findManyByTicketId(ticketId: number) {
+    return this.prisma.userTicket.findMany({ where: { ticketId } });
+  }
+
+  async updateFanUPIdById(id: number, fanupId: number) {
+    return await this.prisma.userTicket.update({
+      where: { id },
+      data: { fanupId },
+    });
+  }
 }

@@ -19,24 +19,38 @@ enum SOCKET_EVENTS {
     answer = 'answer',
     ice = 'ice',
     welcome = 'welcome',
+    joinNotification = 'join-notification',
+    joinSuccess = 'join-success',
+    joinFail = 'join-fail',
+    sendRoomNotification = 'send-room-notification',
+    receiveRoomNotification = 'receive-room-notification',
+    getNotification = 'get-notification',
+    setNotification = 'set-notification',
+}
+
+enum SOCKET_FEATURE {
+    fanup = 'fanup',
+    notification = 'notification',
 }
 
 let socket: Socket | null = null;
-const ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/socket/fanup`;
-//const ENDPOINT = `http://localhost:3000/socket/fanup`;
+const ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/socket/`;
 
-const connectSocket = () => {
-    console.log(`${localStorage.getItem('token')}`);
-    if (!socket)
-        socket = io(ENDPOINT, {
+const connectSocket = (feature: string) => {
+    if (!socket) {
+        socket = io(ENDPOINT + feature, {
             extraHeaders: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
         });
+        socket.on('connect', () => {
+            console.log('socket connected : ', socket?.id);
+        });
+    }
 };
 
 const initializeSocket = () => {
     socket = null;
 };
 
-export { socket, SOCKET_EVENTS, connectSocket, initializeSocket };
+export { socket, SOCKET_EVENTS, SOCKET_FEATURE, connectSocket, initializeSocket };
