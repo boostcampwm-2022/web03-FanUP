@@ -110,7 +110,7 @@ export const SubmitButton = styled.button`
 `;
 
 const ArtistInfoForm = () => {
-    const { data: userData, isLoading } = useGetUserQuery();
+    const { data: userData, isLoading, refetch: refetchUserData } = useGetUserQuery();
     const [activityName, _, onChangeActivityName] = useInput();
     const [profileUrl, setProfileUrl] = useState('');
     const [submitAristInfo] = useSubmitArtistInfoMutation();
@@ -135,11 +135,16 @@ const ArtistInfoForm = () => {
         [userData]
     );
 
+    const submit = useCallback(async () => {
+        await submitAristInfo({ name: activityName, profileUrl });
+        refetchUserData();
+    }, [profileUrl, activityName]);
+
     if (isLoading) return <Loading />;
     return (
         <ArtistInfoFormWrapper>
             <div>
-                <h1>아티스트 정보 등록</h1>
+                <h1>아티스트 정보 {userData?.artistId ? '수정' : '등록'}</h1>
                 <InputSection>
                     <section>
                         <label>활동명</label>
@@ -170,7 +175,7 @@ const ArtistInfoForm = () => {
                     </section>
                 </InputSection>
             </div>
-            <SubmitButton>등록</SubmitButton>
+            <SubmitButton onClick={submit}>{userData?.artistId ? '수정' : '등록'}</SubmitButton>
         </ArtistInfoFormWrapper>
     );
 };

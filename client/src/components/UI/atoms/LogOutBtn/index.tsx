@@ -3,11 +3,10 @@ import ExitIcon from '@icons/ExitIcon';
 import theme from '@/style/theme';
 import { useDispatch } from 'react-redux';
 import { setToken } from '@/store/user';
-import { resetUserService, useGetUserQuery } from '@services/user.service';
+import { resetUserService } from '@services/user.service';
 const LogOutBtn = () => {
     const dispatch = useDispatch();
-    //const query = useGetUserQuery();
-    //console.log(query);
+
     const logout = useCallback(() => {
         if (!window.confirm('로그아웃 하시겠어요?')) return;
         localStorage.removeItem('token');

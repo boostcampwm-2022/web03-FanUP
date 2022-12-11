@@ -26,7 +26,7 @@ const Artist = () => {
             <Header />
             <ArtistWrapper>
                 <ArtistInfoForm />
-                {!userData?.artistId && <SubScribedUsers />}
+                {userData?.artistId && <SubScribedUsers />}
             </ArtistWrapper>
         </>
     );

@@ -42,18 +42,10 @@ export const dummyTickets = [
     };
 });
 
-export const DummyMyArtists: IAritst[] = Array.from({ length: 10 }, (_, idx) => {
-    return {
-        artist_id: idx + 1,
-        profile_url: `/newjeans.webp`,
-        name: `testArtist${idx + 1}`,
-    };
-});
-
 export const DummyAllArtists: IAritst[] = Array.from({ length: 30 }, (_, idx) => {
     return {
-        artist_id: idx + 11,
-        profile_url: `/newjeans.webp`,
+        id: idx + 11,
+        profileUrl: `/newjeans.webp`,
         name: `testArtist${idx + 11}`,
     };
 });

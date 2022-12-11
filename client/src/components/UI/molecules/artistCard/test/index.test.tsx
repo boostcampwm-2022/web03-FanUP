@@ -11,8 +11,8 @@ describe('<ArtistCard />', () => {
     });
     const props = {
         name: 'test',
-        artist_id: 1,
-        profile_url: '/test.png',
+        id: 1,
+        profileUrl: '/test.png',
     };
     it('rendering test', () => {
         render(<ArtistCard artist={props} />);
