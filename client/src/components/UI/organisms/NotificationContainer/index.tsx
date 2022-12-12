@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import CloseIcon from '@icons/CloseIcon';
@@ -39,7 +40,13 @@ const StyledHeader = styled.h3`
     padding: 1rem;
 `;
 
-const StyledContent = styled.div`
+const StyledNotificationItem = styled.li`
+    list-style: none;
+    height: 3rem;
+    padding: 1rem;
+    font-size: 75%;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+
     i {
         color: #b5c4d2;
         font-size: 140%;
@@ -69,30 +76,17 @@ const StyledContent = styled.div`
             background: #f3f9fd;
         }
     }
-
-    input.checkbox {
-        display: none;
-        + label {
-            display: block;
-        }
-        &:not(:checked) + label {
-            transition: height 0.25s;
-            height: 0;
-            padding: 0;
-            font-size: 0;
-            border: none;
-            * {
-                display: none;
-            }
-        }
-        &:checked + label {
-            height: 3rem;
-            padding: 1rem;
-            font-size: 75%;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-        }
-    }
 `;
+
+interface CreatedRoomNotification {
+    type: string;
+    roomId: string;
+}
+
+interface OpenedTicketNotification {
+    type: string;
+    ticketId: string;
+}
 
 // const NotificationItem = ({ id }: any) => {
 //     return (
@@ -130,24 +124,52 @@ const StyledContent = styled.div`
 // };
 
 // TODO : 컴포넌트 분리
+// const NotificationItem = ({ notification, id }: any) => {
+//     const navigate = useNavigate();
+
+//     // TODO : Link 태그?
+//     const navigateByAlarmType = (type: string, id: string) => {
+//         navigate(`/${type}/${id}`);
+//     };
+
+//     return (
+//         <>
+//             <input className="checkbox" type="checkbox" id={id} value="small" checked />
+//             <label
+//                 className="notification new"
+//                 htmlFor={id}
+//                 onClick={() => {
+//                     console.log('click');
+//                     navigateByAlarmType(notification.type, notification.id);
+//                 }}
+//             >
+//                 <em>오늘</em> {notification.message}
+//                 <i className="right">
+//                     <CloseIcon />
+//                 </i>
+//             </label>
+//         </>
+//     );
+// };
+
 const NotificationItem = ({ notification, id }: any) => {
+    const navigate = useNavigate();
+
+    // TODO : Link 태그?
+    const navigateByAlarmType = (type: string, id: string) => {
+        navigate(`/${type}/${id}`);
+    };
+
     return (
-        <>
-            <input
-                className="checkbox"
-                type="checkbox"
-                id={id}
-                value="small"
-                checked
-                onChange={() => console.log('알림 클릭')}
-            />
-            <label className="notification new" htmlFor={id}>
-                <em>오늘</em> {notification.message}
-                <i className="right">
-                    <CloseIcon />
-                </i>
-            </label>
-        </>
+        <StyledNotificationItem
+            className="notification new"
+            onClick={() => navigateByAlarmType(notification.type, notification.id)}
+        >
+            <em>오늘</em> {notification.message}
+            <i className="right">
+                <CloseIcon />
+            </i>
+        </StyledNotificationItem>
     );
 };
 
@@ -155,15 +177,24 @@ interface Props {
     notifications: Notification[];
 }
 
+const testNotification = {
+    type: 'ticket',
+    id: '1',
+};
+
 const NotificationContainer: FC<Props> = ({ notifications }) => {
+    const navigate = useNavigate();
+
+    const navigateByAlarmType = (type: string, id: string) => {
+        navigate(`/${type}/${id}`);
+    };
+
     return (
         <StyledNotificationContainer>
             <StyledHeader>Notifications</StyledHeader>
-            <StyledContent>
-                {notifications.map((notification, i) => (
-                    <NotificationItem key={i} notification={notification} />
-                ))}
-            </StyledContent>
+            {notifications.map((notification, i) => (
+                <NotificationItem key={i} notification={notification} />
+            ))}
         </StyledNotificationContainer>
     );
 };
