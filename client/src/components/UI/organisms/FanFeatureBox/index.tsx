@@ -48,7 +48,7 @@ const ScheduleContentsWrapper = styled.div`
 const MYTICKET_MODE = 1;
 const SCHEDULE_MODE = 2;
 
-const MyFeatureBox = () => {
+const FanFeatureBox = () => {
     const [mode, setMode] = useState(MYTICKET_MODE);
     const { data: userData } = useGetUserQuery();
     const { data: myTickets } = useGetUserTicketsQuery(undefined, {
@@ -103,4 +103,4 @@ const dummySchedules = [
     { title: '10주년 이벤트❤️', date: new Date('2022.12.31'), thumbNail: '' },
 ];
 
-export default MyFeatureBox;
+export default FanFeatureBox;

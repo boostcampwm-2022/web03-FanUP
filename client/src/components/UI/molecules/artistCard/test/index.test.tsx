@@ -13,6 +13,7 @@ describe('<ArtistCard />', () => {
         name: 'test',
         id: 1,
         profileUrl: '/test.png',
+        isFavorite: false,
     };
     it('rendering test', () => {
         render(<ArtistCard artist={props} />);

@@ -138,7 +138,7 @@ const Header = () => {
                 <div>
                     <button onClick={gotoPage('/tickets')}>티켓팅</button>
                     {userData?.role === 'ARTIST' && (
-                        <button onClick={gotoPage('/schedule')}>티켓생성</button>
+                        <button onClick={gotoPage('/schedule')}>티켓관리</button>
                     )}
                     {userData?.role === 'ARTIST' && (
                         <button onClick={gotoPage('/artist')}>

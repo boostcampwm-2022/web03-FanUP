@@ -47,5 +47,6 @@ export const DummyAllArtists: IAritst[] = Array.from({ length: 30 }, (_, idx) =>
         id: idx + 11,
         profileUrl: `/newjeans.webp`,
         name: `testArtist${idx + 11}`,
+        isFavorite: false,
     };
 });
