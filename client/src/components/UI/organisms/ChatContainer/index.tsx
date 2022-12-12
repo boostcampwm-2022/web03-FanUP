@@ -1,13 +1,11 @@
 import React, { FC, useEffect, useState, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { socket, SOCKET_EVENTS, connectSocket } from '@/socket';
-import { MyEmail, MyNickName } from '@utils/generateRandomString';
+import { socket, SOCKET_EVENTS } from '@/socket';
+import { useGetUserQuery } from '@services/user.service';
 import InputForm from '@molecules/InputForm';
 import ChatList from '@molecules/ChatList';
-import { useParams } from 'react-router-dom';
-import { useGetUserQuery } from '@services/user.service';
-import { IUser } from '@/types/user';
 
 export interface ChatMessage {
     date: number;
