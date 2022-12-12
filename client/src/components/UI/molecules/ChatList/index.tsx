@@ -1,12 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { ChatMessage } from '@organisms/ChatContainer';
 import Chat from '@atoms/Chat';
-import { useRef } from 'react';
-import { useEffect } from 'react';
 
 interface Props {
+    // TODO : ChatMessage[] 안됨
     chatData: any[];
 }
 
@@ -27,12 +26,7 @@ const ChatList: FC<Props> = ({ chatData }) => {
     const lastChatRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        console.log(chatData);
-    }, [chatData.length]);
-
-    useEffect(() => {
         if (!lastChatRef.current) return;
-
         lastChatRef.current.scrollIntoView({
             behavior: 'smooth',
             block: 'start',
