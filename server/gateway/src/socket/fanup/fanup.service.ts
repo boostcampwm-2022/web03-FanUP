@@ -191,82 +191,99 @@ export class FanUPService {
   // =========== 채팅 및 참여자 ===========
 
   async storeMessage(data: CreateChat) {
-    const result = await lastValueFrom(
-      this.coreTCP
-        .send('createChat', data)
-        .pipe(catchError((err) => of({ ...err }))),
-    );
-    this.logger.log(`store-message: `, result);
-    return result['status'] >= 400
-      ? { ...result, data: null, success: false }
-      : { ...result, success: true };
+    try {
+      const result = await lastValueFrom(
+        this.coreTCP
+          .send('createChat', data)
+          .pipe(catchError((err) => of({ ...err }))),
+      );
+      this.logger.log(`store-message: `, result);
+      return result['status'] >= 400
+        ? { ...result, data: null, success: false }
+        : { ...result, success: true };
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async sendMessage(data: SendMessage) {
-    this.logger.log(`send-message`, data);
-    const { userId, nickname, room, isArtist, message, socket, server } = data;
-    const checkRoom = await this.validateRoom(room);
+    try {
+      this.logger.log(`send-message`);
+      const { userId, nickname, room, isArtist, message, socket, server } =
+        data;
+      const checkRoom = await this.validateRoom(room);
 
-    if (checkRoom.validate) {
-      socket.join(room);
+      if (checkRoom.validate) {
+        socket.join(room);
 
-      const storeResult = await this.storeMessage({
-        fanup_id: room,
-        userId,
-        is_artist: isArtist,
-        message: message,
-      });
+        const storeResult = await this.storeMessage({
+          fanup_id: room,
+          userId,
+          is_artist: isArtist,
+          message: message,
+        });
 
-      if (this.roomExist(room)) {
-        const socketChat: SocketChat = {
-          nickname,
-          isArtist,
-          message,
-          date: Date.now(),
-        };
+        if (this.roomExist(room)) {
+          const socketChat: SocketChat = {
+            nickname,
+            isArtist,
+            message,
+            date: Date.now(),
+          };
 
-        if (this.socketRoom[room].chat) {
-          this.socketRoom[room].chat.push(socketChat);
+          if (this.socketRoom[room].chat) {
+            this.socketRoom[room].chat.push(socketChat);
+          } else {
+            this.socketRoom[room].chat = [socketChat];
+          }
+
+          server.to(room).emit('receive-message', socketChat);
         } else {
-          this.socketRoom[room].chat = [socketChat];
+          server.to(socket.id).emit('cannot-send-message', { ...storeResult });
         }
-
-        server.to(room).emit('receive-message', socketChat);
-      } else {
-        server.to(socket.id).emit('cannot-send-message', { ...storeResult });
       }
+    } catch (err) {
+      console.log(err);
     }
   }
 
   async getAllChat(room: string, server: Server, socket: Socket) {
-    this.logger.log('getAllChat', room);
-    const checkRoom = await this.validateRoom(room);
+    try {
+      this.logger.log('getAllChat');
+      const checkRoom = await this.validateRoom(room);
 
-    if (checkRoom.validate) {
-      socket.join(room);
-      if (this.socketRoom[room]) {
-        server.to(room).emit('response-chat', {
-          result: this.socketRoom[room].chat,
-        });
+      if (checkRoom.validate) {
+        socket.join(room);
+        if (this.socketRoom[room]) {
+          server.to(room).emit('response-chat', {
+            result: this.socketRoom[room].chat,
+          });
+        }
+      } else {
+        server.to(socket.id).emit('cannot-get-all-chat', { result: null });
       }
-    } else {
-      server.to(socket.id).emit('cannot-get-all-chat', { result: null });
+    } catch (err) {
+      console.log(err);
     }
   }
 
   async getParticipantList(room: string, server: Server, socket: Socket) {
-    this.logger.log(`get-participant-list`, room);
-    const checkRoom = await this.validateRoom(room);
+    try {
+      this.logger.log(`get-participant-list`);
+      const checkRoom = await this.validateRoom(room);
 
-    if (checkRoom.validate && this.roomExist(room)) {
-      socket.join(room);
-      server.to(room).emit('response-participant-user', {
-        result: this.socketRoom[room].participant,
-      });
-    } else {
-      server
-        .to(socket.id)
-        .emit('cannot-get-participant-list', { result: null });
+      if (checkRoom.validate && this.roomExist(room)) {
+        socket.join(room);
+        server.to(room).emit('response-participant-user', {
+          result: this.socketRoom[room].participant,
+        });
+      } else {
+        server
+          .to(socket.id)
+          .emit('cannot-get-participant-list', { result: null });
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 }
