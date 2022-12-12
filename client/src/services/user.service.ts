@@ -27,6 +27,14 @@ export const userApi = createApi({
             }),
             invalidatesTags: ['User'],
         }),
+        editNickname: build.mutation({
+            query: (nickname: string) => ({
+                url: '/auth/user',
+                method: 'PATCH',
+                body: { nickname },
+            }),
+            invalidatesTags: ['User'],
+        }),
         getSubScribedArtist: build.query<IAritst[], void>({
             query: () => '/auth/artist/favorite',
             providesTags: ['SubScribedArtist'],
@@ -69,6 +77,7 @@ export const {
     useSubscribeArtistMutation,
     useUnSubscribeArtistMutation,
     useSubmitAccessTokenMutation,
+    useEditNicknameMutation,
 } = userApi;
 
 export const { resetApiState: resetUserService, updateQueryData } = userApi.util;

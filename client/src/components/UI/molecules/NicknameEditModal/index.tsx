@@ -1,6 +1,9 @@
 import Modal from '@/components/hoc/modal';
+import { useEditNicknameMutation } from '@/services/user.service';
+import { closeUserDropDown } from '@/store/user';
 import CloseIcon from '@icons/CloseIcon';
 import React, { useCallback, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 interface IProps {
@@ -48,9 +51,15 @@ const ModalContent = styled.form`
 `;
 
 const NicknameEditModal = (props: IProps) => {
+    const [mutation] = useEditNicknameMutation();
+    const dispatch = useDispatch();
     const nicknameRef = useRef<HTMLInputElement | null>(null);
-    const submitNickname = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+    const submitNickname = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!nicknameRef.current) return;
+        await mutation(nicknameRef.current.value);
+        dispatch(closeUserDropDown());
+        props.onClose();
     }, []);
     return (
         <Modal {...props}>

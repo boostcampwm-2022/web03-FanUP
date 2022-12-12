@@ -5,6 +5,7 @@ import { setToken } from '@/store/user';
 import { resetUserService } from '@services/user.service';
 import { useModal } from '@/hooks/useModal';
 import NicknameEditModal from '../NicknameEditModal';
+import { resetArtistService } from '@/services/artist.service';
 
 const DropDownItem = styled.div`
     margin: 10px 10px 0 10px;
@@ -18,13 +19,15 @@ const DropDownItem = styled.div`
 
 const UserDropDown = () => {
     const [openModal, , openNicknameEditModal, closeNicknameEditModal] = useModal();
+
     const dispatch = useDispatch();
 
-    const logout = useCallback(() => {
+    const logout = useCallback(async () => {
         if (!window.confirm('로그아웃 하시겠어요?')) return;
         localStorage.removeItem('token');
         dispatch(setToken(null));
         dispatch(resetUserService());
+        dispatch(resetArtistService());
     }, []);
 
     return (

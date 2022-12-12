@@ -4,6 +4,7 @@ export class CreateNotificationDto {
     this.message = message;
   }
 
+  info: string;
   user_id: number;
   message: string;
   read: boolean = false;
