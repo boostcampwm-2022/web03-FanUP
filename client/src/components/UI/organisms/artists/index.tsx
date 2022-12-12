@@ -15,11 +15,12 @@ const Title = styled.h1`
 `;
 
 const ArtistListWrapper = styled.div<{ length: number }>`
-    display: grid;
+    display: flex;
     width: 100%;
     /* grid-template-columns: repeat(6, 1fr); */
-    grid-template-columns: ${({ length }) =>
-        length < 6 ? 'repeat(6, 1fr)' : 'repeat(auto-fit, minmax(200px, 1fr))'};
+    /* grid-template-columns: ${({ length }) =>
+        length < 6 ? 'repeat(6, 1fr)' : 'repeat(auto-fit, minmax(200px, 1fr))'}; */
+    flex-flow: wrap;
     gap: 20px;
     margin-bottom: 40px;
 `;

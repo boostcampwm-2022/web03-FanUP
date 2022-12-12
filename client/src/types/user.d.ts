@@ -6,6 +6,8 @@ export interface UserStore {
     expiredDate: null | string;
     myStream: MediaStream | null;
     artistListViewMode: number;
+    userDropDown: boolean;
+    openNotificationModal: boolean;
 }
 
 export interface IUser {

@@ -22,7 +22,7 @@ export class JobListener {
     const gateway = env ? 'fanup-gateway' : 'localhost';
 
     const socket = io(`http://${gateway}:3000/socket/notification`);
-    socket.emit('send-room-notification', { ...data });
+    socket.emit('send-room-notification', { ...data, date: new Date() });
   }
 
   async findUserIdByArtistId(artistId: number): Promise<any[]> {
@@ -63,5 +63,11 @@ export class JobListener {
         await this.createNotification(value);
       });
     }
+  }
+
+  @OnEvent('user-ticket.create')
+  async userTicketCreateEvent() {
+    // 티켓 사용자의 FanUPId를 업데이트 시켜주고
+    // 알림을 보냄
   }
 }
