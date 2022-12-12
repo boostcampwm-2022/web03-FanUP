@@ -2,10 +2,13 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   Inject,
   Param,
   ParseIntPipe,
   Post,
+  Query,
   Req,
   Res,
   UseFilters,
@@ -25,6 +28,21 @@ export class TicketController {
     @Inject(MICRO_SERVICES.TICKET.NAME)
     private readonly ticketClient: ClientProxy,
   ) {}
+
+  @Get('/artist/calendar')
+  @UseGuards(JwtAuthGuard)
+  async getTicketCalendar(
+    @Req() { user },
+    @Query('year', new ParseIntPipe()) year: number,
+    @Query('month', new ParseIntPipe()) month: number,
+  ) {
+    if (!user.artistId)
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    return this.ticketClient.send(
+      { cmd: 'getAllTicketByYearAndMonth' },
+      { artistId: user.artistId, year, month },
+    );
+  }
 
   @Get('/user')
   @UseGuards(JwtAuthGuard)
