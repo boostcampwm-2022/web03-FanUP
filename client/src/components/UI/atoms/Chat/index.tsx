@@ -9,7 +9,7 @@ interface StyledProps {
 
 interface Props {
     isArtist: boolean;
-    email: string;
+    nickname: string;
     message: string;
 }
 
@@ -34,10 +34,10 @@ const Content = styled('div')<StyledProps>`
     max-width: 75%;
 `;
 
-const Chat: FC<Props> = ({ email, isArtist, message }) => {
+const Chat: FC<Props> = ({ nickname, isArtist, message }) => {
     return (
         <StyledChat isArtist={isArtist}>
-            <Nickname>{email}</Nickname>
+            <Nickname>{nickname}</Nickname>
             <Content isArtist={isArtist}>
                 <span> {message}</span>
             </Content>

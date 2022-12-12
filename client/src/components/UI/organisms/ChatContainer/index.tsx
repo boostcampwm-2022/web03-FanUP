@@ -8,9 +8,9 @@ import InputForm from '@molecules/InputForm';
 import ChatList from '@molecules/ChatList';
 
 export interface ChatMessage {
-    date: number;
+    date?: number;
     isArtist: boolean;
-    nickname?: string;
+    nickname: string;
     message: string;
 }
 
@@ -39,11 +39,11 @@ const ChatContainer: FC = () => {
         socket.on(SOCKET_EVENTS.receiveMessage, (data) => setChatData((curr) => [...curr, data]));
         socket.on(SOCKET_EVENTS.failSendMessage, () => alert('메시지 전송에 실패하였습니다.'));
         socket.emit(SOCKET_EVENTS.requestParticipantUser, { room: room });
-        socket.on(SOCKET_EVENTS.responseParticipantUser, (data) => console.log(data));
     }, [socket]);
 
     const handleSubmit = useCallback(
         (e: React.FormEvent<HTMLButtonElement>) => {
+            console.log('전송');
             e.preventDefault();
             const data = {
                 userId: userId,
