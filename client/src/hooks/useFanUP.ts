@@ -135,6 +135,11 @@ const useFanUP = (): [
         setUsers((prev) => prev.filter((data) => data.socketID !== socketId));
     };
 
+    const failJoinRoom = () => {
+        alert('유효한 사용자가 아닙니다');
+        window.location.replace('/');
+    };
+
     const unMount = (e?: BeforeUnloadEvent) => {
         if (loginLoading) return;
         if (!myStream) return;
@@ -168,6 +173,7 @@ const useFanUP = (): [
             nickname: UserData?.nickname,
         });
         socket?.on(SOCKET_EVENTS.welcome, welcomeCallback);
+        socket?.on(SOCKET_EVENTS.failJoinRoom, failJoinRoom);
         socket?.on(SOCKET_EVENTS.offer, offerCallback);
         socket?.on(SOCKET_EVENTS.answer, answerCallback);
         socket?.on(SOCKET_EVENTS.ice, iceCallback);
