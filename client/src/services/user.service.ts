@@ -62,8 +62,13 @@ export const userApi = createApi({
     }),
 });
 
+export const useGetUserQuery = () => {
+    return userApi.useGetUserQuery(undefined, {
+        skip: localStorage.getItem('token') ? false : true,
+    });
+};
+
 export const {
-    useGetUserQuery,
     useGetSubScribedArtistQuery,
     useSubscribeArtistMutation,
     useUnSubscribeArtistMutation,

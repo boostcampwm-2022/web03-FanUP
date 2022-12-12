@@ -21,7 +21,7 @@ const SubScribedUsersWrapper = styled.div`
 `;
 
 const SubScribedUserListWrapper = styled.div`
-    overflow: scroll;
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     gap: 20px;

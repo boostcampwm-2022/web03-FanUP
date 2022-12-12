@@ -1,4 +1,8 @@
-import { useSubscribeArtistMutation, useUnSubscribeArtistMutation } from '@/services/user.service';
+import {
+    useGetUserQuery,
+    useSubscribeArtistMutation,
+    useUnSubscribeArtistMutation,
+} from '@/services/user.service';
 import { useDebounce } from '@hooks/useDebounce';
 import { useOptimisticUI } from '@hooks/useOptimisticUI';
 import HeartIcon from '@icons/heart';
@@ -41,6 +45,8 @@ const SubscribeBtn = (props: IProps) => {
     const [isSubscribe, setIsSubscribe, update_UI, rollBack_UI, sync_UI] = useOptimisticUI(
         props.isSubscribe
     );
+    const { data: userData, isLoading } = useGetUserQuery();
+
     const [subscribeMutation] = useSubscribeArtistMutation();
     const [unSubscribeMutation] = useUnSubscribeArtistMutation();
     const debounce = useDebounce();
@@ -48,6 +54,8 @@ const SubscribeBtn = (props: IProps) => {
     const toggleHeart = useCallback(
         async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.stopPropagation();
+            if (!userData) return alert('로그인 후 이용 가능합니다');
+
             update_UI();
             debounce(async () => {
                 //TODO: server request logic
@@ -60,7 +68,7 @@ const SubscribeBtn = (props: IProps) => {
                 }
             }, 500);
         },
-        [isSubscribe]
+        [isSubscribe, userData]
     );
 
     return (

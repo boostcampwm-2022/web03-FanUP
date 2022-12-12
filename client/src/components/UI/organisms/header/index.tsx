@@ -1,18 +1,16 @@
-import React, { useCallback, useMemo, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 // TODO : testSocket -> socket 통일
 import { socket, SOCKET_EVENTS, connectSocket, SOCKET_FEATURE } from './testSocket';
 import { useGetUserQuery } from '@services/user.service';
-import { useModal } from '@hooks/useModal';
-import LogOutBtn from '@atoms/LogOutBtn';
-import NicknameEditModal from '@molecules/NicknameEditModal';
 import NotificationContainer from '@organisms/NotificationContainer';
 import AlarmIcon from '@icons/AlarmIcon';
 import Logo from '@icons/Logo';
 import SearchIcon from '@icons/SearchIcon';
 import UserIcon from '@icons/UserIcon';
+import HeaderUser from '@molecules/HeaderUser';
 
 const HeaderRoot = styled.header`
     height: 75px;
@@ -64,14 +62,6 @@ const HeaderRight = styled.div`
     }
 `;
 
-const HelloUserButton = styled.button`
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 700;
-`;
-
 const StyledNewNotificationMark = styled.div`
     background-color: red;
     width: 10px;
@@ -93,7 +83,6 @@ export interface Notification {
 const Header = () => {
     const { data: UserData } = useGetUserQuery();
     const navigate = useNavigate();
-    const [open, setOpen, openNicknameModal, closeNicknameModal] = useModal();
     const [notifications, setNofitifcations] = useState<any>([]);
     const [isOnNotificationMark, setIsOnNotificationMark] = useState<boolean>(false);
     const [isOpenNotificationModal, setIsOpenNotificationModal] = useState<boolean>(false);
@@ -120,7 +109,7 @@ const Header = () => {
 
     //TODO: 이 부분 로직이 복잡해지면, 따로 컴포넌트로 각각 분리
     const clickSearch = useCallback(() => {
-        alert('searchCallback');
+        alert('검색 기능은 아직 개발 중입니다.');
     }, []);
 
     const clickAlarm = useCallback(() => {
@@ -161,29 +150,21 @@ const Header = () => {
                 </div>
             </HeaderLeft>
             <HeaderRight>
-                {UserData && (
-                    <>
-                        <HelloUserButton onClick={openNicknameModal}>
-                            안녕하세요 <strong>{UserData.nickname}</strong> 님
-                        </HelloUserButton>
-                        {open && <NicknameEditModal open={open} onClose={closeNicknameModal} />}
-                    </>
-                )}
-                <button data-testid="search" key="search" onClick={clickSearch}>
-                    {<SearchIcon />}
-                </button>
-                <button data-testid="alarm" key="alarm" onClick={clickAlarm}>
-                    {isOnNotificationMark && <StyledNewNotificationMark />}
-                    <AlarmIcon />
-                </button>
-                {isOpenNotificationModal && <NotificationContainer notifications={notifications} />}
                 {UserData ? (
-                    <LogOutBtn />
+                    <HeaderUser nickname={UserData.nickname} />
                 ) : (
                     <button data-testid="user" onClick={clickUser}>
                         <UserIcon />
                     </button>
                 )}
+                <button data-testid="alarm" key="alarm" onClick={clickAlarm}>
+                    {isOnNotificationMark && <StyledNewNotificationMark />}
+                    <AlarmIcon />
+                </button>
+                <button data-testid="search" key="search" onClick={clickSearch}>
+                    {<SearchIcon />}
+                </button>
+                {isOpenNotificationModal && <NotificationContainer notifications={notifications} />}
             </HeaderRight>
         </HeaderRoot>
     );

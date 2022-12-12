@@ -34,7 +34,7 @@ const ArtistsBox = () => {
             skip: mode === 나의아티스트 && localStorage.getItem('token') ? false : true,
         }
     );
-    if (getAllArtistsLoading || getMyArtistsLoading) return <Loading />;
+    if (getAllArtistsLoading || getMyArtistsLoading) return <></>;
     return (
         <ArtistsWrapper>
             {localStorage.getItem('token') && <ArtistListViewModeSelector />}

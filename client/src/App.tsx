@@ -18,6 +18,7 @@ import {
     Artist,
 } from './Routes';
 import ErrorBoundary from '@hoc/errorBoundary';
+import { withProfiler } from '@sentry/react';
 
 function App() {
     return (
@@ -44,4 +45,4 @@ function App() {
     );
 }
 
-export default App;
+export default withProfiler(App);

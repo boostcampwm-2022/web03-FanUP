@@ -22,11 +22,12 @@ const ModalContent = styled.form`
     display: flex;
     gap: 15px;
     input {
-        font-size: 20px;
+        font-size: 15px;
         border: none;
         border-radius: 8px;
         padding: 10px 15px;
         height: 50px;
+        width: 250px;
         background: ${({ theme }) => theme.LIGHT_GRAY};
         &:focus {
             outline: none;
@@ -40,6 +41,9 @@ const ModalContent = styled.form`
         border-radius: 8px;
         height: 50px;
         padding: 0 20px;
+        &:hover {
+            background: ${({ theme }) => theme.PRIMARY_DARK} !important;
+        }
     }
 `;
 
@@ -58,7 +62,7 @@ const NicknameEditModal = (props: IProps) => {
                     </button>
                 </ModalHeader>
                 <ModalContent onSubmit={submitNickname}>
-                    <input ref={nicknameRef} />
+                    <input ref={nicknameRef} placeholder="변경할 닉네임을 입력해주세요" />
                     <button>변경</button>
                 </ModalContent>
             </>
