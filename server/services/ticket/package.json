@@ -10,7 +10,7 @@
     "build": "nest build",
     "coveralls": "nyc --reporter=text-lcov npm run test:cov",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
+    "start": "TZ=Asia/Seoul nest start",
     "start:dev": "NODE_ENV=development nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
