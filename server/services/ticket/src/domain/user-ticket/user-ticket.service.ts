@@ -71,4 +71,10 @@ export class UserTicketService {
       data: { fanupId },
     });
   }
+
+  async findUserTicketByFanUPId(fanupId: string) {
+    return await this.prisma.userTicket.findMany({
+      where: { fanupId },
+    });
+  }
 }

@@ -38,4 +38,9 @@ export class UserTicketController {
     const { id, fanupId } = data;
     return this.userTicketService.updateFanUPIdById(id, fanupId);
   }
+
+  @MessagePattern({ cmd: 'findUserTicketByFanUPId' })
+  async findUserTicketByFanUPId(@Payload() fanupId: string) {
+    return await this.userTicketService.findUserTicketByFanUPId(fanupId);
+  }
 }

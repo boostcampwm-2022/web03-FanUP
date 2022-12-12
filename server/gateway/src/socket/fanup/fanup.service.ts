@@ -124,16 +124,11 @@ export class FanUPService {
       this.logger.log('validateUserTicket');
 
       const allUserTickets: UserTicket[] = await lastValueFrom(
-        this.ticketTCP.send({ cmd: 'getAllUserTicketByUserId' }, userId),
-      );
-      const { status, data, message } = await lastValueFrom(
-        this.coreTCP
-          .send('findByRoom', room)
-          .pipe(catchError((err) => of(err))),
+        this.ticketTCP.send({ cmd: 'findUserTicketByFanUPId' }, room),
       );
 
       const isExist = allUserTickets.filter(
-        (ticket) => ticket.ticketId === data.ticket_id,
+        (ticket) => ticket.userId === userId,
       );
 
       if (isExist.length > 0) {
