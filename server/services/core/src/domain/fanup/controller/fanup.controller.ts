@@ -48,4 +48,10 @@ export class FanupController {
   async getAllFanUP() {
     return await this.fanupService.getAllFanUP();
   }
+
+  @SetResponse(ResMessage.FIND_FANUP_BY_ROOM, ResStatusCode.OK)
+  @MessagePattern('findByRoom')
+  async findByRoom(roomId: string) {
+    return await this.fanupService.findByRoom(roomId);
+  }
 }
