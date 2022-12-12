@@ -1,10 +1,11 @@
 import ScheduleIcon from '@icons/ScheduleIcon';
 import TicketIcon from '@icons/TicketIcon';
-import { useGetMyTicketsQuery, useGetUserQuery } from '@/services/user.service';
+import { useGetUserQuery } from '@/services/user.service';
 import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import SmallTicket from '@molecules/SmallTicket';
 import theme from '@/style/theme';
+import { useGetUserTicketsQuery } from '@/services/ticket.service';
 
 const SchedulesWrapper = styled.div`
     background: white;
@@ -47,10 +48,10 @@ const ScheduleContentsWrapper = styled.div`
 const MYTICKET_MODE = 1;
 const SCHEDULE_MODE = 2;
 
-const MyFeatureBox = () => {
+const FanFeatureBox = () => {
     const [mode, setMode] = useState(MYTICKET_MODE);
     const { data: userData } = useGetUserQuery();
-    const { data: myTickets } = useGetMyTicketsQuery(undefined, {
+    const { data: myTickets } = useGetUserTicketsQuery(undefined, {
         skip: userData ? false : true,
     });
 
@@ -102,4 +103,4 @@ const dummySchedules = [
     { title: '10주년 이벤트❤️', date: new Date('2022.12.31'), thumbNail: '' },
 ];
 
-export default MyFeatureBox;
+export default FanFeatureBox;

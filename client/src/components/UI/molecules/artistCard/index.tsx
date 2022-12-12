@@ -57,7 +57,7 @@ const ArtistCard = ({ artist }: Props) => {
                 <DefaultImg width="100%" height="100%" borderRadius="8px" />
             )}
             <span>{artist.name}</span>
-            <SubscribeBtn isSubscribe={false} artistId={artist.id} />
+            <SubscribeBtn isSubscribe={artist?.isFavorite ? true : false} artistId={artist.id} />
         </ArtistCardWrapper>
     );
 };

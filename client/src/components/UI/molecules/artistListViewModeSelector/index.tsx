@@ -4,6 +4,7 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { IsLogin } from '@/utils/isLogin';
+import { useGetUserQuery } from '@/services/user.service';
 
 const ArtistViewModeSelectorWrapper = styled.div`
     width: 100%;
@@ -30,6 +31,7 @@ export const mode = [
 ];
 
 const ArtistViewModeSelector = () => {
+    const { data: userData, isLoading } = useGetUserQuery();
     const artistListViewMode = useSelector<ReducerType, number>(
         ({ userSlice }) => userSlice.artistListViewMode
     );
@@ -37,11 +39,11 @@ const ArtistViewModeSelector = () => {
 
     const onClickViewMode = useCallback(
         (value: number) => () => {
-            if (value === 나의아티스트 && !IsLogin()) return;
+            if (value === 나의아티스트 && !userData) return alert('로그인 후 이용 가능합니다');
 
             dispatch(setArtistListViewMode(value));
         },
-        [IsLogin]
+        [userData]
     );
     return (
         <ArtistViewModeSelectorWrapper>

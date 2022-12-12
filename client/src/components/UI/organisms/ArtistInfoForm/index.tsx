@@ -112,7 +112,9 @@ export const SubmitButton = styled.button`
 const ArtistInfoForm = () => {
     const { data: userData, isLoading, refetch: refetchUserData } = useGetUserQuery();
     const [activityName, _, onChangeActivityName] = useInput();
-    const [profileUrl, setProfileUrl] = useState('');
+    const [profileUrl, setProfileUrl] = useState(
+        userData?.artist?.profileUrl ? userData?.artist?.profileUrl : ''
+    );
     const [submitAristInfo] = useSubmitArtistInfoMutation();
     const [submitProfileImageMutate] = useSubmitProfileImageMutation();
 
@@ -151,7 +153,11 @@ const ArtistInfoForm = () => {
                         <ActivityNameInput
                             value={activityName}
                             onChange={onChangeActivityName}
-                            placeholder="활동명을 입력해주세요"
+                            placeholder={
+                                userData?.artist?.name
+                                    ? userData?.artist?.name
+                                    : '활동명을 입력해주세요'
+                            }
                         />
                     </section>
                     <section>

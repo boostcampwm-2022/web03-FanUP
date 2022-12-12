@@ -13,6 +13,11 @@ export interface IUser {
     type: string;
     email: string;
     nickname: string;
-    artistId: null | number;
+    artistId?: number;
     role: string;
+    artist?: {
+        id: number;
+        name: string;
+        profileUrl: string;
+    };
 }

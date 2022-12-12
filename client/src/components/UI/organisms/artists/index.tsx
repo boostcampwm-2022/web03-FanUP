@@ -52,7 +52,7 @@ const Artists = ({ title, artistList }: Props) => {
             ) : (
                 <>
                     <Title>{title}</Title>
-                    <ArtistListWrapper length={artistList.length}>
+                    <ArtistListWrapper length={artistList?.length}>
                         {artistList?.map((artist, idx) => (
                             <ArtistCard key={artist.name + idx} artist={artist} />
                         ))}
