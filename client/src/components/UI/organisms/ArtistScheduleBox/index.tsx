@@ -58,9 +58,9 @@ const ArtistScheduleBox = () => {
 };
 
 const dummyMyTickets = [
-    { title: '부스트캠프 수료식', date: new Date(), thumbNail: '' },
-    { title: '엔믹스 1주년❤️', date: new Date('2022.12.21'), thumbNail: '' },
-    { title: '뉴진스 1주년❤️', date: new Date('2022.12.25'), thumbNail: '' },
+    { title: '부스트캠프 수료식', startTime: new Date(), profileUrl: '' },
+    { title: '엔믹스 1주년❤️', startTime: new Date('2022.12.21'), profileUrl: '' },
+    { title: '뉴진스 1주년❤️', startTime: new Date('2022.12.25'), profileUrl: '' },
 ];
 
 export default ArtistScheduleBox;

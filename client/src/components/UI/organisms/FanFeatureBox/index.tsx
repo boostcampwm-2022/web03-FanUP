@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import SmallTicket from '@molecules/SmallTicket';
 import theme from '@/style/theme';
 import { useGetUserTicketsQuery } from '@/services/ticket.service';
+import UnHeartIcon from '@/components/icons/unheart';
 
 const SchedulesWrapper = styled.div`
     background: white;
@@ -45,20 +46,27 @@ const ScheduleContentsWrapper = styled.div`
     padding: 10px 0;
 `;
 
+const NoTickets = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
+    svg {
+        width: 25px;
+        height: 25px;
+    }
+`;
+
 const MYTICKET_MODE = 1;
 const SCHEDULE_MODE = 2;
 
 const FanFeatureBox = () => {
     const [mode, setMode] = useState(MYTICKET_MODE);
     const { data: userData } = useGetUserQuery();
-    const { data: myTickets } = useGetUserTicketsQuery(undefined, {
+    const { data: myTickets, isLoading: getMyTicketLoading } = useGetUserTicketsQuery(undefined, {
         skip: userData ? false : true,
     });
-
-    const tickets = useMemo(
-        () => (mode === MYTICKET_MODE ? dummyMyTickets : dummySchedules),
-        [mode]
-    );
 
     const clickModeBtn = useCallback(
         (mode: number) => () => {
@@ -66,6 +74,10 @@ const FanFeatureBox = () => {
         },
         []
     );
+    console.log(myTickets);
+
+    if (getMyTicketLoading) return <></>;
+
     return (
         <SchedulesWrapper>
             <ModeSelector>
@@ -79,28 +91,30 @@ const FanFeatureBox = () => {
                 </ModeBtn>
             </ModeSelector>
             <ScheduleContentsWrapper>
-                {tickets.map((ticket) => (
-                    <SmallTicket
-                        key={ticket.title}
-                        ticket={ticket}
-                        isMyTicketMode={mode === MYTICKET_MODE}
-                    />
-                ))}
+                {mode === MYTICKET_MODE &&
+                    (myTickets?.length === 0 ? (
+                        <NoTickets>
+                            <UnHeartIcon />
+                            <span>구매한 티켓이 없습니다</span>
+                        </NoTickets>
+                    ) : (
+                        myTickets?.map((ticket) => (
+                            <SmallTicket key={ticket.title} ticket={ticket} isMyTicketMode={true} />
+                        ))
+                    ))}
+                {mode === SCHEDULE_MODE &&
+                    dummySchedules.map((ticket) => (
+                        <SmallTicket key={ticket.title} ticket={ticket} isMyTicketMode={false} />
+                    ))}
             </ScheduleContentsWrapper>
         </SchedulesWrapper>
     );
 };
 
-const dummyMyTickets = [
-    { title: '부스트캠프 수료식', date: new Date(), thumbNail: '' },
-    { title: '엔믹스 1주년❤️', date: new Date('2022.12.21'), thumbNail: '' },
-    { title: '뉴진스 1주년❤️', date: new Date('2022.12.25'), thumbNail: '' },
-];
-
 const dummySchedules = [
-    { title: '우리 만나요~', date: new Date(), thumbNail: '' },
-    { title: '두근두근 컴백', date: new Date('2022.12.26'), thumbNail: '' },
-    { title: '10주년 이벤트❤️', date: new Date('2022.12.31'), thumbNail: '' },
+    { title: '우리 만나요~', startTime: new Date(), profileUrl: '' },
+    { title: '두근두근 컴백', startTime: new Date('2022.12.26'), profileUrl: '' },
+    { title: '10주년 이벤트❤️', startTime: new Date('2022.12.31'), profileUrl: '' },
 ];
 
 export default FanFeatureBox;

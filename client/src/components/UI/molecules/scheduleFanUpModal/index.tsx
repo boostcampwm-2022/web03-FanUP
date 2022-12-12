@@ -9,8 +9,8 @@ import CloseIcon from '@icons/CloseIcon';
 import { ERR_MESSAGE } from './constants';
 import Fish from '@icons/Fish';
 import { useSubmitTicketMutation } from '@/services/ticket.service';
-import { TicketSubmitData } from '@/types/ticket';
 import { addZero } from '@utils/addZero';
+import { IsPast } from '@/utils/isPast';
 
 const ModalHeader = styled.div`
     display: flex;
@@ -127,7 +127,7 @@ const ContentFourth = styled.div`
 
 const ScheduleFanUpModal = () => {
     const dispatch = useDispatch();
-    const [submitMutation] = useSubmitTicketMutation();
+    const [submitMutation, { isError }] = useSubmitTicketMutation();
     const selectedDay = useSelector<
         ReducerType,
         null | { year: number; month: number; day: number }
@@ -185,8 +185,7 @@ const ScheduleFanUpModal = () => {
             mode: string
         ) => {
             const targetDate = new Date(e.target.value);
-            const [diff] = dateDiff(targetDate, new Date());
-            if (diff < 0) return alert('이미 지나간 시간을 그리워하지마세요 :(');
+            if (IsPast(targetDate)) return alert('이미 지나간 시간을 그리워하지마세요 :(');
 
             if (mode === 'FanUP' && salesTime) {
                 const [timeDiff] = dateDiff(targetDate, new Date(salesTime));
@@ -238,6 +237,8 @@ const ScheduleFanUpModal = () => {
             price: Number(priceRef.current?.value),
         };
         await submitMutation(reqData);
+        if (isError) return alert('에러 발생');
+        alert('티켓 생성 완료');
         dispatch(closeScheduleModal());
     }, [startTime, salesTime]);
 
