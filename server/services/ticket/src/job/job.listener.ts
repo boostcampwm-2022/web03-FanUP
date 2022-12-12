@@ -1,10 +1,10 @@
 import { Inject, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { ClientTCP } from '@nestjs/microservices';
+import { Ticket } from '@prisma/client';
 import { catchError, lastValueFrom, of } from 'rxjs';
 import { io } from 'socket.io-client';
 import { MICRO_SERVICES } from 'src/common/constants/microservices';
-import CreateTicketDto from 'src/domain/ticket/dto/create-ticket.dto';
 
 export class JobListener {
   private logger: Logger = new Logger(JobListener.name);
@@ -22,7 +22,7 @@ export class JobListener {
     const gateway = env ? 'fanup-gateway' : 'localhost';
 
     const socket = io(`http://${gateway}:3000/socket/notification`);
-    socket.emit('send-notification', { ...data });
+    socket.emit('send-room-notification', { ...data });
   }
 
   async findUserIdByArtistId(artistId: number): Promise<any[]> {
@@ -33,9 +33,11 @@ export class JobListener {
     );
   }
 
-  async createNotification({ userId, message }) {
+  async createNotification({ id, userId, message }) {
+    const info = typeof id === 'number' ? id.toString() : id;
     return await lastValueFrom(
       this.coreClient.send('createNotification', {
+        info,
         userId,
         message,
         read: false,
@@ -44,14 +46,19 @@ export class JobListener {
   }
 
   @OnEvent('ticket.create')
-  async ticketCreateEvent(data: CreateTicketDto) {
+  async ticketCreateEvent(data: Ticket) {
     this.logger.log('ticketCreateEvent');
-    const { artistId } = data;
-    const message = `아티스트 ${artistId}가 티켓을 개설했어요. 많은 관심 부탁드려요.`;
+    const { artistId, id } = data;
     if (!!artistId) {
+      // 해당 티켓 정보를 기반으로 방들을 생성
+      await lastValueFrom(this.coreClient.send('createTotalFanUP', data));
+
+      const message = `아티스트 ${artistId}가 티켓을 개설했어요. 팬미팅 전에 다른 팬들과 소통하려면 여기로 오세요`;
+
+      // 해당 아티스트를 구독하는 사람들
       const userIds = await this.findUserIdByArtistId(artistId);
       userIds.forEach(async (userId) => {
-        const value = { ...userId, message };
+        const value = { ...userId, message, id, type: 'ticket' };
         await this.sendNotification(value);
         await this.createNotification(value);
       });
