@@ -28,8 +28,8 @@ export class AuthService {
     return this.authClient.send({ cmd: 'createArtist' }, createArtistDto);
   }
 
-  public getAllArtist() {
-    return this.authClient.send({ cmd: 'getAllArtist' }, {});
+  public getAllArtist(userId: number) {
+    return this.authClient.send({ cmd: 'getAllArtist' }, userId);
   }
 
   public getFavoriteArtist(userId: number) {
