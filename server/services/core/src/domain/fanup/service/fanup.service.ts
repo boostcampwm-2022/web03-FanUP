@@ -29,6 +29,7 @@ export class FanupService {
         },
         select: {
           room_id: true,
+          number_team: true,
         },
       });
     } catch (err) {

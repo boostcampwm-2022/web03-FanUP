@@ -53,12 +53,12 @@ export class NotificationService {
   }
 
   // 해당 사용자가 알림을 읽었을 경우 업데이트
-  async updateNotification({ id, socket, server }: UpdateNotification) {
+  async updateNotification({ id, userId, socket, server }: UpdateNotification) {
     try {
       this.logger.log('update-notification' + socket.id);
       const result = await lastValueFrom(
         this.coreTCP
-          .send('updateNotification', { id })
+          .send('updateNotification', { id, userId })
           .pipe(catchError((err) => of({ ...err }))),
       );
       server.to(socket.id).emit('update-notification-success', { result });

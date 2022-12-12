@@ -60,12 +60,13 @@ export class NotificationService {
     }
   }
 
-  async updateRead(id: number) {
+  async updateRead(id: number, user_id: number) {
     try {
       this.logger.log(`updateRead: ${id}`);
       return await this.prisma.notification.updateMany({
         where: {
-          user_id: id,
+          id,
+          user_id,
         },
         data: {
           read: true,
