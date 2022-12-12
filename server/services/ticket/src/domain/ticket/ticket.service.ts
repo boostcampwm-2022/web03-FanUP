@@ -42,6 +42,9 @@ export class TicketService {
           gte: now,
         },
       },
+      include: {
+        artist: true,
+      },
     });
   }
 
