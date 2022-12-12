@@ -67,8 +67,9 @@ export class CoreService {
   }
 
   async findAllByTicketId(ticketId) {
-    return await lastValueFrom(
+    const { status, data, message } = await lastValueFrom(
       this.apiClient.send('findAllByTicketId', { ticket_id: ticketId }),
     );
+    return data;
   }
 }

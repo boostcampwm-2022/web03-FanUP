@@ -108,39 +108,45 @@ export class JobListener {
   }
 
   @OnEvent('user-ticket.create')
-  async userTicketCreateEvent(data: UserTicket) {
+  async userTicketCreateEvent(userTicket: UserTicket) {
     try {
-      this.logger.log('user-ticket.create', data);
-      const { id, ticketId, userId } = data;
+      this.logger.log('user-ticket.create', userTicket);
+      const { id, ticketId, userId } = userTicket;
 
       // 해당 티켓에 할당된 티켓들을 가져옴 사용자가 구매한 티켓 내역을 가져옴
       const room = this.getUserTicketByTicketId(ticketId);
 
       // core에서 해당 ticket의 FanUP 방을 가져옴
-      const fanUpList = await lastValueFrom(
+      const { status, data, message } = await lastValueFrom(
         this.coreClient.send('findAllByTicketId', { ticket_id: ticketId }),
       );
+      this.logger.log('core에서 해당 ticket의 FanUP 방을 가져옴', data);
 
-      this.logger.log(fanUpList);
+      const limitNumber = data[0].number_team;
 
-      // const limitNumber = fanUpList[0].number_team;
+      // 할당 가능한 방을 찾고 티켓 사용자의 FanUPId를 업데이트
+      let assignRoom = this.findAssignRoom(room, limitNumber);
+      if (!assignRoom) {
+        assignRoom = data
+          .filter((fanUp) => fanUp.fanUP_type !== 'ARTIST')
+          .filter(
+            (fanUp) => !Object.values(room).includes(fanUp.room_id),
+          )[0].room_id;
+      }
+      await this.userTicketService.updateFanUPIdById(id, assignRoom);
 
-      // // 할당 가능한 방을 찾고 티켓 사용자의 FanUPId를 업데이트
-      // let assignRoom = this.findAssignRoom(room, limitNumber);
-      // if (!assignRoom) {
-      //   assignRoom = fanUpList
-      //     .filter((fanUp) => fanUp.fanUP_type !== 'ARTIST')
-      //     .filter(
-      //       (fanUp) => !Object.values(room).includes(fanUp.room_id),
-      //     )[0].room_id;
-      // }
-      // await this.userTicketService.updateFanUPIdById(id, assignRoom);
+      // 알림을 보냄
+      const notificationMessage =
+        '팬미팅 방이 생성되었어요 다른 팬들과 함께 참여해보세요';
 
-      // // 알림을 보냄
-      // const message = '팬미팅 방이 생성되었어요 다른 팬들과 함께 참여해보세요';
-      // const value = { userId, message, info: assignRoom, type: 'fanup' };
-      // await this.sendNotification(value);
-      // await this.createNotification(value);
+      const value = {
+        userId,
+        message: notificationMessage,
+        info: assignRoom,
+        type: 'fanup',
+      };
+      await this.sendNotification(value);
+      await this.createNotification(value);
     } catch (err) {
       console.log(err);
     }

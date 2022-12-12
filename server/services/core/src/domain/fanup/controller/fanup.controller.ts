@@ -40,7 +40,7 @@ export class FanupController {
 
   @SetResponse(ResMessage.GET_ALL_FANUP_BY_TICKET, ResStatusCode.OK)
   @MessagePattern('findAllByTicketId')
-  async findAllByTicketId(data: { ticket_id: number }) {
+  async findAllByTicketId(data: { ticket_id: string }) {
     return await this.fanupService.findAllByTicketId(data.ticket_id);
   }
 
