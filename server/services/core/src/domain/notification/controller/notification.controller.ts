@@ -27,8 +27,8 @@ export class NotificationController {
 
   @SetResponse(ResMessage.UPDATE_NOTIFICATION, ResStatusCode.ACCEPTED)
   @MessagePattern('updateNotification')
-  async update(data: { id: number }) {
-    return await this.notification.updateRead(data.id);
+  async update(data: { id: number; userId: number }) {
+    return await this.notification.updateRead(data.id, data.userId);
   }
 
   @SetResponse(ResMessage.FIND_NOTIFICATION_BY_USER_ID, ResStatusCode.CREATED)

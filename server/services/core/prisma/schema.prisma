@@ -18,6 +18,7 @@ model FanUp {
   ticket_id Int
   artist_id Int?
   room_id String @unique
+  number_team Int?
   start_time DateTime
   end_time DateTime
   status FanUPStatus

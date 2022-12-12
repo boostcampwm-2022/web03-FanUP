@@ -62,9 +62,10 @@ class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() socket: Socket,
     @MessageBody() data,
   ) {
-    const { id } = data;
+    const { id, userId } = data;
     await this.notificationService.updateNotification({
       id,
+      userId,
       socket,
       server: this.server,
     });

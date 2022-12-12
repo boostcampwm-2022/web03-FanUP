@@ -29,6 +29,7 @@ export class FanupService {
         },
         select: {
           room_id: true,
+          number_team: true,
         },
       });
     } catch (err) {
@@ -54,12 +55,13 @@ export class FanupService {
   }
 
   async create(data: CreateTimeDto) {
-    const { ticket_id, start_time, end_time, artist_id } = data;
+    const { ticket_id, start_time, end_time, artist_id, number_team } = data;
     const createFanupDto = new CreateFanupDto(
       ticket_id,
       start_time,
       end_time,
       artist_id,
+      number_team,
     );
 
     return await this.prisma.fanUp.create({
@@ -200,7 +202,7 @@ export class FanupService {
     return Array.from({ length: totalNum }, (_, i) => i).map((order) => {
       const start = addMinutes(date, order * timeTeam);
       const end = addMinutes(start, timeTeam);
-      return new CreateTimeDto(id, start, end, artistId);
+      return new CreateTimeDto(id, start, end, artistId, numberTeam);
     });
   }
 }
