@@ -23,6 +23,7 @@ model Ticket {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   artistId  Int
+  artist    Artist   @relation(fields: [artistId], references: [id])
   salesTime DateTime
   startTime DateTime
   status    Status  @default(OPEN)
@@ -40,4 +41,11 @@ model UserTicket {
   ticket    Ticket   @relation(fields: [ticketId], references: [id])
   createdAt DateTime @default(now())
   fanupId   Int?
+}
+
+model Artist {
+  id          Int     @id
+  name        String
+  profileUrl  String?
+  tickets     Ticket[]
 }
