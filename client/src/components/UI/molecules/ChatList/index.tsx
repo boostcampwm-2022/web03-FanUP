@@ -27,6 +27,10 @@ const ChatList: FC<Props> = ({ chatData }) => {
     const lastChatRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
+        console.log(chatData);
+    }, [chatData.length]);
+
+    useEffect(() => {
         if (!lastChatRef.current) return;
 
         lastChatRef.current.scrollIntoView({
@@ -37,8 +41,8 @@ const ChatList: FC<Props> = ({ chatData }) => {
 
     return (
         <StyledChatList>
-            {chatData.map(({ email, isArtist, message }, idx) => (
-                <Chat key={idx} isArtist={isArtist} email={email} message={message} />
+            {chatData.map(({ date, nickname, isArtist, message }) => (
+                <Chat key={date} isArtist={isArtist} nickname={nickname} message={message} />
             ))}
             <div ref={lastChatRef}></div>
         </StyledChatList>

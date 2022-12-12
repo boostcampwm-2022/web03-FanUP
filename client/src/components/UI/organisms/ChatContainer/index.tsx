@@ -10,7 +10,7 @@ import ChatList from '@molecules/ChatList';
 export interface ChatMessage {
     date: number;
     isArtist: boolean;
-    nickname?: string;
+    nickname: string;
     message: string;
 }
 
@@ -44,6 +44,7 @@ const ChatContainer: FC = () => {
 
     const handleSubmit = useCallback(
         (e: React.FormEvent<HTMLButtonElement>) => {
+            console.log('전송');
             e.preventDefault();
             const data = {
                 userId: userId,
