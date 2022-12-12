@@ -30,7 +30,7 @@ export class TicketController {
   @UseGuards(JwtAuthGuard)
   async getUserTicketHistory(@Req() { user }) {
     return this.ticketClient.send(
-      { cmd: 'getAllUserTicketByUserId' },
+      { cmd: 'getAllTicketByUserId' },
       { userId: user.id },
     );
   }
