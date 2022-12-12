@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 
-import { AUTH_CONFIG } from './common/constants/config';
+import { MICRO_SERVICES } from './common/constants/config';
 import CustomRpcExceptionFilter from './common/exception/filter/custom-rpc-exception.filter';
 
 async function bootstrap() {
@@ -12,8 +12,8 @@ async function bootstrap() {
     {
       transport: Transport.TCP,
       options: {
-        host: AUTH_CONFIG.HOST,
-        port: AUTH_CONFIG.PORT,
+        host: MICRO_SERVICES.AUTH.HOST,
+        port: MICRO_SERVICES.AUTH.PORT,
       },
     },
   );

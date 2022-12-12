@@ -12,7 +12,7 @@ export class ArtistController {
   @MessagePattern({ cmd: 'createArtist' })
   async createArtist(
     @Payload() requestCreateArtistDto: requestCreateArtistDto,
-  ): Promise<Artist> {
+  ): Promise<string> {
     console.log('create artist');
     return this.artistService.create(requestCreateArtistDto);
   }
