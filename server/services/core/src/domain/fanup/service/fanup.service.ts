@@ -89,11 +89,10 @@ export class FanupService {
     try {
       const createDto = this.calculateTotalFanUP(ticket);
       console.log(createDto);
-      const result = [];
-      createDto.forEach(async (dto) => {
-        result.push(await this.create(dto));
-      });
-      console.log(result);
+      const fanUPforFan = await Promise.all(
+        createDto.map(async (dto) => await this.create(dto)),
+      );
+      console.log(fanUPforFan);
       const fanUPforArtist = await this.prisma.fanUp.create({
         data: {
           room_id: uuid(),
@@ -106,7 +105,7 @@ export class FanupService {
           fanUP_type: FanUPType.ARTIST,
         },
       });
-      return [...result, fanUPforArtist];
+      return [...fanUPforFan, fanUPforArtist];
     } catch (err) {
       console.log(err);
     }
