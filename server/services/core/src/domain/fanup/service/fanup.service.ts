@@ -127,6 +127,19 @@ export class FanupService {
     throw new FanUPNotFoundException();
   }
 
+  async findByRoom(roomId: string) {
+    try {
+      return await this.prisma.fanUp.findFirst({
+        where: {
+          room_id: roomId,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+      throw new FanUPNotFoundException();
+    }
+  }
+
   async getAllFanUP() {
     try {
       return await this.prisma.fanUp.findMany();

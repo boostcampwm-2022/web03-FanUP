@@ -48,8 +48,8 @@ export class JobListener {
     this.logger.log('ticketCreateEvent');
     const { artistId } = data;
     const message = `아티스트 ${artistId}가 티켓을 개설했어요. 많은 관심 부탁드려요.`;
-    const userIds = await this.findUserIdByArtistId(1);
-    if (!!userIds) {
+    if (!!artistId) {
+      const userIds = await this.findUserIdByArtistId(artistId);
       userIds.forEach(async (userId) => {
         const value = { ...userId, message };
         await this.sendNotification(value);
