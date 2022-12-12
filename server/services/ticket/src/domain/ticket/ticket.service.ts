@@ -58,7 +58,20 @@ export class TicketService {
     });
   }
 
-  async findAllByUserId() {}
+  async findAllByUserId(userId: number): Promise<Ticket[]> {
+    return this.prisma.ticket.findMany({
+      where: {
+        startTime: {
+          gte: new Date(Date.now()).toISOString(),
+        },
+        userTickets: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+    });
+  }
 
   async findTicketByToday() {
     const today = getToday();

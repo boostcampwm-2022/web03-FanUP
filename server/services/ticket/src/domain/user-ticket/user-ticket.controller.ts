@@ -13,13 +13,6 @@ export class UserTicketController {
     return this.userTicketService.create(createUserTicketDto);
   }
 
-  @MessagePattern({ cmd: 'getAllUserTicketByUserId' })
-  getAllUserTicketByUserId(
-    @Payload('userId') userId: number,
-  ): Promise<UserTicket[]> {
-    return this.userTicketService.findAllByUserId(userId);
-  }
-
   @MessagePattern({ cmd: 'getUserTicket' })
   getTicket(@Payload() userTicketId: number): Promise<UserTicket> {
     return this.userTicketService.find(userTicketId);

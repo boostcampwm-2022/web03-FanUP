@@ -47,12 +47,6 @@ export class UserTicketService {
     return this.prisma.userTicket.findMany({});
   }
 
-  async findAllByUserId(userId: number): Promise<UserTicket[]> {
-    return this.prisma.userTicket.findMany({
-      where: { userId },
-    });
-  }
-
   async delete(userTicketId: number): Promise<UserTicket> {
     return this.prisma.userTicket.delete({ where: { id: userTicketId } });
   }
