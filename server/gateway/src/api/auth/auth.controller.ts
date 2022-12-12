@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   Req,
   UseFilters,
   UseGuards,
@@ -55,9 +56,8 @@ export class AuthController {
   }
 
   @Get('/artist')
-  @UseGuards(JwtAuthGuard)
-  async getAllArtist(@Req() { user }) {
-    return this.authService.getAllArtist(user.id);
+  async getAllArtist(@Query('userId') userId: number | null) {
+    return this.authService.getAllArtist(userId);
   }
 
   @Get('/artist/favorite')
