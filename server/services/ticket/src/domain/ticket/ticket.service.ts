@@ -19,10 +19,11 @@ export class TicketService {
   }
 
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
-    this.event.emit('ticket.create', { ...createTicketDto });
-    return this.prisma.ticket.create({
+    const ticket = await this.prisma.ticket.create({
       data: createTicketDto,
     });
+    this.event.emit('ticket.create', { ...ticket });
+    return ticket;
   }
 
   async find(ticketId: number): Promise<Ticket> {
