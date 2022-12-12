@@ -93,9 +93,9 @@ const DetailTicket = () => {
     const ticketing = async () => {
         if (!timeEnd) return alert('아직 티켓팅 시간이 되지 않았습니다.');
         setTicketLoading(true);
-        const { data: response } = (await ticketingMutation(ticketId as string)) as { data: any };
+        const { error } = (await ticketingMutation(ticketId as string)) as any;
         setTimeout(() => {
-            if (response?.status === 403) return navigate('/ticketing/failure');
+            if (error) return navigate('/ticketing/failure');
             else navigate('/ticketing/success');
         }, 2000);
     };

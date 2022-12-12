@@ -58,26 +58,26 @@ const ScheduleInfo = styled.div`
 interface Props {
     ticket: {
         title: string;
-        date: Date;
-        thumbNail: string;
+        startTime: Date;
+        profileUrl: string;
     };
     isMyTicketMode?: boolean;
 }
 
 const SmallTicket = ({ ticket, isMyTicketMode }: Props) => {
-    const { thumbNail, date, title } = ticket;
+    const { profileUrl, startTime, title } = ticket;
     return (
         <ScheduleTicketWrapper>
             <TicketBarCode width="9px" height="65px" />
             <ScheduleContent>
                 <ScheduleTicketLeft>
-                    <ImageChip src={thumbNail} width="50px" height="50px" />
+                    <ImageChip src={profileUrl} width="50px" height="50px" />
                     <ScheduleInfo>
                         <h3>{title}</h3>
-                        <div>{dateForm(date)}</div>
+                        <div>{dateForm(startTime)}</div>
                     </ScheduleInfo>
                 </ScheduleTicketLeft>
-                <DDay date={date} isMyTicketMode={isMyTicketMode} />
+                <DDay date={startTime} isMyTicketMode={isMyTicketMode} />
             </ScheduleContent>
         </ScheduleTicketWrapper>
     );

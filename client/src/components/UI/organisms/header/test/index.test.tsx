@@ -30,6 +30,6 @@ describe('<Header />', () => {
         expect(navigate).toBeCalledWith('/tickets');
 
         fireEvent.click(screen.getByTestId('search'));
-        expect(alertMock).toBeCalledWith('searchCallback');
+        expect(alertMock).toBeCalledWith('검색 기능은 아직 개발 중입니다.');
     });
 });

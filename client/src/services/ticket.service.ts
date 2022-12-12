@@ -1,6 +1,6 @@
 import 'whatwg-fetch';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { TicketSales, TicketDetail, TicketSubmitData } from '@/types/ticket';
+import { TicketSales, TicketDetail, TicketSubmitData, MyTicket } from '@/types/ticket';
 import { customFetchBaseQuery } from './_baseQuery';
 
 export const ticketApi = createApi({
@@ -21,7 +21,7 @@ export const ticketApi = createApi({
             query: (ticketid: string) => ({ url: `/ticket/${ticketid}` }),
             providesTags: (result, error, id) => [{ type: 'TicketDetail', id }],
         }),
-        getUserTickets: build.query<any[], void>({
+        getUserTickets: build.query<MyTicket[], void>({
             query: () => '/ticket/user',
             providesTags: ['MyTicket'],
         }),
