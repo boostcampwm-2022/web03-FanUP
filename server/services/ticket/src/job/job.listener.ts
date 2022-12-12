@@ -121,7 +121,7 @@ export class JobListener {
       const { id, ticketId, userId } = userTicket;
 
       // 해당 티켓에 할당된 티켓들을 가져옴 사용자가 구매한 티켓 내역을 가져옴
-      const room = this.getUserTicketByTicketId(ticketId);
+      const room: object = this.getUserTicketByTicketId(ticketId);
 
       // core에서 해당 ticket의 FanUP 방을 가져옴
       const { status, data, message } = await lastValueFrom(
@@ -136,9 +136,14 @@ export class JobListener {
       if (!assignRoom) {
         assignRoom = data
           .filter((fanUp) => fanUp.fanUP_type !== 'ARTIST')
-          .filter(
-            (fanUp) => !Object.keys(room).includes(fanUp.room_id),
-          )[0].room_id;
+          .filter((fanUp) => {
+            const exist = room.hasOwnProperty(fanUp.room_id);
+            console.log(exist, fanUp.room_id);
+            if (exist) {
+              return false;
+            }
+            return true;
+          })[0].room_id;
       }
       this.logger.log(assignRoom);
       await this.userTicketService.updateFanUPIdById(id, assignRoom);
