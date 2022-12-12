@@ -158,15 +158,16 @@ const useFanUP = (): [
     };
 
     useEffect(() => {
-        if (loginLoading) return;
-        if (!myStream) return;
-        if (Object.keys(peerConnections.current).length !== 0) return;
-
         socket?.emit(SOCKET_EVENTS.joinRoom, {
             room: fanUpId,
             userId: UserData?.id,
             nickname: UserData?.nickname,
         });
+
+        if (loginLoading) return;
+        if (!myStream) return;
+        if (Object.keys(peerConnections.current).length !== 0) return;
+
         socket?.on(SOCKET_EVENTS.welcome, welcomeCallback);
         socket?.on(SOCKET_EVENTS.offer, offerCallback);
         socket?.on(SOCKET_EVENTS.answer, answerCallback);
