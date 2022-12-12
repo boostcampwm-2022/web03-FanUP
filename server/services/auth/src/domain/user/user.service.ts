@@ -29,6 +29,9 @@ export class UserService {
   findOne(id: number): Promise<User> {
     return this.prisma.user.findUnique({
       where: { id },
+      include: {
+        artist: true,
+      },
     });
   }
 
