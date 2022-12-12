@@ -41,13 +41,18 @@ export class ArtistService {
     });
   }
 
-  async findAll(userId: number) {
+  async findAll(userId: number | null) {
+    if (!userId) {
+      return this.prisma.artist.findMany();
+    }
+
     const artists = await this.prisma.artist.findMany({
       include: { favorites: { where: { userId } } },
     });
 
     return artists.reduce((acc, artist) => {
       const { favorites, ...rest } = artist;
+      console.log(artist);
       acc.push({ ...rest, isFavorite: favorites.length > 0 });
       return acc;
     }, []);
