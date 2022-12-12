@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build": "TZ=Asia/Seoul nest build",
     "coveralls": "nyc --reporter=text-lcov npm run test:cov",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "TZ=Asia/Seoul nest start",
