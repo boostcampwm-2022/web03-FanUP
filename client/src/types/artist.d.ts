@@ -2,7 +2,7 @@ interface IAritst {
     id: number;
     name: string;
     profileUrl: string;
-    isFavorite: boolean;
+    isFavorite?: boolean;
 }
 
 export interface CalendarData {
