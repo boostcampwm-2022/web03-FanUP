@@ -6,6 +6,7 @@ import { catchError, lastValueFrom, of } from 'rxjs';
 import { io } from 'socket.io-client';
 import { MICRO_SERVICES } from 'src/common/constants/microservices';
 import { UserTicketService } from 'src/domain/user-ticket/user-ticket.service';
+import { Uuid } from 'uuid-tool';
 
 export class JobListener {
   private logger: Logger = new Logger(JobListener.name);
@@ -139,15 +140,11 @@ export class JobListener {
           .filter((fanUp) => {
             const isExist = Object.keys(room)
               .map((key) => {
-                const one = key.toString();
-                const two = fanUp.room_id.toString();
-                if (one === two) {
-                  return true;
-                }
-                return false;
+                const one = new Uuid(key);
+                const two = new Uuid(fanUp.room_id);
+                return one.equals(two);
               })
               .includes(true);
-
             if (isExist) {
               return false;
             }
