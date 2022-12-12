@@ -30,12 +30,14 @@ model Ticket {
   numberTeam Int  @default(1)
   timeTeam  Int
   price     Int
+  userTickets UserTicket[]
 }
 
 model UserTicket {
   id        Int      @id @default(autoincrement())
   userId    Int
   ticketId  Int
+  ticket    Ticket   @relation(fields: [ticketId], references: [id])
   createdAt DateTime @default(now())
   fanupId   Int?
 }
