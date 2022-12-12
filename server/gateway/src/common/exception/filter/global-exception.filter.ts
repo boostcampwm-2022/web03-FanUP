@@ -15,7 +15,7 @@ export class AllGlobalExceptionsFilter implements ExceptionFilter {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
     const httpStatus =
-      typeof exception.status === 'string'
+      !exception.status || typeof exception.status === 'string'
         ? HttpStatus.INTERNAL_SERVER_ERROR
         : exception.status;
 
