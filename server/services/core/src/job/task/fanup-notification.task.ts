@@ -100,6 +100,7 @@ export class FanUPNotificationTask {
     startTime: Date,
     endTime: Date,
     artistId: number,
+    numberTeam: number,
   ) {
     this.logger.log('createFanUP');
     const fanUP = await this.fanupService.create({
@@ -107,6 +108,7 @@ export class FanUPNotificationTask {
       start_time: startTime,
       end_time: endTime,
       artist_id: artistId,
+      number_team: numberTeam,
     });
     return { fanupId: fanUP.id, roomId: fanUP.room_id };
   }
@@ -159,6 +161,7 @@ export class FanUPNotificationTask {
           start,
           end,
           artistId,
+          numberTeam,
         );
 
         const userInfo = userTickets.slice(order, numberTeam * (order + 1));
