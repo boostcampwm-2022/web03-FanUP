@@ -192,6 +192,25 @@ export class FanupService {
     }
   }
 
+  async findRoomIdByTicketId(ticketIds: number[]) {
+    try {
+      return await this.prisma.fanUp.findMany({
+        where: {
+          ticket_id: {
+            in: ticketIds,
+          },
+          fanUP_type: FanUPType.ARTIST,
+        },
+        select: {
+          ticket_id: true,
+          room_id: true,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   /**
    * 판매된 티켓을 기반으로 필요한 방개수를 계산하는 함수
    * @param ticketAmount 판매된 티켓
