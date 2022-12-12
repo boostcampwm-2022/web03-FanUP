@@ -63,7 +63,7 @@ export class TicketService {
   }
 
   async findAllByUserId(userId: number): Promise<Ticket[]> {
-    return this.prisma.ticket.findMany({
+    const userTickets = await this.prisma.ticket.findMany({
       where: {
         startTime: {
           gte: new Date(Date.now()).toISOString(),
@@ -74,7 +74,26 @@ export class TicketService {
           },
         },
       },
+      include: {
+        artist: true,
+        userTickets: {
+          where: {
+            userId: userId,
+          },
+          select: {
+            fanupId: true,
+          },
+        },
+      },
     });
+
+    return userTickets.reduce((acc, cur) => {
+      const fanupId =
+        cur.userTickets.length > 0 ? cur.userTickets[0].fanupId : null;
+      delete cur.userTickets;
+      acc.push({ ...cur, fanupId });
+      return acc;
+    }, []);
   }
 
   async findTicketByToday() {
