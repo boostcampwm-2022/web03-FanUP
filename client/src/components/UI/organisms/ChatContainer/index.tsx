@@ -22,7 +22,7 @@ const StyledChatContainer = styled.div`
 const ChatContainer: FC = () => {
     const { fanUpId } = useParams();
     // TODO : undefined 에러 처리
-    const userData = useGetUserQuery()?.data;
+    const { data: userData } = useGetUserQuery();
     const [userId, setUserId] = useState<number | undefined>(userData?.id);
     const [userNickname, setuserNickname] = useState<string | undefined>(userData?.nickname);
     const [room, setRoom] = useState<string | undefined>(fanUpId);
