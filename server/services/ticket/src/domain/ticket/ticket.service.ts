@@ -1,9 +1,10 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ClientProxy } from '@nestjs/microservices';
 import { Ticket } from '@prisma/client';
 import { firstValueFrom } from 'rxjs';
 import { MICRO_SERVICES } from 'src/common/constants/microservices';
+import { CustomRpcException } from 'src/common/exception/custom-rpc-exception';
 import { getToday, getTomorrow } from 'src/common/util/date';
 
 import { PrismaService } from 'src/provider/prisma/prisma.service';
@@ -32,7 +33,13 @@ export class TicketService {
   }
 
   async find(ticketId: number): Promise<Ticket> {
-    return this.prisma.ticket.findUnique({ where: { id: ticketId } });
+    try {
+      return await this.prisma.ticket.findUniqueOrThrow({
+        where: { id: ticketId },
+      });
+    } catch (e) {
+      throw new CustomRpcException('Ticket not found', HttpStatus.BAD_REQUEST);
+    }
   }
 
   async findAll(): Promise<Ticket[]> {
