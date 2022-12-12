@@ -22,11 +22,11 @@ export class FanupService {
     };
   }
 
-  async findAllByTicketId(ticket_id: number) {
+  async findAllByTicketId(ticket_id: string) {
     try {
       return await this.prisma.fanUp.findMany({
         where: {
-          ticket_id,
+          ticket_id: parseInt(ticket_id),
         },
       });
     } catch (err) {
