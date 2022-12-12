@@ -84,7 +84,7 @@ class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('send-ticket-notification')
   ticketNotification(@ConnectedSocket() socket: Socket, @MessageBody() data) {
     const { userId } = data;
-    this.logger.log(`send-room-notification: `, data);
+    this.logger.log(`send-ticket-notification: `, data);
     this.server.to(userId).emit('receive-ticket-notification', {
       ...data,
     });
