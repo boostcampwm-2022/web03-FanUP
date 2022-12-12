@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ArtistModule } from './domain/artist/artist.module';
 import { TicketModule } from './domain/ticket/ticket.module';
 import { UserTicketModule } from './domain/user-ticket/user-ticket.module';
 import { JobModule } from './job/job.module';
@@ -10,6 +11,7 @@ import { JobModule } from './job/job.module';
 @Module({
   imports: [
     EventEmitterModule.forRoot(),
+    ArtistModule,
     TicketModule,
     UserTicketModule,
     ConfigModule.forRoot({
