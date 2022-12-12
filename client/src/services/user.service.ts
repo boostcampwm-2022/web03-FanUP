@@ -47,9 +47,10 @@ export const userApi = createApi({
             }),
             invalidatesTags: ['SubScribedArtist'],
             async onQueryStarted(artistId, { dispatch, queryFulfilled }) {
-                console.log('artistId : ', artistId);
+                console.log('subscribed !!!!!!: ', artistId);
                 dispatch(
                     updateQueryData('getSubScribedArtist', undefined, (draft) => {
+                        draft = draft.filter((v) => v.id !== artistId);
                         console.log('updateQueryData');
                         console.log('artistId : ', artistId);
                         console.log('draft : ', JSON.stringify(draft));
@@ -63,6 +64,16 @@ export const userApi = createApi({
                 method: 'DELETE',
             }),
             invalidatesTags: ['SubScribedArtist'],
+            async onQueryStarted(artistId, { dispatch, queryFulfilled }) {
+                console.log('unSubscribed !!!!!!:: ', artistId);
+                dispatch(
+                    updateQueryData('getSubScribedArtist', undefined, (draft) => {
+                        console.log('updateQueryData');
+                        console.log('artistId : ', artistId);
+                        console.log('draft : ', JSON.stringify(draft));
+                    })
+                );
+            },
         }),
     }),
 });
@@ -71,7 +82,11 @@ export const useGetUserQuery = () => {
     const queryResult = userApi.useGetUserQuery(undefined, {
         skip: localStorage.getItem('token') ? false : true,
     });
-    if (queryResult.isError) InitializeLocalStorage();
+    const { isLoading, isError } = queryResult;
+    if (!isLoading && isError) {
+        console.log('!isLoading && isError');
+        InitializeLocalStorage();
+    }
     return queryResult;
 };
 

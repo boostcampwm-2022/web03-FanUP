@@ -60,8 +60,8 @@ class ErrorBoundary extends React.Component<Props, State> {
         hasError: false,
     };
 
-    public static getDerivedStateFromError(_: Error): State {
-        InitializeLocalStorage();
+    public static getDerivedStateFromError(e: Error): State {
+        //InitializeLocalStorage();
         return { hasError: true };
     }
     public componentDidCatch(error: Error, errorInfo: any) {
