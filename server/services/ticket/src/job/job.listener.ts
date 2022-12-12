@@ -58,7 +58,10 @@ export class JobListener {
     const { artistId, id } = data;
     if (!!artistId) {
       // 해당 티켓 정보를 기반으로 방들을 생성
-      await lastValueFrom(this.coreClient.send('createTotalFanUP', data));
+      const fanUP = await lastValueFrom(
+        this.coreClient.send('createTotalFanUP', data),
+      );
+      this.logger.log('fanUP Create', fanUP);
 
       const message = `아티스트 ${artistId}가 티켓을 개설했어요. 팬미팅 전에 다른 팬들과 소통하려면 여기로 오세요`;
 
@@ -105,31 +108,39 @@ export class JobListener {
 
   @OnEvent('user-ticket.create')
   async userTicketCreateEvent(data: UserTicket) {
-    this.logger.log('user-ticket.create', data);
-    const { id, ticketId, userId } = data;
+    try {
+      this.logger.log('user-ticket.create', data);
+      const { id, ticketId, userId } = data;
 
-    // 해당 티켓에 할당된 티켓들을 가져옴 사용자가 구매한 티켓 내역을 가져옴
-    const room = this.getUserTicketByTicketId(ticketId);
+      // 해당 티켓에 할당된 티켓들을 가져옴 사용자가 구매한 티켓 내역을 가져옴
+      const room = this.getUserTicketByTicketId(ticketId);
 
-    // core에서 해당 ticket의 FanUP 방을 가져옴
-    const fanUpList = await lastValueFrom(
-      this.coreClient.send('findAllByTicketId', { ticket_id: ticketId }),
-    );
-    const limitNumber = fanUpList[0].number_team;
+      // core에서 해당 ticket의 FanUP 방을 가져옴
+      const fanUpList = await lastValueFrom(
+        this.coreClient.send('findAllByTicketId', { ticket_id: ticketId }),
+      );
+      this.logger.log(fanUpList);
 
-    // 할당 가능한 방을 찾고 티켓 사용자의 FanUPId를 업데이트
-    let assignRoom = this.findAssignRoom(room, limitNumber);
-    if (!assignRoom) {
-      assignRoom = fanUpList.filter(
-        (fanUp) => !Object.values(room).includes(fanUp.room_id),
-      )[0].room_id;
+      // const limitNumber = fanUpList[0].number_team;
+
+      // // 할당 가능한 방을 찾고 티켓 사용자의 FanUPId를 업데이트
+      // let assignRoom = this.findAssignRoom(room, limitNumber);
+      // if (!assignRoom) {
+      //   assignRoom = fanUpList
+      //     .filter((fanUp) => fanUp.fanUP_type !== 'ARTIST')
+      //     .filter(
+      //       (fanUp) => !Object.values(room).includes(fanUp.room_id),
+      //     )[0].room_id;
+      // }
+      // await this.userTicketService.updateFanUPIdById(id, assignRoom);
+
+      // // 알림을 보냄
+      // const message = '팬미팅 방이 생성되었어요 다른 팬들과 함께 참여해보세요';
+      // const value = { userId, message, info: assignRoom, type: 'fanup' };
+      // await this.sendNotification(value);
+      // await this.createNotification(value);
+    } catch (err) {
+      console.log(err);
     }
-    await this.userTicketService.updateFanUPIdById(id, assignRoom);
-
-    // 알림을 보냄
-    const message = '팬미팅 방이 생성되었어요 다른 팬들과 함께 참여해보세요';
-    const value = { userId, message, info: assignRoom, type: 'fanup' };
-    await this.sendNotification(value);
-    await this.createNotification(value);
   }
 }
