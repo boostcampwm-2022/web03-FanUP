@@ -60,6 +60,7 @@ class ErrorBoundary extends React.Component<Props, State> {
     };
 
     public static getDerivedStateFromError(_: Error): State {
+        localStorage.removeItem('token');
         return { hasError: true };
     }
     public componentDidCatch(error: Error, errorInfo: any) {

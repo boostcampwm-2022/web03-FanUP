@@ -1,9 +1,11 @@
 import ArtistsBox from '@organisms/artistsBox';
-import MyFeatureBox from '@/components/UI/organisms/MyFeatureBox';
+import FanFeatureBox from '@/components/UI/organisms/FanFeatureBox';
 import Header from '@/components/UI/organisms/header';
 import React from 'react';
 import styled from 'styled-components';
 import SubLogo from '@/components/icons/SubLogo';
+import { useGetUserQuery } from '@/services/user.service';
+import ArtistScheduleBox from '@/components/UI/organisms/ArtistScheduleBox';
 
 const BannerWrapper = styled.div`
     background: linear-gradient(to right, #9e57ff, #7ed0fa);
@@ -28,6 +30,8 @@ const UserContentsWrapper = styled.div`
 `;
 
 const Home = () => {
+    const { data: userData, isLoading } = useGetUserQuery();
+    if (isLoading) return <></>;
     return (
         <>
             <Header />
@@ -36,7 +40,7 @@ const Home = () => {
                 <h1>No Fan, No Artist</h1>
             </BannerWrapper>
             <UserContentsWrapper>
-                <MyFeatureBox />
+                <FanFeatureBox />
                 <ArtistsBox />
             </UserContentsWrapper>
         </>
