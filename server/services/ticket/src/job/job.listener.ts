@@ -137,9 +137,18 @@ export class JobListener {
         assignRoom = data
           .filter((fanUp) => fanUp.fanUP_type !== 'ARTIST')
           .filter((fanUp) => {
-            const exist = room.hasOwnProperty(fanUp.room_id);
-            console.log(exist, fanUp.room_id);
-            if (exist) {
+            const isExist = Object.keys(room)
+              .map((key) => {
+                const one = key.toString();
+                const two = fanUp.room_id.toString();
+                if (one === two) {
+                  return true;
+                }
+                return false;
+              })
+              .includes(true);
+
+            if (isExist) {
               return false;
             }
             return true;
