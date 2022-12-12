@@ -61,10 +61,7 @@ class ErrorBoundary extends React.Component<Props, State> {
     };
 
     public static getDerivedStateFromError(e: Error): State {
-        console.log('getDerivedStateFromError');
-        console.log('e : ', e);
-        console.log('typeof e : ', typeof e);
-        InitializeLocalStorage();
+        //InitializeLocalStorage();
         return { hasError: true };
     }
     public componentDidCatch(error: Error, errorInfo: any) {
