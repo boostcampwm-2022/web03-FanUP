@@ -1,11 +1,9 @@
 import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UserTicket } from '@prisma/client';
-import { AllRPCExceptionFilter } from 'src/common/filter/rpc-exception.filter';
 import CreateUserTicketDto from './dto/create-user-ticket.dto';
 import { UserTicketService } from './user-ticket.service';
 
-@UseFilters(AllRPCExceptionFilter)
 @Controller()
 export class UserTicketController {
   constructor(private readonly userTicketService: UserTicketService) {}
