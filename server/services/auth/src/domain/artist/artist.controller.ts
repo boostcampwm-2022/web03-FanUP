@@ -18,8 +18,8 @@ export class ArtistController {
   }
 
   @MessagePattern({ cmd: 'getAllArtist' })
-  async getAllArtist(): Promise<Artist[]> {
-    return this.artistService.findAll();
+  async getAllArtist(@Payload() userId: number): Promise<Artist[]> {
+    return this.artistService.findAll(userId);
   }
 
   @MessagePattern({ cmd: 'getFavoriteArtist' })
