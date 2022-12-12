@@ -95,9 +95,16 @@ export class JobListener {
   }
 
   findAssignRoom(room: object, limitNumber: number) {
-    const candidates = Object.keys(room).filter(
-      (key) => room[key] < limitNumber,
-    );
+    const candidates = Object.keys(room).filter((key) => {
+      if (room[key]) {
+        if (room[key] < limitNumber) {
+          return true;
+        }
+        return false;
+      }
+      return false;
+    });
+
     if (candidates.length === 0) {
       this.logger.log('findAssignRoom null');
       return null;
@@ -130,9 +137,10 @@ export class JobListener {
         assignRoom = data
           .filter((fanUp) => fanUp.fanUP_type !== 'ARTIST')
           .filter(
-            (fanUp) => !Object.values(room).includes(fanUp.room_id),
+            (fanUp) => !Object.keys(room).includes(fanUp.room_id),
           )[0].room_id;
       }
+      this.logger.log(assignRoom);
       await this.userTicketService.updateFanUPIdById(id, assignRoom);
 
       // 알림을 보냄
