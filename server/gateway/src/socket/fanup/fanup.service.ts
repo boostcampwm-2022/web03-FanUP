@@ -203,7 +203,7 @@ export class FanUPService {
   }
 
   async sendMessage(data: SendMessage) {
-    this.logger.log(`send-message`);
+    this.logger.log(`send-message`, data);
     const { userId, nickname, room, isArtist, message, socket, server } = data;
     const checkRoom = await this.validateRoom(room);
 
@@ -239,6 +239,7 @@ export class FanUPService {
   }
 
   async getAllChat(room: string, server: Server, socket: Socket) {
+    this.logger.log('getAllChat', room);
     const checkRoom = await this.validateRoom(room);
 
     if (checkRoom.validate) {
@@ -254,7 +255,7 @@ export class FanUPService {
   }
 
   async getParticipantList(room: string, server: Server, socket: Socket) {
-    this.logger.log(`get-participant-list`);
+    this.logger.log(`get-participant-list`, room);
     const checkRoom = await this.validateRoom(room);
 
     if (checkRoom.validate && this.roomExist(room)) {

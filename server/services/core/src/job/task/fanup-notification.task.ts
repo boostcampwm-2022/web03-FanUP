@@ -29,9 +29,9 @@ export class FanUPNotificationTask {
   ) {}
 
   // 매분마다 잡을 등록하는 크론
-  @Cron('0 * * * * *', { name: 'registerTask' })
+  @Cron('0/20 * * * * *', { name: 'registerTask' })
   async registerTask() {
-    this.logger.log('매일 밤 12시 30분에 실행되는 크론잡');
+    this.logger.log('매분에 실행되는 크론잡');
     this.jobService.deleteAllTask(this.getYesterdayCron());
     await this.addFanUPDynamicTask();
   }
