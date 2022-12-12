@@ -81,7 +81,7 @@ export interface Notification {
 }
 
 const Header = () => {
-    const { data: UserData } = useGetUserQuery();
+    const { data: userData } = useGetUserQuery();
     const navigate = useNavigate();
     const [notifications, setNofitifcations] = useState<any>([]);
     const [isOnNotificationMark, setIsOnNotificationMark] = useState<boolean>(false);
@@ -118,9 +118,9 @@ const Header = () => {
     }, [isOpenNotificationModal]);
 
     const clickUser = useCallback(() => {
-        if (!UserData) navigate('/login');
+        if (!userData) navigate('/login');
         else alert('로그인이 완료되었어요');
-    }, [UserData]);
+    }, [userData]);
 
     const gotoPage = useCallback(
         (url: string) => () => {
@@ -137,21 +137,19 @@ const Header = () => {
                 </button>
                 <div>
                     <button onClick={gotoPage('/tickets')}>티켓팅</button>
-                    {UserData && <button onClick={gotoPage('/schedule')}>티켓생성</button>}
-                    {UserData?.role === 'ARTIST' && (
+                    {userData?.role === 'ARTIST' && (
+                        <button onClick={gotoPage('/schedule')}>티켓생성</button>
+                    )}
+                    {userData?.role === 'ARTIST' && (
                         <button onClick={gotoPage('/artist')}>
-                            {UserData?.artistId ? (
-                                <span>마이페이지</span>
-                            ) : (
-                                <span>아티스트 정보 등록</span>
-                            )}
+                            <span>{userData?.artistId ? '마이페이지' : '아티스트 정보 등록'}</span>
                         </button>
                     )}
                 </div>
             </HeaderLeft>
             <HeaderRight>
-                {UserData ? (
-                    <HeaderUser nickname={UserData.nickname} />
+                {userData ? (
+                    <HeaderUser nickname={userData.nickname} />
                 ) : (
                     <button data-testid="user" onClick={clickUser}>
                         <UserIcon />

@@ -55,10 +55,6 @@ export const userApi = createApi({
             }),
             invalidatesTags: ['SubScribedArtist'],
         }),
-        getMyTickets: build.query<MyTicket[], void>({
-            query: () => '/ticket/my',
-            providesTags: ['MyTicket'],
-        }),
     }),
 });
 
@@ -72,7 +68,6 @@ export const {
     useGetSubScribedArtistQuery,
     useSubscribeArtistMutation,
     useUnSubscribeArtistMutation,
-    useGetMyTicketsQuery,
     useSubmitAccessTokenMutation,
 } = userApi;
 
