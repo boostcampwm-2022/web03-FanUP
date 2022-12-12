@@ -99,6 +99,7 @@ export class JobListener {
       (key) => room[key] < limitNumber,
     );
     if (candidates.length === 0) {
+      this.logger.log('findAssignRoom null');
       return null;
     }
 
@@ -119,6 +120,7 @@ export class JobListener {
       const fanUpList = await lastValueFrom(
         this.coreClient.send('findAllByTicketId', { ticket_id: ticketId }),
       );
+
       this.logger.log(fanUpList);
 
       // const limitNumber = fanUpList[0].number_team;

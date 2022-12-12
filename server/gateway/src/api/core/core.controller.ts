@@ -22,7 +22,7 @@ export class CoreController {
     return await this.coreService.getApiHello();
   }
 
-  @Get('/chat')
+  @Get('chat')
   async getAllchat() {
     return await this.coreService.getAllChatMessage();
   }
@@ -41,12 +41,12 @@ export class CoreController {
     return this.coreService.uploadMultipleFile(files);
   }
 
-  @Get('/fanup')
+  @Get('fanup')
   async getAllFanUP() {
     return await this.coreService.getAllFanUP();
   }
 
-  @Post('/fanup')
+  @Post('fanup')
   async createFanUP(@Body() data: CreateFanUPDto) {
     const { startTime, endTime, artistId } = data;
     return await this.coreService.createFanUP({
@@ -54,5 +54,11 @@ export class CoreController {
       end_time: endTime,
       artist_id: artistId,
     });
+  }
+
+  @Get('fanup/list')
+  async findAllByTicketId(@Req() request: Request) {
+    const { ticketId } = request.query;
+    return this.coreService.findAllByTicketId(ticketId);
   }
 }

@@ -13,6 +13,11 @@ enum FanUPStatus {
   END
 }
 
+enum FanUPType {
+  ARTIST
+  FAN
+}
+
 model FanUp {
   id Int @id @default(autoincrement())
   ticket_id Int
@@ -21,6 +26,7 @@ model FanUp {
   number_team Int?
   start_time DateTime
   end_time DateTime
+  fanUP_type FanUPType @default(FAN)
   status FanUPStatus
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
