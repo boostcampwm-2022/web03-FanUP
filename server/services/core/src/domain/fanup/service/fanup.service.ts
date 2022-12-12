@@ -35,6 +35,23 @@ export class FanupService {
     }
   }
 
+  async checkFanUPByTicketId(ticketId: number) {
+    try {
+      const data = await this.prisma.fanUp.findFirst({
+        where: {
+          ticket_id: ticketId,
+        },
+      });
+
+      if (data) {
+        return true;
+      }
+      return false;
+    } catch (err) {
+      return false;
+    }
+  }
+
   async create(data: CreateTimeDto) {
     const { start_time, end_time, artist_id } = data;
     const createFanupDto = new CreateFanupDto(start_time, end_time, artist_id);

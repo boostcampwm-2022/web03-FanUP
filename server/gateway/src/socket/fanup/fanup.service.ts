@@ -257,7 +257,7 @@ export class FanUPService {
     this.logger.log(`get-participant-list`);
     const checkRoom = await this.validateRoom(room);
 
-    if (checkRoom.validate) {
+    if (checkRoom.validate && this.roomExist(room)) {
       socket.join(room);
       server.to(room).emit('response-participant-user', {
         result: this.socketRoom[room].participant,

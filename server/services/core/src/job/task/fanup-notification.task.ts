@@ -28,8 +28,8 @@ export class FanUPNotificationTask {
     private ticketClient: ClientTCP,
   ) {}
 
-  // 매일 밤 00시 30분에 잡을 등록하는 크론
-  @Cron('0 0/30 * * * *', { name: 'registerTask' })
+  // 매분마다 잡을 등록하는 크론
+  @Cron('0 * * * * *', { name: 'registerTask' })
   async registerTask() {
     this.logger.log('매일 밤 12시 30분에 실행되는 크론잡');
     this.jobService.deleteAllTask(this.getYesterdayCron());
@@ -45,11 +45,11 @@ export class FanUPNotificationTask {
   getYesterdayCron() {
     return this.cronJobName.filter((val) => {
       const date = val.split('-')[0];
-      return compareTodayByDate(date);
+      return compareTodayByDate(new Date(date));
     });
   }
 
-  async getTodayFanUP() {
+  async getTodayFanUP(): Promise<Ticket[]> {
     this.logger.log('getTodayFanUP');
     const tickets = await lastValueFrom(
       this.ticketClient.send({ cmd: 'findTicketByToday' }, {}),
@@ -66,22 +66,31 @@ export class FanUPNotificationTask {
     return tickets.filter((val) => val.status === 'OPEN');
   }
 
+  async filterAlreadyOpenFanUP(id: number) {
+    this.logger.log('filterAlreadyOpenFanUP');
+    return await this.fanupService.checkFanUPByTicketId(id);
+  }
+
   async addFanUPDynamicTask() {
     this.logger.log('addFanUPTask');
-    const tickets = await this.getTodayFanUP();
+    const tickets: Ticket[] = await this.getTodayFanUP();
 
-    tickets.forEach((ticket) => {
-      const startDate = new Date(ticket.startTime);
-      const name = `${ticket.startTime}-${ticket.id}-${ticket.artistId}`;
-      const date: Date = minusMinutes(startDate, 30);
+    tickets
+      .filter((val) => this.filterAlreadyOpenFanUP(val.id))
+      .forEach((ticket) => {
+        const startDate = new Date(ticket.startTime);
+        const name = `${ticket.startTime}-${ticket.id}`;
+        const date: Date = minusMinutes(startDate, 30);
 
-      this.cronJobName.push(name);
-      this.jobService.addTask(
-        name,
-        date,
-        async () => await this.fanUPTask(ticket),
-      );
-    });
+        if (!this.cronJobName.includes(name)) {
+          this.cronJobName.push(name);
+          this.jobService.addTask(
+            name,
+            date,
+            async () => await this.fanUPTask(ticket),
+          );
+        }
+      });
   }
 
   async getUserTicketByTicketId(ticketId: number) {
