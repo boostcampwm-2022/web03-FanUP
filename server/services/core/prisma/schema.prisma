@@ -45,8 +45,10 @@ model FileEntity {
 model Notification {
   id Int @id @default(autoincrement())
   user_id Int?
+  info String?
   message String?
   read Boolean?
+  type String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }

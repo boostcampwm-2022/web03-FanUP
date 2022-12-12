@@ -9,6 +9,7 @@ import { CreateTimeDto, UpdateTimeDto } from '../dto';
 import { SetResponse } from 'src/common/decorator';
 import { ResMessage, ResStatusCode } from 'src/common/constants';
 import { AllRPCExceptionFilter } from 'src/common/filter';
+import { Ticket } from 'src/common/type';
 
 @UseFilters(new AllRPCExceptionFilter())
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
@@ -20,6 +21,12 @@ export class FanupController {
   @MessagePattern('createFanUP')
   async create(data: CreateTimeDto) {
     return await this.fanupService.create(data);
+  }
+
+  @SetResponse(ResMessage.CREATE_FANUP, ResStatusCode.CREATED)
+  @MessagePattern('createTotalFanUP')
+  async createTotalFanUP(data: Ticket) {
+    return await this.fanupService.createTotalFanUP(data);
   }
 
   @SetResponse(ResMessage.UPDATE_FANUP, ResStatusCode.OK)
@@ -47,5 +54,11 @@ export class FanupController {
   @MessagePattern('getAllFanUP')
   async getAllFanUP() {
     return await this.fanupService.getAllFanUP();
+  }
+
+  @SetResponse(ResMessage.FIND_FANUP_BY_ROOM, ResStatusCode.OK)
+  @MessagePattern('findByRoom')
+  async findByRoom(roomId: string) {
+    return await this.fanupService.findByRoom(roomId);
   }
 }

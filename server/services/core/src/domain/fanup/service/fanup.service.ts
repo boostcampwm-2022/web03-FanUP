@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { FanUPStatus } from '@prisma/client';
-import { dateToDict, isToday } from '../../../common/util';
+import { addMinutes, dateToDict, isToday } from '../../../common/util';
 import {
   FanUPNotFoundException,
   FanUPUpdateException,
 } from '../../../common/exception';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
 import { CreateFanupDto, CreateTimeDto, UpdateFanupDto } from '../dto';
+import { Ticket } from 'src/common/type';
 
 @Injectable()
 export class FanupService {
@@ -53,8 +54,13 @@ export class FanupService {
   }
 
   async create(data: CreateTimeDto) {
-    const { start_time, end_time, artist_id } = data;
-    const createFanupDto = new CreateFanupDto(start_time, end_time, artist_id);
+    const { ticket_id, start_time, end_time, artist_id } = data;
+    const createFanupDto = new CreateFanupDto(
+      ticket_id,
+      start_time,
+      end_time,
+      artist_id,
+    );
 
     return await this.prisma.fanUp.create({
       data: createFanupDto,
@@ -77,6 +83,15 @@ export class FanupService {
       });
     } catch (err) {
       throw new FanUPUpdateException();
+    }
+  }
+
+  async createTotalFanUP(ticket: Ticket) {
+    try {
+      const createDto = await this.calculateTotalFanUP(ticket);
+      return createDto.map(async (dto) => await this.create(dto));
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -127,6 +142,19 @@ export class FanupService {
     throw new FanUPNotFoundException();
   }
 
+  async findByRoom(roomId: string) {
+    try {
+      return await this.prisma.fanUp.findFirst({
+        where: {
+          room_id: roomId,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+      throw new FanUPNotFoundException();
+    }
+  }
+
   async getAllFanUP() {
     try {
       return await this.prisma.fanUp.findMany();
@@ -160,5 +188,19 @@ export class FanupService {
       const num = Number(ticketAmount / numberTeam);
       return ticketAmount % numberTeam === 0 ? num : num + 1;
     }
+  }
+
+  calculateTotalFanUP(ticket: Ticket): CreateTimeDto[] {
+    const { id, totalAmount, numberTeam, startTime, timeTeam, artistId } =
+      ticket;
+    const num = Number(totalAmount / numberTeam);
+    const totalNum = totalAmount % numberTeam === 0 ? num : num + 1;
+    const date = new Date(startTime);
+
+    return Array.from({ length: totalNum }, (_, i) => i).map((order) => {
+      const start = addMinutes(date, order * timeTeam);
+      const end = addMinutes(start, timeTeam);
+      return new CreateTimeDto(id, start, end, artistId);
+    });
   }
 }

@@ -1,6 +1,7 @@
 import { openScheduleModal, setSelectedDay } from '@/store/artist';
 import { ReducerType } from '@/store/rootReducer';
 import { CalendarData } from '@/types/artist';
+import { dateDiff } from '@/utils/dateDiff';
 import React, { useCallback, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -56,7 +57,11 @@ const CalendarBody = () => {
     const days = useMemo(() => makeDay({ year, month }), [year, month]);
 
     const openModal = useCallback(
-        (day: number) => () => {
+        (day: number, isCurrentMonth: boolean) => () => {
+            if (!isCurrentMonth) return;
+            const targetDate = new Date(`${year} ${month} ${day}`);
+            const [diff] = dateDiff(targetDate, new Date());
+            if (diff < 0) return alert('이미 지나간 시간을 그리워하지마세요 :(');
             dispatch(setSelectedDay({ year, month, day }));
             dispatch(openScheduleModal());
         },
@@ -76,7 +81,7 @@ const CalendarBody = () => {
                         isToday={isToday}
                         isHoliday={isHoliday}
                         isCurrentMonth={isCurrentMonth}
-                        onClick={openModal(day)}
+                        onClick={openModal(day, isCurrentMonth)}
                     >
                         {day}
                     </DateCell>

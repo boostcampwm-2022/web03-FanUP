@@ -29,17 +29,11 @@ export class FanUPNotificationTask {
   ) {}
 
   // 매분마다 잡을 등록하는 크론
-  @Cron('0/20 * * * * *', { name: 'registerTask' })
+  // @Cron('0/20 * * * * *', { name: 'registerTask' })
   async registerTask() {
     this.logger.log('매분에 실행되는 크론잡');
     this.jobService.deleteAllTask(this.getYesterdayCron());
     await this.addFanUPDynamicTask();
-  }
-
-  // @Cron('0/10 * * * * *', { name: 'test' })
-  async test() {
-    const data = await this.getUserTicketByTicketId(19);
-    console.log(data);
   }
 
   getYesterdayCron() {
@@ -101,9 +95,15 @@ export class FanUPNotificationTask {
     return userTickets;
   }
 
-  async createFanUP(startTime: Date, endTime: Date, artistId: number) {
+  async createFanUP(
+    ticketId: number,
+    startTime: Date,
+    endTime: Date,
+    artistId: number,
+  ) {
     this.logger.log('createFanUP');
     const fanUP = await this.fanupService.create({
+      ticket_id: ticketId,
       start_time: startTime,
       end_time: endTime,
       artist_id: artistId,
@@ -155,6 +155,7 @@ export class FanUPNotificationTask {
       Array.from({ length: roomAmount }, (_, i) => i).forEach(async (order) => {
         const [start, end] = this.getFanUPTime(order, ticket);
         const { fanupId, roomId } = await this.createFanUP(
+          id,
           start,
           end,
           artistId,
@@ -173,6 +174,7 @@ export class FanUPNotificationTask {
             message,
           });
           await this.notificationService.create({
+            info: roomId,
             user_id: info.userId,
             message,
             read: false,

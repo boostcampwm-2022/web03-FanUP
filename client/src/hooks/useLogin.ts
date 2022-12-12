@@ -1,3 +1,4 @@
+import { useGetAllArtistsQuery } from '@/services/artist.service';
 import { useSubmitAccessTokenMutation } from '@/services/user.service';
 import { setToken } from '@/store/user';
 import { useCallback } from 'react';
@@ -11,6 +12,7 @@ interface ITokenData {
 
 export const useLogin = () => {
     const [mutate] = useSubmitAccessTokenMutation();
+    const { refetch } = useGetAllArtistsQuery();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -19,6 +21,7 @@ export const useLogin = () => {
         if (data.error) return alert(data.error);
         localStorage.setItem('userId', data.profile.id);
         localStorage.setItem('token', data.accessToken);
+        refetch();
         dispatch(setToken(data.accessToken));
         navigate('/');
     }, []);
