@@ -4,6 +4,7 @@ import { IUser } from '@/types/user';
 import { IAritst } from '@/types/artist';
 import { MyTicket } from '@/types/ticket';
 import { customFetchBaseQuery } from './_baseQuery';
+import { InitializeLocalStorage } from '@/utils/initializeLocalStorage';
 
 interface ILoginReqData {
     provider: string;
@@ -67,9 +68,11 @@ export const userApi = createApi({
 });
 
 export const useGetUserQuery = () => {
-    return userApi.useGetUserQuery(undefined, {
+    const queryResult = userApi.useGetUserQuery(undefined, {
         skip: localStorage.getItem('token') ? false : true,
     });
+    if (queryResult.isError) InitializeLocalStorage();
+    return queryResult;
 };
 
 export const {

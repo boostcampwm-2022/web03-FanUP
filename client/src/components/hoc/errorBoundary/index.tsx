@@ -1,4 +1,5 @@
-import ErrorIcon from '@/components/icons/ErrorIcon';
+import ErrorIcon from '@icons/ErrorIcon';
+import { InitializeLocalStorage } from '@utils/initializeLocalStorage';
 import { captureException } from '@sentry/react';
 import { info } from 'console';
 import React, { ReactNode, ErrorInfo } from 'react';
@@ -60,8 +61,7 @@ class ErrorBoundary extends React.Component<Props, State> {
     };
 
     public static getDerivedStateFromError(_: Error): State {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
+        InitializeLocalStorage();
         return { hasError: true };
     }
     public componentDidCatch(error: Error, errorInfo: any) {

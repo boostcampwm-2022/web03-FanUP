@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { setToken } from '@/store/user';
+import { setToken } from '@store/user';
 import { resetUserService } from '@services/user.service';
-import { useModal } from '@/hooks/useModal';
+import { useModal } from '@hooks/useModal';
 import NicknameEditModal from '../NicknameEditModal';
-import { resetArtistService } from '@/services/artist.service';
+import { resetArtistService } from '@services/artist.service';
+import { InitializeLocalStorage } from '@utils/initializeLocalStorage';
 
 const DropDownItem = styled.div`
     margin: 10px 10px 0 10px;
@@ -24,7 +25,7 @@ const UserDropDown = () => {
 
     const logout = useCallback(async () => {
         if (!window.confirm('로그아웃 하시겠어요?')) return;
-        localStorage.removeItem('token');
+        InitializeLocalStorage();
         dispatch(setToken(null));
         dispatch(resetUserService());
         dispatch(resetArtistService());
