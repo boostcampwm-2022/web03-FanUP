@@ -8,13 +8,17 @@ import {
   Post,
   Req,
   Res,
+  UseFilters,
+  UseGuards,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { catchError, of } from 'rxjs';
+import { AllGlobalExceptionsFilter } from 'src/common/exception/filter/global-exception.filter';
 
 import { MICRO_SERVICES } from '../../common/constants/microservices';
+import { JwtAuthGuard } from '../auth/auth.guard';
 import CreateTicketDto from './dto/createTicket.dto';
 
+@UseFilters(AllGlobalExceptionsFilter)
 @Controller('ticket')
 export class TicketController {
   constructor(
@@ -23,26 +27,24 @@ export class TicketController {
   ) {}
 
   @Get('/user')
-  async getUserTicketHistory(@Req() req) {
-    console.log('hi');
+  @UseGuards(JwtAuthGuard)
+  async getUserTicketHistory(@Req() { user }) {
     return this.ticketClient.send(
       { cmd: 'getAllUserTicketByUserId' },
-      { userId: 1 },
-    ); // todo: userId는 추후에 토큰에서 가져오도록 수정
+      { userId: user.id },
+    );
   }
 
   @Post('/user')
+  @UseGuards(JwtAuthGuard)
   async createUserTicket(
-    @Req() req,
+    @Req() { user },
     @Body('ticketId', new ParseIntPipe()) ticketId: number,
   ) {
-    console.log('test', ticketId);
-    return this.ticketClient
-      .send(
-        { cmd: 'createUserTicket' },
-        { ticketId, userId: 1 }, // todo: userId는 추후에 토큰에서 가져오도록 수정
-      )
-      .pipe(catchError((val) => of(val)));
+    return this.ticketClient.send(
+      { cmd: 'createUserTicket' },
+      { ticketId, userId: user.id }, // todo: userId는 추후에 토큰에서 가져오도록 수정
+    );
   }
 
   @Get('/:ticketId')
@@ -57,11 +59,11 @@ export class TicketController {
   }
 
   @Post()
-  async createTicket(@Req() req, @Body() body: CreateTicketDto) {
-    console.log('test', body);
+  @UseGuards(JwtAuthGuard)
+  async createTicket(@Req() { user }, @Body() body: CreateTicketDto) {
     return this.ticketClient.send(
       { cmd: 'createTicket' },
-      { ...body, artistId: 1 }, // todo: artistId는 추후에 토큰에서 가져오도록 수정
+      { ...body, artistId: user.artistId }, // todo: artistId는 추후에 토큰에서 가져오도록 수정
     );
   }
 }

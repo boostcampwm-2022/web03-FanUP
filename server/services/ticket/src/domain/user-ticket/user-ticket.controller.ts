@@ -1,4 +1,4 @@
-import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UserTicket } from '@prisma/client';
 import CreateUserTicketDto from './dto/create-user-ticket.dto';
@@ -17,7 +17,6 @@ export class UserTicketController {
   getAllUserTicketByUserId(
     @Payload('userId') userId: number,
   ): Promise<UserTicket[]> {
-    console.log(userId);
     return this.userTicketService.findAllByUserId(userId);
   }
 
