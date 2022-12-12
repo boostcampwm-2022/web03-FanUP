@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import ReqeustCreateUserDto from './dto/request-create-user.dto';
+import UpdateUserDto from './dto/request-update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -18,6 +19,15 @@ export class UserService {
       where: { id },
       data: {
         profileUrl,
+      },
+    });
+  }
+
+  updateNickname(updateUserDto: UpdateUserDto): Promise<User> {
+    return this.prisma.user.update({
+      where: { id: updateUserDto.userId },
+      data: {
+        nickname: updateUserDto.nickname,
       },
     });
   }

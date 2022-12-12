@@ -17,7 +17,7 @@ export const useLogin = () => {
     const login = useCallback(async ({ accessToken, provider }: ITokenData) => {
         const { data } = (await mutate({ accessToken, provider })) as { data: any };
         if (data.error) return alert(data.error);
-
+        localStorage.setItem('userId', data.profile.id);
         localStorage.setItem('token', data.accessToken);
         dispatch(setToken(data.accessToken));
         navigate('/');

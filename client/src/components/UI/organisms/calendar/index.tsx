@@ -9,7 +9,6 @@ const CalendarWrapper = styled.div`
     width: 60vw;
     min-width: 500px;
     padding: 40px;
-    margin: 0 auto;
     background: white;
     border-radius: 16px;
     h1 {

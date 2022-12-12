@@ -16,7 +16,7 @@ import { JwtService } from './jwt.service';
       useFactory: () => ({
         secret: 'secret', // TODO: env 처리
         signOptions: {
-          expiresIn: '1h',
+          expiresIn: '1d',
         },
       }),
     }),

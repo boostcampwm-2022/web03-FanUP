@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Req,
   UseFilters,
@@ -15,6 +16,7 @@ import { JwtAuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import CreateArtistDto from './dto/create-artist.dto';
 import LoginDto from './dto/login.dto';
+import UpdateUserDto from './dto/update-user.dto';
 
 @UseFilters(AllGlobalExceptionsFilter)
 @Controller('auth')
@@ -35,6 +37,12 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   getUserInfo(@Req() { user }) {
     return this.authService.getUserInfo(user.id);
+  }
+
+  @Patch('/user')
+  @UseGuards(JwtAuthGuard)
+  async updateUserInfo(@Req() { user }, @Body() updateUserDto: UpdateUserDto) {
+    return this.authService.updateUserInfo(user.id, updateUserDto);
   }
 
   @Post('/artist')

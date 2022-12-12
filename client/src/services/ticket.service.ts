@@ -21,9 +21,10 @@ export const ticketApi = createApi({
             query: (ticketid: string) => ({ url: `/ticket/${ticketid}` }),
             providesTags: (result, error, id) => [{ type: 'TicketDetail', id }],
         }),
-        // getUserTickets : build.query({
-
-        // })
+        getUserTickets: build.query<any[], void>({
+            query: () => '/ticket/user',
+            providesTags: ['MyTicket'],
+        }),
         submitTicket: build.mutation({
             query: (reqData: TicketSubmitData) => ({
                 url: `/ticket`,
@@ -42,7 +43,7 @@ export const ticketApi = createApi({
             },
             invalidatesTags: (result, error, ticketId) => {
                 if (result?.status === 403) return [];
-                else return ['TodayTicket', 'Ticket'];
+                else return ['MyTicket'];
             },
         }),
     }),
@@ -51,6 +52,7 @@ export const ticketApi = createApi({
 export const {
     useGetTodayTicketsQuery,
     useGetAllTicketsQuery,
+    useGetUserTicketsQuery,
     useGetDetailTicketQuery,
     useSubmitTicketMutation,
     useTicketingMutation,

@@ -15,7 +15,12 @@ export const artistApi = createApi({
     endpoints: (build) => ({
         getAllArtists: build.query<IAritst[], void>({
             //TODO : invalidate when 00:00
-            query: () => '/auth/artist',
+            query: () =>
+                `/auth/artist${
+                    localStorage.getItem('userId')
+                        ? `?userId=${localStorage.getItem('userId')}`
+                        : ''
+                }`,
             providesTags: ['Artists'],
         }),
         submitArtistInfo: build.mutation({
