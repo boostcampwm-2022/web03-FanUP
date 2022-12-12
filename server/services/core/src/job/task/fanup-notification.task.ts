@@ -136,7 +136,7 @@ export class FanUPNotificationTask {
     const gateway = env ? 'fanup-gateway' : 'localhost';
 
     const socket = io(`http://${gateway}:3000/socket/notification`);
-    socket.emit('send-room-notification', { ...data });
+    socket.emit('send-notification', { ...data });
   }
 
   // 팬미팅 시작 30분 전 실행되는 크론잡
@@ -174,6 +174,7 @@ export class FanUPNotificationTask {
             message,
           });
           await this.notificationService.create({
+            type: 'fanup',
             info: roomId,
             user_id: info.userId,
             message,

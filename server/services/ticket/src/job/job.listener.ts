@@ -22,7 +22,7 @@ export class JobListener {
     const gateway = env ? 'fanup-gateway' : 'localhost';
 
     const socket = io(`http://${gateway}:3000/socket/notification`);
-    socket.emit('send-room-notification', { ...data, date: new Date() });
+    socket.emit('send-notification', { ...data, date: new Date() });
   }
 
   async findUserIdByArtistId(artistId: number): Promise<any[]> {
@@ -33,13 +33,15 @@ export class JobListener {
     );
   }
 
-  async createNotification({ id, userId, message }) {
+  async createNotification(data) {
+    const { id, type, message, userId } = data;
     const info = typeof id === 'number' ? id.toString() : id;
     return await lastValueFrom(
       this.coreClient.send('createNotification', {
-        info,
-        userId,
+        type,
         message,
+        userId,
+        info,
         read: false,
       }),
     );

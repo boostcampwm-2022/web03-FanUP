@@ -1,4 +1,3 @@
-import { UseGuards } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -9,7 +8,6 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { JwtAuthGuard } from '../../api/auth/auth.guard';
 import { ValidateUser } from '../../common/types';
 import { FanUPService } from './fanup.service';
 
