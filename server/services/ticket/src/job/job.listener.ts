@@ -64,4 +64,10 @@ export class JobListener {
       });
     }
   }
+
+  @OnEvent('user-ticket.create')
+  async userTicketCreateEvent() {
+    // 티켓 사용자의 FanUPId를 업데이트 시켜주고
+    // 알림을 보냄
+  }
 }

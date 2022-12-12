@@ -39,5 +39,5 @@ model UserTicket {
   ticketId  Int
   ticket    Ticket   @relation(fields: [ticketId], references: [id])
   createdAt DateTime @default(now())
-  fanupId   Int?
+  fanupId   String?
 }

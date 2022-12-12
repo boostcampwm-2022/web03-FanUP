@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UserTicket } from '@prisma/client';
 import { ResStatusCode } from 'src/common/constants/res-status-code';
 import { CustomRpcException } from 'src/common/exception/custom-rpc-exception';
@@ -8,10 +9,13 @@ import CreateUserTicketDto from './dto/create-user-ticket.dto';
 
 @Injectable()
 export class UserTicketService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private event: EventEmitter2,
+  ) {}
 
   async create(createUserTicketDto: CreateUserTicketDto): Promise<UserTicket> {
-    return await this.prisma.$transaction(async (tx) => {
+    const userTicketResult = await this.prisma.$transaction(async (tx) => {
       // todo: check if user has already bought this ticket
       const { totalAmount } = await tx.ticket.findUnique({
         where: { id: createUserTicketDto.ticketId },
@@ -37,6 +41,12 @@ export class UserTicketService {
 
       return userTicket;
     });
+
+    if (userTicketResult) {
+      this.event.emit('user-ticket.create', userTicketResult);
+    }
+
+    return userTicketResult;
   }
 
   async find(userTicketId: number): Promise<UserTicket> {
@@ -55,7 +65,7 @@ export class UserTicketService {
     return this.prisma.userTicket.findMany({ where: { ticketId } });
   }
 
-  async updateFanUPIdById(id: number, fanupId: number) {
+  async updateFanUPIdById(id: number, fanupId: string) {
     return await this.prisma.userTicket.update({
       where: { id },
       data: { fanupId },
