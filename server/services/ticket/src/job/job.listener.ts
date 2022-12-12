@@ -22,7 +22,7 @@ export class JobListener {
     const gateway = env ? 'fanup-gateway' : 'localhost';
 
     const socket = io(`http://${gateway}:3000/socket/notification`);
-    socket.emit('send-room-notification', { ...data });
+    socket.emit('send-room-notification', { ...data, date: new Date() });
   }
 
   async findUserIdByArtistId(artistId: number): Promise<any[]> {
