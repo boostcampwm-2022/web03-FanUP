@@ -41,8 +41,16 @@ export class ArtistService {
     });
   }
 
-  findAll(): Promise<Artist[]> {
-    return this.prisma.artist.findMany();
+  async findAll(userId: number) {
+    const artists = await this.prisma.artist.findMany({
+      include: { favorites: { where: { userId } } },
+    });
+
+    return artists.reduce((acc, artist) => {
+      const { favorites, ...rest } = artist;
+      acc.push({ ...rest, isFavorite: favorites.length > 0 });
+      return acc;
+    }, []);
   }
 
   async findFavoritesByUserId(userId: number): Promise<Artist[]> {
