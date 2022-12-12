@@ -3,6 +3,7 @@ import { ClientProxy } from '@nestjs/microservices';
 
 import { MICRO_SERVICES } from '../../common/constants/microservices';
 import LoginDto from './dto/login.dto';
+import UpdateUserDto from './dto/update-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +22,13 @@ export class AuthService {
 
   public getUserInfo(userId: number) {
     return this.authClient.send({ cmd: 'getUserInfo' }, userId);
+  }
+
+  public updateUserInfo(userId: number, updateUserDto: UpdateUserDto) {
+    return this.authClient.send(
+      { cmd: 'updateUserInfo' },
+      { userId, ...updateUserDto },
+    );
   }
 
   public createArtist(createArtistDto) {
