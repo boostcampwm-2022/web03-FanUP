@@ -14,6 +14,7 @@ const ArtistCardWrapper = styled.div`
     position: relative;
     text-align: center;
     padding-bottom: 20px;
+    width: 208px;
     span {
         font-size: 20px;
         font-weight: 700;
@@ -48,7 +49,6 @@ const ArtistCard = ({ artist }: Props) => {
     const gotoArtistPage = useCallback(() => {
         alert('아티스트 개인 페이지는 준비중입니다 :(');
     }, []);
-
     return (
         <ArtistCardWrapper onClick={gotoArtistPage}>
             {artist.profileUrl ? (

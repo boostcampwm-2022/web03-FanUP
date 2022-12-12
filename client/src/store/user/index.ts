@@ -11,6 +11,8 @@ export const initialState: UserStore = {
     myStream: null,
     token: null,
     artistListViewMode: 아티스트만나보기,
+    userDropDown: false,
+    openNotificationModal: false,
 };
 
 export const userSlice = createSlice({
@@ -37,10 +39,30 @@ export const userSlice = createSlice({
         setToken(state, action: PayloadAction<number | null>) {
             state.token = action.payload;
         },
+        toggleUserDropDown(state) {
+            state.openNotificationModal = false;
+            state.userDropDown = !state.userDropDown;
+        },
+        closeUserDropDown(state) {
+            state.userDropDown = false;
+        },
+        toggleNotificationModal(state) {
+            state.userDropDown = false;
+            state.openNotificationModal = !state.openNotificationModal;
+        },
     },
 });
 
-export const { setToken, login, logout, setMyStream, initializeMyStream, setArtistListViewMode } =
-    userSlice.actions;
+export const {
+    toggleNotificationModal,
+    toggleUserDropDown,
+    closeUserDropDown,
+    setToken,
+    login,
+    logout,
+    setMyStream,
+    initializeMyStream,
+    setArtistListViewMode,
+} = userSlice.actions;
 
 export default userSlice.reducer;

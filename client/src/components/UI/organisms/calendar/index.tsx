@@ -22,7 +22,7 @@ const Calendar = () => {
     if (isLoading) return <></>;
     return (
         <CalendarWrapper>
-            <h1 data-testid="title">{userData?.nickname}님의 일정</h1>
+            <h1 data-testid="title">{userData?.artist?.name}님의 일정</h1>
             <CalendarHeader />
             <CalendarBody />
             <ScheduleFanUpModal />
