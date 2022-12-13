@@ -1,9 +1,9 @@
 FROM node:18-alpine
 WORKDIR /usr/src/server/services/core
 COPY ./server/services/core .
+COPY ./server/services/core/prisma ./prisma/ 
 RUN npm install
 ENV NODE_ENV production
-RUN npx prisma db pull && prisma generate
 RUN npm run build
 CMD ["node", "dist/main"]
 EXPOSE 3002
