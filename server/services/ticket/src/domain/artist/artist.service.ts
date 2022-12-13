@@ -11,4 +11,11 @@ export class ArtistService {
       data: createArtistDto,
     });
   }
+
+  update(updateArtistDto: Artist) {
+    return this.prisma.artist.update({
+      where: { id: updateArtistDto.id },
+      data: updateArtistDto,
+    });
+  }
 }
