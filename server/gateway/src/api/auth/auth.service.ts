@@ -36,6 +36,10 @@ export class AuthService {
     return this.authClient.send({ cmd: 'createArtist' }, createArtistDto);
   }
 
+  public updateArtist(updateArtistDto) {
+    return this.authClient.send({ cmd: 'updateArtist' }, updateArtistDto);
+  }
+
   public getAllArtist(userId: number) {
     return this.authClient.send({ cmd: 'getAllArtist' }, userId);
   }
