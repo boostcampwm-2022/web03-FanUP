@@ -143,13 +143,31 @@ export class FanUPService {
     }
   }
 
-  async joinRoom({ server, socket, userId, room }: JoinRoom) {
+  async isArtist({ room, artistId }) {
+    const { status, data, message } = await lastValueFrom(
+      this.coreTCP.send('findByRoom', room).pipe(catchError((err) => of(err))),
+    );
+
+    this.logger.log('isArtist', status, data, message, artistId);
+    if (data.artist_id === artistId) {
+      this.logger.log('해당 유저는 아티스트입니다.');
+      return true;
+    }
+    return false;
+  }
+
+  async joinRoom({ server, socket, userId, room, artistId }: JoinRoom) {
     const checkRoom = await this.validateRoom(room);
     const checkUser = await this.validateUser({ room, userId });
     const checkUserTicket = await this.validateUserTicket({ room, userId });
+    const checkArtist = await this.isArtist({ room, artistId });
 
     this.logger.log(`join Room`, checkRoom, checkUser, checkUserTicket);
-    if (checkRoom.validate && checkUser.validate && checkUserTicket) {
+    if (
+      checkRoom.validate &&
+      checkUser.validate &&
+      (checkUserTicket || checkArtist)
+    ) {
       this.joinSocketRoom({
         server,
         socket,
