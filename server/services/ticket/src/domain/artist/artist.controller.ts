@@ -14,4 +14,9 @@ export class ArtistController {
     console.log('create artist on ticket service');
     return this.artistService.create(requestCreateArtistDto);
   }
+
+  @MessagePattern({ cmd: 'updateArtist' })
+  async updateArtist(@Payload() requestUpdateArtistDto: Artist) {
+    return this.artistService.update(requestUpdateArtistDto);
+  }
 }

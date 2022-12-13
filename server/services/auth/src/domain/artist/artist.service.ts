@@ -68,10 +68,21 @@ export class ArtistService {
   async update(updateArtistDto: RequestUpdateArtistDto) {
     const { artistId, name, profileUrl } = updateArtistDto;
 
-    return this.prisma.artist.update({
-      where: { id: artistId },
-      data: { name, profileUrl },
-    });
+    try {
+      const artist = await this.prisma.artist.update({
+        where: { id: artistId },
+        data: { name, profileUrl },
+      });
+      await firstValueFrom(
+        this.ticketClient.send({ cmd: 'updateArtist' }, artist),
+      );
+    } catch (e) {
+      throw new CustomRpcException(
+        'Cannot update artist',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return 'artist updated';
   }
 
   async findAll(userId: number | null) {
