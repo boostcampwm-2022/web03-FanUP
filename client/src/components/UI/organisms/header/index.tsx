@@ -73,16 +73,37 @@ const StyledNewNotificationMark = styled.div`
 `;
 
 export interface Notification {
-    roomId: string;
-    startTime: string;
-    endTime: string;
-    userId: number;
+    type: string;
+    id: string;
     message: string;
 }
 
+export interface CreatedRoomNotification {
+    type: string;
+    roomId: string;
+}
+
+export interface OpenedTicketNotification {
+    type: string;
+    ticketId: string;
+}
+
+const testNotification: Notification[] = [
+    {
+        type: 'ticket',
+        id: '123',
+        message: '정국 방 개설',
+    },
+    {
+        type: 'fanup',
+        id: '456',
+        message: '나은 방 개설',
+    },
+];
+
 const Header = () => {
-    const { data: userData } = useGetUserQuery();
     const navigate = useNavigate();
+    const { data: userData } = useGetUserQuery();
     const [notifications, setNofitifcations] = useState<any>([]);
     const [isOnNotificationMark, setIsOnNotificationMark] = useState<boolean>(false);
     const [isOpenNotificationModal, setIsOpenNotificationModal] = useState<boolean>(false);
@@ -90,11 +111,11 @@ const Header = () => {
     useEffect(() => {
         connectSocket(SOCKET_FEATURE.notification);
         if (!socket) return;
-        socket.emit(SOCKET_EVENTS.getNotification, { userId: 1 });
-        socket.emit(SOCKET_EVENTS.joinNotification, { userId: 1 });
-        socket.on(SOCKET_EVENTS.receiveRoomNotification, (data) => receiveNewNotification(data));
+        socket.emit(SOCKET_EVENTS.getNotification, { userId: userData?.id });
+        socket.emit(SOCKET_EVENTS.joinNotification, { userId: userData?.id });
+        socket.on(SOCKET_EVENTS.receiveNotification, (data) => receiveNewNotification(data));
         socket.on(SOCKET_EVENTS.setNotification, (data: any) => {
-            setNofitifcations((curr: any) => [...curr, ...data.result.data]);
+            if (data.result.data) setNofitifcations((curr: any) => [...curr, ...data.result.data]);
         });
     }, []);
 
@@ -162,7 +183,9 @@ const Header = () => {
                 <button data-testid="search" key="search" onClick={clickSearch}>
                     {<SearchIcon />}
                 </button>
-                {isOpenNotificationModal && <NotificationContainer notifications={notifications} />}
+                {isOpenNotificationModal && (
+                    <NotificationContainer notifications={testNotification} />
+                )}
             </HeaderRight>
         </HeaderRoot>
     );

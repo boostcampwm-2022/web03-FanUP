@@ -2,6 +2,9 @@ import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { useGetUserQuery } from '@services/user.service';
+import { socket, SOCKET_EVENTS } from '@organisms/header/testSocket';
+import { Notification } from '@organisms/header';
 import CloseIcon from '@icons/CloseIcon';
 
 const StyledNotificationItem = styled.li`
@@ -46,21 +49,29 @@ interface Props {
     notification: Notification;
 }
 
-const NotificationItem = ({ notification }: any) => {
+const NotificationItem: FC<Props> = ({ notification }) => {
+    console.log(notification);
+    const { data: userData } = useGetUserQuery();
     const navigate = useNavigate();
 
     // TODO : Link 태그?
-    const navigateByAlarmType = (type: string, id: string) => {
+    const navigateByType = (e: any, type: string, id: string) => {
+        if (!e.target.classList.contains('notification')) return;
         navigate(`/${type}/${id}`);
+    };
+
+    const deleteNotification = (id: string) => {
+        if (!socket) return;
+        socket.emit(SOCKET_EVENTS.updateNotification, { id: id, userId: userData?.id });
     };
 
     return (
         <StyledNotificationItem
             className="notification new"
-            onClick={() => navigateByAlarmType(notification.type, notification.id)}
+            onClick={(e) => navigateByType(e, notification.type, notification.id)}
         >
             <em>오늘</em> {notification.message}
-            <i className="right">
+            <i className="right" onClick={() => deleteNotification(notification.id)}>
                 <CloseIcon />
             </i>
         </StyledNotificationItem>
