@@ -3,6 +3,7 @@ export interface FanUpStore {
 }
 
 export interface IFanUpRooms {
-    id: number;
+    start_time: string;
     room_id: string;
+    fanUP_type?: string;
 }

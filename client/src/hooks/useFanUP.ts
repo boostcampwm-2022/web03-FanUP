@@ -171,6 +171,7 @@ const useFanUP = (): [
             room: fanUpId,
             userId: UserData?.id,
             nickname: UserData?.nickname,
+            artistId: UserData?.artistId || 0,
         });
         socket?.on(SOCKET_EVENTS.welcome, welcomeCallback);
         socket?.on(SOCKET_EVENTS.failJoinRoom, failJoinRoom);

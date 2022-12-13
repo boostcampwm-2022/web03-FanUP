@@ -34,9 +34,9 @@ const ModeBtn = styled.button<{ isSelected: boolean }>`
         font-weight: 700;
         font-size: 15px;
     }
-    &:first-child {
+    /* &:first-child {
         border-right: 0.5px solid ${({ theme }) => theme.MEDIUM_GRAY};
-    }
+    } */
 `;
 
 const ScheduleContentsWrapper = styled.div`
@@ -75,8 +75,6 @@ const FanFeatureBox = () => {
         []
     );
 
-    console.log(myTickets);
-
     if (getMyTicketLoading) return <></>;
 
     return (
@@ -86,10 +84,10 @@ const FanFeatureBox = () => {
                     <TicketIcon stroke={mode === MYTICKET_MODE ? 'black' : theme.MEDIUM_GRAY} />
                     <h3>내가 구매한 티켓</h3>
                 </ModeBtn>
-                <ModeBtn onClick={clickModeBtn(SCHEDULE_MODE)} isSelected={mode === SCHEDULE_MODE}>
+                {/* <ModeBtn onClick={clickModeBtn(SCHEDULE_MODE)} isSelected={mode === SCHEDULE_MODE}>
                     <ScheduleIcon fill={mode === SCHEDULE_MODE ? 'black' : theme.MEDIUM_GRAY} />
                     <h3>나의 아티스트 일정</h3>
-                </ModeBtn>
+                </ModeBtn> */}
             </ModeSelector>
             <ScheduleContentsWrapper>
                 {mode === MYTICKET_MODE &&
@@ -100,7 +98,7 @@ const FanFeatureBox = () => {
                         </NoTickets>
                     ) : (
                         myTickets?.map((ticket) => (
-                            <SmallTicket key={ticket.title} ticket={ticket} isMyTicketMode={true} />
+                            <SmallTicket key={ticket.title} ticket={ticket} />
                         ))
                     ))}
                 {/* {mode === SCHEDULE_MODE &&
