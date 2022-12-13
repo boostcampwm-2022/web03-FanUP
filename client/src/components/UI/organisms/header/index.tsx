@@ -11,6 +11,9 @@ import Logo from '@icons/Logo';
 import SearchIcon from '@icons/SearchIcon';
 import UserIcon from '@icons/UserIcon';
 import HeaderUser from '@molecules/HeaderUser';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeUserDropDown, toggleNotificationModal } from '@store/user';
+import { ReducerType } from '@store/rootReducer';
 
 const HeaderRoot = styled.header`
     height: 75px;
@@ -86,11 +89,14 @@ export interface Notification {
 }
 
 const Header = () => {
-    const navigate = useNavigate();
     const { data: userData } = useGetUserQuery();
-    const [notifications, setNofitifcations] = useState<Notification[]>([]);
+    const isOpenNotificationModal = useSelector<ReducerType, boolean>(
+        ({ userSlice }) => userSlice.openNotificationModal
+    );
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [notifications, setNofitifcations] = useState<any>([]);
     const [isOnNotificationMark, setIsOnNotificationMark] = useState<boolean>(false);
-    const [isOpenNotificationModal, setIsOpenNotificationModal] = useState<boolean>(false);
 
     useEffect(() => {
         connectSocket(SOCKET_FEATURE.notification);
@@ -122,7 +128,7 @@ const Header = () => {
 
     const clickAlarm = useCallback(() => {
         setIsOnNotificationMark(false);
-        setIsOpenNotificationModal((curr) => !curr);
+        dispatch(toggleNotificationModal());
     }, [isOpenNotificationModal]);
 
     const clickUser = useCallback(() => {

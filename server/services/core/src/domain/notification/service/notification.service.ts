@@ -15,9 +15,11 @@ export class NotificationService {
 
   async create(createNotificationDto: CreateNotificationDto) {
     try {
-      const { user_id, message, read } = createNotificationDto;
+      const { info, user_id, message, read, type } = createNotificationDto;
       return await this.prisma.notification.create({
         data: {
+          type,
+          info,
           user_id,
           message,
           read,
@@ -58,12 +60,13 @@ export class NotificationService {
     }
   }
 
-  async updateRead(id: number) {
+  async updateRead(id: number | string, user_id: number | string) {
     try {
       this.logger.log(`updateRead: ${id}`);
       return await this.prisma.notification.updateMany({
         where: {
-          user_id: id,
+          id: typeof id === 'string' ? parseInt(id) : id,
+          user_id: typeof user_id === 'string' ? parseInt(user_id) : user_id,
         },
         data: {
           read: true,

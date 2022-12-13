@@ -28,6 +28,14 @@ import { AuthService } from '../api/auth/auth.service';
           port: MICRO_SERVICES.AUTH.PORT,
         },
       },
+      {
+        name: MICRO_SERVICES.TICKET.NAME,
+        transport: Transport.TCP,
+        options: {
+          host: MICRO_SERVICES.TICKET.HOST,
+          port: MICRO_SERVICES.TICKET.PORT,
+        },
+      },
     ]),
   ],
   providers: [

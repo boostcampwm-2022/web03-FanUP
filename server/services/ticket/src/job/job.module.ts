@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MICRO_SERVICES } from 'src/common/constants/microservices';
+import { UserTicketService } from 'src/domain/user-ticket/user-ticket.service';
+import { PrismaService } from 'src/provider/prisma/prisma.service';
 import { JobListener } from './job.listener';
 
 @Module({
@@ -24,6 +26,6 @@ import { JobListener } from './job.listener';
       },
     ]),
   ],
-  providers: [JobListener],
+  providers: [JobListener, UserTicketService, PrismaService],
 })
 export class JobModule {}

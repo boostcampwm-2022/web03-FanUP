@@ -40,7 +40,7 @@ const Home = () => {
                 <h1>No Fan, No Artist</h1>
             </BannerWrapper>
             <UserContentsWrapper>
-                <FanFeatureBox />
+                {userData ? <FanFeatureBox /> : <div></div>}
                 <ArtistsBox />
             </UserContentsWrapper>
         </>

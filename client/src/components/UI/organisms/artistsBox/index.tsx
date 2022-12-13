@@ -4,9 +4,7 @@ import { ReducerType } from '@store/rootReducer';
 import { useSelector } from 'react-redux';
 import ArtistListViewModeSelector from '@molecules/artistListViewModeSelector';
 import Artists from '@organisms/artists';
-import { DummyAllArtists } from '@utils/dummy';
 import { useGetAllArtistsQuery } from '@/services/artist.service';
-import Loading from '@atoms/Loading';
 import { useGetSubScribedArtistQuery, useGetUserQuery } from '@/services/user.service';
 
 const ArtistsWrapper = styled.div`
@@ -20,15 +18,12 @@ const ArtistsListWrapper = styled.div`
     gap: 20px;
 `;
 
-const 아티스트만나보기 = 1;
 const 나의아티스트 = 2;
 
 const ArtistsBox = () => {
     const mode = useSelector<ReducerType, number>(({ userSlice }) => userSlice.artistListViewMode);
     const { data: userData } = useGetUserQuery();
-    const { data: allArtists, isLoading: getAllArtistsLoading } = useGetAllArtistsQuery(undefined, {
-        skip: mode === 아티스트만나보기 ? false : true,
-    });
+    const { data: allArtists, isLoading: getAllArtistsLoading } = useGetAllArtistsQuery();
     const { data: subscribedArtist, isLoading: getMyArtistsLoading } = useGetSubScribedArtistQuery(
         undefined,
         {

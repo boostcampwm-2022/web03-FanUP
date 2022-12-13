@@ -13,13 +13,20 @@ enum FanUPStatus {
   END
 }
 
+enum FanUPType {
+  ARTIST
+  FAN
+}
+
 model FanUp {
   id Int @id @default(autoincrement())
   ticket_id Int
   artist_id Int?
   room_id String @unique
+  number_team Int?
   start_time DateTime
   end_time DateTime
+  fanUP_type FanUPType @default(FAN)
   status FanUPStatus
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -45,8 +52,10 @@ model FileEntity {
 model Notification {
   id Int @id @default(autoincrement())
   user_id Int?
+  info String?
   message String?
   read Boolean?
+  type String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }

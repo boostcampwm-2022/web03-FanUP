@@ -65,4 +65,11 @@ export class CoreService {
       .send('createFanUP', data)
       .pipe(catchError((err) => of(err)));
   }
+
+  async findAllByTicketId(ticketId) {
+    const { status, data, message } = await lastValueFrom(
+      this.apiClient.send('findAllByTicketId', { ticket_id: ticketId }),
+    );
+    return data;
+  }
 }

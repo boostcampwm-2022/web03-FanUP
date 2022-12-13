@@ -1,8 +1,15 @@
 const environment = process.env.NODE_ENV || 'production';
-const AUTH_CONFIG = {
-  NAME: 'AUTH_SERVICE',
-  HOST: environment === 'development' ? 'localhost' : '0.0.0.0', // todo: 배포시에는 서버의 IP로 변경
-  PORT: 3001,
+const MICRO_SERVICES = {
+  AUTH: {
+    NAME: 'AUTH_SERVICE',
+    HOST: environment === 'production' ? 'fanup-auth' : 'localhost',
+    PORT: 3001,
+  },
+  TICKET: {
+    NAME: 'TICKET_SERVICE',
+    HOST: process.env.NODE_ENV === 'production' ? 'fanup-ticket' : 'localhost',
+    PORT: 3003,
+  },
 };
 
-export { AUTH_CONFIG };
+export { MICRO_SERVICES };

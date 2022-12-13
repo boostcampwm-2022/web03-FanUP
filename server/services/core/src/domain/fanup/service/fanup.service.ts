@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { FanUPStatus } from '@prisma/client';
-import { dateToDict, isToday } from '../../../common/util';
+import { FanUPStatus, FanUPType } from '@prisma/client';
+import { v4 as uuid } from 'uuid';
+import { addMinutes, dateToDict, isToday } from '../../../common/util';
 import {
   FanUPNotFoundException,
   FanUPUpdateException,
 } from '../../../common/exception';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
 import { CreateFanupDto, CreateTimeDto, UpdateFanupDto } from '../dto';
+import { Ticket } from 'src/common/type';
 
 @Injectable()
 export class FanupService {
@@ -20,14 +22,11 @@ export class FanupService {
     };
   }
 
-  async findAllByTicketId(ticket_id: number) {
+  async findAllByTicketId(ticket_id: string) {
     try {
       return await this.prisma.fanUp.findMany({
         where: {
-          ticket_id,
-        },
-        select: {
-          room_id: true,
+          ticket_id: parseInt(ticket_id),
         },
       });
     } catch (err) {
@@ -53,11 +52,17 @@ export class FanupService {
   }
 
   async create(data: CreateTimeDto) {
-    const { start_time, end_time, artist_id } = data;
-    const createFanupDto = new CreateFanupDto(start_time, end_time, artist_id);
+    const { ticket_id, start_time, end_time, artist_id, number_team } = data;
+    const createFanupDto = new CreateFanupDto(
+      ticket_id,
+      start_time,
+      end_time,
+      artist_id,
+      number_team,
+    );
 
     return await this.prisma.fanUp.create({
-      data: createFanupDto,
+      data: { ...createFanupDto, fanUP_type: FanUPType.FAN },
     });
   }
 
@@ -77,6 +82,32 @@ export class FanupService {
       });
     } catch (err) {
       throw new FanUPUpdateException();
+    }
+  }
+
+  async createTotalFanUP(ticket: Ticket) {
+    try {
+      const createDto = this.calculateTotalFanUP(ticket);
+      console.log(createDto);
+      const fanUPforFan = await Promise.all(
+        createDto.map(async (dto) => await this.create(dto)),
+      );
+      console.log(fanUPforFan);
+      const fanUPforArtist = await this.prisma.fanUp.create({
+        data: {
+          room_id: uuid(),
+          status: FanUPStatus.ONGOING,
+          ticket_id: ticket.id,
+          start_time: new Date(),
+          end_time: new Date(),
+          artist_id: ticket.artistId,
+          number_team: ticket.numberTeam,
+          fanUP_type: FanUPType.ARTIST,
+        },
+      });
+      return [...fanUPforFan, fanUPforArtist];
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -127,6 +158,19 @@ export class FanupService {
     throw new FanUPNotFoundException();
   }
 
+  async findByRoom(roomId: string) {
+    try {
+      return await this.prisma.fanUp.findFirst({
+        where: {
+          room_id: roomId,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+      throw new FanUPNotFoundException();
+    }
+  }
+
   async getAllFanUP() {
     try {
       return await this.prisma.fanUp.findMany();
@@ -160,5 +204,19 @@ export class FanupService {
       const num = Number(ticketAmount / numberTeam);
       return ticketAmount % numberTeam === 0 ? num : num + 1;
     }
+  }
+
+  calculateTotalFanUP(ticket: Ticket): CreateTimeDto[] {
+    const { id, totalAmount, numberTeam, startTime, timeTeam, artistId } =
+      ticket;
+    const num = Number(totalAmount / numberTeam);
+    const totalNum = totalAmount % numberTeam === 0 ? num : num + 1;
+    const date = new Date(startTime);
+
+    return Array.from({ length: totalNum }, (_, i) => i).map((order) => {
+      const start = addMinutes(date, order * timeTeam);
+      const end = addMinutes(start, timeTeam);
+      return new CreateTimeDto(id, start, end, artistId, numberTeam);
+    });
   }
 }

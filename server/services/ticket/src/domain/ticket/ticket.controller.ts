@@ -20,8 +20,10 @@ export class TicketController {
   }
 
   @MessagePattern({ cmd: 'getAllTicketByUserId' })
-  getOneTicket() {
-    return this.ticketService.findAllByUserId();
+  getAllUserTicketByUserId(
+    @Payload('userId') userId: number,
+  ): Promise<Ticket[]> {
+    return this.ticketService.findAllByUserId(userId);
   }
 
   @MessagePattern({ cmd: 'getTicket' })

@@ -9,8 +9,8 @@ import CloseIcon from '@icons/CloseIcon';
 import { ERR_MESSAGE } from './constants';
 import Fish from '@icons/Fish';
 import { useSubmitTicketMutation } from '@/services/ticket.service';
-import { TicketSubmitData } from '@/types/ticket';
 import { addZero } from '@utils/addZero';
+import { IsPast } from '@/utils/isPast';
 
 const ModalHeader = styled.div`
     display: flex;
@@ -127,7 +127,7 @@ const ContentFourth = styled.div`
 
 const ScheduleFanUpModal = () => {
     const dispatch = useDispatch();
-    const [submitMutation] = useSubmitTicketMutation();
+    const [submitMutation, { isError }] = useSubmitTicketMutation();
     const selectedDay = useSelector<
         ReducerType,
         null | { year: number; month: number; day: number }
@@ -181,13 +181,29 @@ const ScheduleFanUpModal = () => {
     const onChangeDay = useCallback(
         (
             e: React.ChangeEvent<HTMLInputElement>,
-            setState: React.Dispatch<React.SetStateAction<string>>
+            setState: React.Dispatch<React.SetStateAction<string>>,
+            mode: string
         ) => {
-            const [diff] = dateDiff(new Date(e.target.value), new Date());
-            if (diff < 0) return alert('이미 지나간 시간을 그리워하지마세요');
+            const targetDate = new Date(e.target.value);
+            if (IsPast(targetDate)) return alert('이미 지나간 시간을 그리워하지마세요 :(');
+
+            if (mode === 'FanUP' && salesTime) {
+                const [timeDiff] = dateDiff(targetDate, new Date(salesTime));
+                if (timeDiff < 0) {
+                    setStartTime('');
+                    return alert('티켓팅 오픈 날짜가 FanUP 날짜보다 이전이어야 합니다');
+                }
+            }
+            if (mode === 'Ticketing' && startTime) {
+                const [timeDiff] = dateDiff(new Date(startTime), targetDate);
+                if (timeDiff < 0) {
+                    setSalesTime('');
+                    return alert('티켓팅 오픈 날짜가 FanUP 날짜보다 이전이어야 합니다');
+                }
+            }
             setState(e.target.value);
         },
-        []
+        [salesTime, startTime]
     );
 
     const validation = useCallback(() => {
@@ -221,6 +237,8 @@ const ScheduleFanUpModal = () => {
             price: Number(priceRef.current?.value),
         };
         await submitMutation(reqData);
+        if (isError) return alert('에러 발생');
+        alert('티켓 생성 완료');
         dispatch(closeScheduleModal());
     }, [startTime, salesTime]);
 
@@ -260,7 +278,7 @@ const ScheduleFanUpModal = () => {
                             <input
                                 value={startTime}
                                 type="datetime-local"
-                                onChange={(e) => onChangeDay(e, setStartTime)}
+                                onChange={(e) => onChangeDay(e, setStartTime, 'FanUP')}
                             />
                         </ContentItem>
                         <ContentItem>
@@ -268,7 +286,7 @@ const ScheduleFanUpModal = () => {
                             <input
                                 value={salesTime}
                                 type="datetime-local"
-                                onChange={(e) => onChangeDay(e, setSalesTime)}
+                                onChange={(e) => onChangeDay(e, setSalesTime, 'Ticketing')}
                             />
                         </ContentItem>
                     </ContentHalf>

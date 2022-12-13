@@ -31,7 +31,9 @@ interface ITicket {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface MyTicket extends ITicket {}
+interface MyTicket extends ITicket {
+    roomId: number;
+}
 export interface TicketSales extends ITicket {
     salesTime: Date;
     price: number;

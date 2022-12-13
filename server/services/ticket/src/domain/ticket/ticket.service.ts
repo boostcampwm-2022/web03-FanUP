@@ -19,10 +19,11 @@ export class TicketService {
   }
 
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
-    this.event.emit('ticket.create', { ...createTicketDto });
-    return this.prisma.ticket.create({
+    const ticket = await this.prisma.ticket.create({
       data: createTicketDto,
     });
+    this.event.emit('ticket.create', { ...ticket });
+    return ticket;
   }
 
   async find(ticketId: number): Promise<Ticket> {
@@ -58,7 +59,20 @@ export class TicketService {
     });
   }
 
-  async findAllByUserId() {}
+  async findAllByUserId(userId: number): Promise<Ticket[]> {
+    return this.prisma.ticket.findMany({
+      where: {
+        startTime: {
+          gte: new Date(Date.now()).toISOString(),
+        },
+        userTickets: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+    });
+  }
 
   async findTicketByToday() {
     const today = getToday();

@@ -9,6 +9,7 @@ import {
   JoinSocketRoom,
   SendMessage,
   SocketChat,
+  UserTicket,
   ValidateUser,
 } from '../../common/types';
 import { MICRO_SERVICES } from '../../common/constants/microservices';
@@ -25,6 +26,8 @@ export class FanUPService {
     private readonly coreTCP: ClientTCP,
     @Inject(MICRO_SERVICES.AUTH.NAME)
     private readonly authTCP: ClientTCP,
+    @Inject(MICRO_SERVICES.TICKET.NAME)
+    private readonly ticketTCP: ClientTCP,
     private readonly authService: AuthService,
   ) {}
 
@@ -116,12 +119,37 @@ export class FanUPService {
     }
   }
 
+  async validateUserTicket({ room, userId }: ValidateUser) {
+    try {
+      this.logger.log('validateUserTicket');
+
+      const allUserTickets: UserTicket[] = await lastValueFrom(
+        this.ticketTCP.send({ cmd: 'findUserTicketByFanUPId' }, room),
+      );
+
+      const isExist = allUserTickets.filter(
+        (ticket) => ticket.userId === userId,
+      );
+
+      if (isExist.length > 0) {
+        this.logger.log('해당 유저는 티켓을 구매한 유효한 사용자입니다.');
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  }
+
   async joinRoom({ server, socket, userId, room }: JoinRoom) {
     const checkRoom = await this.validateRoom(room);
     const checkUser = await this.validateUser({ room, userId });
+    const checkUserTicket = await this.validateUserTicket({ room, userId });
 
-    this.logger.log(`join Room`, checkRoom, checkUser);
-    if (checkRoom.validate && checkUser.validate) {
+    this.logger.log(`join Room`, checkRoom, checkUser, checkUserTicket);
+    if (checkRoom.validate && checkUser.validate && checkUserTicket) {
       this.joinSocketRoom({
         server,
         socket,
@@ -255,7 +283,7 @@ export class FanUPService {
       if (checkRoom.validate) {
         socket.join(room);
         if (this.socketRoom[room]) {
-          server.to(room).emit('response-chat', {
+          server.to(socket.id).emit('response-chat', {
             result: this.socketRoom[room].chat,
           });
         }

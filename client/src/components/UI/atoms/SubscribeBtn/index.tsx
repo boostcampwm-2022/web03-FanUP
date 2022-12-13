@@ -6,7 +6,7 @@ import {
 import { useDebounce } from '@hooks/useDebounce';
 import { useOptimisticUI } from '@hooks/useOptimisticUI';
 import HeartIcon from '@icons/heart';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 
 const SubscribeBtnWrapper = styled.div<{ isSubscribe: boolean }>`
@@ -20,7 +20,7 @@ const SubscribeBtnWrapper = styled.div<{ isSubscribe: boolean }>`
     border-radius: 100%;
     margin: 5px;
     left: 50%;
-    bottom: 1.5rem;
+    bottom: 1.25rem;
     transform: translate(-50%, -50%);
     button {
         cursor: pointer;
@@ -71,6 +71,9 @@ const SubscribeBtn = (props: IProps) => {
         [isSubscribe, userData]
     );
 
+    useEffect(() => {
+        setIsSubscribe(props.isSubscribe);
+    }, [props.isSubscribe]);
     return (
         <SubscribeBtnWrapper isSubscribe={isSubscribe}>
             <button onClick={toggleHeart}>
