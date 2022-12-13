@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useGetUserQuery } from '@services/user.service';
 import { socket, SOCKET_EVENTS } from '@organisms/header/testSocket';
 import { Notification } from '@organisms/header';
+import Button from '@atoms/Button';
 import CloseIcon from '@icons/CloseIcon';
 
 const StyledNotificationItem = styled.li`
@@ -33,19 +34,6 @@ const StyledNotificationItem = styled.li`
         width: 18.5rem;
         line-height: 1.5em;
     }
-
-    i {
-        color: #b5c4d2;
-        font-size: 140%;
-        position: absolute;
-        &.right {
-            right: 1rem;
-            &:hover {
-                opacity: 0.8;
-                cursor: pointer;
-            }
-        }
-    }
 `;
 
 interface Props {
@@ -63,8 +51,9 @@ const NotificationItem: FC<Props> = ({ notification }) => {
     };
 
     // TODO : useCallback
-    const deleteNotification = (id: string) => {
+    const deleteNotification = (id: string): void => {
         if (!socket || userData?.id) return;
+        console.log(id, userData);
         socket.emit(SOCKET_EVENTS.updateNotification, { id: id, userId: userData?.id });
     };
 
@@ -75,9 +64,12 @@ const NotificationItem: FC<Props> = ({ notification }) => {
         >
             <em>오늘</em>
             <span>{notification.message}</span>
-            <i className="right" onClick={() => deleteNotification(notification.id)}>
-                <CloseIcon />
-            </i>
+            <Button
+                content={<CloseIcon />}
+                onClick={() => deleteNotification(notification.id)}
+                width={'30px'}
+                height={'15px'}
+            ></Button>
         </StyledNotificationItem>
     );
 };
