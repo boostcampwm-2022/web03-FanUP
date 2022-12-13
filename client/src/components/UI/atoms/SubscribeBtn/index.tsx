@@ -3,6 +3,8 @@ import {
     useSubscribeArtistMutation,
     useUnSubscribeArtistMutation,
 } from '@/services/user.service';
+import { useAppDispatch } from '@/store';
+import { handleSubscribed } from '@/store/user';
 import { useDebounce } from '@hooks/useDebounce';
 import { useOptimisticUI } from '@hooks/useOptimisticUI';
 import HeartIcon from '@icons/heart';
@@ -45,8 +47,8 @@ const SubscribeBtn = (props: IProps) => {
     const [isSubscribe, setIsSubscribe, update_UI, rollBack_UI, sync_UI] = useOptimisticUI(
         props.isSubscribe
     );
-    const { data: userData, isLoading } = useGetUserQuery();
-
+    const { data: userData } = useGetUserQuery();
+    const dispatch = useAppDispatch();
     const [subscribeMutation] = useSubscribeArtistMutation();
     const [unSubscribeMutation] = useUnSubscribeArtistMutation();
     const debounce = useDebounce();
@@ -63,10 +65,12 @@ const SubscribeBtn = (props: IProps) => {
                 try {
                     if (isSubscribe) await unSubscribeMutation(props.artistId);
                     else await subscribeMutation(props.artistId);
+
+                    dispatch(handleSubscribed());
                 } catch (err) {
                     rollBack_UI();
                 }
-            }, 500);
+            }, 250);
         },
         [isSubscribe, userData]
     );

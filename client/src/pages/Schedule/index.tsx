@@ -2,9 +2,8 @@ import Header from '@organisms/header';
 import React from 'react';
 import styled from 'styled-components';
 import Calendar from '@organisms/calendar';
-import Loading from '@atoms/Loading';
-import { useCheckArtist } from '@/hooks/useCheckArtist';
 import ArtistScheduleBox from '@/components/UI/organisms/ArtistScheduleBox';
+import withArtistValidation from '@/components/hoc/withArtistValidation';
 
 const ArtistCalendarWrapper = styled.div`
     background: ${({ theme }) => theme.LIGHT_GRAY};
@@ -17,8 +16,6 @@ const ArtistCalendarWrapper = styled.div`
 `;
 
 const Schedule = () => {
-    const isLoading = useCheckArtist();
-    if (isLoading) return <Loading />;
     return (
         <>
             <Header />
@@ -30,4 +27,4 @@ const Schedule = () => {
     );
 };
 
-export default Schedule;
+export default withArtistValidation(Schedule);

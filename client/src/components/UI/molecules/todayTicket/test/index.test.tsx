@@ -1,4 +1,4 @@
-import { dateForm } from '@utils/dateForm';
+import React from 'react';
 import { renderWithContext } from '@utils/test/renderWithContext';
 import TodayTicket from '@molecules/todayTicket';
 import { screen } from '@testing-library/react';
@@ -11,20 +11,24 @@ describe('<TodayTicket />', () => {
         MOCK_FN.useNaviagte(mockNavigate);
     });
     const ticket = {
-        ticketingDate: new Date(),
-        ticketingTime: '11:11',
-        description: 'testDescription',
-        artistName: 'testArtist',
+        startTime: new Date(),
+        content: 'testDescription',
         price: 1,
+        id: 1,
         ticketId: 1,
         userCount: 5,
-        fanUpDate: new Date(),
-        fanUpTime: '11:!1',
+        salesTime: new Date(),
+        title: 'testTitle',
+        artist: {
+            name: 'testArtist',
+            profileUrl: '/test.png',
+            id: 1,
+        },
     };
     it('rendering test', () => {
         renderWithContext(<TodayTicket ticket={ticket} />);
-        expect(screen.getByText(ticket.artistName)).toBeInTheDocument();
-        expect(screen.getByText(ticket.description)).toBeInTheDocument();
+        expect(screen.getByText(ticket.artist.name)).toBeInTheDocument();
+        expect(screen.getByText(ticket.content)).toBeInTheDocument();
     });
     it('interaction test', () => {
         renderWithContext(<TodayTicket ticket={ticket} />);

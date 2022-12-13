@@ -1,6 +1,7 @@
 import { Inject, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { ClientTCP } from '@nestjs/microservices';
+import { Cron } from '@nestjs/schedule';
 import { Ticket, UserTicket } from '@prisma/client';
 import { catchError, lastValueFrom, of } from 'rxjs';
 import { io } from 'socket.io-client';
@@ -118,7 +119,29 @@ export class JobListener {
     return candidates[0];
   }
 
-  @OnEvent('user-ticket.create')
+  @Cron('0/30 * * * * *', { name: 'assign-room' })
+  async assignRoomJob() {
+    try {
+      this.logger.log('assignRoomJob');
+      // user-ticket에서 fanupId가 null인 요소 찾기
+      const userTickets: UserTicket[] =
+        await this.userTicketService.findManyWhereFanupNull();
+
+      let index = 0;
+      const fifo = async () => {
+        this.logger.log('fifo', index);
+        index++;
+        for (const userTicket of userTickets) {
+          await this.userTicketCreateEvent(userTicket);
+        }
+      };
+
+      await fifo();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async userTicketCreateEvent(userTicket: UserTicket) {
     try {
       this.logger.log('user-ticket.create', userTicket);
@@ -136,7 +159,7 @@ export class JobListener {
         await lastValueFrom(
           this.coreClient.send('findAllByTicketId', { ticket_id: ticketId }),
         );
-      this.logger.log('core에서 해당 ticket의 FanUP 방을 가져옴', data);
+      this.logger.log('core에서 해당 ticket의 FanUP 방을 가져옴', data[0]);
 
       const limitNumber = data[0].number_team;
 
@@ -145,15 +168,14 @@ export class JobListener {
       if (assignRoom) {
         this.logger.log('not null', assignRoom);
       } else {
-        const anotherRoom = data
+        assignRoom = data
           .filter((fanUp) => fanUp.fanUP_type === 'FAN')
           .filter((fanUp) => {
             const keys = Object.keys(room);
-            console.log(keys, keys.includes(fanUp.room_id), fanUp.room_id);
             return !keys.includes(fanUp.room_id);
           })[0].room_id;
-        await this.userTicketService.updateFanUPIdById(id, anotherRoom);
       }
+      await this.userTicketService.updateFanUPIdById(id, assignRoom);
 
       // 알림을 보냄
       const notificationMessage =

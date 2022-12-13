@@ -43,9 +43,10 @@ const ArtistCardWrapper = styled.div`
 //height: 150px;
 interface Props {
     artist: IAritst;
+    isMyArtistMode?: boolean;
 }
 
-const ArtistCard = ({ artist }: Props) => {
+const ArtistCard = ({ artist, isMyArtistMode }: Props) => {
     const gotoArtistPage = useCallback(() => {
         alert('아티스트 개인 페이지는 준비중입니다 :(');
     }, []);
@@ -57,7 +58,10 @@ const ArtistCard = ({ artist }: Props) => {
                 <DefaultImg width="100%" height="100%" borderRadius="8px" />
             )}
             <span>{artist.name}</span>
-            <SubscribeBtn isSubscribe={artist?.isFavorite ? true : false} artistId={artist.id} />
+            <SubscribeBtn
+                isSubscribe={artist?.isFavorite || isMyArtistMode ? true : false}
+                artistId={artist.id}
+            />
         </ArtistCardWrapper>
     );
 };

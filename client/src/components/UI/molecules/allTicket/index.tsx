@@ -104,12 +104,17 @@ const AllTicket = ({ ticket }: Props) => {
     return (
         <AllTicketWrapper data-testid="allTicket" onClick={gotoTicket}>
             <TicketLeft>
-                {ticket.profileUrl ? (
-                    <LazyImg src={ticket.profileUrl} alt="thumbnail" width="150px" height="100px" />
+                {ticket?.artist?.profileUrl ? (
+                    <LazyImg
+                        src={ticket?.artist?.profileUrl}
+                        alt="thumbnail"
+                        width="150px"
+                        height="100px"
+                    />
                 ) : (
                     <DefaultImg width="150px" height="150px" borderRadius="8px" />
                 )}
-                <h3>{ticket?.name || 'testArtist'}</h3>
+                <h3>{ticket?.artist?.name || 'testArtist'}</h3>
                 <span>{ticket.title}</span>
             </TicketLeft>
             <TicketRight>

@@ -5,6 +5,7 @@ import { ticketApi } from '@/services/ticket.service';
 import { userApi } from '@/services/user.service';
 import { configureStore } from '@reduxjs/toolkit';
 import reducer from './rootReducer';
+import { useDispatch } from 'react-redux';
 
 const store = configureStore({
     reducer,
@@ -18,5 +19,6 @@ const store = configureStore({
 });
 
 export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch: () => AppDispatch = useDispatch;
 
 export default store;

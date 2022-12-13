@@ -13,6 +13,7 @@ export const initialState: UserStore = {
     artistListViewMode: 아티스트만나보기,
     userDropDown: false,
     openNotificationModal: false,
+    isUserHandleSubscribed: false,
 };
 
 export const userSlice = createSlice({
@@ -50,6 +51,12 @@ export const userSlice = createSlice({
             state.userDropDown = false;
             state.openNotificationModal = !state.openNotificationModal;
         },
+        handleSubscribed(state) {
+            state.isUserHandleSubscribed = true;
+        },
+        resetHandleSubscribed(state) {
+            state.isUserHandleSubscribed = false;
+        },
     },
 });
 
@@ -63,6 +70,8 @@ export const {
     setMyStream,
     initializeMyStream,
     setArtistListViewMode,
+    handleSubscribed,
+    resetHandleSubscribed,
 } = userSlice.actions;
 
 export default userSlice.reducer;

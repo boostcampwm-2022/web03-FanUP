@@ -18,8 +18,8 @@ const CalendarWrapper = styled.div`
 `;
 
 const Calendar = () => {
-    const { data: userData, isLoading } = useGetUserQuery();
-    if (isLoading) return <></>;
+    const { data: userData } = useGetUserQuery();
+
     return (
         <CalendarWrapper>
             <h1 data-testid="title">{userData?.artist?.name}님의 일정</h1>

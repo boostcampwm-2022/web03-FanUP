@@ -1,10 +1,13 @@
+import { useGetSchedulesQuery } from '@/services/artist.service';
+import { useAppDispatch } from '@/store';
 import { openScheduleModal, setSelectedDay } from '@/store/artist';
 import { ReducerType } from '@/store/rootReducer';
 import { CalendarData } from '@/types/artist';
 import { dateDiff } from '@/utils/dateDiff';
 import React, { useCallback, useMemo } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import Loading from '@atoms/Loading';
 import { makeDay, week } from './utils';
 
 const CalendarBodyWrapper = styled.div`
@@ -39,34 +42,74 @@ const DateCell = styled.div<{ isCurrentMonth: boolean; isHoliday: boolean; isTod
     }
 `;
 
+const Cell = styled.div`
+    overflow: hidden;
+`;
+
 const DateContent = styled.div`
     min-height: 50px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-top: 3px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    div {
+        height: 22px;
+        padding: 5px 10px;
+        font-size: 12px;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: white;
+    }
+`;
+
+const ScheduleContent = styled.div<{ isPast: boolean }>`
+    background: ${({ theme, isPast }) => (isPast ? theme.PINK : theme.PRIMARY)};
 `;
 
 const CalendarBody = () => {
-    const dispatch = useDispatch();
-
-    const { calendarYear: year, calendarMonth: month } = useSelector<ReducerType, CalendarData>(
+    const dispatch = useAppDispatch();
+    const { calendarYear, calendarMonth } = useSelector<ReducerType, CalendarData>(
         ({ artistSlice }) => ({
             calendarYear: artistSlice.calendarYear,
             calendarMonth: artistSlice.calendarMonth,
         }),
         shallowEqual
     );
+    const {
+        isLoading,
+        data: schedules,
+        isFetching,
+    } = useGetSchedulesQuery({
+        calendarYear,
+        calendarMonth,
+    });
 
-    const days = useMemo(() => makeDay({ year, month }), [year, month]);
+    const days = useMemo(
+        () => makeDay({ calendarYear, calendarMonth }),
+        [calendarYear, calendarMonth]
+    );
 
     const openModal = useCallback(
-        (day: number, isCurrentMonth: boolean) => () => {
+        (day: number, isCurrentMonth: boolean, isToday: boolean) => () => {
             if (!isCurrentMonth) return;
-            const targetDate = new Date(`${year} ${month} ${day}`);
-            const [diff] = dateDiff(targetDate, new Date());
-            if (diff < 0) return alert('이미 지나간 시간을 그리워하지마세요 :(');
-            dispatch(setSelectedDay({ year, month, day }));
+            if (!isToday) {
+                const targetDate = new Date(`${calendarYear} ${calendarMonth} ${day}`);
+                const [dayDiff] = dateDiff(targetDate, new Date());
+                if (dayDiff < 0) return alert('이미 지나간 시간을 그리워하지마세요 :(');
+            }
+
+            dispatch(setSelectedDay({ calendarYear, calendarMonth, day }));
             dispatch(openScheduleModal());
         },
-        [year, month]
+        [calendarYear, calendarMonth]
     );
+
+    if (isLoading || isFetching) return <Loading />;
 
     return (
         <CalendarBodyWrapper>
@@ -75,18 +118,25 @@ const CalendarBody = () => {
                     <span>{day}</span>
                 </WeekGuide>
             ))}
-            {days.map(({ day, isCurrentMonth, isHoliday, isToday }, idx) => (
-                <div key={`${day}${idx}`} data-testid={idx}>
+            {days?.map(({ day, isCurrentMonth, isHoliday, isToday }, idx) => (
+                <Cell key={`${day}${idx}`} data-testid={idx}>
                     <DateCell
                         isToday={isToday}
                         isHoliday={isHoliday}
                         isCurrentMonth={isCurrentMonth}
-                        onClick={openModal(day, isCurrentMonth)}
+                        onClick={openModal(day, isCurrentMonth, isToday)}
                     >
                         {day}
                     </DateCell>
-                    <DateContent></DateContent>
-                </div>
+                    <DateContent>
+                        {schedules &&
+                            schedules[day - 1]?.map(({ data, isPast }: any) => (
+                                <ScheduleContent isPast={isPast} key={data.title}>
+                                    {data.title}
+                                </ScheduleContent>
+                            ))}
+                    </DateContent>
+                </Cell>
             ))}
         </CalendarBodyWrapper>
     );

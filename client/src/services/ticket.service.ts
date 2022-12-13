@@ -6,7 +6,7 @@ import { customFetchBaseQuery } from './_baseQuery';
 export const ticketApi = createApi({
     reducerPath: 'ticketApi',
     baseQuery: customFetchBaseQuery,
-    tagTypes: ['Ticket', 'MyTicket', 'TodayTicket', 'TicketDetail'],
+    tagTypes: ['Ticket', 'MyTicket', 'TodayTicket', 'TicketDetail', 'ArtistTicket'],
     endpoints: (build) => ({
         getTodayTickets: build.query<TicketSales[], void>({
             //TODO : invalidate when 00:00
@@ -24,6 +24,10 @@ export const ticketApi = createApi({
         getUserTickets: build.query<MyTicket[], void>({
             query: () => '/ticket/user',
             providesTags: ['MyTicket'],
+        }),
+        getArtistTodayTicket: build.query<MyTicket[], void>({
+            query: () => '/ticket/artist/today',
+            providesTags: ['ArtistTicket'],
         }),
         submitTicket: build.mutation({
             query: (reqData: TicketSubmitData) => ({
@@ -50,6 +54,7 @@ export const ticketApi = createApi({
 });
 
 export const {
+    useGetArtistTodayTicketQuery,
     useGetTodayTicketsQuery,
     useGetAllTicketsQuery,
     useGetUserTicketsQuery,

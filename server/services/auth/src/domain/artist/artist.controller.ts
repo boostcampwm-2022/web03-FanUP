@@ -4,6 +4,7 @@ import { Artist } from '@prisma/client';
 
 import { ArtistService } from './artist.service';
 import requestCreateArtistDto from './dto/reqeust-create-artist.dto';
+import RequestUpdateArtistDto from './dto/request-update-artist.dto';
 
 @Controller()
 export class ArtistController {
@@ -25,5 +26,18 @@ export class ArtistController {
   @MessagePattern({ cmd: 'getFavoriteArtist' })
   async getFavoriteArtist(@Payload() userId: number): Promise<Artist[]> {
     return this.artistService.findFavoritesByUserId(userId);
+  }
+
+  @MessagePattern({ cmd: 'updateArtist' })
+  async updateArtist(
+    @Payload() requestUpdateArtistDto: RequestUpdateArtistDto,
+  ) {
+    console.log(requestUpdateArtistDto);
+    return this.artistService.update(requestUpdateArtistDto);
+  }
+
+  @MessagePattern({ cmd: 'getAllSubscriber' })
+  async getAllSubscribers(@Payload() artistId: number) {
+    return this.artistService.getAllSubscriber(artistId);
   }
 }

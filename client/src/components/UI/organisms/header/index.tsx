@@ -11,9 +11,10 @@ import Logo from '@icons/Logo';
 import SearchIcon from '@icons/SearchIcon';
 import UserIcon from '@icons/UserIcon';
 import HeaderUser from '@molecules/HeaderUser';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { closeUserDropDown, toggleNotificationModal } from '@/store/user';
 import { ReducerType } from '@/store/rootReducer';
+import { useAppDispatch } from '@/store';
 
 const HeaderRoot = styled.header`
     height: 75px;
@@ -94,7 +95,7 @@ const Header = () => {
         ({ userSlice }) => userSlice.openNotificationModal
     );
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const [notifications, setNofitifcations] = useState<any>([]);
     const [isOnNotificationMark, setIsOnNotificationMark] = useState<boolean>(false);
 
@@ -104,20 +105,18 @@ const Header = () => {
         socket.emit(SOCKET_EVENTS.joinNotification, { userId: userData?.id });
         socket.emit(SOCKET_EVENTS.getNotification, { userId: userData?.id });
         socket.on(SOCKET_EVENTS.setNotification, (data) => {
-            console.log('set', data);
-            if (data.result.data)
-                setNofitifcations((curr: Notification[]) => [...curr, ...data.result.data]);
+            if (!data.result.data) return;
+            setNofitifcations((curr: Notification[]) => [...curr, ...data.result.data]);
         });
-        socket.on(SOCKET_EVENTS.receiveNotification, (data: Notification) => {
-            console.log('receive', data);
-            receiveNewNotification(data);
-        });
+        socket.on(SOCKET_EVENTS.receiveNotification, (data: Notification) =>
+            receiveNewNotification(data)
+        );
 
         return () => {
             socket?.off(SOCKET_EVENTS.setNotification);
             socket?.off(SOCKET_EVENTS.receiveNotification);
         };
-    }, []);
+    }, [userData?.id]);
 
     // TODO : 모달 열려 있을 때도 빨간 불 들어옴.
     const receiveNewNotification = (data: Notification) => {

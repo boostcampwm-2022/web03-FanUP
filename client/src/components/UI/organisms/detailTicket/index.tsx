@@ -3,7 +3,6 @@ import { useTimer } from '@hooks/useTimer';
 import { useGetDetailTicketQuery, useTicketingMutation } from '@/services/ticket.service';
 import theme from '@/style/theme';
 import { dateForm } from '@utils/dateForm';
-import { dummyTickets } from '@utils/dummy';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '@atoms/Button';
@@ -11,7 +10,7 @@ import Loading from '@atoms/Loading';
 import DefaultImg from '../../atoms/defaultImg';
 
 const DetailTicketWrapper = styled.div`
-    width: 50vw;
+    width: 30vw;
     min-width: 500px;
     margin: 0 auto;
     h2 {
@@ -30,7 +29,8 @@ const BarCode = styled.div`
 
 const BackgroundThumbnail = styled.img`
     width: 100%;
-    height: 350px;
+    aspect-ratio: 4 / 3;
+    //height: 100%;
 `;
 
 const TicketContents = styled.div`
@@ -62,6 +62,7 @@ const TicketTitle = styled.h5`
     font-size: 20px;
     padding-left: 10px;
     border-left: 4px solid black;
+    margin-bottom: 20px;
 `;
 
 const FanUpDate = styled.div`
@@ -105,8 +106,8 @@ const DetailTicket = () => {
     return (
         <DetailTicketWrapper>
             <BarCode />
-            {ticket?.profileUrl ? (
-                <BackgroundThumbnail src={ticket?.profileUrl} alt="thumbnail" />
+            {ticket?.artist?.profileUrl ? (
+                <BackgroundThumbnail src={ticket?.artist?.profileUrl} alt="thumbnail" />
             ) : (
                 <DefaultImg width="100%" height="350px" borderRadius="0" />
             )}
@@ -116,8 +117,9 @@ const DetailTicket = () => {
                     <strong>Ticketing</strong>
                     <span>{dateForm(ticket!.salesTime)} </span>
                 </TicketingDate>
-                <h2>{ticket?.name || 'testArtist'}</h2>
+                <h2>{ticket?.artist?.name || 'testArtist'}</h2>
                 <TicketTitle>{ticket?.title}</TicketTitle>
+                <span>{ticket?.content}</span>
                 <FanUpDate>
                     <span>일시</span>
                     <span>{dateForm(ticket!.startTime)}</span>

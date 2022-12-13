@@ -4,9 +4,10 @@ import UserDropDown from '@molecules/userDropDown';
 import styled from 'styled-components';
 import useDropDownAnimation from '@/hooks/useDropdownAnimation';
 import { useToggle } from '@/hooks/useToggle';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { ReducerType } from '@/store/rootReducer';
 import { toggleUserDropDown } from '@/store/user';
+import { useAppDispatch } from '@/store';
 
 const User = styled.div`
     display: flex;
@@ -49,7 +50,7 @@ interface IProps {
 }
 
 const HeaderUser = ({ nickname }: IProps) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const userDropDown = useSelector<ReducerType, boolean>(
         ({ userSlice }) => userSlice.userDropDown
     );

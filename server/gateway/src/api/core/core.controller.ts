@@ -61,4 +61,10 @@ export class CoreController {
     const { ticketId } = request.query;
     return this.coreService.findAllByTicketId(ticketId);
   }
+
+  @Get('isArtist')
+  async isArtist(@Req() request: Request) {
+    const { artistId, roomId } = request.query;
+    return await this.coreService.isArtist(artistId, roomId);
+  }
 }

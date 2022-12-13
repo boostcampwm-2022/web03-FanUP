@@ -1,9 +1,9 @@
 import { get_D_Day, isDDay } from '@utils/get_D_Day';
 import React, { useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const DDayWrapper = styled.div<{ isDDay: boolean }>`
+const FanUpJoinBtnWrapper = styled.div<{ isDDay: boolean }>`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -28,24 +28,27 @@ const DDayWrapper = styled.div<{ isDDay: boolean }>`
 
 interface Props {
     date: Date;
-    isMyTicketMode?: boolean;
+    fanupId?: string;
+    ticketId?: number;
 }
 
-const DDay = ({ date, isMyTicketMode }: Props) => {
-    const D_Day = useMemo(() => get_D_Day(date), [date]);
+const FanUpJoinBtn = ({ date, fanupId, ticketId }: Props) => {
     const navigate = useNavigate();
+    const { pathname } = useLocation();
+
     const gotoFanUP = useCallback(() => {
-        navigate(`/fanup/30873d70-480c-4149-b2d2-ec2a462e72db`);
-    }, []);
+        const url = `/fanup/${fanupId}`;
+        if (isArtistJoinRoom(pathname)) navigate(url + `?ticketId=${ticketId}`);
+        else navigate(url);
+    }, [pathname]);
+
     return (
-        <DDayWrapper isDDay={isDDay(date)}>
-            {isMyTicketMode && D_Day === 'D-Day' ? (
-                <button onClick={gotoFanUP}>FanUP입장</button>
-            ) : (
-                <span>{D_Day}</span>
-            )}
-        </DDayWrapper>
+        <FanUpJoinBtnWrapper isDDay={isDDay(date)}>
+            <button onClick={gotoFanUP}>FanUP입장</button>
+        </FanUpJoinBtnWrapper>
     );
 };
 
-export default DDay;
+const isArtistJoinRoom = (pathname: string) => (pathname === '/schedule' ? true : false);
+
+export default FanUpJoinBtn;

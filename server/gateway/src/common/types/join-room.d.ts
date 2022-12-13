@@ -5,6 +5,7 @@ interface JoinRoom {
   socket: Socket;
   userId: number;
   room: string;
+  artistId: number;
 }
 
 export { JoinRoom };

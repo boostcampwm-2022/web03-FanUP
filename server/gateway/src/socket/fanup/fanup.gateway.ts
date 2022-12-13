@@ -29,7 +29,12 @@ class FanUPGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('join_room')
   async joinRoom(
     @ConnectedSocket() socket: Socket,
-    @MessageBody() data: ValidateUser,
+    @MessageBody()
+    data: {
+      room: string;
+      userId: number;
+      artistId: number;
+    },
   ) {
     this.fanUPService.joinRoom({ server: this.server, socket, ...data });
   }

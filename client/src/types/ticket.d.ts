@@ -24,15 +24,19 @@ export interface TicketSubmitData {
 
 interface ITicket {
     id: number;
-    name: string;
     title: string;
-    profileUrl: string;
     startTime: Date;
+    content?: string;
+    artist: {
+        id: number;
+        name: string;
+        profileUrl?: string;
+    };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface MyTicket extends ITicket {
-    roomId: number;
+    fanupId: string;
 }
 export interface TicketSales extends ITicket {
     salesTime: Date;

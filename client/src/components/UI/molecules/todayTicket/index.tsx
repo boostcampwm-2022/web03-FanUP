@@ -1,4 +1,4 @@
-import { Ticket } from '@/types/ticket';
+import { Ticket, TicketSales } from '@/types/ticket';
 import { dateForm } from '@utils/dateForm';
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ const TodayTicketWrapper = styled.div`
     width: fit-content;
     border-radius: 14px;
     display: flex;
-    margin-right: 20px;
+    //margin-right: 20px;
     background: white;
     padding-right: 20px;
     border: 1px solid ${({ theme }) => theme.MEDIUM_GRAY};
@@ -72,17 +72,21 @@ const RightContent = styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px;
+    img {
+        width: 160px;
+        height: 100px;
+    }
 `;
 
 interface Props {
-    ticket: Ticket;
+    ticket: TicketSales;
 }
 
 const TodayTicket = ({ ticket }: Props) => {
     const navigate = useNavigate();
 
     const gotoTicket = useCallback(() => {
-        navigate(`/ticket/${ticket.ticketId}`);
+        navigate(`/ticket/${ticket.id}`);
     }, [navigate, ticket]);
 
     return (
@@ -92,11 +96,11 @@ const TodayTicket = ({ ticket }: Props) => {
                 <LeftContent>
                     <Time>
                         <h2>티켓팅</h2>
-                        <span>{dateForm(ticket.ticketingDate)}</span>
+                        <span>{dateForm(ticket.salesTime)}</span>
                     </Time>
                     <Time>
                         <h2>FanUP</h2>
-                        <span>{dateForm(ticket.ticketingDate)}</span>
+                        <span>{dateForm(ticket.startTime)}</span>
                     </Time>
                     <Price>
                         <Fish /> <span>x </span>
@@ -104,11 +108,16 @@ const TodayTicket = ({ ticket }: Props) => {
                     </Price>
                 </LeftContent>
                 <RightContent>
-                    <DefaultImg width="160px" height="100px" borderRadius="8px" />
+                    {ticket?.artist?.profileUrl ? (
+                        <img src={ticket?.artist?.profileUrl} alt="profile" />
+                    ) : (
+                        <DefaultImg width="160px" height="100px" borderRadius="8px" />
+                    )}
+                    {/* <DefaultImg width="160px" height="100px" borderRadius="8px" /> */}
                     <span>
-                        <strong>{ticket.artistName}</strong>
+                        <strong>{ticket.artist.name}</strong>
                     </span>
-                    <span>{ticket.description}</span>
+                    <span>{ticket.content}</span>
                 </RightContent>
             </Contents>
         </TodayTicketWrapper>
