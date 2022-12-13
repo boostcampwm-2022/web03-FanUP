@@ -126,11 +126,14 @@ export class JobListener {
       // user-ticket에서 fanupId가 null인 요소 찾기
       const userTickets: UserTicket[] =
         await this.userTicketService.findManyWhereFanupNull();
-      await Promise.all(
-        userTickets.map(async (userTicket) => {
+
+      const fifo = async () => {
+        for (const userTicket of userTickets) {
           await this.userTicketCreateEvent(userTicket);
-        }),
-      );
+        }
+      };
+
+      await fifo();
     } catch (err) {
       console.log(err);
     }
@@ -166,11 +169,10 @@ export class JobListener {
           .filter((fanUp) => fanUp.fanUP_type === 'FAN')
           .filter((fanUp) => {
             const keys = Object.keys(room);
-            console.log(keys, keys.includes(fanUp.room_id), fanUp.room_id);
             return !keys.includes(fanUp.room_id);
           })[0].room_id;
-        await this.userTicketService.updateFanUPIdById(id, assignRoom);
       }
+      await this.userTicketService.updateFanUPIdById(id, assignRoom);
 
       // 알림을 보냄
       const notificationMessage =
