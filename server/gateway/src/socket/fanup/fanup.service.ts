@@ -144,6 +144,10 @@ export class FanUPService {
   }
 
   async isArtist({ room, artistId }) {
+    if (artistId === 0) {
+      return false;
+    }
+
     const { status, data, message } = await lastValueFrom(
       this.coreTCP.send('findByRoom', room).pipe(catchError((err) => of(err))),
     );
