@@ -42,10 +42,6 @@ export class UserTicketService {
       return userTicket;
     });
 
-    if (userTicketResult) {
-      this.event.emit('user-ticket.create', userTicketResult);
-    }
-
     return userTicketResult;
   }
 
@@ -63,6 +59,10 @@ export class UserTicketService {
 
   async findManyByTicketId(ticketId: number) {
     return this.prisma.userTicket.findMany({ where: { ticketId } });
+  }
+
+  async findManyWhereFanupNull() {
+    return this.prisma.userTicket.findMany({ where: { fanupId: null } });
   }
 
   async updateFanUPIdById(id: number, fanupId: string) {
