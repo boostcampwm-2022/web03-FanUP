@@ -52,14 +52,8 @@ const HeaderRight = styled.div`
     font-weight: 700;
     position: relative;
 
-    strong {
-        background: linear-gradient(to right, #9e57ff, #7ed0fa);
-        background-clip: text;
-        -webkit-background-clip: text;
-        color: transparent;
-        //color: ${({ theme }) => theme.LIGHT_SKY};
-        //color: white;
-        display: inline-block;
+    button {
+        position: relative;
     }
 `;
 
@@ -70,7 +64,7 @@ const StyledNewNotificationMark = styled.div`
     border-radius: 50%;
     position: absolute;
     top: 0px;
-    left: 90px;
+    right: 0px;
 `;
 
 // id: 알림 PK
