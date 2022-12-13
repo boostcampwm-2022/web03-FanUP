@@ -73,45 +73,44 @@ const StyledNewNotificationMark = styled.div`
     left: 90px;
 `;
 
-// TODO : 수정 필요
-export interface Notification {
-    type: string;
-    id: string;
-    message: string;
-}
+// id: 알림 PK
+// message: 알림 내용
+// info: 티켓 or 팬업 값 ( 라우팅 파라미터 )
+// read: 읽음 여부
+// created_date: 알림 생성 시점
+// updated_date: 알림 수정 시점
 
-const testNotification: Notification[] = [
-    {
-        type: 'ticket',
-        id: '123',
-        message:
-            '정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설정국 방 개설',
-    },
-    {
-        type: 'fanup',
-        id: '456',
-        message:
-            '나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설나은 방 개설',
-    },
-];
+export interface Notification {
+    id: number;
+    user_id: number;
+    message: string;
+    info: string;
+    type: string;
+    read: boolean;
+    created_date: Date;
+    updated_date: Date;
+}
 
 const Header = () => {
     const navigate = useNavigate();
     const { data: userData } = useGetUserQuery();
-    const [notifications, setNofitifcations] = useState<any>([]);
+    const [notifications, setNofitifcations] = useState<Notification[]>([]);
     const [isOnNotificationMark, setIsOnNotificationMark] = useState<boolean>(false);
     const [isOpenNotificationModal, setIsOpenNotificationModal] = useState<boolean>(false);
 
     useEffect(() => {
         connectSocket(SOCKET_FEATURE.notification);
-        if (!socket) return;
-        socket.emit(SOCKET_EVENTS.getNotification, { userId: userData?.id });
+        if (!socket || !userData?.id) return;
         socket.emit(SOCKET_EVENTS.joinNotification, { userId: userData?.id });
-        socket.on(SOCKET_EVENTS.receiveNotification, (data) => receiveNewNotification(data));
-        socket.on(SOCKET_EVENTS.setNotification, (data: any) => {
-            if (data.result.data) setNofitifcations((curr: any) => [...curr, ...data.result.data]);
+        socket.emit(SOCKET_EVENTS.getNotification, { userId: userData?.id });
+        socket.on(SOCKET_EVENTS.setNotification, (data) => {
+            if (data.result.data)
+                setNofitifcations((curr: Notification[]) => [...curr, ...data.result.data]);
         });
-    }, []);
+        socket.on(SOCKET_EVENTS.receiveNotification, (data: Notification) =>
+            receiveNewNotification(data)
+        );
+    }, [userData?.id]);
 
     // TODO : 모달 열려 있을 때도 빨간 불 들어옴.
     const receiveNewNotification = useCallback(
@@ -178,7 +177,11 @@ const Header = () => {
                     {<SearchIcon />}
                 </button>
                 {isOpenNotificationModal && (
-                    <NotificationContainer notifications={testNotification} />
+                    <NotificationContainer
+                        notifications={notifications}
+                        setIsOpenNotificationModal={setIsOpenNotificationModal}
+                        setNofitifcations={setNofitifcations}
+                    />
                 )}
             </HeaderRight>
         </HeaderRoot>

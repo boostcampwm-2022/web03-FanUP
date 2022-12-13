@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { Dispatch, FC, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 import { Notification } from '@organisms/header';
@@ -41,14 +41,26 @@ const StyledHeader = styled.h3`
 
 interface Props {
     notifications: Notification[];
+    setIsOpenNotificationModal: Dispatch<SetStateAction<boolean>>;
+    setNofitifcations: Dispatch<SetStateAction<Notification[]>>;
 }
 
-const NotificationContainer: FC<Props> = ({ notifications }) => {
+const NotificationContainer: FC<Props> = ({
+    notifications,
+    setIsOpenNotificationModal,
+    setNofitifcations,
+}) => {
+    console.log(notifications);
     return (
         <StyledNotificationContainer>
             <StyledHeader>Notifications</StyledHeader>
             {notifications.map((notification, i) => (
-                <NotificationItem key={i} notification={notification} />
+                <NotificationItem
+                    key={i}
+                    notification={notification}
+                    setIsOpenNotificationModal={setIsOpenNotificationModal}
+                    setNofitifcations={setNofitifcations}
+                />
             ))}
         </StyledNotificationContainer>
     );

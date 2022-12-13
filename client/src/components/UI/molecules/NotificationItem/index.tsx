@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { Dispatch, FC, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -38,29 +38,38 @@ const StyledNotificationItem = styled.li`
 
 interface Props {
     notification: Notification;
+    setIsOpenNotificationModal: Dispatch<SetStateAction<boolean>>;
+    setNofitifcations: Dispatch<SetStateAction<Notification[]>>;
 }
 
-const NotificationItem: FC<Props> = ({ notification }) => {
+const NotificationItem: FC<Props> = ({
+    notification,
+    setIsOpenNotificationModal,
+    setNofitifcations,
+}) => {
     const { data: userData } = useGetUserQuery();
     const navigate = useNavigate();
 
     // TODO : Link 태그?, useCallback
     const navigateByType = (e: any, type: string, id: string) => {
-        if (!e.target.classList.contains('notification')) return;
+        if (!e.currentTarget.classList.contains('notification')) return;
+        setIsOpenNotificationModal(false);
         navigate(`/${type}/${id}`);
     };
 
     // TODO : useCallback
-    const deleteNotification = (id: string): void => {
-        if (!socket || userData?.id) return;
-        console.log(id, userData);
+    const deleteNotification = (id: number) => {
+        if (!socket || !userData?.id) return;
         socket.emit(SOCKET_EVENTS.updateNotification, { id: id, userId: userData?.id });
+        setNofitifcations((curr: Notification[]) =>
+            curr.filter((notification) => notification.id !== id)
+        );
     };
 
     return (
         <StyledNotificationItem
             className="notification new"
-            onClick={(e) => navigateByType(e, notification.type, notification.id)}
+            onClick={(e) => navigateByType(e, notification.type, notification.info)}
         >
             <em>오늘</em>
             <span>{notification.message}</span>
