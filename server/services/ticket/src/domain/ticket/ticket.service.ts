@@ -36,6 +36,7 @@ export class TicketService {
     try {
       return await this.prisma.ticket.findUniqueOrThrow({
         where: { id: ticketId },
+        include: { artist: true },
       });
     } catch (e) {
       throw new CustomRpcException('Ticket not found', HttpStatus.BAD_REQUEST);
