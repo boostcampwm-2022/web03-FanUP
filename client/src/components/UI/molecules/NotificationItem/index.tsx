@@ -56,12 +56,13 @@ const NotificationItem: FC<Props> = ({ notification }) => {
     const { data: userData } = useGetUserQuery();
     const navigate = useNavigate();
 
-    // TODO : Link 태그?
+    // TODO : Link 태그?, useCallback
     const navigateByType = (e: any, type: string, id: string) => {
         if (!e.target.classList.contains('notification')) return;
         navigate(`/${type}/${id}`);
     };
 
+    // TODO : useCallback
     const deleteNotification = (id: string) => {
         if (!socket || userData?.id) return;
         socket.emit(SOCKET_EVENTS.updateNotification, { id: id, userId: userData?.id });
