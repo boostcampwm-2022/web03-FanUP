@@ -105,12 +105,17 @@ const Header = () => {
         socket.emit(SOCKET_EVENTS.joinNotification, { userId: userData?.id });
         socket.emit(SOCKET_EVENTS.getNotification, { userId: userData?.id });
         socket.on(SOCKET_EVENTS.setNotification, (data) => {
-            if (data.result.data)
-                setNofitifcations((curr: Notification[]) => [...curr, ...data.result.data]);
+            if (!data.result.data) return;
+            setNofitifcations((curr: Notification[]) => [...curr, ...data.result.data]);
         });
         socket.on(SOCKET_EVENTS.receiveNotification, (data: Notification) =>
             receiveNewNotification(data)
         );
+
+        return () => {
+            socket?.off(SOCKET_EVENTS.setNotification);
+            socket?.off(SOCKET_EVENTS.receiveNotification);
+        };
     }, [userData?.id]);
 
     // TODO : 모달 열려 있을 때도 빨간 불 들어옴.
