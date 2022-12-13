@@ -37,6 +37,7 @@ const FanUpJoinBtn = ({ date, fanupId, ticketId }: Props) => {
     const { pathname } = useLocation();
 
     const gotoFanUP = useCallback(() => {
+        if (!fanupId) return alert('FanUP방을 생성 중입니다.\n 잠시 후, 다시 시도해주세요.');
         const url = `/fanup/${fanupId}`;
         if (isArtistJoinRoom(pathname)) navigate(url + `?ticketId=${ticketId}`);
         else navigate(url);

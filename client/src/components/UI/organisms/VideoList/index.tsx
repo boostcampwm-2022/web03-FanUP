@@ -33,9 +33,9 @@ const VideoList = ({ userStream }: Props) => {
     return (
         <VideoListWrapper style={gridTemplate[String(userStream.length)]}>
             {userStream.map((data, idx) => (
-                <Video stream={data.stream} key={idx} />
+                <Video stream={data.stream} key={idx} isMyVideo={false} />
             ))}
-            <Video stream={myStream} />
+            <Video stream={myStream} isMyVideo={true} />
         </VideoListWrapper>
     );
 };
