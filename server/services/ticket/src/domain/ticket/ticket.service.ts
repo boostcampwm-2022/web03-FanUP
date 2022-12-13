@@ -122,22 +122,24 @@ export class TicketService {
       },
     });
 
-    const coreResponse = await firstValueFrom(
-      this.coreClient.send(
-        { cmd: 'findRoomIdByTicketId' },
-        tickets.map((ticket) => ticket.id),
-      ),
-    );
+    return tickets;
 
-    const fanupIds = coreResponse.data.reduce((acc, cur) => {
-      const { ticket_id, room_id } = cur;
-      acc[ticket_id] = room_id;
-      return acc;
-    }, {});
+    // const coreResponse = await firstValueFrom(
+    //   this.coreClient.send(
+    //     { cmd: 'findRoomIdByTicketId' },
+    //     tickets.map((ticket) => ticket.id),
+    //   ),
+    // );
 
-    return tickets.map((ticket) => {
-      return { ...ticket, fanupId: fanupIds[ticket.id] };
-    });
+    // const fanupIds = coreResponse.data.reduce((acc, cur) => {
+    //   const { ticket_id, room_id } = cur;
+    //   acc[ticket_id] = room_id;
+    //   return acc;
+    // }, {});
+
+    // return tickets.map((ticket) => {
+    //   return { ...ticket, fanupId: fanupIds[ticket.id] };
+    // });
   }
 
   async findTicketByToday() {
@@ -153,6 +155,40 @@ export class TicketService {
       include: {
         artist: true,
       },
+    });
+  }
+
+  async findTicketByTodayAndArtistId(artistId: number) {
+    const current = new Date();
+
+    const tickets = await this.prisma.ticket.findMany({
+      where: {
+        startTime: {
+          gt: new Date(current.setDate(current.getDate() - 1)).toISOString(),
+          lt: new Date(current.setDate(current.getDate() + 2)).toISOString(),
+        },
+        artistId: artistId,
+      },
+      include: {
+        artist: true,
+      },
+    });
+
+    const coreResponse = await firstValueFrom(
+      this.coreClient.send(
+        { cmd: 'findRoomIdByTicketId' },
+        tickets.map((ticket) => ticket.id),
+      ),
+    );
+
+    const fanupIds = coreResponse.data.reduce((acc, cur) => {
+      const { ticket_id, room_id } = cur;
+      acc[ticket_id] = room_id;
+      return acc;
+    }, {});
+
+    return tickets.map((ticket) => {
+      return { ...ticket, fanupId: fanupIds[ticket.id] };
     });
   }
 }

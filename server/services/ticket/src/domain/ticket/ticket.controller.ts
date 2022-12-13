@@ -61,4 +61,9 @@ export class TicketController {
   async findTicketByToday() {
     return await this.ticketService.findTicketByToday();
   }
+
+  @MessagePattern({ cmd: 'findTicketByTodayAndArtistId' })
+  async findTicketByTodayAndArtistId(@Payload() artistId: number) {
+    return await this.ticketService.findTicketByTodayAndArtistId(artistId);
+  }
 }
