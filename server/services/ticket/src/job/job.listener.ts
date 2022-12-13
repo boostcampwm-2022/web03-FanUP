@@ -22,12 +22,15 @@ export class JobListener {
   // ================= common =================
 
   async sendNotification(data) {
-    this.logger.log('sendNotification');
+    this.logger.log('sendNotification', data);
     const env = process.env.NODE_ENV === 'production';
     const gateway = env ? 'fanup-gateway' : 'localhost';
 
     const socket = io(`http://${gateway}:3000/socket/notification`);
-    socket.emit('send-notification', { ...data });
+    socket.on('connect', () => {
+      this.logger.log('connect for notification');
+      socket.emit('send-notification', { ...data });
+    });
   }
 
   async findUserIdByArtistId(artistId: number): Promise<any[]> {
@@ -78,7 +81,7 @@ export class JobListener {
 
   // ================= user-ticket.create =================
 
-  async getUserTicketByTicketId(ticketId: number) {
+  async getUserTicketByTicketId(ticketId: number): Promise<object> {
     const room = {};
     const history = await this.userTicketService.findManyByTicketId(ticketId);
     history.forEach((userTicket) => {
@@ -122,7 +125,7 @@ export class JobListener {
       const { id, ticketId, userId } = userTicket;
 
       // 해당 티켓에 할당된 티켓들을 가져옴 사용자가 구매한 티켓 내역을 가져옴
-      const room: object = this.getUserTicketByTicketId(ticketId);
+      const room: object = await this.getUserTicketByTicketId(ticketId);
 
       // core에서 해당 ticket의 FanUP 방을 가져옴
       const {
