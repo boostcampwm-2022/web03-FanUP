@@ -45,7 +45,6 @@ interface Props {
 }
 
 const NotificationContainer: FC<Props> = ({ notifications, setNofitifcations }) => {
-    console.log(notifications);
     return (
         <StyledNotificationContainer>
             <StyledHeader>Notifications</StyledHeader>

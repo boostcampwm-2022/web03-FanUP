@@ -104,22 +104,27 @@ const Header = () => {
         socket.emit(SOCKET_EVENTS.joinNotification, { userId: userData?.id });
         socket.emit(SOCKET_EVENTS.getNotification, { userId: userData?.id });
         socket.on(SOCKET_EVENTS.setNotification, (data) => {
+            console.log('set', data);
             if (data.result.data)
                 setNofitifcations((curr: Notification[]) => [...curr, ...data.result.data]);
         });
-        socket.on(SOCKET_EVENTS.receiveNotification, (data: Notification) =>
-            receiveNewNotification(data)
-        );
-    }, [userData?.id]);
+        socket.on(SOCKET_EVENTS.receiveNotification, (data: Notification) => {
+            console.log('receive', data);
+            receiveNewNotification(data);
+        });
+
+        return () => {
+            socket?.off(SOCKET_EVENTS.setNotification);
+            socket?.off(SOCKET_EVENTS.receiveNotification);
+        };
+    }, []);
 
     // TODO : 모달 열려 있을 때도 빨간 불 들어옴.
-    const receiveNewNotification = useCallback(
-        (data: Notification) => {
-            if (!isOpenNotificationModal) setIsOnNotificationMark(true);
-            setNofitifcations((curr: Notification[]) => [...curr, data]);
-        },
-        [isOpenNotificationModal]
-    );
+    const receiveNewNotification = (data: Notification) => {
+        console.log(data);
+        if (!isOpenNotificationModal) setIsOnNotificationMark(true);
+        setNofitifcations((curr: Notification[]) => [...curr, data]);
+    };
 
     //TODO: 이 부분 로직이 복잡해지면, 따로 컴포넌트로 각각 분리
     const clickSearch = useCallback(() => {
