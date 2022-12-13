@@ -65,6 +65,11 @@ export class TicketController {
     );
   }
 
+  @Get('/today')
+  async getTodayTicket() {
+    return this.ticketClient.send({ cmd: 'findTicketByToday' }, {});
+  }
+
   @Get('/:ticketId')
   async getTicket(@Param('ticketId', new ParseIntPipe()) ticketId: number) {
     console.log(ticketId);
