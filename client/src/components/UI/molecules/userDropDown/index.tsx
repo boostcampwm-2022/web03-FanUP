@@ -25,11 +25,11 @@ const UserDropDown = () => {
 
     const logout = useCallback(async () => {
         if (!window.confirm('로그아웃 하시겠어요?')) return;
-        console.log('logout');
         InitializeLocalStorage();
         dispatch(setToken(null));
         dispatch(resetUserService());
         dispatch(resetArtistService());
+        window.location.replace('/');
     }, []);
 
     return (

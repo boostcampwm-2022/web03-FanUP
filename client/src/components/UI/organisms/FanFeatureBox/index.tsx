@@ -11,6 +11,8 @@ import UnHeartIcon from '@/components/icons/unheart';
 const SchedulesWrapper = styled.div`
     background: white;
     border-radius: 20px;
+    padding: 40px;
+    height: fit-content;
 `;
 
 const ModeSelector = styled.div`
@@ -51,10 +53,14 @@ const NoTickets = styled.div`
     align-items: center;
     justify-content: center;
     margin-top: 20px;
-    gap: 10px;
+    gap: 5px;
     svg {
         width: 25px;
         height: 25px;
+    }
+    span {
+        font-size: 12px;
+        font-weight: 700;
     }
 `;
 

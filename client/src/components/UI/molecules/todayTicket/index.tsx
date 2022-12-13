@@ -1,5 +1,5 @@
 import { Ticket, TicketSales } from '@/types/ticket';
-import { dateForm } from '@utils/dateForm';
+import { dateForm, getDate, getTime } from '@utils/dateForm';
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -52,7 +52,10 @@ const LeftContent = styled.div`
 const Time = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 1px;
+    h2 {
+        margin-bottom: 2px;
+    }
 `;
 
 const Price = styled.div`
@@ -63,7 +66,7 @@ const Price = styled.div`
     align-items: center;
     justify-content: space-between;
     font-size: 15px;
-    gap: 5px;
+    gap: 3px;
 `;
 
 const RightContent = styled.div`
@@ -96,14 +99,22 @@ const TodayTicket = ({ ticket }: Props) => {
                 <LeftContent>
                     <Time>
                         <h2>티켓팅</h2>
-                        <span>{dateForm(ticket.salesTime)}</span>
+                        <div>
+                            <span>{getDate(ticket.salesTime)}</span>
+                            <br />
+                            <span>{getTime(ticket.salesTime)}</span>
+                        </div>
                     </Time>
                     <Time>
                         <h2>FanUP</h2>
-                        <span>{dateForm(ticket.startTime)}</span>
+                        <div>
+                            <span>{getDate(ticket.startTime)}</span>
+                            <br />
+                            <span>{getTime(ticket.startTime)}</span>
+                        </div>
                     </Time>
                     <Price>
-                        <Fish /> <span>x </span>
+                        <Fish /> <span>x</span>
                         <strong>{ticket.price}</strong>
                     </Price>
                 </LeftContent>
