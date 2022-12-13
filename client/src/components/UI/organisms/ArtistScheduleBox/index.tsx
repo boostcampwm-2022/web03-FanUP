@@ -2,6 +2,7 @@ import ScheduleIcon from '@/components/icons/ScheduleIcon';
 import React from 'react';
 import styled from 'styled-components';
 import SmallTicket from '@molecules/SmallTicket';
+import { useGetArtistTodayTicketQuery } from '@/services/ticket.service';
 
 const SchedulesWrapper = styled.div`
     background: white;
@@ -40,6 +41,9 @@ const ScheduleContentsWrapper = styled.div`
 `;
 
 const ArtistScheduleBox = () => {
+    const { data: artistTicket, isLoading } = useGetArtistTodayTicketQuery();
+    if (isLoading) return <></>;
+    console.log(artistTicket);
     return (
         <SchedulesWrapper>
             <ModeSelector>
@@ -49,18 +53,16 @@ const ArtistScheduleBox = () => {
                 </ModeBtn>
             </ModeSelector>
             <ScheduleContentsWrapper>
-                {dummyMyTickets.map((ticket) => (
-                    <SmallTicket key={ticket.title} ticket={ticket} isMyTicketMode={true} />
-                ))}
+                {artistTicket && artistTicket?.length === 0 && (
+                    <span>오늘 진행 예정인 FanUP이 없습니다.</span>
+                )}
+                {artistTicket &&
+                    artistTicket?.length !== 0 &&
+                    artistTicket.map((ticket) => (
+                        <SmallTicket key={ticket.title} ticket={ticket} isMyTicketMode={true} />
+                    ))}
             </ScheduleContentsWrapper>
         </SchedulesWrapper>
     );
 };
-
-const dummyMyTickets = [
-    { title: '부스트캠프 수료식', startTime: new Date(), profileUrl: '' },
-    { title: '엔믹스 1주년❤️', startTime: new Date('2022.12.21'), profileUrl: '' },
-    { title: '뉴진스 1주년❤️', startTime: new Date('2022.12.25'), profileUrl: '' },
-];
-
 export default ArtistScheduleBox;

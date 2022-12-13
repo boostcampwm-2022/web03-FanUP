@@ -27,7 +27,10 @@ export const artistSlice = createSlice({
         initializeSelectedDay(state) {
             state.selectedDay = null;
         },
-        setSelectedDay(state, action: PayloadAction<{ year: number; month: number; day: number }>) {
+        setSelectedDay(
+            state,
+            action: PayloadAction<{ calendarYear: number; calendarMonth: number; day: number }>
+        ) {
             state.selectedDay = action.payload;
         },
     },

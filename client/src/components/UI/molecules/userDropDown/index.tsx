@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@/store';
 import { setToken } from '@store/user';
 import { resetUserService } from '@services/user.service';
 import { useModal } from '@hooks/useModal';
@@ -21,7 +21,7 @@ const DropDownItem = styled.div`
 const UserDropDown = () => {
     const [openModal, , openNicknameEditModal, closeNicknameEditModal] = useModal();
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const logout = useCallback(async () => {
         if (!window.confirm('로그아웃 하시겠어요?')) return;

@@ -30,7 +30,10 @@ describe('artistSlice', () => {
         expect(state.selectedDay).toBe(null);
     });
     it('setSelectedDay', () => {
-        const state = reducer(initialState, setSelectedDay({ year: 1, month: 1, day: 1 }));
+        const state = reducer(
+            initialState,
+            setSelectedDay({ calendarYear: 1, calendarMonth: 1, day: 1 })
+        );
         expect(state.selectedDay).toStrictEqual({ year: 1, month: 1, day: 1 });
     });
 });

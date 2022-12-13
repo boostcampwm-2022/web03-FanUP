@@ -3,7 +3,7 @@ import { useEditNicknameMutation } from '@/services/user.service';
 import { closeUserDropDown } from '@/store/user';
 import CloseIcon from '@icons/CloseIcon';
 import React, { useCallback, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@/store';
 import styled from 'styled-components';
 
 interface IProps {
@@ -52,7 +52,7 @@ const ModalContent = styled.form`
 
 const NicknameEditModal = (props: IProps) => {
     const [mutation] = useEditNicknameMutation();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const nicknameRef = useRef<HTMLInputElement | null>(null);
     const submitNickname = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

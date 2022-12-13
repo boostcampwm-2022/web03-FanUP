@@ -55,7 +55,11 @@ const Artists = ({ title, artistList }: Props) => {
                     <Title>{title}</Title>
                     <ArtistListWrapper length={artistList?.length}>
                         {artistList?.map((artist, idx) => (
-                            <ArtistCard key={artist.name + idx} artist={artist} />
+                            <ArtistCard
+                                key={artist.name + idx}
+                                artist={artist}
+                                isMyArtistMode={title === '나의 아티스트'}
+                            />
                         ))}
                     </ArtistListWrapper>
                 </>

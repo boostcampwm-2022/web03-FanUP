@@ -4,6 +4,7 @@ import { dateForm } from '@utils/dateForm';
 import ImageChip from '@atoms/ImageChip';
 import DDay from '@atoms/D_Day';
 import TicketBarCode from '@atoms/TicketBarCode';
+import { MyTicket } from '@/types/ticket';
 
 const ScheduleTicketWrapper = styled.div`
     width: 325px;
@@ -56,28 +57,32 @@ const ScheduleInfo = styled.div`
 `;
 
 interface Props {
-    ticket: {
-        title: string;
-        startTime: Date;
-        profileUrl: string;
-    };
+    ticket: MyTicket;
     isMyTicketMode?: boolean;
 }
 
 const SmallTicket = ({ ticket, isMyTicketMode }: Props) => {
-    const { profileUrl, startTime, title } = ticket;
+    const {
+        artist: { profileUrl },
+        startTime,
+        title,
+    } = ticket;
     return (
         <ScheduleTicketWrapper>
             <TicketBarCode width="9px" height="65px" />
             <ScheduleContent>
                 <ScheduleTicketLeft>
-                    <ImageChip src={profileUrl} width="50px" height="50px" />
+                    <ImageChip src={profileUrl || ''} width="50px" height="50px" />
                     <ScheduleInfo>
                         <h3>{title}</h3>
                         <div>{dateForm(startTime)}</div>
                     </ScheduleInfo>
                 </ScheduleTicketLeft>
-                <DDay date={startTime} isMyTicketMode={isMyTicketMode} />
+                <DDay
+                    date={startTime}
+                    fanupId={ticket.fanupId || ''}
+                    isMyTicketMode={isMyTicketMode}
+                />
             </ScheduleContent>
         </ScheduleTicketWrapper>
     );

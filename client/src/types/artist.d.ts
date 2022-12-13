@@ -13,5 +13,11 @@ export interface CalendarData {
 export interface ArtistStore extends CalendarData {
     [key: string]: any;
     openSchduleModal: boolean;
-    selectedDay: null | { year: number; month: number; day: number };
+    selectedDay: null | { calendarYear: number; calendarMonth: number; day: number };
+}
+
+export interface ISchedules {
+    id: number;
+    title: string;
+    startTime: string;
 }

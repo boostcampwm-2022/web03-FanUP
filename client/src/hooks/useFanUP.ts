@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { initializeMyStream } from '@store/user';
 import { ReducerType } from '@store/rootReducer';
@@ -7,6 +7,7 @@ import { ReducerType } from '@store/rootReducer';
 import { socket, SOCKET_EVENTS, connectSocket } from '@/socket';
 import { useGetUserQuery } from '@/services/user.service';
 import { useParams } from 'react-router-dom';
+import { useAppDispatch } from '@/store';
 
 const urls = [
     'stun:stun.l.google.com:19302',
@@ -25,7 +26,7 @@ const useFanUP = (): [
     const { fanUpId } = useParams();
     const [users, setUsers] = useState<any[]>([]);
     const peerConnections = useRef<{ [key: string]: RTCPeerConnection }>({});
-    const { data: UserData, isLoading: loginLoading } = useGetUserQuery();
+    const { data: UserData } = useGetUserQuery();
 
     connectSocket('fanup');
 
@@ -33,7 +34,7 @@ const useFanUP = (): [
         ({ userSlice }) => userSlice.myStream
     );
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const createPeerConnection = (socketID: string, nickname: string) => {
         try {
@@ -126,6 +127,7 @@ const useFanUP = (): [
     };
 
     const handleAddStream = (data: any, socketID: string, nickname: string) => {
+        console.log('data : ', data);
         setUsers((prev) => [...prev, { stream: data.stream, socketID, nickname }]);
     };
 
@@ -141,7 +143,6 @@ const useFanUP = (): [
     };
 
     const unMount = (e?: BeforeUnloadEvent) => {
-        if (loginLoading) return;
         if (!myStream) return;
         if (Object.keys(peerConnections.current).length !== 0) return;
 
@@ -163,16 +164,14 @@ const useFanUP = (): [
     };
 
     useEffect(() => {
+        if (!myStream) return;
+        if (Object.keys(peerConnections.current).length !== 0) return;
+
         socket?.emit(SOCKET_EVENTS.joinRoom, {
             room: fanUpId,
             userId: UserData?.id,
             nickname: UserData?.nickname,
         });
-
-        if (loginLoading) return;
-        if (!myStream) return;
-        if (Object.keys(peerConnections.current).length !== 0) return;
-
         socket?.on(SOCKET_EVENTS.welcome, welcomeCallback);
         socket?.on(SOCKET_EVENTS.failJoinRoom, failJoinRoom);
         socket?.on(SOCKET_EVENTS.offer, offerCallback);
@@ -183,15 +182,14 @@ const useFanUP = (): [
         return () => {
             unMount();
         };
-    }, [myStream, socket, loginLoading]);
+    }, [myStream, socket]);
 
     useEffect(() => {
-        if (loginLoading) return;
         window.addEventListener('beforeunload', unMount);
         return () => {
             window.removeEventListener('beforeunload', unMount);
         };
-    }, [socket, loginLoading]);
+    }, [socket]);
 
     return [users, peerConnections];
 };

@@ -4,6 +4,7 @@ import FanFeatureBox from '@/components/UI/organisms/FanFeatureBox';
 import Header from '@organisms/header';
 import TodayTickets from '@organisms/todayTickets';
 import AllTickets from '@/components/UI/organisms/allTickets';
+import withGetUser from '@/components/hoc/withGetUser';
 const ContentsWrapper = styled.div`
     display: flex;
     gap: 40px;
@@ -37,4 +38,4 @@ const Tickets = () => {
     );
 };
 
-export default Tickets;
+export default withGetUser(Tickets);

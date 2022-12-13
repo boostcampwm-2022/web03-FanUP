@@ -11,9 +11,10 @@ import Logo from '@icons/Logo';
 import SearchIcon from '@icons/SearchIcon';
 import UserIcon from '@icons/UserIcon';
 import HeaderUser from '@molecules/HeaderUser';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { closeUserDropDown, toggleNotificationModal } from '@/store/user';
 import { ReducerType } from '@/store/rootReducer';
+import { useAppDispatch } from '@/store';
 
 const HeaderRoot = styled.header`
     height: 75px;
@@ -94,7 +95,7 @@ const Header = () => {
         ({ userSlice }) => userSlice.openNotificationModal
     );
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const [notifications, setNofitifcations] = useState<any>([]);
     const [isOnNotificationMark, setIsOnNotificationMark] = useState<boolean>(false);
 

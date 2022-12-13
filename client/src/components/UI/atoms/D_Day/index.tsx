@@ -29,13 +29,14 @@ const DDayWrapper = styled.div<{ isDDay: boolean }>`
 interface Props {
     date: Date;
     isMyTicketMode?: boolean;
+    fanupId?: string;
 }
 
-const DDay = ({ date, isMyTicketMode }: Props) => {
+const DDay = ({ date, isMyTicketMode, fanupId }: Props) => {
     const D_Day = useMemo(() => get_D_Day(date), [date]);
     const navigate = useNavigate();
     const gotoFanUP = useCallback(() => {
-        navigate(`/fanup/30873d70-480c-4149-b2d2-ec2a462e72db`);
+        navigate(`/fanup/${fanupId}`);
     }, []);
     return (
         <DDayWrapper isDDay={isDDay(date)}>

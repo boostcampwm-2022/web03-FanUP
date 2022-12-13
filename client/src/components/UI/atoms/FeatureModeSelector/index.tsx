@@ -1,11 +1,11 @@
 import ChatIcon from '@icons/ChatIcon';
 import ClockIcon from '@icons/ClockIcon';
 import ParticipantsIcon from '@icons/ParticipantsIcon';
-import { AppDispatch } from '@store/index';
+import { useAppDispatch } from '@store/index';
 import { changeMode } from '@/store/fanUp';
 import { ReducerType } from '@store/rootReducer';
 import React, { useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const FeatureModeSelectorWrapper = styled.div`
@@ -28,7 +28,7 @@ const PARTICIPANTS_MODE = 0;
 const CHAT_MODE = 1;
 
 const FeatureModeSelector = () => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const mode = useSelector<ReducerType, number>(({ fanUpSlice }) => fanUpSlice.mode);
 
     const modes = useMemo(

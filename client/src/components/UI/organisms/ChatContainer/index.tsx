@@ -21,7 +21,6 @@ const StyledChatContainer = styled.div`
 
 const ChatContainer: FC = () => {
     const { fanUpId } = useParams();
-    // TODO : undefined 에러 처리
     const { data: userData } = useGetUserQuery();
     const [userId, setUserId] = useState<number | undefined>(userData?.id);
     const [userNickname, setuserNickname] = useState<string | undefined>(userData?.nickname);
@@ -31,7 +30,6 @@ const ChatContainer: FC = () => {
 
     useEffect(() => {
         if (!socket || !room || !userId) return;
-
         socket.emit(SOCKET_EVENTS.requestChat, { room: room });
         socket.on(SOCKET_EVENTS.responseChat, (data) =>
             setChatData((curr) => [...curr, ...data.result])
