@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { dateForm } from '@utils/dateForm';
 import ImageChip from '@atoms/ImageChip';
-import DDay from '@atoms/D_Day';
+import FanUpJoinBtn from '@atoms/FanUpJoinBtn';
 import TicketBarCode from '@atoms/TicketBarCode';
 import { MyTicket } from '@/types/ticket';
 
@@ -58,14 +58,14 @@ const ScheduleInfo = styled.div`
 
 interface Props {
     ticket: MyTicket;
-    isMyTicketMode?: boolean;
 }
 
-const SmallTicket = ({ ticket, isMyTicketMode }: Props) => {
+const SmallTicket = ({ ticket }: Props) => {
     const {
         artist: { profileUrl },
         startTime,
         title,
+        id: ticketId,
     } = ticket;
     return (
         <ScheduleTicketWrapper>
@@ -78,11 +78,7 @@ const SmallTicket = ({ ticket, isMyTicketMode }: Props) => {
                         <div>{dateForm(startTime)}</div>
                     </ScheduleInfo>
                 </ScheduleTicketLeft>
-                <DDay
-                    date={startTime}
-                    fanupId={ticket.fanupId || ''}
-                    isMyTicketMode={isMyTicketMode}
-                />
+                <FanUpJoinBtn date={startTime} fanupId={ticket.fanupId || ''} ticketId={ticketId} />
             </ScheduleContent>
         </ScheduleTicketWrapper>
     );

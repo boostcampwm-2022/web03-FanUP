@@ -8,8 +8,8 @@ import RoomBtn from '..';
 
 describe('<RoomBtn />', () => {
     const dummyRoom = {
-        room_id: '13:00',
-        id: 101,
+        start_time: '11:11',
+        room_id: '101',
     };
     it('rendering test', () => {
         renderWithContext(<RoomBtn room={dummyRoom} />);

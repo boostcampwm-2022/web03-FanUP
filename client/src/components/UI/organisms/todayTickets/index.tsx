@@ -59,7 +59,6 @@ const TodayTickets = () => {
         sliderRef.current?.slickPrev();
     }, []);
 
-    console.log(todayTickets);
     if (isLoading) return <></>;
     const settings = {
         dots: false,
