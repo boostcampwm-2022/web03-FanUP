@@ -41,15 +41,10 @@ const StyledHeader = styled.h3`
 
 interface Props {
     notifications: Notification[];
-    setIsOpenNotificationModal: Dispatch<SetStateAction<boolean>>;
     setNofitifcations: Dispatch<SetStateAction<Notification[]>>;
 }
 
-const NotificationContainer: FC<Props> = ({
-    notifications,
-    setIsOpenNotificationModal,
-    setNofitifcations,
-}) => {
+const NotificationContainer: FC<Props> = ({ notifications, setNofitifcations }) => {
     console.log(notifications);
     return (
         <StyledNotificationContainer>
@@ -58,7 +53,6 @@ const NotificationContainer: FC<Props> = ({
                 <NotificationItem
                     key={i}
                     notification={notification}
-                    setIsOpenNotificationModal={setIsOpenNotificationModal}
                     setNofitifcations={setNofitifcations}
                 />
             ))}

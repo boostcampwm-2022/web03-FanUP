@@ -12,8 +12,8 @@ import SearchIcon from '@icons/SearchIcon';
 import UserIcon from '@icons/UserIcon';
 import HeaderUser from '@molecules/HeaderUser';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeUserDropDown, toggleNotificationModal } from '@store/user';
-import { ReducerType } from '@store/rootReducer';
+import { closeUserDropDown, toggleNotificationModal } from '@/store/user';
+import { ReducerType } from '@/store/rootReducer';
 
 const HeaderRoot = styled.header`
     height: 75px;
@@ -179,7 +179,6 @@ const Header = () => {
                 {isOpenNotificationModal && (
                     <NotificationContainer
                         notifications={notifications}
-                        setIsOpenNotificationModal={setIsOpenNotificationModal}
                         setNofitifcations={setNofitifcations}
                     />
                 )}
