@@ -8,8 +8,8 @@ export const fanupApi = createApi({
     baseQuery: customFetchBaseQuery,
     //tagTypes: ['Artist'],
     endpoints: (build) => ({
-        getFanUpRooms: build.query<{ data: IFanUpRooms[] }, void>({
-            query: () => '/core/fanup',
+        getFanUpRooms: build.query<IFanUpRooms[], string>({
+            query: (ticketId: string) => `/core/fanup/list?ticketId=${ticketId}`,
         }),
     }),
 });

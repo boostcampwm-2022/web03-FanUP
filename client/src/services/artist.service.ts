@@ -11,6 +11,11 @@ interface IsubmitArtistInfoReqData {
     profileUrl: string;
 }
 
+interface IIsArtist {
+    roomId: string;
+    artistId: number;
+}
+
 export const artistApi = createApi({
     reducerPath: 'artistApi',
     baseQuery: customFetchBaseQuery,
@@ -37,6 +42,10 @@ export const artistApi = createApi({
                 return temp;
             },
         }),
+        getIsFanUPArtist: build.query<any, IIsArtist>({
+            query: ({ artistId, roomId }: IIsArtist) =>
+                `/core/isArtist?artistId=${artistId}&roomId=${roomId}`,
+        }),
         submitArtistInfo: build.mutation({
             query: (reqData: IsubmitArtistInfoReqData) => ({
                 url: '/auth/artist',
@@ -47,7 +56,7 @@ export const artistApi = createApi({
         editArtistInfo: build.mutation({
             query: (reqData: IsubmitArtistInfoReqData) => ({
                 url: '/auth/artist',
-                method: 'PUT',
+                method: 'PATCH',
                 body: reqData,
             }),
         }),
@@ -59,6 +68,10 @@ export const useGetAllArtistsQuery = () => {
     return artistApi.useGetAllArtistsQuery(userData?.id);
 };
 
-export const { useGetSchedulesQuery, useSubmitArtistInfoMutation, useEditArtistInfoMutation } =
-    artistApi;
+export const {
+    useGetIsFanUPArtistQuery,
+    useGetSchedulesQuery,
+    useSubmitArtistInfoMutation,
+    useEditArtistInfoMutation,
+} = artistApi;
 export const { resetApiState: resetArtistService } = artistApi.util;

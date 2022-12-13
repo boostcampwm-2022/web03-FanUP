@@ -43,7 +43,7 @@ const ScheduleContentsWrapper = styled.div`
 const ArtistScheduleBox = () => {
     const { data: artistTicket, isLoading } = useGetArtistTodayTicketQuery();
     if (isLoading) return <></>;
-    console.log(artistTicket);
+
     return (
         <SchedulesWrapper>
             <ModeSelector>
@@ -59,7 +59,7 @@ const ArtistScheduleBox = () => {
                 {artistTicket &&
                     artistTicket?.length !== 0 &&
                     artistTicket.map((ticket) => (
-                        <SmallTicket key={ticket.title} ticket={ticket} isMyTicketMode={true} />
+                        <SmallTicket key={ticket.title} ticket={ticket} />
                     ))}
             </ScheduleContentsWrapper>
         </SchedulesWrapper>

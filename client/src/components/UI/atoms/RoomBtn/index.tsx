@@ -1,3 +1,6 @@
+import useSearchParams from '@/hooks/useSearchParams';
+import { IFanUpRooms } from '@/types/fanUp';
+import { addZero } from '@/utils/addZero';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
@@ -17,18 +20,25 @@ const RoomBtnWrapper = styled.button`
 `;
 
 interface IProps {
-    room: {
-        id: number;
-        room_id: string;
-    };
+    room: IFanUpRooms;
 }
 
 const RoomBtn = ({ room }: IProps) => {
-    const { id, room_id } = room;
+    const { start_time, room_id, fanUP_type } = room;
+    const { ticketId } = useSearchParams();
     const gotoOtherRoom = useCallback(() => {
-        window.location.replace(`/fanup/${room_id}`);
+        window.location.replace(`/fanup/${room_id}?ticketId=${ticketId}`);
     }, [room_id]);
-    return <RoomBtnWrapper onClick={gotoOtherRoom}>{`13:${room.id}0`}</RoomBtnWrapper>;
+    return (
+        <RoomBtnWrapper onClick={gotoOtherRoom}>{`${
+            fanUP_type === 'ARTIST' ? '대기방' : getTime(start_time)
+        }`}</RoomBtnWrapper>
+    );
+};
+
+const getTime = (time: string) => {
+    const targetTime = new Date(time);
+    return `${targetTime.getHours()}:${addZero(targetTime.getMinutes())}`;
 };
 
 export default RoomBtn;

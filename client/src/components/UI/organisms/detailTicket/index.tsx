@@ -10,7 +10,7 @@ import Loading from '@atoms/Loading';
 import DefaultImg from '../../atoms/defaultImg';
 
 const DetailTicketWrapper = styled.div`
-    width: 50vw;
+    width: 30vw;
     min-width: 500px;
     margin: 0 auto;
     h2 {
@@ -29,7 +29,8 @@ const BarCode = styled.div`
 
 const BackgroundThumbnail = styled.img`
     width: 100%;
-    height: 350px;
+    aspect-ratio: 4 / 3;
+    //height: 100%;
 `;
 
 const TicketContents = styled.div`
