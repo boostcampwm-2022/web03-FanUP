@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import SubscribedUser from '@molecules/SubscribedUser';
+import { useGetSubscribesQuery } from '@/services/artist.service';
 
 const SubScribedUsersWrapper = styled.div`
     /* width: 60vw;
@@ -28,13 +29,15 @@ const SubScribedUserListWrapper = styled.div`
 `;
 
 const SubScribedUsers = () => {
+    const { data: subscribers, isLoading } = useGetSubscribesQuery();
+    if (isLoading) return <></>;
     return (
         <SubScribedUsersWrapper>
             <h1>구독자 목록</h1>
             <SubScribedUserListWrapper>
-                {DummySubScribedUser.map((user) => (
-                    <SubscribedUser key={user.nickname} user={user} />
-                ))}
+                {subscribers &&
+                    subscribers?.length > 0 &&
+                    subscribers?.map((user) => <SubscribedUser key={user.nickname} user={user} />)}
             </SubScribedUserListWrapper>
         </SubScribedUsersWrapper>
     );

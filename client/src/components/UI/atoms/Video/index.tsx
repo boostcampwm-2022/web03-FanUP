@@ -7,7 +7,7 @@ const Video = ({ stream }: { stream: any }) => {
         if (!stream) return;
         videoRef.current.srcObject = stream;
     }, [stream]);
-    return <video ref={videoRef} width="100%" height="100%" autoPlay playsInline />;
+    return <video ref={videoRef} width="100%" height="100%" autoPlay playsInline muted />;
 };
 
 export default Video;
