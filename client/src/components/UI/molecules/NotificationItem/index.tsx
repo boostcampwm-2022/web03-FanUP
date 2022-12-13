@@ -9,10 +9,30 @@ import CloseIcon from '@icons/CloseIcon';
 
 const StyledNotificationItem = styled.li`
     list-style: none;
-    height: 3rem;
+    /* height: 3rem; */
     padding: 1rem;
     font-size: 75%;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    display: flex;
+
+    &.new {
+        /* background: #f3f9fd; */
+    }
+
+    em {
+        width: 3em;
+        font-weight: 700;
+        font-size: 115%;
+        color: #b5c4d2;
+        margin-top: 2.5px;
+    }
+
+    span {
+        display: block;
+        width: 18.5rem;
+        line-height: 1.5em;
+    }
 
     i {
         color: #b5c4d2;
@@ -24,23 +44,6 @@ const StyledNotificationItem = styled.li`
                 opacity: 0.8;
                 cursor: pointer;
             }
-        }
-    }
-
-    em {
-        width: 3em;
-        margin-right: 1rem;
-        font-weight: 700;
-        font-size: 115%;
-        color: #b5c4d2;
-        vertical-align: bottom;
-        display: inline-block;
-    }
-
-    .notification {
-        box-sizing: border-box;
-        &.new {
-            background: #f3f9fd;
         }
     }
 `;
@@ -69,7 +72,8 @@ const NotificationItem: FC<Props> = ({ notification }) => {
             className="notification new"
             onClick={(e) => navigateByType(e, notification.type, notification.id)}
         >
-            <em>오늘</em> {notification.message}
+            <em>오늘</em>
+            <span>{notification.message}</span>
             <i className="right" onClick={() => deleteNotification(notification.id)}>
                 <CloseIcon />
             </i>
