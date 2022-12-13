@@ -127,7 +127,10 @@ export class JobListener {
       const userTickets: UserTicket[] =
         await this.userTicketService.findManyWhereFanupNull();
 
+      let index = 0;
       const fifo = async () => {
+        this.logger.log('fifo', index);
+        index++;
         for (const userTicket of userTickets) {
           await this.userTicketCreateEvent(userTicket);
         }
