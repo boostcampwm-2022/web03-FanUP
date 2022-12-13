@@ -72,4 +72,23 @@ export class CoreService {
     );
     return data;
   }
+
+  async isArtist(artistId, roomId) {
+    if (!artistId || !roomId) {
+      return false;
+    }
+
+    const artist = typeof artistId === 'string' ? parseInt(artistId) : artistId;
+    const { status, data, message } = await lastValueFrom(
+      this.apiClient.send('findByRoom', roomId),
+    );
+
+    if (data.artist_id) {
+      if (data.artist_id === artist) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
 }
