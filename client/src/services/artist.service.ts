@@ -16,6 +16,12 @@ interface IIsArtist {
     artistId: number;
 }
 
+interface ISubscriber {
+    id: number;
+    nickname: string;
+    profileUrl: string;
+}
+
 export const artistApi = createApi({
     reducerPath: 'artistApi',
     baseQuery: customFetchBaseQuery,
@@ -42,9 +48,12 @@ export const artistApi = createApi({
                 return temp;
             },
         }),
-        getIsFanUPArtist: build.query<any, IIsArtist>({
+        getIsFanUPArtist: build.query<boolean, IIsArtist>({
             query: ({ artistId, roomId }: IIsArtist) =>
                 `/core/isArtist?artistId=${artistId}&roomId=${roomId}`,
+        }),
+        getSubscribes: build.query<ISubscriber[], void>({
+            query: () => '/auth/artist/subscriber',
         }),
         submitArtistInfo: build.mutation({
             query: (reqData: IsubmitArtistInfoReqData) => ({
@@ -69,6 +78,7 @@ export const useGetAllArtistsQuery = () => {
 };
 
 export const {
+    useGetSubscribesQuery,
     useGetIsFanUPArtistQuery,
     useGetSchedulesQuery,
     useSubmitArtistInfoMutation,

@@ -56,7 +56,7 @@ const Participants = ({ nickname, isMute, isCameraOn }: Props) => {
             <div>
                 <span>{nickname}</span>
             </div>
-            <div>
+            {/* <div>
                 {isMute ? <MuteOnIcon fill="#FF6666" /> : <MuteOffIcon fill={'black'} />}
                 {isCameraOn ? <CameraOnIcon fill="black" /> : <CameraOffIcon fill="#FF6666" />}
                 {openMore ? (
@@ -68,7 +68,7 @@ const Participants = ({ nickname, isMute, isCameraOn }: Props) => {
                         <MoreIcon fill="black" />
                     </NotOpenMore>
                 )}
-            </div>
+            </div> */}
         </ParticipantsWrapper>
     );
 };
