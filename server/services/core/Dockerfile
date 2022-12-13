@@ -4,6 +4,6 @@ COPY ./server/services/core .
 COPY ./server/services/core/prisma ./prisma/ 
 RUN npm install
 ENV NODE_ENV production
-CMD ["npm", "start"]
+CMD ["npx prisma generate && npm start"]
 EXPOSE 3002
 EXPOSE 4002
