@@ -37,7 +37,7 @@ export class TicketController {
     @Query('month', new ParseIntPipe()) month: number,
   ) {
     if (!user.artistId)
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Invalid Artist', HttpStatus.BAD_REQUEST);
     return this.ticketClient.send(
       { cmd: 'getAllTicketByYearAndMonth' },
       { artistId: user.artistId, year, month },
@@ -68,6 +68,17 @@ export class TicketController {
   @Get('/today')
   async getTodayTicket() {
     return this.ticketClient.send({ cmd: 'findTicketByToday' }, {});
+  }
+
+  @Get('/artist/today')
+  @UseGuards(JwtAuthGuard)
+  async getTodayArtistTicket(@Req() { user }) {
+    if (!user.artistId)
+      throw new HttpException('Invalid Artist', HttpStatus.BAD_REQUEST);
+    return this.ticketClient.send(
+      { cmd: 'findTicketByTodayAndArtistId' },
+      user.artistId,
+    );
   }
 
   @Get('/:ticketId')
