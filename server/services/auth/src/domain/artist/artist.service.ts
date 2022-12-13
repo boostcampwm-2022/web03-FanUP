@@ -8,6 +8,7 @@ import { CustomRpcException } from 'src/common/exception/custom-rpc-exception';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import requestCreateArtistDto from './dto/reqeust-create-artist.dto';
+import RequestUpdateArtistDto from './dto/request-update-artist.dto';
 
 @Injectable()
 export class ArtistService {
@@ -64,6 +65,15 @@ export class ArtistService {
     return 'artist created';
   }
 
+  async update(updateArtistDto: RequestUpdateArtistDto) {
+    const { artistId, name, profileUrl } = updateArtistDto;
+
+    return this.prisma.artist.update({
+      where: { id: artistId },
+      data: { name, profileUrl },
+    });
+  }
+
   async findAll(userId: number | null) {
     if (!userId) {
       return this.prisma.artist.findMany();
@@ -94,5 +104,26 @@ export class ArtistService {
     return this.prisma.artist.findUnique({
       where: { id },
     });
+  }
+
+  async getAllSubscriber(artistId: number): Promise<any> {
+    const subscribers = await this.prisma.artist.findUnique({
+      where: { id: artistId },
+      select: {
+        favorites: {
+          select: {
+            user: {
+              select: {
+                id: true,
+                nickname: true,
+                profileUrl: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return subscribers.favorites.map((favorite) => favorite.user);
   }
 }

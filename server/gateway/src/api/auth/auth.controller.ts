@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
@@ -17,6 +19,7 @@ import { JwtAuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import CreateArtistDto from './dto/create-artist.dto';
 import LoginDto from './dto/login.dto';
+import UpdateArtistDto from './dto/update-artist.dto';
 import UpdateUserDto from './dto/update-user.dto';
 
 @UseFilters(AllGlobalExceptionsFilter)
@@ -55,9 +58,26 @@ export class AuthController {
     });
   }
 
+  @Patch('/artist')
+  @UseGuards(JwtAuthGuard)
+  async updateArtist(@Req() { user }, @Body() body: UpdateArtistDto) {
+    if (!user.artistId)
+      throw new HttpException('Invalid Artist', HttpStatus.BAD_REQUEST);
+    return this.authService.updateArtist({
+      artistId: user.artistId,
+      ...body,
+    });
+  }
+
   @Get('/artist')
   async getAllArtist(@Query('userId') userId: number | null) {
     return this.authService.getAllArtist(userId);
+  }
+
+  @Get('/artist/subscriber')
+  @UseGuards(JwtAuthGuard)
+  async getAllSubscriber(@Req() { user }) {
+    return this.authService.getAllSubscriber(user.artistId);
   }
 
   @Get('/artist/favorite')
