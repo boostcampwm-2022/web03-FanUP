@@ -3,13 +3,13 @@ import BottomOptionBar from '@organisms/BottomOptionBar';
 import FeatureBox from '@/components/UI/organisms/FeatureBox';
 import VideoList from '@/components/UI/organisms/VideoList';
 import { useMyStream } from '@/hooks/useMyStream';
-import usePreventLeave from '@/hooks/usePreventLeave';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useCheckFanUp } from './useCheckFanUp';
 import useFanUP from '@hooks/useFanUP';
 import { useCheckLogin } from '@hooks/useCheckLogin';
 import Loading from '@atoms/Loading';
+import withLoginValidation from '@/components/hoc/withLoginValidation';
 
 const FanUpWrapper = styled.div`
     display: flex;
@@ -31,8 +31,7 @@ const FanUP = () => {
     useMyStream();
     const { isLoading } = useCheckFanUp();
     const [users, peerConnections] = useFanUP();
-    const loginCheckLoading = useCheckLogin();
-    if (isLoading || loginCheckLoading) return <Loading />;
+    if (isLoading) return <Loading />;
     return (
         <>
             <Header />
@@ -47,4 +46,4 @@ const FanUP = () => {
     );
 };
 
-export default FanUP;
+export default withLoginValidation(FanUP);

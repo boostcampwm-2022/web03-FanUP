@@ -11,9 +11,10 @@ import Logo from '@icons/Logo';
 import SearchIcon from '@icons/SearchIcon';
 import UserIcon from '@icons/UserIcon';
 import HeaderUser from '@molecules/HeaderUser';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { closeUserDropDown, toggleNotificationModal } from '@/store/user';
 import { ReducerType } from '@/store/rootReducer';
+import { useAppDispatch } from '@/store';
 
 const HeaderRoot = styled.header`
     height: 75px;
@@ -89,18 +90,19 @@ const Header = () => {
         ({ userSlice }) => userSlice.openNotificationModal
     );
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const [notifications, setNofitifcations] = useState<any>([]);
     const [isOnNotificationMark, setIsOnNotificationMark] = useState<boolean>(false);
 
     useEffect(() => {
         connectSocket(SOCKET_FEATURE.notification);
         if (!socket) return;
-        socket.emit(SOCKET_EVENTS.getNotification, { userId: 1 });
-        socket.emit(SOCKET_EVENTS.joinNotification, { userId: 1 });
+        socket.emit(SOCKET_EVENTS.getNotification, { userId: userData?.id });
+        socket.emit(SOCKET_EVENTS.joinNotification, { userId: userData?.id });
         socket.on(SOCKET_EVENTS.receiveRoomNotification, (data) => receiveNewNotification(data));
         socket.on(SOCKET_EVENTS.setNotification, (data: any) => {
-            setNofitifcations((curr: any) => [...curr, ...data.result.data]);
+            if (data?.result?.data)
+                setNofitifcations((curr: any) => [...curr, ...data.result.data]);
         });
     }, []);
 

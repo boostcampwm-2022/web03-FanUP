@@ -74,6 +74,7 @@ const FanFeatureBox = () => {
         },
         []
     );
+
     console.log(myTickets);
 
     if (getMyTicketLoading) return <></>;
@@ -102,19 +103,23 @@ const FanFeatureBox = () => {
                             <SmallTicket key={ticket.title} ticket={ticket} isMyTicketMode={true} />
                         ))
                     ))}
-                {mode === SCHEDULE_MODE &&
+                {/* {mode === SCHEDULE_MODE &&
                     dummySchedules.map((ticket) => (
                         <SmallTicket key={ticket.title} ticket={ticket} isMyTicketMode={false} />
-                    ))}
+                    ))} */}
             </ScheduleContentsWrapper>
         </SchedulesWrapper>
     );
 };
 
+const artist = {
+    profileUrl: '',
+};
+
 const dummySchedules = [
-    { title: '우리 만나요~', startTime: new Date(), profileUrl: '' },
-    { title: '두근두근 컴백', startTime: new Date('2022.12.26'), profileUrl: '' },
-    { title: '10주년 이벤트❤️', startTime: new Date('2022.12.31'), profileUrl: '' },
+    { title: '우리 만나요~', startTime: new Date(), artist },
+    { title: '두근두근 컴백', startTime: new Date('2022.12.26'), artist },
+    { title: '10주년 이벤트❤️', startTime: new Date('2022.12.31'), artist },
 ];
 
 export default FanFeatureBox;

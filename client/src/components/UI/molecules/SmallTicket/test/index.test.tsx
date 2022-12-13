@@ -11,7 +11,13 @@ describe('<ScheduleTicket />', () => {
     const props = {
         title: 'testTitle',
         startTime: new Date(),
-        profileUrl: '/test.png',
+        fanupId: 'testFanUpId',
+        id: 1,
+        artist: {
+            name: 'testArtist',
+            id: 1,
+            profileUrl: '/test.png',
+        },
     };
     it('rendering test', () => {
         renderWithContext(<SmallTicket ticket={props} />);

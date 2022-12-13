@@ -5,7 +5,7 @@ import React from 'react';
 import styled from 'styled-components';
 import SubLogo from '@/components/icons/SubLogo';
 import { useGetUserQuery } from '@/services/user.service';
-import ArtistScheduleBox from '@/components/UI/organisms/ArtistScheduleBox';
+import withGetUser from '@/components/hoc/withGetUser';
 
 const BannerWrapper = styled.div`
     background: linear-gradient(to right, #9e57ff, #7ed0fa);
@@ -30,8 +30,8 @@ const UserContentsWrapper = styled.div`
 `;
 
 const Home = () => {
-    const { data: userData, isLoading } = useGetUserQuery();
-    if (isLoading) return <></>;
+    const { data: userData } = useGetUserQuery();
+
     return (
         <>
             <Header />
@@ -47,4 +47,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default withGetUser(Home);

@@ -6,7 +6,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import styled from 'styled-components';
 import PrevBtnIcon from '@/components/icons/PrevBtnIcon';
 import NextBtnIcon from '@/components/icons/NextBtnIcon';
-import { dummyTickets } from '@utils/dummy';
 import { useGetTodayTicketsQuery } from '@/services/ticket.service';
 
 const TodayTicketsWrapper = styled.div`
@@ -14,7 +13,10 @@ const TodayTicketsWrapper = styled.div`
     margin-bottom: 40px;
     padding-left: 20px;
     padding-right: 20px;
-    width: 1150px;
+    width: 1300px;
+    .slick-slide {
+        //width:  !important;
+    }
 `;
 
 const HandleButton = styled.button<{ left?: string; right?: string }>`
@@ -35,6 +37,7 @@ const HandleButton = styled.button<{ left?: string; right?: string }>`
 `;
 
 const TodayTickets = () => {
+    const { data: todayTickets, isLoading } = useGetTodayTicketsQuery();
     const sliderRef = useRef<any>(null);
     const [dragging, setDragging] = useState(false);
 
@@ -56,32 +59,44 @@ const TodayTickets = () => {
         sliderRef.current?.slickPrev();
     }, []);
 
+    console.log(todayTickets);
+    if (isLoading) return <></>;
     const settings = {
         dots: false,
         autoplay: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 3,
+        slidesToShow: todayTickets && todayTickets.length < 3 ? todayTickets?.length : 3,
         slidesToScroll: 2,
     };
     return (
         <TodayTicketsWrapper>
-            <Slider
-                {...settings}
-                ref={sliderRef}
-                beforeChange={handleBeforeChange}
-                afterChange={handleAfterChange}
-            >
-                {dummyTickets.map((ticket, idx) => (
-                    <TodayTicket key={idx} data-index={idx} ticket={ticket} />
-                ))}
-            </Slider>
-            <HandleButton left="0px" onClick={handlePrevCarousel}>
-                <PrevBtnIcon stroke="#9E57FF" />
-            </HandleButton>
-            <HandleButton right="10px" onClick={handleNextCarousel}>
-                <NextBtnIcon stroke="#9E57FF" />
-            </HandleButton>
+            {todayTickets?.length === 0 ? (
+                <h1>오늘 마감 예정인 티켓이 없습니다</h1>
+            ) : (
+                <>
+                    <Slider
+                        {...settings}
+                        ref={sliderRef}
+                        beforeChange={handleBeforeChange}
+                        afterChange={handleAfterChange}
+                    >
+                        {todayTickets?.map((ticket, idx) => (
+                            <TodayTicket key={idx} data-index={idx} ticket={ticket} />
+                        ))}
+                    </Slider>
+                    {todayTickets && todayTickets.length >= 3 && (
+                        <>
+                            <HandleButton left="0px" onClick={handlePrevCarousel}>
+                                <PrevBtnIcon stroke="#9E57FF" />
+                            </HandleButton>
+                            <HandleButton right="10px" onClick={handleNextCarousel}>
+                                <NextBtnIcon stroke="#9E57FF" />
+                            </HandleButton>
+                        </>
+                    )}
+                </>
+            )}
         </TodayTicketsWrapper>
     );
 };

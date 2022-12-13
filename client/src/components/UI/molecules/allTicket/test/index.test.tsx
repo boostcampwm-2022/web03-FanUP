@@ -1,4 +1,4 @@
-import { dateForm } from '@utils/dateForm';
+import * as React from 'react';
 import { renderWithContext } from '@utils/test/renderWithContext';
 import AllTicket from '@molecules/allTicket';
 import { screen } from '@testing-library/react';
@@ -14,16 +14,19 @@ describe('<AllTicket />', () => {
         startTime: new Date(),
         description: 'testDescription',
         title: 'testTitle',
-        name: 'testArtist',
         price: 1,
         id: 1,
         userCount: 5,
         salesTime: new Date(),
-        profileUrl: '',
+        artist: {
+            id: 1,
+            name: 'testArtist',
+            profileUrl: '',
+        },
     };
     it('rendering test', () => {
         renderWithContext(<AllTicket ticket={ticket} />);
-        expect(screen.getByText(ticket.name)).toBeInTheDocument();
+        expect(screen.getByText(ticket.artist?.name)).toBeInTheDocument();
         expect(screen.getByText(ticket.title)).toBeInTheDocument();
     });
     it('interaction test', () => {

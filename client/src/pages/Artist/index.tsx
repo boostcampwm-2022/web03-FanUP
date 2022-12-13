@@ -6,6 +6,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useGetUserQuery } from '@/services/user.service';
 import SubScribedUsers from '@/components/UI/organisms/SubscribedUsers';
+import withLoginValidation from '@/components/hoc/withLoginValidation';
 
 const ArtistWrapper = styled.div`
     background: ${({ theme }) => theme.LIGHT_GRAY};
@@ -18,9 +19,8 @@ const ArtistWrapper = styled.div`
 `;
 
 const Artist = () => {
-    const isLoading = useCheckLogin();
-    const { data: userData, isLoading: userDataLoading } = useGetUserQuery();
-    if (isLoading || userDataLoading) return <Loading />;
+    const { data: userData } = useGetUserQuery();
+
     return (
         <>
             <Header />
@@ -32,4 +32,4 @@ const Artist = () => {
     );
 };
 
-export default Artist;
+export default withLoginValidation(Artist);

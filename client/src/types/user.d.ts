@@ -8,6 +8,7 @@ export interface UserStore {
     artistListViewMode: number;
     userDropDown: boolean;
     openNotificationModal: boolean;
+    isUserHandleSubscribed: boolean;
 }
 
 export interface IUser {

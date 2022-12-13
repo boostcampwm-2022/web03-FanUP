@@ -2,7 +2,7 @@ import { useGetAllArtistsQuery } from '@/services/artist.service';
 import { useSubmitAccessTokenMutation } from '@/services/user.service';
 import { setToken } from '@/store/user';
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@/store';
 import { useNavigate } from 'react-router-dom';
 
 interface ITokenData {
@@ -13,7 +13,7 @@ interface ITokenData {
 export const useLogin = () => {
     const [mutate] = useSubmitAccessTokenMutation();
     const { refetch } = useGetAllArtistsQuery();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const login = useCallback(async ({ accessToken, provider }: ITokenData) => {

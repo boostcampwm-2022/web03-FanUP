@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { closeScheduleModal, initializeSelectedDay } from '@/store/artist';
 import Modal from '@/components/hoc/modal';
@@ -11,6 +11,7 @@ import Fish from '@icons/Fish';
 import { useSubmitTicketMutation } from '@/services/ticket.service';
 import { addZero } from '@utils/addZero';
 import { IsPast } from '@/utils/isPast';
+import { useAppDispatch } from '@/store';
 
 const ModalHeader = styled.div`
     display: flex;
@@ -126,11 +127,11 @@ const ContentFourth = styled.div`
 `;
 
 const ScheduleFanUpModal = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const [submitMutation, { isError }] = useSubmitTicketMutation();
     const selectedDay = useSelector<
         ReducerType,
-        null | { year: number; month: number; day: number }
+        null | { calendarYear: number; calendarMonth: number; day: number }
     >(({ artistSlice }) => artistSlice.selectedDay);
 
     const openScheduleModal = useSelector<ReducerType, boolean>(
@@ -247,7 +248,7 @@ const ScheduleFanUpModal = () => {
         else {
             if (selectedDay)
                 setStartTime(
-                    `${selectedDay.year}-${addZero(selectedDay.month)}-${addZero(
+                    `${selectedDay.calendarYear}-${addZero(selectedDay.calendarMonth)}-${addZero(
                         selectedDay.day
                     )}T14:00`
                 );

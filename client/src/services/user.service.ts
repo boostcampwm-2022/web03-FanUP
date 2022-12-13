@@ -5,6 +5,8 @@ import { IAritst } from '@/types/artist';
 import { MyTicket } from '@/types/ticket';
 import { customFetchBaseQuery } from './_baseQuery';
 import { InitializeLocalStorage } from '@/utils/initializeLocalStorage';
+import { useAppDispatch } from '@/store';
+import { artistApi } from './artist.service';
 
 interface ILoginReqData {
     provider: string;
@@ -45,35 +47,12 @@ export const userApi = createApi({
                 url: `/auth/artist/${artistId}/favorite`,
                 method: 'POST',
             }),
-            invalidatesTags: ['SubScribedArtist'],
-            async onQueryStarted(artistId, { dispatch, queryFulfilled }) {
-                console.log('subscribed !!!!!!: ', artistId);
-                dispatch(
-                    updateQueryData('getSubScribedArtist', undefined, (draft) => {
-                        draft = draft.filter((v) => v.id !== artistId);
-                        console.log('updateQueryData');
-                        console.log('artistId : ', artistId);
-                        console.log('draft : ', JSON.stringify(draft));
-                    })
-                );
-            },
         }),
         unSubscribeArtist: build.mutation({
             query: (artistId: number) => ({
                 url: `/auth/artist/${artistId}/favorite`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['SubScribedArtist'],
-            async onQueryStarted(artistId, { dispatch, queryFulfilled }) {
-                console.log('unSubscribed !!!!!!:: ', artistId);
-                dispatch(
-                    updateQueryData('getSubScribedArtist', undefined, (draft) => {
-                        console.log('updateQueryData');
-                        console.log('artistId : ', artistId);
-                        console.log('draft : ', JSON.stringify(draft));
-                    })
-                );
-            },
         }),
     }),
 });
@@ -83,17 +62,15 @@ export const useGetUserQuery = () => {
         skip: localStorage.getItem('token') ? false : true,
     });
     const { isLoading, isError } = queryResult;
-    if (!isLoading && isError) {
-        console.log('!isLoading && isError');
-        InitializeLocalStorage();
-    }
+    if (!isLoading && isError) InitializeLocalStorage();
+
     return queryResult;
 };
 
 export const {
     useGetSubScribedArtistQuery,
-    useSubscribeArtistMutation,
     useUnSubscribeArtistMutation,
+    useSubscribeArtistMutation,
     useSubmitAccessTokenMutation,
     useEditNicknameMutation,
 } = userApi;

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useSubmitProfileImageMutation } from '@/services/file.service';
 import { useGetUserQuery } from '@/services/user.service';
 import Loading from '@atoms/Loading';
-import { useSubmitArtistInfoMutation } from '@/services/artist.service';
+import { useEditArtistInfoMutation, useSubmitArtistInfoMutation } from '@/services/artist.service';
 
 const ArtistInfoFormWrapper = styled.div`
     /* width: 60vw;
@@ -110,13 +110,16 @@ export const SubmitButton = styled.button`
 `;
 
 const ArtistInfoForm = () => {
-    const { data: userData, isLoading, refetch: refetchUserData } = useGetUserQuery();
-    const [activityName, _, onChangeActivityName] = useInput();
+    const { data: userData, refetch: refetchUserData } = useGetUserQuery();
+    const [activityName, _, onChangeActivityName] = useInput(
+        userData?.artist?.name ? userData?.artist?.name : ''
+    );
     const [profileUrl, setProfileUrl] = useState(
         userData?.artist?.profileUrl ? userData?.artist?.profileUrl : ''
     );
-    const [submitAristInfo] = useSubmitArtistInfoMutation();
     const [submitProfileImageMutate] = useSubmitProfileImageMutation();
+    const [submitAristInfo] = useSubmitArtistInfoMutation();
+    const [editArtistInfo] = useEditArtistInfoMutation();
 
     const AddProfileImage = useCallback(
         async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -137,12 +140,23 @@ const ArtistInfoForm = () => {
         [userData]
     );
 
-    const submit = useCallback(async () => {
-        await submitAristInfo({ name: activityName, profileUrl });
+    const submit = async () => {
+        if (!userData?.artistId) {
+            await submitAristInfo({ name: activityName, profileUrl });
+            alert('정보가 등록되었어요');
+        } else {
+            if (
+                profileUrl === userData?.artist?.profileUrl &&
+                activityName === userData?.artist?.name
+            )
+                return alert('수정사항이 없습니다');
+            const { error } = (await editArtistInfo({ name: activityName, profileUrl })) as any;
+            if (error) return alert('에러가 발생했어요 :(');
+            alert('정보가 수정되었어요');
+        }
         refetchUserData();
-    }, [profileUrl, activityName]);
+    };
 
-    if (isLoading) return <Loading />;
     return (
         <ArtistInfoFormWrapper>
             <div>
