@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { Dispatch, FC, SetStateAction, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -21,6 +21,11 @@ const StyledNotificationItem = styled.li`
 
     &.new {
         /* background: #f3f9fd; */
+    }
+
+    &:hover {
+        background-color: #f3f9fd;
+        cursor: pointer;
     }
 
     em {
@@ -48,21 +53,22 @@ const NotificationItem: FC<Props> = ({ notification, setNofitifcations }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // TODO : Link 태그?, useCallback
-    const navigateByType = (e: any, type: string, id: string) => {
-        if (!e.currentTarget.classList.contains('notification')) return;
+    const navigateByType = useCallback((e: any, type: string, id: string) => {
         dispatch(toggleNotificationModal());
         navigate(`/${type}/${id}`);
-    };
+    }, []);
 
-    // TODO : useCallback
-    const deleteNotification = (id: number) => {
-        if (!socket || !userData?.id) return;
-        socket.emit(SOCKET_EVENTS.updateNotification, { id: id, userId: userData?.id });
-        setNofitifcations((curr: Notification[]) =>
-            curr.filter((notification) => notification.id !== id)
-        );
-    };
+    const deleteNotification = useCallback(
+        (e: any, id: number) => {
+            if (!e.target.classList.contains('notification')) e.stopPropagation();
+            if (!socket || !userData?.id) return;
+            socket.emit(SOCKET_EVENTS.updateNotification, { id: id, userId: userData?.id });
+            setNofitifcations((curr: Notification[]) =>
+                curr.filter((notification) => notification.id !== id)
+            );
+        },
+        [notification, userData?.id]
+    );
 
     return (
         <StyledNotificationItem
@@ -73,7 +79,7 @@ const NotificationItem: FC<Props> = ({ notification, setNofitifcations }) => {
             <span>{notification.message}</span>
             <Button
                 content={<CloseIcon />}
-                onClick={() => deleteNotification(notification.id)}
+                onClick={(e) => deleteNotification(e, notification.id)}
                 width={'30px'}
                 height={'15px'}
             ></Button>

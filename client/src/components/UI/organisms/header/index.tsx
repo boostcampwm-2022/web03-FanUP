@@ -115,7 +115,7 @@ const Header = () => {
             socket?.off(SOCKET_EVENTS.setNotification);
             socket?.off(SOCKET_EVENTS.receiveNotification);
         };
-    }, []);
+    }, [userData?.id]);
 
     // TODO : 모달 열려 있을 때도 빨간 불 들어옴.
     const receiveNewNotification = useCallback(
