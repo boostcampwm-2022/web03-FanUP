@@ -105,4 +105,25 @@ export class ArtistService {
       where: { id },
     });
   }
+
+  async getAllSubscriber(artistId: number): Promise<any> {
+    const subscribers = await this.prisma.artist.findUnique({
+      where: { id: artistId },
+      select: {
+        favorites: {
+          select: {
+            user: {
+              select: {
+                id: true,
+                nickname: true,
+                profileUrl: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return subscribers.favorites.map((favorite) => favorite.user);
+  }
 }

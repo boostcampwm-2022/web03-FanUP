@@ -35,4 +35,9 @@ export class ArtistController {
     console.log(requestUpdateArtistDto);
     return this.artistService.update(requestUpdateArtistDto);
   }
+
+  @MessagePattern({ cmd: 'getAllSubscriber' })
+  async getAllSubscribers(@Payload() artistId: number) {
+    return this.artistService.getAllSubscriber(artistId);
+  }
 }
