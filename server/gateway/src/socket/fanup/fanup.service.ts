@@ -283,7 +283,7 @@ export class FanUPService {
       if (checkRoom.validate) {
         socket.join(room);
         if (this.socketRoom[room]) {
-          server.to(room).emit('response-chat', {
+          server.to(socket.id).emit('response-chat', {
             result: this.socketRoom[room].chat,
           });
         }

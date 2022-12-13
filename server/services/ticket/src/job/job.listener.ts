@@ -5,8 +5,8 @@ import { Ticket, UserTicket } from '@prisma/client';
 import { catchError, lastValueFrom, of } from 'rxjs';
 import { io } from 'socket.io-client';
 import { MICRO_SERVICES } from 'src/common/constants/microservices';
+import { FanUP } from 'src/common/type/fanup';
 import { UserTicketService } from 'src/domain/user-ticket/user-ticket.service';
-import { Uuid } from 'uuid-tool';
 
 export class JobListener {
   private logger: Logger = new Logger(JobListener.name);
@@ -27,7 +27,7 @@ export class JobListener {
     const gateway = env ? 'fanup-gateway' : 'localhost';
 
     const socket = io(`http://${gateway}:3000/socket/notification`);
-    socket.emit('send-notification', { ...data, date: new Date() });
+    socket.emit('send-notification', { ...data });
   }
 
   async findUserIdByArtistId(artistId: number): Promise<any[]> {
@@ -125,34 +125,32 @@ export class JobListener {
       const room: object = this.getUserTicketByTicketId(ticketId);
 
       // core에서 해당 ticket의 FanUP 방을 가져옴
-      const { status, data, message } = await lastValueFrom(
-        this.coreClient.send('findAllByTicketId', { ticket_id: ticketId }),
-      );
+      const {
+        status,
+        data,
+        message,
+      }: { status: string; data: FanUP[]; message: string } =
+        await lastValueFrom(
+          this.coreClient.send('findAllByTicketId', { ticket_id: ticketId }),
+        );
       this.logger.log('core에서 해당 ticket의 FanUP 방을 가져옴', data);
 
       const limitNumber = data[0].number_team;
 
       // 할당 가능한 방을 찾고 티켓 사용자의 FanUPId를 업데이트
       let assignRoom = this.findAssignRoom(room, limitNumber);
-      if (!assignRoom) {
-        assignRoom = data
-          .filter((fanUp) => fanUp.fanUP_type !== 'ARTIST')
+      if (assignRoom) {
+        this.logger.log('not null', assignRoom);
+      } else {
+        const anotherRoom = data
+          .filter((fanUp) => fanUp.fanUP_type === 'FAN')
           .filter((fanUp) => {
-            const isExist = Object.keys(room)
-              .map((key) => {
-                const one = new Uuid(key);
-                const two = new Uuid(fanUp.room_id);
-                return one.equals(two);
-              })
-              .includes(true);
-            if (isExist) {
-              return false;
-            }
-            return true;
+            const keys = Object.keys(room);
+            console.log(keys, keys.includes(fanUp.room_id), fanUp.room_id);
+            return !keys.includes(fanUp.room_id);
           })[0].room_id;
+        await this.userTicketService.updateFanUPIdById(id, anotherRoom);
       }
-      this.logger.log(assignRoom);
-      await this.userTicketService.updateFanUPIdById(id, assignRoom);
 
       // 알림을 보냄
       const notificationMessage =
@@ -164,8 +162,8 @@ export class JobListener {
         info: assignRoom,
         type: 'fanup',
       };
-      await this.sendNotification(value);
-      await this.createNotification(value);
+      const notification = await this.createNotification(value);
+      await this.sendNotification(notification);
     } catch (err) {
       console.log(err);
     }
