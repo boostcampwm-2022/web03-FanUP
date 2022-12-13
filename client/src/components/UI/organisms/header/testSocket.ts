@@ -23,10 +23,11 @@ enum SOCKET_EVENTS {
     joinNotification = 'join-notification',
     joinSuccess = 'join-success',
     joinFail = 'join-fail',
-    sendRoomNotification = 'send-room-notification',
-    receiveRoomNotification = 'receive-room-notification',
+    sendNotification = 'send-notification',
+    receiveNotification = 'receive-notification',
     getNotification = 'get-notification',
     setNotification = 'set-notification',
+    updateNotification = 'update-notification',
 }
 
 enum SOCKET_FEATURE {
@@ -45,7 +46,7 @@ const connectSocket = (feature: string) => {
             },
         });
         socket.on('connect', () => {
-            console.log('socket connected : ', socket?.id);
+            console.log('notificaction socket connected : ', socket?.id);
         });
     }
 };

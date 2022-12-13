@@ -1,10 +1,12 @@
 import { Inject, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { ClientTCP } from '@nestjs/microservices';
+import { Cron } from '@nestjs/schedule';
 import { Ticket, UserTicket } from '@prisma/client';
 import { catchError, lastValueFrom, of } from 'rxjs';
 import { io } from 'socket.io-client';
 import { MICRO_SERVICES } from 'src/common/constants/microservices';
+import { FanUP } from 'src/common/type/fanup';
 import { UserTicketService } from 'src/domain/user-ticket/user-ticket.service';
 
 export class JobListener {
@@ -21,12 +23,15 @@ export class JobListener {
   // ================= common =================
 
   async sendNotification(data) {
-    this.logger.log('sendNotification');
+    this.logger.log('sendNotification', data);
     const env = process.env.NODE_ENV === 'production';
     const gateway = env ? 'fanup-gateway' : 'localhost';
 
     const socket = io(`http://${gateway}:3000/socket/notification`);
-    socket.emit('send-notification', { ...data, date: new Date() });
+    socket.on('connect', () => {
+      this.logger.log('connect for notification');
+      socket.emit('send-notification', { ...data });
+    });
   }
 
   async findUserIdByArtistId(artistId: number): Promise<any[]> {
@@ -77,7 +82,7 @@ export class JobListener {
 
   // ================= user-ticket.create =================
 
-  async getUserTicketByTicketId(ticketId: number) {
+  async getUserTicketByTicketId(ticketId: number): Promise<object> {
     const room = {};
     const history = await this.userTicketService.findManyByTicketId(ticketId);
     history.forEach((userTicket) => {
@@ -95,9 +100,16 @@ export class JobListener {
   }
 
   findAssignRoom(room: object, limitNumber: number) {
-    const candidates = Object.keys(room).filter(
-      (key) => room[key] < limitNumber,
-    );
+    const candidates = Object.keys(room).filter((key) => {
+      if (room[key]) {
+        if (room[key] < limitNumber) {
+          return true;
+        }
+        return false;
+      }
+      return false;
+    });
+
     if (candidates.length === 0) {
       this.logger.log('findAssignRoom null');
       return null;
@@ -107,33 +119,58 @@ export class JobListener {
     return candidates[0];
   }
 
-  @OnEvent('user-ticket.create')
+  @Cron('0/30 * * * * *', { name: 'assign-room' })
+  async assignRoomJob() {
+    try {
+      this.logger.log('assignRoomJob');
+      // user-ticket에서 fanupId가 null인 요소 찾기
+      const userTickets: UserTicket[] =
+        await this.userTicketService.findManyWhereFanupNull();
+      await Promise.all(
+        userTickets.map(async (userTicket) => {
+          await this.userTicketCreateEvent(userTicket);
+        }),
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async userTicketCreateEvent(userTicket: UserTicket) {
     try {
       this.logger.log('user-ticket.create', userTicket);
       const { id, ticketId, userId } = userTicket;
 
       // 해당 티켓에 할당된 티켓들을 가져옴 사용자가 구매한 티켓 내역을 가져옴
-      const room = this.getUserTicketByTicketId(ticketId);
+      const room: object = await this.getUserTicketByTicketId(ticketId);
 
       // core에서 해당 ticket의 FanUP 방을 가져옴
-      const { status, data, message } = await lastValueFrom(
-        this.coreClient.send('findAllByTicketId', { ticket_id: ticketId }),
-      );
-      this.logger.log('core에서 해당 ticket의 FanUP 방을 가져옴', data);
+      const {
+        status,
+        data,
+        message,
+      }: { status: string; data: FanUP[]; message: string } =
+        await lastValueFrom(
+          this.coreClient.send('findAllByTicketId', { ticket_id: ticketId }),
+        );
+      this.logger.log('core에서 해당 ticket의 FanUP 방을 가져옴', data[0]);
 
       const limitNumber = data[0].number_team;
 
       // 할당 가능한 방을 찾고 티켓 사용자의 FanUPId를 업데이트
       let assignRoom = this.findAssignRoom(room, limitNumber);
-      if (!assignRoom) {
+      if (assignRoom) {
+        this.logger.log('not null', assignRoom);
+      } else {
         assignRoom = data
-          .filter((fanUp) => fanUp.fanUP_type !== 'ARTIST')
-          .filter(
-            (fanUp) => !Object.values(room).includes(fanUp.room_id),
-          )[0].room_id;
+          .filter((fanUp) => fanUp.fanUP_type === 'FAN')
+          .filter((fanUp) => {
+            const keys = Object.keys(room);
+            console.log(keys, keys.includes(fanUp.room_id), fanUp.room_id);
+            return !keys.includes(fanUp.room_id);
+          })[0].room_id;
+        await this.userTicketService.updateFanUPIdById(id, assignRoom);
       }
-      await this.userTicketService.updateFanUPIdById(id, assignRoom);
 
       // 알림을 보냄
       const notificationMessage =
@@ -145,8 +182,8 @@ export class JobListener {
         info: assignRoom,
         type: 'fanup',
       };
-      await this.sendNotification(value);
-      await this.createNotification(value);
+      const notification = await this.createNotification(value);
+      await this.sendNotification(notification);
     } catch (err) {
       console.log(err);
     }

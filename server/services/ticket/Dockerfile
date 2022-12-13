@@ -1,8 +1,8 @@
-FROM node:18-alpine
+FROM node:16-bullseye-slim
 WORKDIR /usr/src/server/services/ticket
 COPY ./server/services/ticket .
+COPY ./server/services/ticket/prisma ./prisma/ 
 RUN npm install
 ENV NODE_ENV production
-RUN npm run build
-CMD ["node", "dist/main"]
+CMD ["npm", "run", "production"]
 EXPOSE 3003

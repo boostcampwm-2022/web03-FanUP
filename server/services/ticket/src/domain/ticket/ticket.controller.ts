@@ -1,7 +1,8 @@
-import { Controller, Get, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { Ticket } from '@prisma/client';
 import CreateTicketDto from './dto/create-ticket.dto';
+import RequestAllTicketByYearAndMonthDto from './dto/request-all-ticket-by-year-and-month.dto';
 import { TicketService } from './ticket.service';
 
 @Controller()
@@ -24,6 +25,16 @@ export class TicketController {
     @Payload('userId') userId: number,
   ): Promise<Ticket[]> {
     return this.ticketService.findAllByUserId(userId);
+  }
+
+  @MessagePattern({ cmd: 'getAllTicketByYearAndMonth' })
+  getAllTicketByYearAndMonth(
+    @Payload()
+    requestAllTicketByYearAndMonthDto: RequestAllTicketByYearAndMonthDto,
+  ) {
+    return this.ticketService.findAllTicketByDate(
+      requestAllTicketByYearAndMonthDto,
+    );
   }
 
   @MessagePattern({ cmd: 'getTicket' })
@@ -49,5 +60,10 @@ export class TicketController {
   @MessagePattern({ cmd: 'findTicketByToday' })
   async findTicketByToday() {
     return await this.ticketService.findTicketByToday();
+  }
+
+  @MessagePattern({ cmd: 'findTicketByTodayAndArtistId' })
+  async findTicketByTodayAndArtistId(@Payload() artistId: number) {
+    return await this.ticketService.findTicketByTodayAndArtistId(artistId);
   }
 }

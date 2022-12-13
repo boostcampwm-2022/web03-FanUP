@@ -30,6 +30,7 @@ const HeaderRoot = styled.header`
         cursor: pointer;
     }
 `;
+
 const HeaderLeft = styled.div`
     display: flex;
     gap: 10px;
@@ -55,14 +56,8 @@ const HeaderRight = styled.div`
     font-weight: 700;
     position: relative;
 
-    strong {
-        background: linear-gradient(to right, #9e57ff, #7ed0fa);
-        background-clip: text;
-        -webkit-background-clip: text;
-        color: transparent;
-        //color: ${({ theme }) => theme.LIGHT_SKY};
-        //color: white;
-        display: inline-block;
+    button {
+        position: relative;
     }
 `;
 
@@ -73,15 +68,25 @@ const StyledNewNotificationMark = styled.div`
     border-radius: 50%;
     position: absolute;
     top: 0px;
-    left: 90px;
+    right: 0px;
 `;
 
+// id: 알림 PK
+// message: 알림 내용
+// info: 티켓 or 팬업 값 ( 라우팅 파라미터 )
+// read: 읽음 여부
+// created_date: 알림 생성 시점
+// updated_date: 알림 수정 시점
+
 export interface Notification {
-    roomId: string;
-    startTime: string;
-    endTime: string;
-    userId: number;
+    id: number;
+    user_id: number;
     message: string;
+    info: string;
+    type: string;
+    read: boolean;
+    created_date: Date;
+    updated_date: Date;
 }
 
 const Header = () => {
@@ -96,15 +101,17 @@ const Header = () => {
 
     useEffect(() => {
         connectSocket(SOCKET_FEATURE.notification);
-        if (!socket) return;
-        socket.emit(SOCKET_EVENTS.getNotification, { userId: userData?.id });
+        if (!socket || !userData?.id) return;
         socket.emit(SOCKET_EVENTS.joinNotification, { userId: userData?.id });
-        socket.on(SOCKET_EVENTS.receiveRoomNotification, (data) => receiveNewNotification(data));
-        socket.on(SOCKET_EVENTS.setNotification, (data: any) => {
-            if (data?.result?.data)
-                setNofitifcations((curr: any) => [...curr, ...data.result.data]);
+        socket.emit(SOCKET_EVENTS.getNotification, { userId: userData?.id });
+        socket.on(SOCKET_EVENTS.setNotification, (data) => {
+            if (data.result.data)
+                setNofitifcations((curr: Notification[]) => [...curr, ...data.result.data]);
         });
-    }, []);
+        socket.on(SOCKET_EVENTS.receiveNotification, (data: Notification) =>
+            receiveNewNotification(data)
+        );
+    }, [userData?.id]);
 
     // TODO : 모달 열려 있을 때도 빨간 불 들어옴.
     const receiveNewNotification = useCallback(
@@ -170,7 +177,12 @@ const Header = () => {
                 <button data-testid="search" key="search" onClick={clickSearch}>
                     {<SearchIcon />}
                 </button>
-                {isOpenNotificationModal && <NotificationContainer notifications={notifications} />}
+                {isOpenNotificationModal && (
+                    <NotificationContainer
+                        notifications={notifications}
+                        setNofitifcations={setNofitifcations}
+                    />
+                )}
             </HeaderRight>
         </HeaderRoot>
     );

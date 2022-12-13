@@ -33,7 +33,9 @@ export class NotificationController {
 
   @SetResponse(ResMessage.FIND_NOTIFICATION_BY_USER_ID, ResStatusCode.CREATED)
   @MessagePattern('findNotificationByUserId')
-  async finByUserId(data: { userId: number }) {
-    return await this.notification.findByUserId(data.userId);
+  async finByUserId(data: { userId }) {
+    const { userId } = data;
+    let id = typeof userId === 'string' ? parseInt(userId) : userId;
+    return await this.notification.findByUserId(id);
   }
 }

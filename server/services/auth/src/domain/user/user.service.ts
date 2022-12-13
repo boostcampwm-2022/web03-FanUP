@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import ReqeustCreateUserDto from './dto/request-create-user.dto';
 import UpdateUserDto from './dto/request-update-user.dto';
@@ -10,7 +10,7 @@ export class UserService {
 
   create(requestCreateUserDto: ReqeustCreateUserDto): Promise<User> {
     return this.prisma.user.create({
-      data: requestCreateUserDto,
+      data: { ...requestCreateUserDto, role: Role.ARTIST },
     });
   }
 
