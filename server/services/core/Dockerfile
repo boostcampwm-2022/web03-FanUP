@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:16-bullseye-slim
 WORKDIR /usr/src/server/services/core
 COPY ./server/services/core .
 COPY ./server/services/core/prisma ./prisma/ 
