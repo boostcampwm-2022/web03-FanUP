@@ -8,6 +8,7 @@ import { CustomRpcException } from 'src/common/exception/custom-rpc-exception';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import requestCreateArtistDto from './dto/reqeust-create-artist.dto';
+import RequestUpdateArtistDto from './dto/request-update-artist.dto';
 
 @Injectable()
 export class ArtistService {
@@ -62,6 +63,15 @@ export class ArtistService {
     }
 
     return 'artist created';
+  }
+
+  async update(updateArtistDto: RequestUpdateArtistDto) {
+    const { artistId, name, profileUrl } = updateArtistDto;
+
+    return this.prisma.artist.update({
+      where: { id: artistId },
+      data: { name, profileUrl },
+    });
   }
 
   async findAll(userId: number | null) {
