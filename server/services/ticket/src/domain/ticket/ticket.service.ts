@@ -141,9 +141,18 @@ export class TicketService {
   }
 
   async findTicketByToday() {
-    const today = getToday();
-    const tomorrow = getTomorrow();
-    return await this.prisma
-      .$queryRaw`SELECT * FROM Ticket WHERE CAST(startTime as DATE) >= ${today} AND CAST(startTime as DATE) < ${tomorrow}`;
+    const current = new Date();
+
+    return this.prisma.ticket.findMany({
+      where: {
+        startTime: {
+          gte: current.toISOString(),
+          lt: new Date(current.setDate(current.getDate() + 1)).toISOString(),
+        },
+      },
+      include: {
+        artist: true,
+      },
+    });
   }
 }
