@@ -145,14 +145,14 @@ export class JobListener {
       if (assignRoom) {
         this.logger.log('not null', assignRoom);
       } else {
-        const anotherRoom = data
+        assignRoom = data
           .filter((fanUp) => fanUp.fanUP_type === 'FAN')
           .filter((fanUp) => {
             const keys = Object.keys(room);
             console.log(keys, keys.includes(fanUp.room_id), fanUp.room_id);
             return !keys.includes(fanUp.room_id);
           })[0].room_id;
-        await this.userTicketService.updateFanUPIdById(id, anotherRoom);
+        await this.userTicketService.updateFanUPIdById(id, assignRoom);
       }
 
       // 알림을 보냄
