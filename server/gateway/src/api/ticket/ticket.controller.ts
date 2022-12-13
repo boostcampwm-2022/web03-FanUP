@@ -2,10 +2,13 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   Inject,
   Param,
   ParseIntPipe,
   Post,
+  Query,
   Req,
   Res,
   UseFilters,
@@ -26,6 +29,21 @@ export class TicketController {
     private readonly ticketClient: ClientProxy,
   ) {}
 
+  @Get('/artist/calendar')
+  @UseGuards(JwtAuthGuard)
+  async getTicketCalendar(
+    @Req() { user },
+    @Query('year', new ParseIntPipe()) year: number,
+    @Query('month', new ParseIntPipe()) month: number,
+  ) {
+    if (!user.artistId)
+      throw new HttpException('Invalid Artist', HttpStatus.BAD_REQUEST);
+    return this.ticketClient.send(
+      { cmd: 'getAllTicketByYearAndMonth' },
+      { artistId: user.artistId, year, month },
+    );
+  }
+
   @Get('/user')
   @UseGuards(JwtAuthGuard)
   async getUserTicketHistory(@Req() { user }) {
@@ -44,6 +62,22 @@ export class TicketController {
     return this.ticketClient.send(
       { cmd: 'createUserTicket' },
       { ticketId, userId: user.id }, // todo: userId는 추후에 토큰에서 가져오도록 수정
+    );
+  }
+
+  @Get('/today')
+  async getTodayTicket() {
+    return this.ticketClient.send({ cmd: 'findTicketByToday' }, {});
+  }
+
+  @Get('/artist/today')
+  @UseGuards(JwtAuthGuard)
+  async getTodayArtistTicket(@Req() { user }) {
+    if (!user.artistId)
+      throw new HttpException('Invalid Artist', HttpStatus.BAD_REQUEST);
+    return this.ticketClient.send(
+      { cmd: 'findTicketByTodayAndArtistId' },
+      user.artistId,
     );
   }
 

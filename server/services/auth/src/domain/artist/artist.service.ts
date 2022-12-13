@@ -55,7 +55,6 @@ export class ArtistService {
         this.ticketClient.send({ cmd: 'createArtist' }, artist),
       );
     } catch (e) {
-      console.log('asdfasfsafasdfasdfasdf!!!!!!!!!!!!!!!!!!', e);
       throw new CustomRpcException(
         'Cannot create artist',
         HttpStatus.BAD_REQUEST,
