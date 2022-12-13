@@ -7,6 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
+    "production": "npx prisma generate && TZ=Asia/Seoul nest start",
     "build": "TZ=Asia/Seoul nest build",
     "coveralls": "nyc --reporter=text-lcov npm run test:cov",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

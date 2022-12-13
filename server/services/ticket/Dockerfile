@@ -4,5 +4,5 @@ COPY ./server/services/ticket .
 COPY ./server/services/ticket/prisma ./prisma/ 
 RUN npm install
 ENV NODE_ENV production
-CMD ["npx prisma generate && npm start"]
+CMD ["npm", "run", "production"]
 EXPOSE 3003
