@@ -44,6 +44,10 @@ export class AuthService {
     return this.authClient.send({ cmd: 'getAllArtist' }, userId);
   }
 
+  public getAllSubscriber(artistId: number) {
+    return this.authClient.send({ cmd: 'getAllSubscriber' }, artistId);
+  }
+
   public getFavoriteArtist(userId: number) {
     return this.authClient.send({ cmd: 'getFavoriteArtist' }, userId);
   }

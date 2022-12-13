@@ -74,6 +74,12 @@ export class AuthController {
     return this.authService.getAllArtist(userId);
   }
 
+  @Get('/artist/subscriber')
+  @UseGuards(JwtAuthGuard)
+  async getAllSubscriber(@Req() { user }) {
+    return this.authService.getAllSubscriber(user.artistId);
+  }
+
   @Get('/artist/favorite')
   @UseGuards(JwtAuthGuard)
   async getFavoriteArtist(@Req() { user }) {
