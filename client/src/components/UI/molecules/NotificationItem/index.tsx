@@ -50,7 +50,6 @@ interface Props {
 }
 
 const NotificationItem: FC<Props> = ({ notification }) => {
-    console.log(notification);
     const { data: userData } = useGetUserQuery();
     const navigate = useNavigate();
 
@@ -61,7 +60,7 @@ const NotificationItem: FC<Props> = ({ notification }) => {
     };
 
     const deleteNotification = (id: string) => {
-        if (!socket) return;
+        if (!socket || userData?.id) return;
         socket.emit(SOCKET_EVENTS.updateNotification, { id: id, userId: userData?.id });
     };
 

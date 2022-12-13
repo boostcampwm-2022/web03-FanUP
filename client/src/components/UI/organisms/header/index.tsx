@@ -26,6 +26,7 @@ const HeaderRoot = styled.header`
         cursor: pointer;
     }
 `;
+
 const HeaderLeft = styled.div`
     display: flex;
     gap: 10px;
@@ -72,20 +73,11 @@ const StyledNewNotificationMark = styled.div`
     left: 90px;
 `;
 
+// TODO : 수정 필요
 export interface Notification {
     type: string;
     id: string;
     message: string;
-}
-
-export interface CreatedRoomNotification {
-    type: string;
-    roomId: string;
-}
-
-export interface OpenedTicketNotification {
-    type: string;
-    ticketId: string;
 }
 
 const testNotification: Notification[] = [

@@ -44,7 +44,6 @@ interface Props {
 }
 
 const NotificationContainer: FC<Props> = ({ notifications }) => {
-    console.log(notifications);
     return (
         <StyledNotificationContainer>
             <StyledHeader>Notifications</StyledHeader>
