@@ -5,7 +5,6 @@ import { Ticket } from '@prisma/client';
 import { firstValueFrom } from 'rxjs';
 import { MICRO_SERVICES } from 'src/common/constants/microservices';
 import { CustomRpcException } from 'src/common/exception/custom-rpc-exception';
-import { getToday, getTomorrow } from 'src/common/util/date';
 
 import { PrismaService } from 'src/provider/prisma/prisma.service';
 import CreateTicketDto from './dto/create-ticket.dto';
