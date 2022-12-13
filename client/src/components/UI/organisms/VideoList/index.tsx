@@ -3,6 +3,7 @@ import Video from '@atoms/Video';
 import { ReducerType } from '@store/rootReducer';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useGetUserQuery } from '@/services/user.service';
 
 const VideoListWrapper = styled.div`
     height: 100%;
@@ -26,16 +27,17 @@ interface Props {
 }
 
 const VideoList = ({ userStream }: Props) => {
+    const { data: userData } = useGetUserQuery();
     const myStream = useSelector<ReducerType, MediaStream | null>(
         ({ userSlice }) => userSlice.myStream
     );
-
+    console.log(userStream);
     return (
         <VideoListWrapper style={gridTemplate[String(userStream.length)]}>
             {userStream.map((data, idx) => (
-                <Video stream={data.stream} key={idx} isMyVideo={false} />
+                <Video stream={data.stream} key={idx} isMyVideo={false} nickname={data.nickname} />
             ))}
-            <Video stream={myStream} isMyVideo={true} />
+            <Video stream={myStream} isMyVideo={true} nickname={userData?.nickname as string} />
         </VideoListWrapper>
     );
 };

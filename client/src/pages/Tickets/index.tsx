@@ -7,13 +7,19 @@ import AllTickets from '@/components/UI/organisms/allTickets';
 import withGetUser from '@/components/hoc/withGetUser';
 const ContentsWrapper = styled.div`
     display: flex;
-    gap: 40px;
+    justify-content: center;
+    gap: 20px;
     padding: 80px 30px;
+    min-height: calc(100vh - 75px);
+    padding: 40px;
+    background: ${({ theme }) => theme.LIGHT_GRAY};
 `;
 
 const TicketsWrapper = styled.div`
-    padding-top: 20px;
+    padding: 40px;
     overflow: hidden;
+    background: white;
+    border-radius: 8px;
     h1 {
         font-weight: 700;
         font-size: 25px;

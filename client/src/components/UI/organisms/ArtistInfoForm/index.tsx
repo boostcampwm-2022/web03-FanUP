@@ -120,6 +120,7 @@ const ArtistInfoForm = () => {
     const [submitProfileImageMutate] = useSubmitProfileImageMutation();
     const [submitAristInfo] = useSubmitArtistInfoMutation();
     const [editArtistInfo] = useEditArtistInfoMutation();
+    const { refetch: refetchUserInfo } = useGetUserQuery();
 
     const AddProfileImage = useCallback(
         async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,7 +135,7 @@ const ArtistInfoForm = () => {
                 };
                 setProfileUrl(data.link);
             } catch (err) {
-                alert('에러가 발생했어요 ㅠㅠ');
+                alert('에러가 발생했어요 :(');
             }
         },
         [userData]
@@ -150,9 +151,13 @@ const ArtistInfoForm = () => {
                 activityName === userData?.artist?.name
             )
                 return alert('수정사항이 없습니다');
-            const { error } = (await editArtistInfo({ name: activityName, profileUrl })) as any;
-            if (error) return alert('에러가 발생했어요 :(');
-            alert('정보가 수정되었어요');
+            try {
+                await editArtistInfo({ name: activityName, profileUrl });
+                refetchUserInfo();
+                alert('정보가 수정되었어요 :)');
+            } catch (err) {
+                alert('에러가 발생했어요 :(');
+            }
         }
         refetchUserData();
     };
