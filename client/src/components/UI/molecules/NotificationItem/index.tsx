@@ -1,7 +1,9 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
+import { toggleNotificationModal } from '@store/user';
 import { useGetUserQuery } from '@services/user.service';
 import { socket, SOCKET_EVENTS } from '@organisms/header/testSocket';
 import { Notification } from '@organisms/header';
@@ -38,22 +40,18 @@ const StyledNotificationItem = styled.li`
 
 interface Props {
     notification: Notification;
-    setIsOpenNotificationModal: Dispatch<SetStateAction<boolean>>;
     setNofitifcations: Dispatch<SetStateAction<Notification[]>>;
 }
 
-const NotificationItem: FC<Props> = ({
-    notification,
-    setIsOpenNotificationModal,
-    setNofitifcations,
-}) => {
+const NotificationItem: FC<Props> = ({ notification, setNofitifcations }) => {
     const { data: userData } = useGetUserQuery();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // TODO : Link 태그?, useCallback
     const navigateByType = (e: any, type: string, id: string) => {
         if (!e.currentTarget.classList.contains('notification')) return;
-        setIsOpenNotificationModal(false);
+        dispatch(toggleNotificationModal());
         navigate(`/${type}/${id}`);
     };
 
