@@ -10,7 +10,7 @@ import NoItems from '@atoms/NoItems';
 const SchedulesWrapper = styled.div`
     background: white;
     border-radius: 20px;
-    padding: 40px;
+    padding: 20px;
     height: fit-content;
 `;
 
@@ -19,6 +19,9 @@ const ModeSelector = styled.div`
     align-items: center;
     padding: 10px 0;
     border-bottom: 0.5px solid ${({ theme }) => theme.MEDIUM_GRAY};
+    h3 {
+        font-size: 1rem;
+    }
 `;
 
 const ModeBtn = styled.button<{ isSelected: boolean }>`

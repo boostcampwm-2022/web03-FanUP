@@ -79,9 +79,9 @@ const TodayTickets = () => {
             {!todayTickets || todayTickets?.length === 0 ? (
                 <NoItems
                     title="오늘 마감 예정인 티켓이 없습니다 :("
-                    width="50px"
-                    height="50px"
-                    fontSize="25px"
+                    width="25px"
+                    height="25px"
+                    fontSize="13px"
                 />
             ) : todayTickets.length < 3 ? (
                 <TodayTicketsList>

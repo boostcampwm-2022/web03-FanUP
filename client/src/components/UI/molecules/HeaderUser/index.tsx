@@ -18,6 +18,15 @@ const User = styled.div`
         font-size: 15px;
         font-weight: 700;
     }
+    strong {
+        background: linear-gradient(to right, #9e57ff, #7ed0fa);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        //color: ${({ theme }) => theme.LIGHT_SKY};
+        //color: white;
+        display: inline-block;
+    }
     img {
         background: none;
         border: none;

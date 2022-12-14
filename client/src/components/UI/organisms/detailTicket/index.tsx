@@ -77,9 +77,9 @@ const TicketingBtn = styled.div`
     display: flex;
     justify-content: flex-end;
     &:hover {
-        button {
+        /* button {
             background: ${({ theme }) => theme.PRIMARY_DARK};
-        }
+        } */
     }
 `;
 

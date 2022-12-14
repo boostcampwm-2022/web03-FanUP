@@ -11,10 +11,10 @@ type StyleProps = {
     fontSize?: string;
     hoverBackgroundColor?: string;
     hoverColor?: string;
+    disabled?: boolean;
 };
 
 interface Props extends StyleProps {
-    disabled?: boolean;
     content: string | JSX.Element;
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -34,7 +34,8 @@ const StyledButton = styled('button')<StyleProps>`
     font-weight: bold;
     font-size: ${({ fontSize }) => fontSize ?? '20px'};
     &:hover {
-        background-color: ${({ hoverBackgroundColor }) => hoverBackgroundColor || ''};
+        background-color: ${({ hoverBackgroundColor, disabled }) =>
+            !disabled ? hoverBackgroundColor || '' : ''};
         color: ${({ hoverColor }) => hoverColor || ''};
     }
 `;

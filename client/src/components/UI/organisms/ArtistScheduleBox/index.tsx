@@ -8,7 +8,7 @@ import NoItems from '@atoms/NoItems';
 const SchedulesWrapper = styled.div`
     background: white;
     border-radius: 8px;
-    padding: 40px;
+    padding: 20px;
     height: fit-content;
 `;
 

@@ -14,7 +14,7 @@ const ArtistCardWrapper = styled.div`
     position: relative;
     text-align: center;
     padding-bottom: 20px;
-    width: 208px;
+    width: 225px;
     span {
         font-size: 20px;
         font-weight: 700;

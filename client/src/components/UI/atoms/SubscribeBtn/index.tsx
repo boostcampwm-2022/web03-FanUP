@@ -21,9 +21,9 @@ const SubscribeBtnWrapper = styled.div<{ isSubscribe: boolean }>`
     background: white;
     border-radius: 100%;
     margin: 5px;
-    left: 50%;
-    bottom: 1.25rem;
-    transform: translate(-50%, -50%);
+    left: 92px;
+    top: 195px;
+    //transform: translate(-50%, -50%);
     button {
         cursor: pointer;
         border: 2px solid

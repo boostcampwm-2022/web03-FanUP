@@ -50,7 +50,7 @@ const FanUpJoinBtn = ({ date, fanupId, ticketId }: Props) => {
 
     return (
         <FanUpJoinBtnWrapper isDDay={isDDay(date)}>
-            <button onClick={gotoFanUP}>FanUP입장</button>
+            <button onClick={gotoFanUP}>입장</button>
         </FanUpJoinBtnWrapper>
     );
 };

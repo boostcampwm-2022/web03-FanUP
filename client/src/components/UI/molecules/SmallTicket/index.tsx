@@ -7,7 +7,7 @@ import TicketBarCode from '@atoms/TicketBarCode';
 import { MyTicket } from '@/types/ticket';
 
 const ScheduleTicketWrapper = styled.div`
-    width: 325px;
+    min-width: 200px;
     overflow: hidden;
     border-radius: 10px;
     height: 65px;
@@ -42,7 +42,7 @@ const ScheduleInfo = styled.div`
     flex-direction: column;
     justify-content: space-evenly;
     height: 100%;
-    width: 125px;
+    width: 75px;
 
     h3 {
         font-size: 15px;
