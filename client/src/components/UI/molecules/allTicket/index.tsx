@@ -34,20 +34,22 @@ const TicketLeft = styled.div`
     display: flex;
     align-items: center;
     gap: 15px;
-    width: 80%;
+    width: 75%;
     img {
         border-radius: 8px;
+        width: 150px;
+        height: 100px;
     }
     h3 {
         padding: 5px 20px 5px 0;
-        font-size: 20px;
+        font-size: 1rem;
         font-weight: 700;
         white-space: nowrap;
         border-right: 1px solid ${({ theme }) => theme.DARK_GRAY};
     }
     span {
         color: ${({ theme }) => theme.DARK_GRAY};
-        font-size: 15px;
+        font-size: 0.7rem;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -55,20 +57,23 @@ const TicketLeft = styled.div`
 `;
 const TicketRight = styled.div`
     display: flex;
-    width: 20%;
+    width: 25%;
     align-items: center;
     justify-content: flex-end;
     gap: 20px;
 `;
 
-const Price = styled.div`
-    padding: 5px 20px 5px 0;
+const Price = styled.section`
+    //padding: 5px 20px 5px 0;
     display: flex;
     align-items: center;
-    font-size: 15px;
+    font-size: 0.8rem;
     gap: 5px;
-    border-right: 1px solid ${({ theme }) => theme.DARK_GRAY};
-
+    //border-right: 1px solid ${({ theme }) => theme.DARK_GRAY};
+    svg {
+        width: 20px;
+        height: 20ppx;
+    }
     strong {
         font-weight: 700;
     }
@@ -78,6 +83,8 @@ const Time = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
+    white-space: nowrap;
+    font-size: 0.8rem;
     div {
         display: flex;
         flex-direction: column;
@@ -106,24 +113,24 @@ const AllTicket = ({ ticket }: Props) => {
         <AllTicketWrapper data-testid="allTicket" onClick={gotoTicket}>
             <TicketLeft>
                 {ticket?.artist?.profileUrl ? (
-                    <LazyImg
-                        src={ticket?.artist?.profileUrl}
-                        alt="thumbnail"
-                        width="150px"
-                        height="100px"
-                    />
+                    <img src={ticket?.artist?.profileUrl} alt="thumbnail" />
                 ) : (
+                    // <LazyImg
+
+                    //     width="150px"
+                    //     height="100px"
+                    // />
                     <DefaultImg width="150px" height="150px" borderRadius="8px" />
                 )}
                 <h3>{ticket?.artist?.name || 'testArtist'}</h3>
                 <span>{ticket.title}</span>
             </TicketLeft>
             <TicketRight>
-                <Price>
-                    <Fish /> <span>x </span>
-                    <strong>{ticket.price}</strong>
-                </Price>
                 <Time>
+                    <Price>
+                        <Fish /> <span>x </span>
+                        <strong>{ticket.price}</strong>
+                    </Price>
                     <div>
                         <section>
                             <strong>팬미팅 시간</strong>

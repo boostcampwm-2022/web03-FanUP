@@ -40,12 +40,12 @@ const LeftContent = styled.div`
     padding-right: 20px;
     border-right: 1px solid ${({ theme }) => theme.MEDIUM_GRAY};
     h2 {
-        font-size: 17px;
+        font-size: 1rem;
         margin-bottom: 10px;
         font-weight: 600;
     }
     span {
-        font-size: 15px;
+        font-size: 0.8rem;
         font-weight: 600;
     }
 `;
@@ -71,7 +71,7 @@ const Price = styled.div`
 `;
 
 const RightContent = styled.div`
-    width: 200px;
+    width: 180px;
     padding: 20px;
     padding-right: 0px;
     display: flex;
@@ -85,11 +85,13 @@ const RightContent = styled.div`
         height: 100px;
     }
     span {
+        font-size: 0.8rem;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
     strong {
+        font-size: 1rem;
         font-weight: 700;
     }
 `;

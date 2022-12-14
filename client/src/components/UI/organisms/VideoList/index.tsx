@@ -46,7 +46,7 @@ const VideoList = ({ userStream }: Props) => {
 
 const gridTemplate: { [key: string]: { gridTemplateColumns: string; gridTemplateRows: string } } = {
     '0': { gridTemplateColumns: 'repeat(1,1fr)', gridTemplateRows: 'repeat(1,100%)' },
-    '1': { gridTemplateColumns: 'repeat2,(1fr)', gridTemplateRows: 'repeat(1,100%)' },
+    '1': { gridTemplateColumns: 'repeat(2,1fr)', gridTemplateRows: 'repeat(1,100%)' },
     '2': { gridTemplateColumns: 'repeat(3,1fr)', gridTemplateRows: 'repeat(1,100%)' },
     '3': { gridTemplateColumns: 'repeat(2,1fr)', gridTemplateRows: 'repeat(2,50%)' },
     '4': { gridTemplateColumns: 'repeat(3,1fr)', gridTemplateRows: 'repeat(2,50%)' },

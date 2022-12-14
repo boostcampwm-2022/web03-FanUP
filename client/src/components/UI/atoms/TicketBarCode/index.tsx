@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const TicketBarCodeWrapper = styled.div<{ width: string; height: string }>`
     background: ${({ theme }) => theme.PRIMARY};
     border-radius: 6px 0px 0px 6px;
-    width: ${({ width }) => `${width} !important`};
+    min-width: ${({ width }) => `${width} !important`};
     height: ${({ height }) => `${height} !important`};
 
     //height: 100%;
