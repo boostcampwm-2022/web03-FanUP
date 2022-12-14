@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import TodayTicket from '@molecules/todayTicket';
 import 'slick-carousel/slick/slick.css';
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import PrevBtnIcon from '@/components/icons/PrevBtnIcon';
 import NextBtnIcon from '@/components/icons/NextBtnIcon';
 import { useGetTodayTicketsQuery } from '@/services/ticket.service';
-import UnHeartIcon from '@/components/icons/unheart';
+import NoItems from '@atoms/NoItems';
 
 const TodayTicketsWrapper = styled.div<{ innerWidth: number }>`
     position: relative;
@@ -18,6 +18,11 @@ const TodayTicketsWrapper = styled.div<{ innerWidth: number }>`
     .slick-slide {
         //width:  !important;
     }
+`;
+
+export const TodayTicketsList = styled.div`
+    display: flex;
+    gap: 20px;
 `;
 
 const HandleButton = styled.button<{ left?: string; right?: string }>`
@@ -34,22 +39,6 @@ const HandleButton = styled.button<{ left?: string; right?: string }>`
     svg {
         width: 7.5px;
         height: 15px;
-    }
-`;
-
-const NoTicket = styled.div`
-    padding: 40px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    svg {
-        width: 50px;
-        height: 50px;
-    }
-    h2 {
-        font-size: 25px;
-        font-weight: 700;
     }
 `;
 
@@ -88,16 +77,18 @@ const TodayTickets = () => {
     return (
         <TodayTicketsWrapper innerWidth={window.innerWidth}>
             {!todayTickets || todayTickets?.length === 0 ? (
-                <NoTicket>
-                    <UnHeartIcon />
-                    <h2>오늘 마감 예정인 티켓이 없습니다 :(</h2>
-                </NoTicket>
+                <NoItems
+                    title="오늘 마감 예정인 티켓이 없습니다 :("
+                    width="50px"
+                    height="50px"
+                    fontSize="25px"
+                />
             ) : todayTickets.length < 3 ? (
-                <>
+                <TodayTicketsList>
                     {todayTickets?.map((ticket, idx) => (
                         <TodayTicket key={idx} data-index={idx} ticket={ticket} />
                     ))}
-                </>
+                </TodayTicketsList>
             ) : (
                 <>
                     <Slider

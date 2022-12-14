@@ -31,6 +31,7 @@ const Contents = styled.div`
 `;
 
 const LeftContent = styled.div`
+    width: 95px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -70,14 +71,26 @@ const Price = styled.div`
 `;
 
 const RightContent = styled.div`
+    width: 200px;
     padding: 20px;
     padding-right: 0px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     img {
         width: 160px;
         height: 100px;
+    }
+    span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    strong {
+        font-weight: 700;
     }
 `;
 
@@ -128,7 +141,7 @@ const TodayTicket = ({ ticket }: Props) => {
                     <span>
                         <strong>{ticket.artist.name}</strong>
                     </span>
-                    <span>{ticket.content}</span>
+                    <span>{ticket.title}</span>
                 </RightContent>
             </Contents>
         </TodayTicketWrapper>

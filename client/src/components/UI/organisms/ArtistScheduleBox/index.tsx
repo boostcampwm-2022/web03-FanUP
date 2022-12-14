@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import SmallTicket from '@molecules/SmallTicket';
 import { useGetArtistTodayTicketQuery } from '@/services/ticket.service';
-import UnHeartIcon from '@/components/icons/unheart';
+import NoItems from '@atoms/NoItems';
 
 const SchedulesWrapper = styled.div`
     background: white;
@@ -41,22 +41,6 @@ const ScheduleContentsWrapper = styled.div`
     padding: 10px 0;
 `;
 
-const NoTickets = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-    gap: 5px;
-    svg {
-        width: 20px;
-        height: 20px;
-    }
-    span {
-        font-size: 12px;
-        font-weight: 700;
-    }
-`;
-
 const ArtistScheduleBox = () => {
     const { data: artistTicket, isLoading } = useGetArtistTodayTicketQuery();
     if (isLoading) return <></>;
@@ -71,10 +55,13 @@ const ArtistScheduleBox = () => {
             </ModeSelector>
             <ScheduleContentsWrapper>
                 {artistTicket && artistTicket?.length === 0 && (
-                    <NoTickets>
-                        <UnHeartIcon />
-                        <span>오늘 진행 예정인 FanUP이 없습니다 :(</span>
-                    </NoTickets>
+                    <NoItems
+                        title="오늘 진행 예정인 FanUP이 없습니다 :("
+                        width="20px"
+                        height="20px"
+                        fontSize="12px"
+                        padding="20px"
+                    />
                 )}
                 {artistTicket &&
                     artistTicket?.length !== 0 &&

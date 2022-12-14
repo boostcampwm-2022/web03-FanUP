@@ -44,7 +44,7 @@ const connectSocket = (feature: string) => {
             },
         });
         socket.on('connect', () => {
-            console.log('socket connected : ', socket?.id);
+            //console.log('socket connected : ', socket?.id);
         });
     }
 };

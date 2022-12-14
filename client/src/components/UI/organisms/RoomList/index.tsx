@@ -18,7 +18,7 @@ const RoomList = () => {
         skip: ticketId ? false : true,
     });
     if (isLoading) return <></>;
-    console.log(rooms);
+
     return (
         <RoomListWrapper data-testid="roomList">
             {rooms && (
