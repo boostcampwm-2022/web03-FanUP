@@ -127,7 +127,6 @@ const useFanUP = (): [
     };
 
     const handleAddStream = (data: any, socketID: string, nickname: string) => {
-        console.log('data : ', data);
         setUsers((prev) => [...prev, { stream: data.stream, socketID, nickname }]);
     };
 

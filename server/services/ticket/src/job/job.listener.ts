@@ -74,8 +74,10 @@ export class JobListener {
       const userIds = await this.findUserIdByArtistId(artistId);
       userIds.forEach(async (userId) => {
         const value = { ...userId, message, info: id, type: 'ticket' };
-        await this.sendNotification(value);
-        await this.createNotification(value);
+        const notification = await this.createNotification(value);
+        if (notification.data) {
+          await this.sendNotification(notification.data);
+        }
       });
     }
   }
@@ -188,7 +190,9 @@ export class JobListener {
         type: 'fanup',
       };
       const notification = await this.createNotification(value);
-      await this.sendNotification(notification);
+      if (notification.data) {
+        await this.sendNotification(notification.data);
+      }
     } catch (err) {
       console.log(err);
     }

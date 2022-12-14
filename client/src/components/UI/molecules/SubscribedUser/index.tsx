@@ -39,7 +39,6 @@ const SubscribedUserWrapper = styled.div`
 
 const SubscribedUser = ({ user }: IProps) => {
     const { nickname, profileUrl } = user;
-    console.log('user : ', user);
     const deleteSubscribedUser = useCallback(() => {
         if (!window.confirm(`${nickname}님을 구독자 목록에서 삭제하시겠어요?`)) return;
     }, []);

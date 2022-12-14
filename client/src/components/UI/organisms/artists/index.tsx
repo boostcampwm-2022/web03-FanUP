@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ArtistCard from '@molecules/artistCard';
 import { IAritst } from '@/types/artist';
-import NoArtists from '@atoms/NoArtists';
+import NoItems from '@atoms/NoItems';
 
 const ArtistsWrapper = styled.div`
     width: 100%;
@@ -17,25 +17,9 @@ const Title = styled.h1`
 const ArtistListWrapper = styled.div<{ length: number }>`
     display: flex;
     width: 100%;
-    /* grid-template-columns: repeat(6, 1fr); */
-    /* grid-template-columns: ${({ length }) =>
-        length < 6 ? 'repeat(6, 1fr)' : 'repeat(auto-fit, minmax(200px, 1fr))'}; */
     flex-flow: wrap;
     gap: 20px;
     margin-bottom: 40px;
-`;
-
-const NoArtistWrapper = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 40px;
-    span {
-        font-size: 30px;
-        font-weight: 700;
-    }
 `;
 
 interface Props {
@@ -47,9 +31,13 @@ const Artists = ({ title, artistList }: Props) => {
     return (
         <ArtistsWrapper>
             {artistList?.length === 0 ? (
-                <NoArtistWrapper>
-                    <NoArtists />
-                </NoArtistWrapper>
+                <NoItems
+                    title="구독한 아티스트가 없습니다 :("
+                    width="50px"
+                    height="50px"
+                    fontSize="30px"
+                    padding="40px"
+                />
             ) : (
                 <>
                     <Title>{title}</Title>

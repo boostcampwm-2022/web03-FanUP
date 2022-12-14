@@ -12,6 +12,7 @@ import { useSubmitTicketMutation } from '@/services/ticket.service';
 import { addZero } from '@utils/addZero';
 import { IsPast } from '@/utils/isPast';
 import { useAppDispatch } from '@/store';
+import { useGetSchedulesQuery } from '@/services/artist.service';
 
 const ModalHeader = styled.div`
     display: flex;
@@ -134,6 +135,11 @@ const ScheduleFanUpModal = () => {
         null | { calendarYear: number; calendarMonth: number; day: number }
     >(({ artistSlice }) => artistSlice.selectedDay);
 
+    const { refetch: refetchSchedules } = useGetSchedulesQuery({
+        calendarYear: selectedDay?.calendarYear as number,
+        calendarMonth: selectedDay?.calendarMonth as number,
+    });
+
     const openScheduleModal = useSelector<ReducerType, boolean>(
         ({ artistSlice }) => artistSlice.openSchduleModal
     );
@@ -239,6 +245,7 @@ const ScheduleFanUpModal = () => {
         };
         await submitMutation(reqData);
         if (isError) return alert('에러 발생');
+        refetchSchedules();
         alert('티켓 생성 완료');
         dispatch(closeScheduleModal());
     }, [startTime, salesTime]);

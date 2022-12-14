@@ -13,7 +13,7 @@ export class ArtistController {
   @MessagePattern({ cmd: 'createArtist' })
   async createArtist(
     @Payload() requestCreateArtistDto: requestCreateArtistDto,
-  ): Promise<string> {
+  ): Promise<Artist> {
     console.log('create artist');
     return this.artistService.create(requestCreateArtistDto);
   }
@@ -31,7 +31,7 @@ export class ArtistController {
   @MessagePattern({ cmd: 'updateArtist' })
   async updateArtist(
     @Payload() requestUpdateArtistDto: RequestUpdateArtistDto,
-  ) {
+  ): Promise<Artist> {
     console.log(requestUpdateArtistDto);
     return this.artistService.update(requestUpdateArtistDto);
   }

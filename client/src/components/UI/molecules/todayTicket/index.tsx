@@ -1,5 +1,5 @@
 import { Ticket, TicketSales } from '@/types/ticket';
-import { dateForm } from '@utils/dateForm';
+import { dateForm, getDate, getTime } from '@utils/dateForm';
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -31,6 +31,7 @@ const Contents = styled.div`
 `;
 
 const LeftContent = styled.div`
+    width: 95px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -52,7 +53,10 @@ const LeftContent = styled.div`
 const Time = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 1px;
+    h2 {
+        margin-bottom: 2px;
+    }
 `;
 
 const Price = styled.div`
@@ -63,18 +67,30 @@ const Price = styled.div`
     align-items: center;
     justify-content: space-between;
     font-size: 15px;
-    gap: 5px;
+    gap: 3px;
 `;
 
 const RightContent = styled.div`
+    width: 200px;
     padding: 20px;
     padding-right: 0px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     img {
         width: 160px;
         height: 100px;
+    }
+    span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    strong {
+        font-weight: 700;
     }
 `;
 
@@ -96,14 +112,22 @@ const TodayTicket = ({ ticket }: Props) => {
                 <LeftContent>
                     <Time>
                         <h2>티켓팅</h2>
-                        <span>{dateForm(ticket.salesTime)}</span>
+                        <div>
+                            <span>{getDate(ticket.salesTime)}</span>
+                            <br />
+                            <span>{getTime(ticket.salesTime)}</span>
+                        </div>
                     </Time>
                     <Time>
                         <h2>FanUP</h2>
-                        <span>{dateForm(ticket.startTime)}</span>
+                        <div>
+                            <span>{getDate(ticket.startTime)}</span>
+                            <br />
+                            <span>{getTime(ticket.startTime)}</span>
+                        </div>
                     </Time>
                     <Price>
-                        <Fish /> <span>x </span>
+                        <Fish /> <span>x</span>
                         <strong>{ticket.price}</strong>
                     </Price>
                 </LeftContent>
@@ -117,7 +141,7 @@ const TodayTicket = ({ ticket }: Props) => {
                     <span>
                         <strong>{ticket.artist.name}</strong>
                     </span>
-                    <span>{ticket.content}</span>
+                    <span>{ticket.title}</span>
                 </RightContent>
             </Contents>
         </TodayTicketWrapper>

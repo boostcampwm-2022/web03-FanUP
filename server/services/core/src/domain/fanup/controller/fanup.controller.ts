@@ -62,7 +62,7 @@ export class FanupController {
     return await this.fanupService.findByRoom(roomId);
   }
 
-  @SetResponse('Artist의 FanupID 리스트를 가져왔습니다.', ResStatusCode.OK)
+  @SetResponse(ResMessage.FIND_FANUP_BY_TICKET_ID, ResStatusCode.OK)
   @MessagePattern({ cmd: 'findRoomIdByTicketId' })
   async findRoomIdByTicketId(ticketIds: number[]) {
     return await this.fanupService.findRoomIdByTicketId(ticketIds);

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import TodayTicket from '@molecules/todayTicket';
 import 'slick-carousel/slick/slick.css';
@@ -7,16 +7,22 @@ import styled from 'styled-components';
 import PrevBtnIcon from '@/components/icons/PrevBtnIcon';
 import NextBtnIcon from '@/components/icons/NextBtnIcon';
 import { useGetTodayTicketsQuery } from '@/services/ticket.service';
+import NoItems from '@atoms/NoItems';
 
-const TodayTicketsWrapper = styled.div`
+const TodayTicketsWrapper = styled.div<{ innerWidth: number }>`
     position: relative;
     margin-bottom: 40px;
     padding-left: 20px;
     padding-right: 20px;
-    width: 1300px;
+    width: ${({ innerWidth }) => (innerWidth > 1525 ? '1075px' : '730px')};
     .slick-slide {
         //width:  !important;
     }
+`;
+
+export const TodayTicketsList = styled.div`
+    display: flex;
+    gap: 20px;
 `;
 
 const HandleButton = styled.button<{ left?: string; right?: string }>`
@@ -65,13 +71,24 @@ const TodayTickets = () => {
         autoplay: true,
         infinite: true,
         speed: 500,
-        slidesToShow: todayTickets && todayTickets.length < 3 ? todayTickets?.length : 3,
+        slidesToShow: window.innerWidth > 1525 ? 3 : 2,
         slidesToScroll: 2,
     };
     return (
-        <TodayTicketsWrapper>
-            {todayTickets?.length === 0 ? (
-                <h1>오늘 마감 예정인 티켓이 없습니다</h1>
+        <TodayTicketsWrapper innerWidth={window.innerWidth}>
+            {!todayTickets || todayTickets?.length === 0 ? (
+                <NoItems
+                    title="오늘 마감 예정인 티켓이 없습니다 :("
+                    width="50px"
+                    height="50px"
+                    fontSize="25px"
+                />
+            ) : todayTickets.length < 3 ? (
+                <TodayTicketsList>
+                    {todayTickets?.map((ticket, idx) => (
+                        <TodayTicket key={idx} data-index={idx} ticket={ticket} />
+                    ))}
+                </TodayTicketsList>
             ) : (
                 <>
                     <Slider
@@ -84,16 +101,12 @@ const TodayTickets = () => {
                             <TodayTicket key={idx} data-index={idx} ticket={ticket} />
                         ))}
                     </Slider>
-                    {todayTickets && todayTickets.length >= 3 && (
-                        <>
-                            <HandleButton left="0px" onClick={handlePrevCarousel}>
-                                <PrevBtnIcon stroke="#9E57FF" />
-                            </HandleButton>
-                            <HandleButton right="10px" onClick={handleNextCarousel}>
-                                <NextBtnIcon stroke="#9E57FF" />
-                            </HandleButton>
-                        </>
-                    )}
+                    <HandleButton left="0px" onClick={handlePrevCarousel}>
+                        <PrevBtnIcon stroke="#9E57FF" />
+                    </HandleButton>
+                    <HandleButton right="15px" onClick={handleNextCarousel}>
+                        <NextBtnIcon stroke="#9E57FF" />
+                    </HandleButton>
                 </>
             )}
         </TodayTicketsWrapper>

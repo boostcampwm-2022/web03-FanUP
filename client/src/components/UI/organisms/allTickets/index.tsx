@@ -1,8 +1,8 @@
-import { dummyTickets } from '@utils/dummy';
 import React from 'react';
 import AllTicket from '@molecules/allTicket';
 import styled from 'styled-components';
 import { useGetAllTicketsQuery } from '@/services/ticket.service';
+import NoItems from '@atoms/NoItems';
 
 const AllTicketsWrapper = styled.div`
     display: flex;
@@ -20,9 +20,13 @@ const AllTickets = () => {
 
     return (
         <AllTicketsWrapper>
-            {allTickets?.map((ticket, idx) => (
-                <AllTicket ticket={ticket} key={idx + ticket.title} />
-            ))}
+            {allTickets && allTickets?.length === 0 ? (
+                <NoItems title="티켓이 없습니다 :(" width="50px" height="50px" fontSize="25px" />
+            ) : (
+                allTickets?.map((ticket, idx) => (
+                    <AllTicket ticket={ticket} key={idx + ticket.title} />
+                ))
+            )}
         </AllTicketsWrapper>
     );
 };

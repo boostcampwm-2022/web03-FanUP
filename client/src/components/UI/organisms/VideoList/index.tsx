@@ -3,6 +3,7 @@ import Video from '@atoms/Video';
 import { ReducerType } from '@store/rootReducer';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useGetUserQuery } from '@/services/user.service';
 
 const VideoListWrapper = styled.div`
     height: 100%;
@@ -22,27 +23,30 @@ const VideoListWrapper = styled.div`
 `;
 
 interface Props {
-    userStream: any[];
+    userStream: {
+        stream: MediaStream;
+        nickname: string;
+    }[];
 }
 
 const VideoList = ({ userStream }: Props) => {
+    const { data: userData } = useGetUserQuery();
     const myStream = useSelector<ReducerType, MediaStream | null>(
         ({ userSlice }) => userSlice.myStream
     );
-
     return (
         <VideoListWrapper style={gridTemplate[String(userStream.length)]}>
             {userStream.map((data, idx) => (
-                <Video stream={data.stream} key={idx} />
+                <Video stream={data.stream} key={idx} isMyVideo={false} nickname={data.nickname} />
             ))}
-            <Video stream={myStream} />
+            <Video stream={myStream} isMyVideo={true} nickname={userData?.nickname as string} />
         </VideoListWrapper>
     );
 };
 
 const gridTemplate: { [key: string]: { gridTemplateColumns: string; gridTemplateRows: string } } = {
     '0': { gridTemplateColumns: 'repeat(1,1fr)', gridTemplateRows: 'repeat(1,100%)' },
-    '1': { gridTemplateColumns: 'repeat(2,1fr)', gridTemplateRows: 'repeat(1,100%)' },
+    '1': { gridTemplateColumns: 'repeat2,(1fr)', gridTemplateRows: 'repeat(1,100%)' },
     '2': { gridTemplateColumns: 'repeat(3,1fr)', gridTemplateRows: 'repeat(1,100%)' },
     '3': { gridTemplateColumns: 'repeat(2,1fr)', gridTemplateRows: 'repeat(2,50%)' },
     '4': { gridTemplateColumns: 'repeat(3,1fr)', gridTemplateRows: 'repeat(2,50%)' },

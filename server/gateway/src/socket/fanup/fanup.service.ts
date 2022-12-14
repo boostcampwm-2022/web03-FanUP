@@ -153,9 +153,12 @@ export class FanUPService {
     );
 
     this.logger.log('isArtist', status, data, message, artistId);
-    if (data.artist_id === artistId) {
-      this.logger.log('해당 유저는 아티스트입니다.');
-      return true;
+    if (data) {
+      if (data.artist_id === artistId) {
+        this.logger.log('해당 유저는 아티스트입니다.');
+        return true;
+      }
+      return false;
     }
     return false;
   }
