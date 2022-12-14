@@ -123,23 +123,6 @@ export class TicketService {
     });
 
     return tickets;
-
-    // const coreResponse = await firstValueFrom(
-    //   this.coreClient.send(
-    //     { cmd: 'findRoomIdByTicketId' },
-    //     tickets.map((ticket) => ticket.id),
-    //   ),
-    // );
-
-    // const fanupIds = coreResponse.data.reduce((acc, cur) => {
-    //   const { ticket_id, room_id } = cur;
-    //   acc[ticket_id] = room_id;
-    //   return acc;
-    // }, {});
-
-    // return tickets.map((ticket) => {
-    //   return { ...ticket, fanupId: fanupIds[ticket.id] };
-    // });
   }
 
   async findTicketByToday() {
@@ -147,7 +130,7 @@ export class TicketService {
 
     return this.prisma.ticket.findMany({
       where: {
-        startTime: {
+        salesTime: {
           gte: current.toISOString(),
           lt: new Date(current.setDate(current.getDate() + 1)).toISOString(),
         },

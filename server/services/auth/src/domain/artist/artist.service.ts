@@ -24,7 +24,7 @@ export class ArtistService {
     userId,
     name,
     profileUrl,
-  }: requestCreateArtistDto): Promise<string> {
+  }: requestCreateArtistDto): Promise<Artist> {
     const user = await this.userService.findOne(userId);
 
     if (user.role !== 'ARTIST') {
@@ -41,9 +41,8 @@ export class ArtistService {
       );
     }
 
-    let artist = null;
     try {
-      artist = await this.prisma.artist.create({
+      const artist = await this.prisma.artist.create({
         data: {
           name,
           profileUrl,
@@ -55,17 +54,16 @@ export class ArtistService {
       await firstValueFrom(
         this.ticketClient.send({ cmd: 'createArtist' }, artist),
       );
+      return artist;
     } catch (e) {
       throw new CustomRpcException(
         'Cannot create artist',
         HttpStatus.BAD_REQUEST,
       );
     }
-
-    return 'artist created';
   }
 
-  async update(updateArtistDto: RequestUpdateArtistDto) {
+  async update(updateArtistDto: RequestUpdateArtistDto): Promise<Artist> {
     const { artistId, name, profileUrl } = updateArtistDto;
 
     try {
@@ -76,13 +74,13 @@ export class ArtistService {
       await firstValueFrom(
         this.ticketClient.send({ cmd: 'updateArtist' }, artist),
       );
+      return artist;
     } catch (e) {
       throw new CustomRpcException(
         'Cannot update artist',
         HttpStatus.BAD_REQUEST,
       );
     }
-    return 'artist updated';
   }
 
   async findAll(userId: number | null) {
