@@ -28,7 +28,7 @@ describe('<TodayTicket />', () => {
     it('rendering test', () => {
         renderWithContext(<TodayTicket ticket={ticket} />);
         expect(screen.getByText(ticket.artist.name)).toBeInTheDocument();
-        expect(screen.getByText(ticket.content)).toBeInTheDocument();
+        expect(screen.getByText(ticket.title)).toBeInTheDocument();
     });
     it('interaction test', () => {
         renderWithContext(<TodayTicket ticket={ticket} />);

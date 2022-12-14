@@ -21,7 +21,7 @@ const Video = ({
     isMyVideo,
     nickname,
 }: {
-    stream: any;
+    stream: MediaStream | null;
     isMyVideo: boolean;
     nickname: string;
 }) => {

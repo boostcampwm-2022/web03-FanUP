@@ -1,12 +1,11 @@
-import ScheduleIcon from '@icons/ScheduleIcon';
 import TicketIcon from '@icons/TicketIcon';
 import { useGetUserQuery } from '@/services/user.service';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import SmallTicket from '@molecules/SmallTicket';
 import theme from '@/style/theme';
 import { useGetUserTicketsQuery } from '@/services/ticket.service';
-import UnHeartIcon from '@/components/icons/unheart';
+import NoItems from '@atoms/NoItems';
 
 const SchedulesWrapper = styled.div`
     background: white;
@@ -48,24 +47,7 @@ const ScheduleContentsWrapper = styled.div`
     padding: 10px 0;
 `;
 
-const NoTickets = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-    gap: 5px;
-    svg {
-        width: 25px;
-        height: 25px;
-    }
-    span {
-        font-size: 12px;
-        font-weight: 700;
-    }
-`;
-
 const MYTICKET_MODE = 1;
-const SCHEDULE_MODE = 2;
 
 const FanFeatureBox = () => {
     const [mode, setMode] = useState(MYTICKET_MODE);
@@ -98,10 +80,13 @@ const FanFeatureBox = () => {
             <ScheduleContentsWrapper>
                 {mode === MYTICKET_MODE &&
                     (myTickets?.length === 0 ? (
-                        <NoTickets>
-                            <UnHeartIcon />
-                            <span>구매한 티켓이 없습니다</span>
-                        </NoTickets>
+                        <NoItems
+                            title="구매한 티켓이 없습니다"
+                            width="20px"
+                            height="20px"
+                            fontSize="12px"
+                            padding="20px"
+                        />
                     ) : (
                         myTickets?.map((ticket) => (
                             <SmallTicket key={ticket.title} ticket={ticket} />
@@ -115,15 +100,5 @@ const FanFeatureBox = () => {
         </SchedulesWrapper>
     );
 };
-
-const artist = {
-    profileUrl: '',
-};
-
-const dummySchedules = [
-    { title: '우리 만나요~', startTime: new Date(), artist },
-    { title: '두근두근 컴백', startTime: new Date('2022.12.26'), artist },
-    { title: '10주년 이벤트❤️', startTime: new Date('2022.12.31'), artist },
-];
 
 export default FanFeatureBox;

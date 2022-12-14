@@ -41,7 +41,6 @@ const ChatContainer: FC = () => {
 
     const handleSubmit = useCallback(
         (e: React.FormEvent<HTMLButtonElement>) => {
-            console.log('전송');
             e.preventDefault();
             const data = {
                 userId: userId,

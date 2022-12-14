@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import SubscribedUser from '@molecules/SubscribedUser';
 import { useGetSubscribesQuery } from '@/services/artist.service';
+import NoItems from '../../atoms/NoItems';
 
 const SubScribedUsersWrapper = styled.div`
     /* width: 60vw;
@@ -22,7 +23,7 @@ const SubScribedUsersWrapper = styled.div`
 `;
 
 const SubScribedUserListWrapper = styled.div`
-    overflow-y: scroll;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -35,18 +36,19 @@ const SubScribedUsers = () => {
         <SubScribedUsersWrapper>
             <h1>구독자 목록</h1>
             <SubScribedUserListWrapper>
-                {subscribers &&
-                    subscribers?.length > 0 &&
-                    subscribers?.map((user) => <SubscribedUser key={user.nickname} user={user} />)}
+                {subscribers && subscribers?.length > 0 ? (
+                    subscribers?.map((user) => <SubscribedUser key={user.nickname} user={user} />)
+                ) : (
+                    <NoItems
+                        title="구독자가 목록이 비어있습니다 :("
+                        width="30px"
+                        height="30px"
+                        fontSize="20px"
+                    />
+                )}
             </SubScribedUserListWrapper>
         </SubScribedUsersWrapper>
     );
 };
 
-const DummySubScribedUser = Array.from({ length: 40 }, (_, idx) => {
-    return {
-        nickname: `testUser${idx}`,
-        profileUrl: '',
-    };
-});
 export default SubScribedUsers;
