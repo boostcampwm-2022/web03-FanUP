@@ -39,6 +39,11 @@ const StyledHeader = styled.h3`
     padding: 1rem;
 `;
 
+const StyledContent = styled.div`
+    max-height: 40em;
+    overflow: scroll;
+`;
+
 interface Props {
     notifications: Notification[];
     setNofitifcations: Dispatch<SetStateAction<Notification[]>>;
@@ -48,13 +53,15 @@ const NotificationContainer: FC<Props> = ({ notifications, setNofitifcations }) 
     return (
         <StyledNotificationContainer>
             <StyledHeader>Notifications</StyledHeader>
-            {notifications.map((notification, i) => (
-                <NotificationItem
-                    key={i}
-                    notification={notification}
-                    setNofitifcations={setNofitifcations}
-                />
-            ))}
+            <StyledContent>
+                {notifications.map((notification, i) => (
+                    <NotificationItem
+                        key={i}
+                        notification={notification}
+                        setNofitifcations={setNofitifcations}
+                    />
+                ))}
+            </StyledContent>
         </StyledNotificationContainer>
     );
 };
