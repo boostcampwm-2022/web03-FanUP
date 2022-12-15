@@ -2,6 +2,7 @@ import React from 'react';
 import DetailTicket from '@organisms/detailTicket';
 import Header from '@organisms/header';
 import styled from 'styled-components';
+import withGetUser from '@/components/hoc/withGetUser';
 
 const TicketDetailWrapper = styled.div`
     padding: 40px 0;
@@ -20,4 +21,4 @@ const Ticket = () => {
     );
 };
 
-export default Ticket;
+export default withGetUser(Ticket);

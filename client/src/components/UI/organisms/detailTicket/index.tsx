@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Button from '@atoms/Button';
 import Loading from '@atoms/Loading';
 import DefaultImg from '../../atoms/defaultImg';
+import { useGetUserQuery } from '@/services/user.service';
 
 const DetailTicketWrapper = styled.div`
     width: 30vw;
@@ -90,9 +91,11 @@ const DetailTicket = () => {
     const { data: ticket, isLoading } = useGetDetailTicketQuery(String(ticketId));
     const [ticketingMutation] = useTicketingMutation();
     const { hour, min, sec, timeEnd } = useTimer(ticket?.salesTime || null);
+    const { data: userData } = useGetUserQuery();
 
     const ticketing = async () => {
         if (!timeEnd) return alert('아직 티켓팅 시간이 되지 않았습니다.');
+        if (!userData) return alert('로그인 후 이용 가능합니다 :(');
         setTicketLoading(true);
         const { error } = (await ticketingMutation(ticketId as string)) as any;
         setTimeout(() => {
