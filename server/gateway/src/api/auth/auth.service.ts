@@ -32,7 +32,6 @@ export class AuthService {
   }
 
   public createArtist(createArtistDto) {
-    console.log('createArtist', createArtistDto);
     return this.authClient.send({ cmd: 'createArtist' }, createArtistDto);
   }
 
@@ -53,12 +52,10 @@ export class AuthService {
   }
 
   public createFavorite(createFavoriteDto) {
-    console.log('createFavorite', createFavoriteDto);
     return this.authClient.send({ cmd: 'createFavorite' }, createFavoriteDto);
   }
 
   public deleteFavorite(deleteFavoriteDto) {
-    console.log('deleteFavorite', deleteFavoriteDto);
     return this.authClient.send({ cmd: 'deleteFavorite' }, deleteFavoriteDto);
   }
 }

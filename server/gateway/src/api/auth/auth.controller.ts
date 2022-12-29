@@ -14,7 +14,7 @@ import {
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
-import { AllGlobalExceptionsFilter } from 'src/common/exception/filter/global-exception.filter';
+import { AllGlobalExceptionsFilter } from '../../common/exception/filter/global-exception.filter';
 import { JwtAuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import CreateArtistDto from './dto/create-artist.dto';
