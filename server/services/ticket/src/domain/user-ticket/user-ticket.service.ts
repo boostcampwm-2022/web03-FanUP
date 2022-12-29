@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UserTicket } from '@prisma/client';
-import { ResStatusCode } from 'src/common/constants/res-status-code';
-import { CustomRpcException } from 'src/common/exception/custom-rpc-exception';
+import { ResStatusCode } from '../../common/constants/res-status-code';
+import { CustomRpcException } from '../../common/exception/custom-rpc-exception';
 
-import { PrismaService } from 'src/provider/prisma/prisma.service';
+import { PrismaService } from '../../provider/prisma/prisma.service';
 import CreateUserTicketDto from './dto/create-user-ticket.dto';
 
 @Injectable()

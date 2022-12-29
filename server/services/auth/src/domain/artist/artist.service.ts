@@ -2,10 +2,10 @@ import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { Artist, User } from '@prisma/client';
 import { firstValueFrom } from 'rxjs';
-import { MICRO_SERVICES } from 'src/common/constants/config';
-import { CustomRpcException } from 'src/common/exception/custom-rpc-exception';
+import { MICRO_SERVICES } from '../../common/constants/config';
+import { CustomRpcException } from '../../common/exception/custom-rpc-exception';
 
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import requestCreateArtistDto from './dto/reqeust-create-artist.dto';
 import RequestUpdateArtistDto from './dto/request-update-artist.dto';

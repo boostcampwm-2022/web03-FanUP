@@ -1,8 +1,8 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientTCP } from '@nestjs/microservices';
-import { MICRO_SERVICES } from 'src/common/constants';
-import { FanupService } from 'src/domain/fanup/service/fanup.service';
-import { NotificationService } from 'src/domain/notification/service/notification.service';
+import { MICRO_SERVICES } from '../../common/constants';
+import { FanupService } from '../../domain/fanup/service/fanup.service';
+import { NotificationService } from '../../domain/notification/service/notification.service';
 
 @Injectable()
 export class FanUPDemoTask {
