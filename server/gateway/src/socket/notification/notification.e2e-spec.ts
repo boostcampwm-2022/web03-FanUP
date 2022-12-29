@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { ClientsModule, ClientTCP, Transport } from '@nestjs/microservices';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
