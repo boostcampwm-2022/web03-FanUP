@@ -6,9 +6,9 @@ import {
   TransformInterceptor,
 } from '../../../common/interceptor';
 import { CreateTimeDto, UpdateTimeDto } from '../dto';
-import { SetResponse } from 'src/common/decorator';
-import { ResMessage, ResStatusCode } from 'src/common/constants';
-import { AllRPCExceptionFilter } from 'src/common/filter';
+import { SetResponse } from '../../../common/decorator';
+import { ResMessage, ResStatusCode } from '../../../common/constants';
+import { AllRPCExceptionFilter } from '../../../common/filter';
 import { Ticket } from '../../../common/type';
 
 @UseFilters(new AllRPCExceptionFilter())

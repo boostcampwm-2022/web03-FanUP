@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { firstValueFrom, map } from 'rxjs';
-import { CustomRpcException } from 'src/common/exception/custom-rpc-exception';
+import { CustomRpcException } from '../../common/exception/custom-rpc-exception';
 
 import { UserService } from 'src/domain/user/user.service';
 import RequestLoginDto from './dto/request-login.dto';

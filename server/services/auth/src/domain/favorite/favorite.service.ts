@@ -1,6 +1,5 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { Artist, Favorite } from '@prisma/client';
-import { CustomRpcException } from 'src/common/exception/custom-rpc-exception';
+import { CustomRpcException } from '../../common/exception/custom-rpc-exception';
 import { PrismaService } from 'src/prisma/prisma.service';
 import FavoriteDto from './dto/favorite.dto';
 

@@ -6,7 +6,7 @@ import { AllRPCExceptionFilter } from '../../../common/filter';
 import {
   LoggingInterceptor,
   TransformInterceptor,
-} from 'src/common/interceptor';
+} from '../../../common/interceptor';
 import { NotificationService } from '../service/notification.service';
 import { CreateNotification } from '../../../common/type';
 

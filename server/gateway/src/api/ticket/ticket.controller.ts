@@ -10,12 +10,11 @@ import {
   Post,
   Query,
   Req,
-  Res,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { AllGlobalExceptionsFilter } from 'src/common/exception/filter/global-exception.filter';
+import { AllGlobalExceptionsFilter } from '../../common/exception/filter/global-exception.filter';
 
 import { MICRO_SERVICES } from '../../common/constants/microservices';
 import { JwtAuthGuard } from '../auth/auth.guard';

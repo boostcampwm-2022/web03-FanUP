@@ -3,10 +3,10 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ClientProxy } from '@nestjs/microservices';
 import { Ticket } from '@prisma/client';
 import { firstValueFrom } from 'rxjs';
-import { MICRO_SERVICES } from 'src/common/constants/microservices';
-import { CustomRpcException } from 'src/common/exception/custom-rpc-exception';
+import { MICRO_SERVICES } from '../../common/constants/microservices';
+import { CustomRpcException } from '../../common/exception/custom-rpc-exception';
 
-import { PrismaService } from 'src/provider/prisma/prisma.service';
+import { PrismaService } from '../../provider/prisma/prisma.service';
 import CreateTicketDto from './dto/create-ticket.dto';
 import RequestAllTicketByYearAndMonthDto from './dto/request-all-ticket-by-year-and-month.dto';
 import UpdateTicketDto from './dto/update-ticket.dto';
