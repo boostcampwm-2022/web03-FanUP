@@ -8,36 +8,42 @@ import { ChatNotFoundException } from '../../../common/exception';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
 import { ChatDto, CreateChatDto } from '../dto';
 import { ChatService } from './chat.service';
+import { RedisService } from '../../../provider/cache/redis.service';
+import { ChatModule } from '../chat.module';
+import { CacheModule, INestApplication } from '@nestjs/common';
 
-const prisma = jest.mock('../../../provider/prisma/prisma.service', () => {
-  return {
+jest.mock('../../../provider/prisma/prisma.service', () => ({
+  prisma: {
     chat: {
       create: jest.fn(),
       findMany: jest.fn(),
     },
-  };
-});
+  },
+}));
 
 describe('ChatService', () => {
+  let app: INestApplication;
   let service: ChatService;
-  let prismaService: PrismaService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ChatService, PrismaService],
+      imports: [ChatModule, CacheModule.register()],
     }).compile();
 
+    app = module.createNestApplication();
+    app.startAllMicroservices();
+    await app.init();
+
     service = module.get<ChatService>(ChatService);
-    prismaService = module.get<PrismaService>(PrismaService);
   });
 
   afterAll(() => {
+    app.close();
     jest.resetModules();
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
-    expect(prismaService).toBeDefined();
   });
 
   it('createChat 성공 테스트', async () => {
@@ -90,18 +96,15 @@ describe('ChatService', () => {
 
   it('findChatByFanUPId 실패 테스트', async () => {
     // given
-    const fanup_id = 'wrong';
+    const fanup_id = 1;
 
     // when
-    let error;
     try {
-      error = await service.findChatByFanUPId(fanup_id);
+      await service.findChatByFanUPId(fanup_id);
     } catch (err) {
       // then
       expect(err).toBeInstanceOf(ChatNotFoundException);
       expect(err.message).toBe(ResMessage.CHAT_NOT_FOUND);
     }
-
-    expect(error).toBeInstanceOf(ChatNotFoundException);
   });
 });
