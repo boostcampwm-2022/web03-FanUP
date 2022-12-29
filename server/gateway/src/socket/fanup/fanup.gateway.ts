@@ -8,7 +8,6 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { ValidateUser } from '../../common/types';
 import { FanUPService } from './fanup.service';
 
 @WebSocketGateway({

@@ -28,6 +28,7 @@ async function createNestApp(...gateways): Promise<INestApplication> {
 
 describe('Notification 테스트', () => {
   let client: ClientSocket;
+  let clientCore: ClientSocket;
   let app: INestApplication;
   let service: NotificationService;
   let coreTCP: ClientTCP;
@@ -48,6 +49,7 @@ describe('Notification 테스트', () => {
 
     // 소켓 클라이언트 실행
     client = io('http://localhost:3000/socket/notification');
+    clientCore = io('http://localhost:3000/socket/notification');
   });
 
   afterAll(() => {
@@ -95,6 +97,14 @@ describe('Notification 테스트', () => {
       expect(data.message).toEqual(
         '읽음 상태로 업데이트하는데 실패하였습니다.',
       );
+    });
+  });
+
+  it('send-notification 실패 테스트', () => {
+    client.emit('join-notification', { userId: 1 });
+    clientCore.emit('send-notification', { user_id: 1 });
+    client.on('receive-notification', (data) => {
+      expect(data.user_id).toEqual(1);
     });
   });
 });
