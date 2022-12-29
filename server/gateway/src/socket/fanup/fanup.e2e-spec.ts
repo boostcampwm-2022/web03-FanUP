@@ -2,14 +2,24 @@
  * @jest-environment node
  */
 
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { Socket as ClientSocket, io } from 'socket.io-client';
-import { FanUPGateway } from '../src/socket/fanup/fanup.gateway';
+import { FanUPGateway } from './fanup.gateway';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { MICRO_SERVICES } from '../../common/constants/microservices';
+import { FanUPService } from './fanup.service';
 
 async function createNestApp(...gateways): Promise<INestApplication> {
-  const testingModule = await Test.createTestingModule({
-    providers: gateways,
+  const testingModule: TestingModule = await Test.createTestingModule({
+    imports: [
+      ClientsModule.register([
+        { name: MICRO_SERVICES.CORE.NAME, transport: Transport.TCP },
+        { name: MICRO_SERVICES.AUTH.NAME, transport: Transport.TCP },
+        { name: MICRO_SERVICES.TICKET.NAME, transport: Transport.TCP },
+      ]),
+    ],
+    providers: [...gateways, FanUPService],
   }).compile();
 
   const app = testingModule.createNestApplication();
@@ -18,6 +28,7 @@ async function createNestApp(...gateways): Promise<INestApplication> {
 
 describe('FanUP 소켓 테스트', () => {
   let app: INestApplication;
+  let service: FanUPService;
   let client: ClientSocket;
   let client1: ClientSocket;
   let client1Data = {
@@ -44,8 +55,13 @@ describe('FanUP 소켓 테스트', () => {
 
   beforeAll(async () => {
     app = await createNestApp(FanUPGateway);
-    await app.listen(3000);
+    app.listen(3000);
+    await app.init();
 
+    // 서비스 가져오기
+    service = app.get(FanUPService);
+
+    // 클라이언트 생성
     client = io('http://localhost:3000/socket/fanup');
     client1 = io('http://localhost:3000/socket/fanup');
     client2 = io('http://localhost:3000/socket/fanup');
@@ -91,6 +107,10 @@ describe('FanUP 소켓 테스트', () => {
     client2.disconnect();
     await app.close();
   }, 10000);
+
+  it('서비스 테스트', () => {
+    expect(service).toBeDefined();
+  });
 
   it('join_room 테스트', async () => {
     client.emit('join_room', {
