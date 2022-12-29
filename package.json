@@ -90,7 +90,10 @@
       "server/services/ticket",
       "server/gateway/src/common",
       "server/services/core/src/common/type",
-      "server/services/core/src/job"
+      "server/services/core/src/common/config",
+      "server/services/core/src/common/middleware",
+      "server/services/core/src/job",
+      "server/services/core/src/provider"
     ],
     "transformIgnorePatterns": [
       "<rootDir>/node_modules",
