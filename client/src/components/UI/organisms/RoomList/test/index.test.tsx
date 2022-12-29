@@ -1,5 +1,5 @@
 /**
- * @jest-environment jsdom
+ * @jest-environment node
  */
 import React from 'react';
 import { renderWithContext } from '@/utils/test/renderWithContext';

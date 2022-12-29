@@ -8,7 +8,7 @@ import {
 } from '../../../common/exception';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
 import { CreateFanupDto, CreateTimeDto, UpdateFanupDto } from '../dto';
-import { Ticket } from 'src/common/type';
+import { Ticket } from '../../../common/type';
 
 @Injectable()
 export class FanupService {

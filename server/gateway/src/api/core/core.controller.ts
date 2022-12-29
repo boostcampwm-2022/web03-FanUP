@@ -35,12 +35,6 @@ export class CoreController {
     return await this.coreService.uploadSingleFile(file, userId);
   }
 
-  @Post('file/multiple')
-  @UseInterceptors(FilesInterceptor('files'))
-  async uploadMultipleFile(@Req() request: Request, @UploadedFiles() files) {
-    return this.coreService.uploadMultipleFile(files);
-  }
-
   @Get('fanup')
   async getAllFanUP() {
     return await this.coreService.getAllFanUP();

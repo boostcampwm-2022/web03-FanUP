@@ -6,7 +6,7 @@ import { Ticket, UserTicket } from '@prisma/client';
 import { catchError, lastValueFrom, of } from 'rxjs';
 import { io } from 'socket.io-client';
 import { MICRO_SERVICES } from 'src/common/constants/microservices';
-import { FanUP } from 'src/common/type/fanup';
+import { FanUP } from '../common/type/fanup';
 import { UserTicketService } from 'src/domain/user-ticket/user-ticket.service';
 
 export class JobListener {

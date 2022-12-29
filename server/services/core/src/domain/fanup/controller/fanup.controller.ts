@@ -9,7 +9,7 @@ import { CreateTimeDto, UpdateTimeDto } from '../dto';
 import { SetResponse } from 'src/common/decorator';
 import { ResMessage, ResStatusCode } from 'src/common/constants';
 import { AllRPCExceptionFilter } from 'src/common/filter';
-import { Ticket } from 'src/common/type';
+import { Ticket } from '../../../common/type';
 
 @UseFilters(new AllRPCExceptionFilter())
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
