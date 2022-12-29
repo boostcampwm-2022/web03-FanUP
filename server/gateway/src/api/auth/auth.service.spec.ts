@@ -23,7 +23,7 @@ async function createNestApp(...gateways): Promise<INestApplication> {
   return app;
 }
 
-describe('Authservice 테스트', () => {
+describe('AuthService 테스트', () => {
   let app: INestApplication;
   let service: AuthService;
   let apiClient: ClientTCP;
