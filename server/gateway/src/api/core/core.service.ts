@@ -20,9 +20,7 @@ export class CoreService {
   }
 
   async getAllChatMessage() {
-    return this.apiClient
-      .send('findChatByFanUPId', {})
-      .pipe(catchError((err) => of(err)));
+    return this.apiClient.send('findChatByFanUPId', {});
   }
 
   async uploadSingleFile(file, userId) {
@@ -40,30 +38,12 @@ export class CoreService {
     });
   }
 
-  uploadMultipleFile(files) {
-    const formData = new FormData();
-    files.forEach((file) => {
-      formData.append('files', file.buffer, { filename: file.originalname });
-    });
-    return formData.submit(
-      `http://${MICRO_SERVICES.CORE.HOST}:4002/file/multiple`,
-      function (err, res) {
-        if (err) return err;
-        return res;
-      },
-    );
-  }
-
   async getAllFanUP() {
-    return await this.apiClient
-      .send('getAllFanUP', {})
-      .pipe(catchError((err) => of(err)));
+    return this.apiClient.send('getAllFanUP', {});
   }
 
   async createFanUP(data) {
-    return await this.apiClient
-      .send('createFanUP', data)
-      .pipe(catchError((err) => of(err)));
+    return this.apiClient.send('createFanUP', data);
   }
 
   async findAllByTicketId(ticketId) {

@@ -1,6 +1,7 @@
 /**
- * @jest-environment jsdom
+ * @jest-environment node
  */
+
 import React from 'react';
 import { MOCK_FN } from '@utils/test/mockFn';
 import { renderWithContext } from '@utils/test/renderWithContext';
