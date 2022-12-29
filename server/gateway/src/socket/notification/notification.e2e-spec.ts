@@ -10,10 +10,12 @@ import { Socket as ClientSocket, io } from 'socket.io-client';
 import { MICRO_SERVICES } from '../../common/constants/microservices';
 import { NotificationService } from './notification.service';
 import { NotificationGateway } from './notification.gateway';
+import { SocketModule } from '../socket.module';
 
 async function createNestApp(...gateways): Promise<INestApplication> {
   const testingModule: TestingModule = await Test.createTestingModule({
     imports: [
+      SocketModule,
       ClientsModule.register([
         { name: MICRO_SERVICES.CORE.NAME, transport: Transport.TCP },
         { name: MICRO_SERVICES.AUTH.NAME, transport: Transport.TCP },
@@ -36,7 +38,7 @@ describe('Notification 테스트', () => {
 
   beforeAll(async () => {
     // 앱 실행
-    app = await createNestApp(NotificationGateway);
+    app = await createNestApp();
     app.listen(3000);
     await app.init();
 
