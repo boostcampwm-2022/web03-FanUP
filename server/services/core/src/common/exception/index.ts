@@ -8,3 +8,4 @@ export { CustomRpcException } from './custom-rpc.exception';
 export { NotificationCreateException } from './rpc/notification-create.exception';
 export { NotificationNotFoundException } from './rpc/notification-not-found.exception';
 export { NotificationUpdateException } from './rpc/notification-update.exception';
+export { FanUPCreateException } from './rpc/fanup-create.exception';
