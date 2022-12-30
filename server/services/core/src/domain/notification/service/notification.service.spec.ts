@@ -8,6 +8,7 @@ import { ResMessage } from '../../../common/constants';
 import {
   NotificationCreateException,
   NotificationNotFoundException,
+  NotificationUpdateException,
 } from '../../../common/exception';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
 import { NotificationModule } from '../notification.module';
@@ -121,5 +122,17 @@ describe('NotificationService', () => {
     expect(await service.updateRead('1', 1)).toEqual(notification);
     expect(await service.updateRead(1, '1')).toEqual(notification);
     expect(await service.updateRead('1', '1')).toEqual(notification);
+  });
+
+  it('updateRead 실패 테스트', async () => {
+    try {
+      prisma.notification.updateMany = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+      await service.updateRead(1, 1);
+    } catch (err) {
+      expect(err).toBeInstanceOf(NotificationUpdateException);
+      expect(err.message).toBe(ResMessage.NOTIFICATION_UPDATE_FAIL);
+    }
   });
 });
