@@ -5,7 +5,10 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ResMessage } from '../../../common/constants';
-import { NotificationCreateException } from '../../../common/exception';
+import {
+  NotificationCreateException,
+  NotificationNotFoundException,
+} from '../../../common/exception';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
 import { NotificationModule } from '../notification.module';
 import { NotificationService } from './notification.service';
@@ -75,5 +78,17 @@ describe('NotificationService', () => {
   it('findByUserId 성공 테스트', async () => {
     prisma.notification.findMany = jest.fn().mockResolvedValue(notification);
     expect(await service.findByUserId(1)).toEqual(notification);
+  });
+
+  it('findByUserId 실패 테스트', async () => {
+    try {
+      prisma.notification.findMany = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+      await service.findByUserId(1);
+    } catch (err) {
+      expect(err).toBeInstanceOf(NotificationNotFoundException);
+      expect(err.message).toBe(ResMessage.NOTIFICATION_NOT_FOUND);
+    }
   });
 });
