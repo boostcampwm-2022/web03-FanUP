@@ -31,7 +31,6 @@ describe('ChatService', () => {
     }).compile();
 
     app = module.createNestApplication();
-    app.startAllMicroservices();
     await app.init();
 
     service = module.get<ArtistService>(ArtistService);
@@ -50,5 +49,10 @@ describe('ChatService', () => {
   it('create 테스트', () => {
     prisma.artist.create = jest.fn().mockResolvedValue(artist);
     expect(service.create(artist)).resolves.toEqual(artist);
+  });
+
+  it('update 테스트', () => {
+    prisma.artist.update = jest.fn().mockResolvedValue(artist);
+    expect(service.update(artist)).resolves.toEqual(artist);
   });
 });
