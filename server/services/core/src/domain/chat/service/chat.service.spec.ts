@@ -55,7 +55,6 @@ describe('ChatService', () => {
   });
 
   it('createChat 성공 테스트', async () => {
-    // given
     const createChatDto: CreateChatDto = {
       fanup_id: '1ad8e8ca-e748-4732-998a-439b0ebe9928',
       userId: 1,
@@ -63,15 +62,8 @@ describe('ChatService', () => {
       message: 'second',
     };
 
-    // when
     prisma.chat.create = jest.fn().mockResolvedValue(createChatDto);
-    const result = await service.createChat(createChatDto);
-
-    // then
-    expect(result.fanup_id).toBe(createChatDto.fanup_id);
-    expect(result.userId).toBe(createChatDto.userId);
-    expect(result.is_artist).toBe(createChatDto.is_artist);
-    expect(result.message).toBe(createChatDto.message);
+    expect(await service.createChat(createChatDto)).toEqual(createChatDto);
   });
 
   it('createChat 실패 테스트', async () => {
@@ -107,24 +99,29 @@ describe('ChatService', () => {
         message: 'hihi',
         created_at: new Date('2022-11-27T08:29:45.293Z'),
       },
+    ];
+
+    prisma.chat.findMany = jest.fn().mockResolvedValue(chatDto);
+    redis.getArray = jest.fn().mockResolvedValue(null);
+    expect(await service.findChatByFanUPId(fanup_id)).toEqual(chatDto);
+  });
+
+  it('findChatByFanUPId 레디스 성공 테스트', async () => {
+    // given
+    const fanup_id = '1ad8e8ca-e748-4732-998a-439b0ebe9928';
+    const chatDto: ChatDto[] = [
       {
         fanup_id: '1ad8e8ca-e748-4732-998a-439b0ebe9928',
         userId: 1,
         is_artist: true,
-        message: 'second',
-        created_at: new Date('2022-11-27T08:32:07.219Z'),
+        message: 'hihi',
+        created_at: new Date('2022-11-27T08:29:45.293Z'),
       },
     ];
 
-    // when
     prisma.chat.findMany = jest.fn().mockResolvedValue(chatDto);
-    redis.getArray = jest.fn().mockResolvedValue(null);
-    const result = await service.findChatByFanUPId(fanup_id);
-
-    // then
-    expect(result[0].fanup_id).toBe(result[1].fanup_id);
-    expect(result[0].userId).toBe(result[1].userId);
-    expect(result[0].is_artist).toBe(true);
+    redis.getArray = jest.fn().mockResolvedValue(chatDto);
+    expect(await service.findChatByFanUPId(fanup_id)).toEqual(chatDto);
   });
 
   it('findChatByFanUPId 실패 테스트', async () => {
