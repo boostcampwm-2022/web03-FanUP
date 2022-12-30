@@ -6,9 +6,12 @@ import { UserTicketService } from './user-ticket.service';
 
 jest.mock('../../provider/prisma/prisma.service', () => ({
   PrismaService: jest.fn().mockImplementation(() => ({
-    artist: {
+    userTicket: {
       create: jest.fn(),
       update: jest.fn(),
+      findUnique: jest.fn(),
+      findMany: jest.fn(),
+      delete: jest.fn(),
     },
   })),
 }));
@@ -17,6 +20,14 @@ describe('UserTicketService', () => {
   let app: INestApplication;
   let service: UserTicketService;
   let prisma: PrismaService;
+
+  const userTicket = {
+    id: 1,
+    userId: 1,
+    ticketId: 1,
+    createdAt: new Date(),
+    fanupId: '1',
+  };
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -38,5 +49,10 @@ describe('UserTicketService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('find 테스트', async () => {
+    prisma.userTicket.findUnique = jest.fn().mockResolvedValue(userTicket);
+    expect(await service.find(1)).toEqual(userTicket);
   });
 });
