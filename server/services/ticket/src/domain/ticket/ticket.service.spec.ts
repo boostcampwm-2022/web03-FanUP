@@ -10,8 +10,11 @@ import { TicketService } from './ticket.service';
 
 jest.mock('../../provider/prisma/prisma.service', () => ({
   PrismaService: jest.fn().mockImplementation(() => ({
-    artist: {
+    ticket: {
       create: jest.fn(),
+      findUniqueOrThrow: jest.fn(),
+      findMany: jest.fn(),
+      delete: jest.fn(),
       update: jest.fn(),
     },
   })),
