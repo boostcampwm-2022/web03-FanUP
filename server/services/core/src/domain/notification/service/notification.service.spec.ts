@@ -96,4 +96,16 @@ describe('NotificationService', () => {
     prisma.notification.findFirst = jest.fn().mockResolvedValue(notification);
     expect(await service.findOne(1)).toEqual(notification);
   });
+
+  it('findOne 실패 테스트', async () => {
+    try {
+      prisma.notification.findFirst = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+      await service.findOne(1);
+    } catch (err) {
+      expect(err).toBeInstanceOf(NotificationNotFoundException);
+      expect(err.message).toBe(ResMessage.NOTIFICATION_NOT_FOUND);
+    }
+  });
 });
