@@ -229,7 +229,7 @@ export class FanupService {
     const { id, totalAmount, numberTeam, startTime, timeTeam, artistId } =
       ticket;
     const num = Number(totalAmount / numberTeam);
-    const totalNum = totalAmount % numberTeam === 0 ? num : num + 1;
+    const totalNum = totalAmount % numberTeam === 0 ? num : Math.ceil(num);
     const date = new Date(startTime);
 
     return Array.from({ length: totalNum }, (_, i) => i).map((order) => {

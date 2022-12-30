@@ -298,4 +298,25 @@ describe('FanupService', () => {
     expect(service.calculateFanUP(1, 1)).toEqual(1);
     expect(service.calculateFanUP(3, 2)).toEqual(2);
   });
+
+  it('calculateTotalFanUP 테스트', () => {
+    const ticket = {
+      id: 1,
+      title: 'test',
+      content: 'test',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      artistId: 1,
+      salesTime: new Date(),
+      startTime: new Date(),
+      status: 'test',
+      totalAmount: 1,
+      numberTeam: 1,
+      timeTeam: 0,
+      price: 1,
+    };
+
+    const createTimeDtos = [new CreateTimeDto(1, new Date(), new Date(), 1, 1)];
+    expect(service.calculateTotalFanUP(ticket)).toEqual(createTimeDtos);
+  });
 });
