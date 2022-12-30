@@ -29,7 +29,7 @@ export class ChatService {
   }
 
   // 특정 방의 채팅 메시지 전체를 가져오는 함수
-  async findChatByFanUPId(fanup_id) {
+  async findChatByFanUPId(fanup_id: string) {
     let chatList;
     try {
       const cacheData = await this.redis.getArray(fanup_id);
@@ -44,16 +44,11 @@ export class ChatService {
       await this.redis.setArray(fanup_id, chatList);
       return chatList;
     } catch (err) {
-      console.log(err);
       throw new ChatNotFoundException();
     }
   }
 
   async findAllChat() {
-    try {
-      return await this.prisma.chat.findMany();
-    } catch (err) {
-      console.log(err);
-    }
+    return await this.prisma.chat.findMany();
   }
 }
