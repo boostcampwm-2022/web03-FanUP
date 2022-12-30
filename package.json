@@ -87,7 +87,6 @@
       "Login",
       "OAuthContainer",
       "server/services/auth",
-      "server/services/ticket",
       "server/gateway/src/common",
       "server/services/core/src/common/type",
       "server/services/core/src/common/util",
@@ -96,7 +95,12 @@
       "server/services/core/src/common/interceptor",
       "server/services/core/src/common/filter",
       "server/services/core/src/job",
-      "server/services/core/src/provider"
+      "server/services/core/src/provider",
+      "server/services/ticket/src/common/type",
+      "server/services/ticket/src/common/util",
+      "server/services/ticket/src/common/exception/filter",
+      "server/services/ticket/src/job",
+      "server/services/ticket/src/provider"
     ],
     "transformIgnorePatterns": [
       "<rootDir>/node_modules",
