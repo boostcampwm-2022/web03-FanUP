@@ -2,6 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
 import { Test, TestingModule } from '@nestjs/testing';
+import EventEmitter from 'events';
 import { MICRO_SERVICES } from '../../common/constants/microservices';
 import { PrismaService } from '../../provider/prisma/prisma.service';
 import { TicketModule } from './ticket.module';
@@ -29,9 +30,8 @@ describe('TicketService', () => {
         ClientsModule.register([
           { name: MICRO_SERVICES.CORE.NAME, transport: Transport.TCP },
         ]),
-        EventEmitter2,
       ],
-      providers: [TicketService, PrismaService],
+      providers: [TicketService, PrismaService, EventEmitter2],
     }).compile();
 
     app = module.createNestApplication();
@@ -49,5 +49,9 @@ describe('TicketService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('getTicketHello 테스트', () => {
+    expect(service.getTicketHello()).toEqual('Ticket server is running!');
   });
 });
