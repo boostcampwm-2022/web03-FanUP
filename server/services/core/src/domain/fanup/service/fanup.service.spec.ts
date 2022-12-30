@@ -16,6 +16,8 @@ jest.mock('../../../provider/prisma/prisma.service', () => ({
     fanUp: {
       create: jest.fn(),
       findMany: jest.fn(),
+      findUnique: jest.fn(),
+      findFirst: jest.fn(),
     },
   })),
 }));
@@ -101,5 +103,129 @@ describe('FanupService', () => {
     const createFanupDto = new CreateFanupDto(1, new Date(), new Date(), 1, 1);
     prisma.fanUp.create = jest.fn().mockReturnValue(createFanupDto);
     expect(await service.create(data)).toEqual(createFanupDto);
+  });
+
+  it('findOne 성공 테스트', async () => {
+    const room_id = '1ad8e8ca-e748-4732-998a-439b0ebe9928';
+    const fanupDto = new CreateFanupDto(1, new Date(), new Date(), 1, 1);
+    prisma.fanUp.findUnique = jest.fn().mockReturnValue(fanupDto);
+    expect(await service.findOne(room_id)).toEqual(fanupDto);
+  });
+
+  it('findOne 실패 테스트', async () => {
+    try {
+      const room_id = '1ad8e8ca-e748-4732-998a-439b0ebe9928';
+      prisma.fanUp.findUnique = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+      await service.findOne(room_id);
+    } catch (err) {
+      expect(err).toBeInstanceOf(FanUPNotFoundException);
+      expect(err.message).toBe(ResMessage.FANUP_NOT_FOUND);
+    }
+  });
+
+  it('isExist 존재함', async () => {
+    const room_id = '1ad8e8ca-e748-4732-998a-439b0ebe9928';
+    const fanupDto = new CreateFanupDto(1, new Date(), new Date(), 1, 1);
+    prisma.fanUp.findFirst = jest.fn().mockReturnValue(fanupDto);
+    expect(await service.isExist(room_id)).toEqual(true);
+  });
+
+  it('isExist 존재하지 않음', async () => {
+    const room_id = '1ad8e8ca-e748-4732-998a-439b0ebe9928';
+    prisma.fanUp.findFirst = jest.fn().mockReturnValue(false);
+    expect(await service.isExist(room_id)).toEqual(false);
+  });
+
+  it('isExist 실패 테스트', async () => {
+    try {
+      const room_id = '1ad8e8ca-e748-4732-998a-439b0ebe9928';
+      prisma.fanUp.findFirst = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+      await service.isExist(room_id);
+    } catch (err) {
+      expect(err).toBeInstanceOf(FanUPNotFoundException);
+      expect(err.message).toBe(ResMessage.FANUP_NOT_FOUND);
+    }
+  });
+
+  it('findByRoom 성공 테스트', async () => {
+    const roomId = '1ad8e8ca-e748-4732-998a-439b0ebe9928';
+    const fanupDto = new CreateFanupDto(1, new Date(), new Date(), 1, 1);
+    prisma.fanUp.findFirst = jest.fn().mockReturnValue(fanupDto);
+    expect(await service.findByRoom(roomId)).toEqual(fanupDto);
+  });
+
+  it('findByRoom 실패 테스트', async () => {
+    try {
+      const roomId = '1ad8e8ca-e748-4732-998a-439b0ebe9928';
+      prisma.fanUp.findFirst = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+      await service.findByRoom(roomId);
+    } catch (err) {
+      expect(err).toBeInstanceOf(FanUPNotFoundException);
+      expect(err.message).toBe(ResMessage.FANUP_NOT_FOUND);
+    }
+  });
+
+  it('getAllFanUP 성공 테스트', async () => {
+    const fanupDto = [new CreateFanupDto(1, new Date(), new Date(), 1, 1)];
+    prisma.fanUp.findMany = jest.fn().mockReturnValue(fanupDto);
+    expect(await service.getAllFanUP()).toEqual(fanupDto);
+  });
+
+  it('getAllFanUP 실패 테스트', async () => {
+    try {
+      prisma.fanUp.findMany = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+      await service.getAllFanUP();
+    } catch (err) {
+      expect(err).toBeInstanceOf(FanUPNotFoundException);
+      expect(err.message).toBe(ResMessage.FANUP_NOT_FOUND);
+    }
+  });
+
+  it('findByArtistId 성공 테스트', async () => {
+    const artistId = 1;
+    const fanupDto = [new CreateFanupDto(1, new Date(), new Date(), 1, 1)];
+    prisma.fanUp.findMany = jest.fn().mockReturnValue(fanupDto);
+    expect(await service.findByArtistId(artistId)).toEqual(fanupDto);
+  });
+
+  it('findByArtistId 실패 테스트', async () => {
+    try {
+      const artistId = 1;
+      prisma.fanUp.findMany = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+      await service.findByArtistId(artistId);
+    } catch (err) {
+      expect(err).toBeInstanceOf(FanUPNotFoundException);
+      expect(err.message).toBe(ResMessage.FANUP_NOT_FOUND);
+    }
+  });
+
+  it('findRoomIdByTicketId 성공 테스트', async () => {
+    const ticketIds = [1, 2, 3];
+    const fanupDto = [new CreateFanupDto(1, new Date(), new Date(), 1, 1)];
+    prisma.fanUp.findMany = jest.fn().mockReturnValue(fanupDto);
+    expect(await service.findRoomIdByTicketId(ticketIds)).toEqual(fanupDto);
+  });
+
+  it('findRoomIdByTicketId 실패 테스트', async () => {
+    try {
+      const ticketIds = [1, 2, 3];
+      prisma.fanUp.findMany = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+      await service.findRoomIdByTicketId(ticketIds);
+    } catch (err) {
+      expect(err).toBeInstanceOf(FanUPNotFoundException);
+      expect(err.message).toBe(ResMessage.FANUP_NOT_FOUND);
+    }
   });
 });
