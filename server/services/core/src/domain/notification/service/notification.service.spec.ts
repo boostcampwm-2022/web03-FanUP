@@ -12,6 +12,7 @@ import {
 import { PrismaService } from '../../../provider/prisma/prisma.service';
 import { NotificationModule } from '../notification.module';
 import { NotificationService } from './notification.service';
+import { CreateNotificationDto } from '../dto/create-notification.dto';
 
 jest.mock('../../../provider/prisma/prisma.service', () => ({
   PrismaService: jest.fn().mockImplementation(() => ({
@@ -29,7 +30,7 @@ describe('NotificationService', () => {
   let service: NotificationService;
   let prisma: PrismaService;
 
-  const notification = {
+  const notification: CreateNotificationDto = {
     type: 'type',
     info: 'info',
     user_id: 1,
@@ -59,8 +60,13 @@ describe('NotificationService', () => {
   });
 
   it('create 성공 테스트', async () => {
-    prisma.notification.create = jest.fn().mockResolvedValue(notification);
-    expect(await service.create(notification)).toEqual(notification);
+    const createNotificationDto = new CreateNotificationDto(1, 'message');
+    prisma.notification.create = jest
+      .fn()
+      .mockResolvedValue(createNotificationDto);
+    expect(await service.create(createNotificationDto)).toEqual(
+      createNotificationDto,
+    );
   });
 
   it('create 실패 테스트', async () => {
