@@ -326,7 +326,8 @@ describe('FanupService', () => {
 
   it('createTotalFanUP 성공 테스트', async () => {
     const createTimeDtos = [new CreateTimeDto(1, new Date(), new Date(), 1, 1)];
-    service.calculateTotalFanUP = jest.fn().mockReturnValue([]);
+    service.calculateTotalFanUP = jest.fn().mockReturnValue(createTimeDtos);
+    service.create = jest.fn().mockReturnValue(createTimeDtos[0]);
     prisma.fanUp.create = jest.fn().mockReturnValue(createTimeDtos[0]);
 
     const result = await service.createTotalFanUP(ticket);
