@@ -65,4 +65,9 @@ describe('UserTicketService', () => {
     prisma.userTicket.delete = jest.fn().mockResolvedValue(userTicket);
     expect(await service.delete(1)).toEqual(userTicket);
   });
+
+  it('findManyByTicketId 테스트', async () => {
+    prisma.userTicket.findMany = jest.fn().mockResolvedValue([userTicket]);
+    expect(await service.findManyByTicketId(1)).toEqual([userTicket]);
+  });
 });
