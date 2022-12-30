@@ -18,6 +18,12 @@ describe('ChatService', () => {
   let service: ArtistService;
   let prisma: PrismaService;
 
+  const artist = {
+    id: 1,
+    name: 'name',
+    profileUrl: 'profileUrl',
+  };
+
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [ArtistModule],
@@ -39,5 +45,10 @@ describe('ChatService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('create 테스트', () => {
+    prisma.artist.create = jest.fn().mockResolvedValue(artist);
+    expect(service.create(artist)).resolves.toEqual(artist);
   });
 });
