@@ -5,9 +5,12 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ResMessage } from '../../../common/constants';
-import { FanUPNotFoundException } from '../../../common/exception';
+import {
+  FanUPNotFoundException,
+  FanUPUpdateException,
+} from '../../../common/exception';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
-import { CreateFanupDto, CreateTimeDto } from '../dto';
+import { CreateFanupDto, CreateTimeDto, UpdateFanupDto } from '../dto';
 import { FanUPModule } from '../fanup.module';
 import { FanupService } from './fanup.service';
 
@@ -226,6 +229,67 @@ describe('FanupService', () => {
     } catch (err) {
       expect(err).toBeInstanceOf(FanUPNotFoundException);
       expect(err.message).toBe(ResMessage.FANUP_NOT_FOUND);
+    }
+  });
+
+  it('update 성공 테스트', async () => {
+    const updateFanupDto = new UpdateFanupDto();
+    const data = new CreateFanupDto(
+      1,
+      new Date('2022-12-29T03:24:00'),
+      new Date(),
+      1,
+      1,
+    );
+    service.isExist = jest.fn();
+    service.findOne = jest.fn().mockReturnValue(data);
+    prisma.fanUp.update = jest.fn().mockReturnValue(data);
+    expect(await service.update('room', updateFanupDto)).toEqual(data);
+  });
+
+  it('update Today일 경우 FanUPUpdateException 테스트', async () => {
+    try {
+      const updateFanupDto = new UpdateFanupDto();
+      const data = new CreateFanupDto(1, new Date(), new Date(), 1, 1);
+      service.isExist = jest.fn();
+      service.findOne = jest.fn().mockReturnValue(data);
+      prisma.fanUp.update = jest.fn();
+      await service.update('room', updateFanupDto);
+    } catch (err) {
+      expect(err).toBeInstanceOf(FanUPUpdateException);
+      expect(err.message).toBe(ResMessage.FANUP_UPDATE_FAIL);
+    }
+  });
+
+  it('update 에러날 경우 FanUPUpdateException 테스트', async () => {
+    try {
+      service.isExist = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+      await service.update('room', new UpdateFanupDto());
+    } catch (err) {
+      expect(err).toBeInstanceOf(FanUPUpdateException);
+      expect(err.message).toBe(ResMessage.FANUP_UPDATE_FAIL);
+    }
+  });
+
+  it('updateStatus 성공 테스트', async () => {
+    const data = new CreateFanupDto(1, new Date(), new Date(), 1, 1);
+    service.isExist = jest.fn();
+    service.fanUPStatus = jest.fn();
+    prisma.fanUp.update = jest.fn().mockReturnValue(data);
+    expect(await service.updateStatus('room', 'WAITING')).toEqual(data);
+  });
+
+  it('updateStatus 실패 테스트', async () => {
+    try {
+      prisma.fanUp.update = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+      await service.updateStatus('room', 'WAITING');
+    } catch (err) {
+      expect(err).toBeInstanceOf(FanUPUpdateException);
+      expect(err.message).toBe(ResMessage.FANUP_UPDATE_FAIL);
     }
   });
 });

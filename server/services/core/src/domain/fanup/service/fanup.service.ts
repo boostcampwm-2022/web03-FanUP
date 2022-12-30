@@ -88,7 +88,6 @@ export class FanupService {
   async createTotalFanUP(ticket: Ticket) {
     try {
       const createDto = this.calculateTotalFanUP(ticket);
-      console.log(createDto);
       const fanUPforFan = await Promise.all(
         createDto.map(async (dto) => await this.create(dto)),
       );
