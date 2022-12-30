@@ -31,8 +31,9 @@
 </div>
 
 ## 👉 메인 기능
-<img src = "https://user-images.githubusercontent.com/78716842/205433756-3c0d1567-241d-4ecf-945a-4933cdd779e8.png" width = "1000">. 
- 
+
+<img src = "https://user-images.githubusercontent.com/78716842/205433756-3c0d1567-241d-4ecf-945a-4933cdd779e8.png" width = "1000">.
+
 ### 1. 티켓 개설
 
 > 아티스트는 캘린더에서 팬미팅을 진행할 날짜를 선택하고, 팬미팅 이벤트를 생성할 수 있어요.
@@ -67,7 +68,6 @@
 
 ![스크린샷 2022-12-14 오전 1 44 06](https://user-images.githubusercontent.com/11497528/207984025-fcb0be82-9750-4baf-89e2-457fc9aa9af0.png)
 
-
 ## 🔗 링크
 
 - FanUP 바로가기: https://fanup.live
@@ -82,6 +82,7 @@
 깃허브 위키에도 많은 내용들이 적혀있으니 많이 구경해주세요😁
 ✅ https://github.com/boostcampwm-2022/web03-FanUP/wiki
 ✅ 슈크림 붕어빵 노션 구경하러가기 => https://thorn-tiara-c85.notion.site/FanUP-60195efd659e4c14ad0b2a435015aa52
+✅ FanUP 테스트 커버리지 구경하러가기 => https://coveralls.io/github/boostcampwm-2022/web03-FanUP
 ```
 
 [⚙️ 설계 및 개발 고민](https://www.notion.so/e1069837e28f4f0cbc6d75aa19d27b96?v=eb29d65c56bf4570a97706d976c1b07a)
@@ -90,7 +91,8 @@
 
 [⚾️ API 명세서](https://www.notion.so/API-65bb429b46ea412a88f03ae3c7e0ab87)
 
-[🚋 데모데이 소개 자료](https://www.notion.so/9cd9e93c572244bd8d8525770bda913c?v=7e01a116756d433eb2c75dbfeb8ccae6)  
+[🚋 데모데이 소개 자료](https://www.notion.so/9cd9e93c572244bd8d8525770bda913c?v=7e01a116756d433eb2c75dbfeb8ccae6)
+
+[![Coverage Status](https://coveralls.io/repos/github/boostcampwm-2022/web03-FanUP/badge.svg?branch=dev)](https://coveralls.io/github/boostcampwm-2022/web03-FanUP?branch=dev)
 
 <br/>
-

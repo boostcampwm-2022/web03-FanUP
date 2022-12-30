@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UserTicket } from '@prisma/client';
 import { ResStatusCode } from '../../common/constants/res-status-code';
 import { CustomRpcException } from '../../common/exception/custom-rpc-exception';
@@ -9,10 +8,7 @@ import CreateUserTicketDto from './dto/create-user-ticket.dto';
 
 @Injectable()
 export class UserTicketService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private event: EventEmitter2,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(createUserTicketDto: CreateUserTicketDto): Promise<UserTicket> {
     const userTicketResult = await this.prisma.$transaction(async (tx) => {

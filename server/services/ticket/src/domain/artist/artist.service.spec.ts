@@ -13,7 +13,7 @@ jest.mock('../../provider/prisma/prisma.service', () => ({
   })),
 }));
 
-describe('ChatService', () => {
+describe('ArtistService', () => {
   let app: INestApplication;
   let service: ArtistService;
   let prisma: PrismaService;
