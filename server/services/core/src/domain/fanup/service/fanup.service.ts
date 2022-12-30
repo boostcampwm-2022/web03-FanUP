@@ -5,6 +5,7 @@ import { addMinutes, dateToDict, isToday } from '../../../common/util';
 import {
   FanUPNotFoundException,
   FanUPUpdateException,
+  FanUPCreateException,
 } from '../../../common/exception';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
 import { CreateFanupDto, CreateTimeDto, UpdateFanupDto } from '../dto';
@@ -105,7 +106,7 @@ export class FanupService {
       });
       return [...fanUPforFan, fanUPforArtist];
     } catch (err) {
-      console.log(err);
+      throw new FanUPCreateException();
     }
   }
 

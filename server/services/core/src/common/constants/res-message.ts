@@ -20,6 +20,7 @@ const ResMessage = {
   FIND_FANUP_BY_ROOM: '해당 방의 정보를 가져왔습니다.',
   FIND_FANUP_BY_TICKET_ID: 'Artist의 FanupID 리스트를 가져왔습니다.',
 
+  FANUP_CREATE_FAIL: '팬미팅 생성에 실패하였습니다.',
   FANUP_NOT_FOUND: '해당 팬미팅 방이 존재하지 않습니다.',
   FANUP_UPDATE_FAIL: '팬미팅 정보를 업데이트하는데 실패하였습니다.',
 
