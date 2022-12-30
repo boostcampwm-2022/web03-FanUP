@@ -316,6 +316,14 @@ describe('FanupService', () => {
     expect(service.calculateFanUP(3, 2)).toEqual(2);
   });
 
+  it('calculateTotalFanUP 테스트', () => {
+    const createTimeDtos = [new CreateTimeDto(1, new Date(), new Date(), 1, 1)];
+    const result = service.calculateTotalFanUP(ticket);
+    expect(result[0].artist_id).toEqual(createTimeDtos[0].artist_id);
+    expect(result[0].number_team).toEqual(createTimeDtos[0].number_team);
+    expect(result[0].ticket_id).toEqual(createTimeDtos[0].ticket_id);
+  });
+
   it('createTotalFanUP 성공 테스트', async () => {
     const createTimeDtos = [new CreateTimeDto(1, new Date(), new Date(), 1, 1)];
     service.calculateTotalFanUP = jest.fn().mockReturnValue([]);
@@ -327,7 +335,7 @@ describe('FanupService', () => {
     expect(result[0].ticket_id).toEqual(createTimeDtos[0].ticket_id);
   });
 
-  it('calculateTotalFanUP 실패 테스트', async () => {
+  it('createTotalFanUP 실패 테스트', async () => {
     try {
       prisma.fanUp.create = jest.fn().mockImplementation(() => {
         throw new Error();
