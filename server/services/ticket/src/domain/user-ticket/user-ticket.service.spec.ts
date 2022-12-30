@@ -80,4 +80,11 @@ describe('UserTicketService', () => {
     prisma.userTicket.update = jest.fn().mockResolvedValue(userTicket);
     expect(await service.updateFanUPIdById(1, 'fanupId')).toEqual(userTicket);
   });
+
+  it('findUserTicketByFanUPId 테스트', async () => {
+    prisma.userTicket.findMany = jest.fn().mockResolvedValue([userTicket]);
+    expect(await service.findUserTicketByFanUPId('fanupId')).toEqual([
+      userTicket,
+    ]);
+  });
 });
