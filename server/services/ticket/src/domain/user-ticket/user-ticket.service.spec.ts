@@ -1,8 +1,8 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../provider/prisma/prisma.service';
-import { ArtistModule } from './artist.module';
-import { ArtistService } from './artist.service';
+import { UserTicketModule } from './user-ticket.module';
+import { UserTicketService } from './user-ticket.service';
 
 jest.mock('../../provider/prisma/prisma.service', () => ({
   PrismaService: jest.fn().mockImplementation(() => ({
@@ -13,27 +13,21 @@ jest.mock('../../provider/prisma/prisma.service', () => ({
   })),
 }));
 
-describe('ArtistService', () => {
+describe('UserTicketService', () => {
   let app: INestApplication;
-  let service: ArtistService;
+  let service: UserTicketService;
   let prisma: PrismaService;
-
-  const artist = {
-    id: 1,
-    name: 'name',
-    profileUrl: 'profileUrl',
-  };
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ArtistModule],
-      providers: [ArtistService, PrismaService],
+      imports: [UserTicketModule],
+      providers: [UserTicketService, PrismaService],
     }).compile();
 
     app = module.createNestApplication();
     await app.init();
 
-    service = module.get<ArtistService>(ArtistService);
+    service = module.get<UserTicketService>(UserTicketService);
     prisma = module.get<PrismaService>(PrismaService);
   });
 
@@ -44,15 +38,5 @@ describe('ArtistService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
-  });
-
-  it('create 테스트', () => {
-    prisma.artist.create = jest.fn().mockResolvedValue(artist);
-    expect(service.create(artist)).resolves.toEqual(artist);
-  });
-
-  it('update 테스트', () => {
-    prisma.artist.update = jest.fn().mockResolvedValue(artist);
-    expect(service.update(artist)).resolves.toEqual(artist);
   });
 });
