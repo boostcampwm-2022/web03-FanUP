@@ -114,4 +114,12 @@ describe('NotificationService', () => {
       expect(err.message).toBe(ResMessage.NOTIFICATION_NOT_FOUND);
     }
   });
+
+  it('updateRead 성공 테스트', async () => {
+    prisma.notification.updateMany = jest.fn().mockResolvedValue(notification);
+    expect(await service.updateRead(1, 1)).toEqual(notification);
+    expect(await service.updateRead('1', 1)).toEqual(notification);
+    expect(await service.updateRead(1, '1')).toEqual(notification);
+    expect(await service.updateRead('1', '1')).toEqual(notification);
+  });
 });
