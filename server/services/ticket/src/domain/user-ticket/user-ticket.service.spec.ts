@@ -55,4 +55,9 @@ describe('UserTicketService', () => {
     prisma.userTicket.findUnique = jest.fn().mockResolvedValue(userTicket);
     expect(await service.find(1)).toEqual(userTicket);
   });
+
+  it('findAll 테스트', async () => {
+    prisma.userTicket.findMany = jest.fn().mockResolvedValue([userTicket]);
+    expect(await service.findAll()).toEqual([userTicket]);
+  });
 });
