@@ -92,7 +92,6 @@ export class FanupService {
       const fanUPforFan = await Promise.all(
         createDto.map(async (dto) => await this.create(dto)),
       );
-      console.log(fanUPforFan);
       const fanUPforArtist = await this.prisma.fanUp.create({
         data: {
           room_id: uuid(),
