@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../provider/prisma/prisma.service';
 import { UserTicketModule } from './user-ticket.module';
 import { UserTicketService } from './user-ticket.service';
+import CreateUserTicketDto from './dto/create-user-ticket.dto';
 
 jest.mock('../../provider/prisma/prisma.service', () => ({
   PrismaService: jest.fn().mockImplementation(() => ({
@@ -13,6 +14,17 @@ jest.mock('../../provider/prisma/prisma.service', () => ({
       findMany: jest.fn(),
       delete: jest.fn(),
     },
+    $transaction: jest.fn((tx) => {
+      tx = {
+        ticket: {
+          findUnique: jest.fn(),
+        },
+        userTicket: {
+          count: jest.fn(),
+          create: jest.fn(),
+        },
+      };
+    }),
   })),
 }));
 
@@ -49,6 +61,12 @@ describe('UserTicketService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('create 테스트', async () => {
+    prisma.$transaction = jest.fn().mockReturnValue(userTicket);
+    const createUserTicketDto = new CreateUserTicketDto(1, 1);
+    expect(await service.create(createUserTicketDto)).toEqual(userTicket);
   });
 
   it('find 테스트', async () => {
