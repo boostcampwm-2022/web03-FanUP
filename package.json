@@ -93,6 +93,8 @@
       "server/services/core/src/common/util",
       "server/services/core/src/common/config",
       "server/services/core/src/common/middleware",
+      "server/services/core/src/common/interceptor",
+      "server/services/core/src/common/filter",
       "server/services/core/src/job",
       "server/services/core/src/provider"
     ],

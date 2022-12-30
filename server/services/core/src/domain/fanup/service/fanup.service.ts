@@ -5,6 +5,7 @@ import { addMinutes, dateToDict, isToday } from '../../../common/util';
 import {
   FanUPNotFoundException,
   FanUPUpdateException,
+  FanUPCreateException,
 } from '../../../common/exception';
 import { PrismaService } from '../../../provider/prisma/prisma.service';
 import { CreateFanupDto, CreateTimeDto, UpdateFanupDto } from '../dto';
@@ -88,7 +89,6 @@ export class FanupService {
   async createTotalFanUP(ticket: Ticket) {
     try {
       const createDto = this.calculateTotalFanUP(ticket);
-      console.log(createDto);
       const fanUPforFan = await Promise.all(
         createDto.map(async (dto) => await this.create(dto)),
       );
@@ -106,7 +106,7 @@ export class FanupService {
       });
       return [...fanUPforFan, fanUPforArtist];
     } catch (err) {
-      console.log(err);
+      throw new FanUPCreateException();
     }
   }
 
@@ -145,16 +145,20 @@ export class FanupService {
   }
 
   async isExist(room_id: string) {
-    const fanUp = await this.prisma.fanUp.findFirst({
-      where: {
-        room_id,
-      },
-    });
+    try {
+      const fanUp = await this.prisma.fanUp.findFirst({
+        where: {
+          room_id,
+        },
+      });
 
-    if (fanUp) {
-      return true;
+      if (fanUp) {
+        return true;
+      }
+      return false;
+    } catch (err) {
+      throw new FanUPNotFoundException();
     }
-    throw new FanUPNotFoundException();
   }
 
   async findByRoom(roomId: string) {
@@ -165,7 +169,6 @@ export class FanupService {
         },
       });
     } catch (err) {
-      console.log(err);
       throw new FanUPNotFoundException();
     }
   }
@@ -174,8 +177,7 @@ export class FanupService {
     try {
       return await this.prisma.fanUp.findMany();
     } catch (err) {
-      console.log(err);
-      return err;
+      throw new FanUPNotFoundException();
     }
   }
 
@@ -187,7 +189,7 @@ export class FanupService {
         },
       });
     } catch (err) {
-      console.log(err);
+      throw new FanUPNotFoundException();
     }
   }
 
@@ -206,7 +208,7 @@ export class FanupService {
         },
       });
     } catch (err) {
-      console.log(err);
+      throw new FanUPNotFoundException();
     }
   }
 
@@ -220,7 +222,7 @@ export class FanupService {
       return 0;
     } else {
       const num = Number(ticketAmount / numberTeam);
-      return ticketAmount % numberTeam === 0 ? num : num + 1;
+      return ticketAmount % numberTeam === 0 ? num : Math.ceil(num);
     }
   }
 
@@ -228,7 +230,7 @@ export class FanupService {
     const { id, totalAmount, numberTeam, startTime, timeTeam, artistId } =
       ticket;
     const num = Number(totalAmount / numberTeam);
-    const totalNum = totalAmount % numberTeam === 0 ? num : num + 1;
+    const totalNum = totalAmount % numberTeam === 0 ? num : Math.ceil(num);
     const date = new Date(startTime);
 
     return Array.from({ length: totalNum }, (_, i) => i).map((order) => {
