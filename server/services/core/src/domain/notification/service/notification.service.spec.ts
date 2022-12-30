@@ -71,4 +71,9 @@ describe('NotificationService', () => {
       expect(err.message).toBe(ResMessage.NOTIFICATION_BAD_REQUEST);
     }
   });
+
+  it('findByUserId 성공 테스트', async () => {
+    prisma.notification.findMany = jest.fn().mockResolvedValue(notification);
+    expect(await service.findByUserId(1)).toEqual(notification);
+  });
 });
