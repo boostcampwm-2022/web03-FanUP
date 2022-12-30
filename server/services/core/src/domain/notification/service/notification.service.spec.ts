@@ -91,4 +91,9 @@ describe('NotificationService', () => {
       expect(err.message).toBe(ResMessage.NOTIFICATION_NOT_FOUND);
     }
   });
+
+  it('findOne 성공 테스트', async () => {
+    prisma.notification.findFirst = jest.fn().mockResolvedValue(notification);
+    expect(await service.findOne(1)).toEqual(notification);
+  });
 });
