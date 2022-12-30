@@ -292,4 +292,10 @@ describe('FanupService', () => {
       expect(err.message).toBe(ResMessage.FANUP_UPDATE_FAIL);
     }
   });
+
+  it('calculateFanUP 테스트', () => {
+    expect(service.calculateFanUP(0, 1)).toEqual(0);
+    expect(service.calculateFanUP(1, 1)).toEqual(1);
+    expect(service.calculateFanUP(3, 2)).toEqual(2);
+  });
 });

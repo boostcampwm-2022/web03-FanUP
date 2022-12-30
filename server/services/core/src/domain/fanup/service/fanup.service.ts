@@ -221,7 +221,7 @@ export class FanupService {
       return 0;
     } else {
       const num = Number(ticketAmount / numberTeam);
-      return ticketAmount % numberTeam === 0 ? num : num + 1;
+      return ticketAmount % numberTeam === 0 ? num : Math.ceil(num);
     }
   }
 
