@@ -121,4 +121,9 @@ describe('TicketService', () => {
     prisma.ticket.delete = jest.fn().mockResolvedValue(ticket);
     expect(await service.delete(1)).toEqual(ticket);
   });
+
+  it('update 테스트', async () => {
+    prisma.ticket.update = jest.fn().mockResolvedValue(ticket);
+    expect(await service.update(1, createTicketDto)).toEqual(ticket);
+  });
 });
