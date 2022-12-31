@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MICRO_SERVICES } from '../../common/constants/microservices';
 import { PrismaService } from '../../provider/prisma/prisma.service';
@@ -18,7 +19,7 @@ import { TicketService } from './ticket.service';
       },
     ]),
   ],
-  providers: [TicketService, PrismaService],
+  providers: [TicketService, PrismaService, EventEmitter2],
   controllers: [TicketController],
 })
 export class TicketModule {}

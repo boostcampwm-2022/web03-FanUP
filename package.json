@@ -96,9 +96,7 @@
       "server/services/core/src/common/filter",
       "server/services/core/src/job",
       "server/services/core/src/provider",
-      "server/services/ticket/src/common/type",
-      "server/services/ticket/src/common/util",
-      "server/services/ticket/src/common/exception/filter",
+      "server/services/ticket/src/common",
       "server/services/ticket/src/job",
       "server/services/ticket/src/provider"
     ],
