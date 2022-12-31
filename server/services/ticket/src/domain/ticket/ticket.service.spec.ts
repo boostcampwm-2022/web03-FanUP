@@ -146,4 +146,9 @@ describe('TicketService', () => {
       }),
     ).toEqual([ticket]);
   });
+
+  it('findTicketByToday 테스트', async () => {
+    prisma.ticket.findMany = jest.fn().mockResolvedValue([ticket]);
+    expect(await service.findTicketByToday()).toEqual([ticket]);
+  });
 });
