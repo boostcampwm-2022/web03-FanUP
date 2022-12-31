@@ -40,9 +40,9 @@ import { MICRO_SERVICES } from '../../common/constants/microservices';
 import { PrismaService } from '../../provider/prisma/prisma.service';
 import { TicketModule } from './ticket.module';
 import { TicketService } from './ticket.service';
-import CreateTicketDto from './dto/create-ticket.dto';
 import { CustomRpcException } from '../../common/exception/custom-rpc-exception';
-import { firstValueFrom, lastValueFrom, Observable, of } from 'rxjs';
+import CreateTicketDto from './dto/create-ticket.dto';
+import UpdateTicketDto from './dto/update-ticket.dto';
 
 jest.mock('../../provider/prisma/prisma.service', () => ({
   PrismaService: jest.fn().mockImplementation(() => ({
@@ -64,6 +64,18 @@ describe('TicketService', () => {
   let event: EventEmitter2;
 
   const createTicketDto: CreateTicketDto = {
+    title: 'title',
+    content: 'content',
+    artistId: 1,
+    salesTime: new Date(),
+    startTime: new Date(),
+    totalAmount: 1,
+    numberTeam: 1,
+    timeTeam: 1,
+    price: 1,
+  };
+
+  const updateTicketDto: UpdateTicketDto = {
     title: 'title',
     content: 'content',
     artistId: 1,
@@ -159,7 +171,7 @@ describe('TicketService', () => {
 
   it('update 테스트', async () => {
     prisma.ticket.update = jest.fn().mockResolvedValue(ticket);
-    expect(await service.update(1, createTicketDto)).toEqual(ticket);
+    expect(await service.update(1, updateTicketDto)).toEqual(ticket);
   });
 
   it('findAllByUserId 테스트', async () => {
@@ -169,6 +181,11 @@ describe('TicketService', () => {
     expect(await service.findAllByUserId(1)).toEqual([
       { ...ticket, fanupId: '1' },
     ]);
+  });
+
+  it('findAllByUserId null 테스트', async () => {
+    prisma.ticket.findMany = jest.fn().mockResolvedValue([]);
+    expect(await service.findAllByUserId(1)).toEqual([]);
   });
 
   it('findAllTicketByDate 테스트', async () => {
