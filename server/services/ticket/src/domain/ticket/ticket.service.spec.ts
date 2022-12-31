@@ -111,4 +111,9 @@ describe('TicketService', () => {
       expect(err.message).toEqual('Ticket not found');
     }
   });
+
+  it('findAll 테스트', async () => {
+    prisma.ticket.findMany = jest.fn().mockResolvedValue([ticket]);
+    expect(await service.findAll()).toEqual([ticket]);
+  });
 });
