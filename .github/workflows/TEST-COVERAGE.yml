@@ -52,7 +52,7 @@ jobs:
         run: |
           rm -rf node_modules
           npm ci
-          npm run coveralls
+          npm run cover
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
