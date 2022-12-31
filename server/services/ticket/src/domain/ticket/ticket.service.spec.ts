@@ -93,4 +93,9 @@ describe('TicketService', () => {
     prisma.ticket.create = jest.fn().mockResolvedValue(ticket);
     expect(await service.create(createTicketDto)).toEqual(ticket);
   });
+
+  it('find 성공 테스트', async () => {
+    prisma.ticket.findUniqueOrThrow = jest.fn().mockResolvedValue(ticket);
+    expect(await service.find(1)).toEqual(ticket);
+  });
 });
