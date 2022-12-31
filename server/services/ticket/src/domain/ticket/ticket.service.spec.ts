@@ -135,4 +135,15 @@ describe('TicketService', () => {
       { ...ticket, fanupId: '1' },
     ]);
   });
+
+  it('findAllTicketByDate 테스트', async () => {
+    prisma.ticket.findMany = jest.fn().mockResolvedValue([ticket]);
+    expect(
+      await service.findAllTicketByDate({
+        artistId: 1,
+        year: 2022,
+        month: 12,
+      }),
+    ).toEqual([ticket]);
+  });
 });
