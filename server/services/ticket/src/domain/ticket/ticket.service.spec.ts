@@ -1,6 +1,40 @@
+/**
+ * @jest-environment node
+ */
+
+jest.mock('rxjs', () => {
+  const original = jest.requireActual('rxjs');
+
+  return {
+    ...original,
+    firstValueFrom: () =>
+      new Promise((resolve, reject) => {
+        resolve({ data: [{ ticket_id: 1, room_id: 'room' }] });
+      }),
+  };
+});
+
+jest.mock('@nestjs/microservices', () => {
+  const original = jest.requireActual('@nestjs/microservices');
+  return {
+    ...original,
+    ClientProxy: jest.fn().mockImplementation(() => ({
+      send: jest.fn().mockReturnValue(true),
+      connect: jest.fn(),
+      close: jest.fn(),
+    })),
+    ClientTCP: jest.fn().mockImplementation(() => ({
+      send: jest.fn(),
+      connect: jest.fn(),
+      close: jest.fn(),
+      handleClose: jest.fn(),
+    })),
+  };
+});
+
 import { INestApplication } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MICRO_SERVICES } from '../../common/constants/microservices';
 import { PrismaService } from '../../provider/prisma/prisma.service';
@@ -8,6 +42,7 @@ import { TicketModule } from './ticket.module';
 import { TicketService } from './ticket.service';
 import CreateTicketDto from './dto/create-ticket.dto';
 import { CustomRpcException } from '../../common/exception/custom-rpc-exception';
+import { firstValueFrom, lastValueFrom, Observable, of } from 'rxjs';
 
 jest.mock('../../provider/prisma/prisma.service', () => ({
   PrismaService: jest.fn().mockImplementation(() => ({
@@ -25,7 +60,7 @@ describe('TicketService', () => {
   let app: INestApplication;
   let service: TicketService;
   let prisma: PrismaService;
-  let core: ClientProxy;
+  let coreClient;
   let event: EventEmitter2;
 
   const createTicketDto: CreateTicketDto = {
@@ -72,13 +107,13 @@ describe('TicketService', () => {
 
     service = module.get<TicketService>(TicketService);
     prisma = module.get<PrismaService>(PrismaService);
-    core = module.get<ClientProxy>(MICRO_SERVICES.CORE.NAME);
+    coreClient = module.get(MICRO_SERVICES.CORE.NAME);
     event = module.get<EventEmitter2>(EventEmitter2);
     event.emit = jest.fn();
   });
 
-  afterAll(() => {
-    app.close();
+  afterAll(async () => {
+    await app.close();
     jest.resetModules();
   });
 
@@ -150,5 +185,13 @@ describe('TicketService', () => {
   it('findTicketByToday 테스트', async () => {
     prisma.ticket.findMany = jest.fn().mockResolvedValue([ticket]);
     expect(await service.findTicketByToday()).toEqual([ticket]);
+  });
+
+  it('findTicketByTodayAndArtistId 테스트', async () => {
+    prisma.ticket.findMany = jest.fn().mockResolvedValue([ticket]);
+    coreClient.send = jest.fn();
+    expect(await service.findTicketByTodayAndArtistId(1)).toEqual([
+      { ...ticket, fanupId: 'room' },
+    ]);
   });
 });

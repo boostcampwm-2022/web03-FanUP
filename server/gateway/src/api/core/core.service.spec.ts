@@ -19,7 +19,6 @@ import { ClientsModule, ClientTCP, Transport } from '@nestjs/microservices';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { MICRO_SERVICES } from '../../common/constants/microservices';
-import { CoreController } from './core.controller';
 import { CoreModule } from './core.module';
 import { CoreService } from './core.service';
 
