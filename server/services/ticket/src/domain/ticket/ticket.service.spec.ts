@@ -7,6 +7,7 @@ import { PrismaService } from '../../provider/prisma/prisma.service';
 import { TicketModule } from './ticket.module';
 import { TicketService } from './ticket.service';
 import CreateTicketDto from './dto/create-ticket.dto';
+import { CustomRpcException } from '../../common/exception/custom-rpc-exception';
 
 jest.mock('../../provider/prisma/prisma.service', () => ({
   PrismaService: jest.fn().mockImplementation(() => ({
@@ -97,5 +98,17 @@ describe('TicketService', () => {
   it('find 성공 테스트', async () => {
     prisma.ticket.findUniqueOrThrow = jest.fn().mockResolvedValue(ticket);
     expect(await service.find(1)).toEqual(ticket);
+  });
+
+  it('find 실패 테스트', async () => {
+    try {
+      prisma.ticket.findUniqueOrThrow = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+      await service.find(1);
+    } catch (err) {
+      expect(err).toBeInstanceOf(CustomRpcException);
+      expect(err.message).toEqual('Ticket not found');
+    }
   });
 });
