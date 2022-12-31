@@ -126,4 +126,13 @@ describe('TicketService', () => {
     prisma.ticket.update = jest.fn().mockResolvedValue(ticket);
     expect(await service.update(1, createTicketDto)).toEqual(ticket);
   });
+
+  it('findAllByUserId 테스트', async () => {
+    prisma.ticket.findMany = jest
+      .fn()
+      .mockResolvedValue([{ ...ticket, userTickets: [{ fanupId: '1' }] }]);
+    expect(await service.findAllByUserId(1)).toEqual([
+      { ...ticket, fanupId: '1' },
+    ]);
+  });
 });
