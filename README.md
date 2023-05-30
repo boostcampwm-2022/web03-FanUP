@@ -4,7 +4,7 @@
     <h3>No Fan, No Artist</h3>
     <p> 폭발적으로 증가하는 한류 팬덤과 KPOP 산업으로 늘어난 팬들에 비해 이들을 지속시킬 부족한 팬 소통 수단이 부족했습니다.<br />
     FanUP은 아티스트와 팬들이 하양적 소통 방식에서 벗어나 소통을 할 수 있도록 비대면 팬미팅 서비스를 제공합니다.</p>
-    <a href="https://fanup.live"/>FanUP 바로가기</a>
+
     <h3>🛠 Skill Keywords 🛠</h3>
     <div align="center">
         <img src="https://img.shields.io/badge/Node-339933?style=flat-square&logo=Node.js&logoColor=white"/>&nbsp 
