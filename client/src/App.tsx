@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+
+import theme from '@style/theme';
+import GlobalStyle from '@style/GlobalStyle';
+import {
+    FanUP,
+    Home,
+    Login,
+    NotFound,
+    AuthCallback,
+    Tickets,
+    Ticket,
+    TicketingSuccess,
+    TicketingFailure,
+    Schedule,
+    Artist,
+} from './Routes';
+import ErrorBoundary from '@hoc/errorBoundary';
+import { withProfiler } from '@sentry/react';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <ErrorBoundary>
+            <ThemeProvider theme={theme}>
+                <GlobalStyle />
+                <Suspense fallback={<></>}>
+                    <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/auth/:domain/callback" element={<AuthCallback />} />
+                        <Route path="/" element={<Home />} />
+                        <Route path="/fanup/:fanUpId" element={<FanUP />} />
+                        <Route path="/tickets" element={<Tickets />} />
+                        <Route path="/ticket/:ticketId" element={<Ticket />} />
+                        <Route path="/ticketing/success" element={<TicketingSuccess />} />
+                        <Route path="/ticketing/failure" element={<TicketingFailure />} />
+                        <Route path="/schedule" element={<Schedule />} />
+                        <Route path="/artist" element={<Artist />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </Suspense>
+            </ThemeProvider>
+        </ErrorBoundary>
+    );
 }
 
-export default App;
+export default withProfiler(App);

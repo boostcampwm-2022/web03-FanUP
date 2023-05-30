@@ -1,0 +1,4 @@
+node_modules
+migratinos
+# Keep environment variables out of version control
+.env

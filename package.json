@@ -1,0 +1,118 @@
+{
+  "name": "fanup",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">   <a href=\"http://nestjs.com/\" target=\"blank\"><img src=\"https://nestjs.com/img/logo-small.svg\" width=\"200\" alt=\"Nest Logo\" /></a> </p>",
+  "scripts": {
+    "test": "jest --detectOpenHandles --forceExit --silent",
+    "coverage": "jest --coverage --detectOpenHandles --forceExit --silent",
+    "coveralls": "jest --coverage --detectOpenHandles --forceExit && coveralls < ./coverage/lcov.info",
+    "cover": "coveralls < ./coverage/lcov.info"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.20.2",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.18.6",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/cache-manager": "^4.0.2",
+    "@types/cache-manager-ioredis": "^2.0.3",
+    "@types/jest": "^29.2.3",
+    "babel-jest": "^28.0.0",
+    "coveralls": "^3.1.1",
+    "jest": "28.1.3",
+    "jest-environment-jsdom": "^29.3.1",
+    "supertest": "^6.3.3",
+    "ts-jest": "^28.0.8"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts",
+      "tsx"
+    ],
+    "rootDir": ".",
+    "testRegex": [
+      ".*\\.spec\\.ts$",
+      ".*\\.e2e-spec\\.ts$",
+      ".*\\.test\\.tsx$"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx|js|jsx)$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s",
+      "**/*.(t|j)sx"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/client/src/$1",
+      "^@atoms/(.*)$": "<rootDir>/client/src/components/UI/atoms/$1",
+      "^@molecules/(.*)$": "<rootDir>/client/src/components/UI/molecules/$1",
+      "^@organisms/(.*)$": "<rootDir>/client/src/components/UI/organisms/$1",
+      "^@icons/(.*)$": "<rootDir>/client/src/components/icons/$1",
+      "^@hoc/(.*)$": "<rootDir>/client/src/components/hoc/$1",
+      "^@images/(.*)$": "<rootDir>/client/src/images/$1",
+      "^@pages/(.*)$": "<rootDir>/client/src/pages/$1",
+      "^@style/(.*)$": "<rootDir>/client/src/style/$1",
+      "^@store/(.*)$": "<rootDir>/client/src/store/$1",
+      "^@utils/(.*)$": "<rootDir>/client/src/utils/$1",
+      "^@hooks/(.*)$": "<rootDir>/client/src/hooks/$1",
+      "^@services/(.*)$": "<rootDir>/client/src/services/$1"
+    },
+    "testEnvironment": "jsdom",
+    "coveragePathIgnorePatterns": [
+      "jest.setup.js",
+      "babel.config.js",
+      "App.tsx",
+      "coverage",
+      "dist",
+      ".d.ts",
+      ".css",
+      ".dto.ts",
+      "config-overrides.js",
+      "reportWebVitals.ts",
+      "setupTests.ts",
+      "Routes.ts",
+      "client/src/hooks",
+      "client/src/images",
+      "client/src/mocks",
+      "client/src/services",
+      "client/src/style",
+      "client/src/types",
+      "client/src/utils",
+      "client/src/components/icons",
+      "Login",
+      "OAuthContainer",
+      "server/services/auth",
+      "server/gateway/src/common",
+      "server/services/core/src/common/type",
+      "server/services/core/src/common/util",
+      "server/services/core/src/common/config",
+      "server/services/core/src/common/middleware",
+      "server/services/core/src/common/interceptor",
+      "server/services/core/src/common/filter",
+      "server/services/core/src/job",
+      "server/services/core/src/provider",
+      "server/services/ticket/src/common",
+      "server/services/ticket/src/job",
+      "server/services/ticket/src/provider"
+    ],
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules",
+      "<rootDir>/client/node_modules/",
+      "<rootDir>/server/gateway/node_modules/",
+      "<rootDir>/server/services/auth/node_modules/",
+      "<rootDir>/server/services/core/node_modules/",
+      "<rootDir>/server/services/ticket/node_modules/"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ]
+  },
+  "dependencies": {
+    "cache-manager-ioredis": "^2.1.0"
+  }
+}

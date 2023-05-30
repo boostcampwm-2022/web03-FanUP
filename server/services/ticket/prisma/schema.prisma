@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Status {
+  OPEN
+  CLOSED
+  CANCELLED
+}
+
+model Ticket {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  artistId  Int
+  artist    Artist   @relation(fields: [artistId], references: [id])
+  salesTime DateTime
+  startTime DateTime
+  status    Status  @default(OPEN)
+  totalAmount Int @default(0)
+  numberTeam Int  @default(1)
+  timeTeam  Int
+  price     Int
+  userTickets UserTicket[]
+}
+
+model UserTicket {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  ticketId  Int
+  ticket    Ticket   @relation(fields: [ticketId], references: [id])
+  createdAt DateTime @default(now())
+  fanupId   String?
+}
+
+model Artist {
+  id          Int     @id
+  name        String
+  profileUrl  String?
+  tickets     Ticket[]
+}

@@ -1,0 +1,54 @@
+name: CODE-FORMAT
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Set up Nest.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: client
+        run: |
+          cd client
+          npm run format-write
+          npm run format
+
+      - name: gateway
+        run: |
+          cd server/gateway
+          npm install
+          npm run format --if-present
+
+      - name: services
+        run: |
+          cd server/services/core
+          npm install
+          npm run format --if-present
+
+          cd ../auth
+          npm install
+          npm run format --if-present
+
+          cd ../ticket
+          npm install
+          npm run format --if-present

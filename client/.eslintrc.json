@@ -1,0 +1,43 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended",
+        "eslint-config-prettier"
+    ],
+    "overrides": [],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "settings": {
+        "import/resolver": {
+            "alias": {
+                "map": [
+                    ["@", "./src"],
+                    ["@icons", "./src/components/icons"],
+                    ["@atoms", "./src/components/UI/atoms"],
+                    ["@molecules", "./src/components/UI/molecules"],
+                    ["@organisms", "./src/components/UI/organisms"],
+                    ["@images", "./src/images"],
+                    ["@hooks", "./src/hooks"],
+                    ["@pages", "./src/pages"],
+                    ["@services", "./src/services"],
+                    ["@store", "./src/store"],
+                    ["@style", "./src/style"],
+                    ["@types", "./src/types"],
+                    ["@utils", "./src/utils"]
+                ]
+            }
+        }
+    },
+    "plugins": ["react", "@typescript-eslint"],
+    "rules": {}
+}

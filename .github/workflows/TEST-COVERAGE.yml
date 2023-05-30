@@ -1,0 +1,60 @@
+name: TEST-COVERAGE
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Set up Nest.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Set up Node_modules
+        run: |
+          cd ./client
+          rm -rf node_modules
+          yarn install --immutable --immutable-cache --check-cache
+          cd ..
+          cd ./server/gateway
+          rm -rf node_modules
+          npm ci
+          cd ../services/core
+          rm -rf node_modules
+          npm ci
+          cd ../auth
+          rm -rf node_modules
+          npm ci
+          cd ../ticket
+          rm -rf node_modules
+          npm ci
+
+      - name: Run Test Coverage
+        continue-on-error: true
+        run: |
+          rm -rf node_modules
+          npm ci
+          npm run cover
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

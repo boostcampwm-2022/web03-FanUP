@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum FanUPStatus {
+  WAITING
+  ONGOING
+  END
+}
+
+enum FanUPType {
+  ARTIST
+  FAN
+}
+
+model FanUp {
+  id Int @id @default(autoincrement())
+  ticket_id Int
+  artist_id Int?
+  room_id String @unique
+  number_team Int?
+  start_time DateTime
+  end_time DateTime
+  fanUP_type FanUPType @default(FAN)
+  status FanUPStatus
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Chat {
+    id Int @id @default(autoincrement())
+    fanup_id String
+    userId Int?
+    is_artist Boolean
+    message String
+    created_at DateTime @default(now())
+}
+
+model FileEntity {
+  id Int @id @default(autoincrement())
+  userId Int?
+  link String @unique
+  name String?
+  mimeType String?
+}
+
+model Notification {
+  id Int @id @default(autoincrement())
+  user_id Int?
+  info String?
+  message String?
+  read Boolean?
+  type String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
